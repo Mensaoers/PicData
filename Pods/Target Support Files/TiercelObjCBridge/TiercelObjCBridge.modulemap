@@ -1,0 +1,6 @@
+framework module TiercelObjCBridge {
+  umbrella header "TiercelObjCBridge-umbrella.h"
+
+  export *
+  module * { export * }
+}

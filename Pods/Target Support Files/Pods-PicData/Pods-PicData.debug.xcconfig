@@ -1,0 +1,12 @@
+EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking" "${PODS_CONFIGURATION_BUILD_DIR}/DGDownloadManager" "${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD" "${PODS_CONFIGURATION_BUILD_DIR}/MJExtension" "${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh" "${PODS_CONFIGURATION_BUILD_DIR}/Masonry" "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage" "${PODS_CONFIGURATION_BUILD_DIR}/Tiercel" "${PODS_CONFIGURATION_BUILD_DIR}/TiercelObjCBridge" "${PODS_CONFIGURATION_BUILD_DIR}/XHWebImageAutoSize" "${PODS_CONFIGURATION_BUILD_DIR}/YYModel"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/DGDownloadManager/DGDownloadManager.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD/MBProgressHUD.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/MJExtension/MJExtension.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh/MJRefresh.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Masonry/Masonry.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Tiercel/Tiercel.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/TiercelObjCBridge/TiercelObjCBridge.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/XHWebImageAutoSize/XHWebImageAutoSize.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/YYModel/YYModel.framework/Headers"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_LDFLAGS = $(inherited) -framework "AFNetworking" -framework "CFNetwork" -framework "CoreFoundation" -framework "CoreGraphics" -framework "DGDownloadManager" -framework "Foundation" -framework "ImageIO" -framework "MBProgressHUD" -framework "MJExtension" -framework "MJRefresh" -framework "Masonry" -framework "MobileCoreServices" -framework "QuartzCore" -framework "SDWebImage" -framework "Security" -framework "SystemConfiguration" -framework "Tiercel" -framework "TiercelObjCBridge" -framework "UIKit" -framework "XHWebImageAutoSize" -framework "YYModel"
+OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
+PODS_ROOT = ${SRCROOT}/Pods
+USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

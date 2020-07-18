@@ -7,12 +7,13 @@
 //
 
 #import "IndexViewController.h"
-#import "PicClassModel.h"
 #import "ContentViewController.h"
+#import "PicClassTableView.h"
+#import "ClassifyPage.h"
 
-@interface IndexViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface IndexViewController () <PicClassTableViewActionDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) PicClassTableView *tableView;
 @property (nonatomic, strong) NSArray *dataList;
 
 @end
@@ -29,14 +30,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"爱套图手机资源";
+    [self loadNavigationItem];
     [self loadMainView];
     [self loadSourceData];
 }
 
+- (void)loadNavigationItem {
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"网络分类" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToClassifyPage)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+}
+
+- (void)jumpToClassifyPage {
+    ClassifyPage *classifyPage = [[ClassifyPage alloc] init];
+    [self.navigationController pushViewController:classifyPage animated:YES];
+}
+
 - (void)loadMainView {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    tableView.delegate = self;
-    tableView.dataSource = self;
+    PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    tableView.actionDelegate = self;
     [self.view addSubview:tableView];
     
     self.tableView = tableView;
@@ -44,8 +55,6 @@
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
     }];
-    
-    tableView.tableFooterView = [UIView new];
 }
 
 - (void)loadSourceData {
@@ -58,7 +67,7 @@
             weakSelf.dataList = [PicClassModel mj_objectArrayWithKeyValuesArray:subTitles];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.tableView reloadData];
+                [weakSelf.tableView reloadDataWithSource:weakSelf.dataList];
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"加载完成" afterDelay:1];
             });
         } else {
@@ -69,43 +78,7 @@
     });
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.dataList.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    PicClassModel *classModel = self.dataList[section];
-    NSArray *list = classModel.subTitles;
-    if (list) {
-        return list.count;
-    } else {
-        return 0;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-    if (nil == cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
-    }
-    PicClassModel *classModel = self.dataList[indexPath.section];
-    PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
-    cell.textLabel.text = sourceModel.title;
-    return cell;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    PicClassModel *classModel = self.dataList[section];
-    return classModel.title;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    PicClassModel *classModel = self.dataList[indexPath.section];
+- (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];

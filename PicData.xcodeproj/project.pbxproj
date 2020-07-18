@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
+		9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */; };
+		9D0E52D924C2B96100FA8D88 /* PicClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
 		9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E4244D5FC7005ADF05 /* DetailViewController.m */; };
 		9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E7244D66C7005ADF05 /* DetailViewModel.m */; };
@@ -45,6 +48,12 @@
 
 /* Begin PBXFileReference section */
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
+		9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassifyPage.h; sourceTree = "<group>"; };
+		9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassifyPage.m; sourceTree = "<group>"; };
+		9D0E52D424C2B62C00FA8D88 /* PicClassTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassTableView.h; sourceTree = "<group>"; };
+		9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicClassTableView.m; sourceTree = "<group>"; };
+		9D0E52D724C2B96100FA8D88 /* PicClassTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassTableViewCell.h; sourceTree = "<group>"; };
+		9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicClassTableViewCell.m; sourceTree = "<group>"; };
 		9D3593DF244D3D38005ADF05 /* ContentParserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentParserManager.h; sourceTree = "<group>"; };
 		9D3593E0244D3D38005ADF05 /* ContentParserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContentParserManager.m; sourceTree = "<group>"; };
 		9D3593E3244D5FC7005ADF05 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -143,6 +152,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		9D0E52CA24C2B35300FA8D88 /* ClassifyPage */ = {
+			isa = PBXGroup;
+			children = (
+				9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */,
+				9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */,
+			);
+			path = ClassifyPage;
+			sourceTree = "<group>";
+		};
 		9D3593E2244D5FA4005ADF05 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
@@ -213,10 +231,15 @@
 		9DE95C8E244C3F5500E31735 /* Index */ = {
 			isa = PBXGroup;
 			children = (
+				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
 				9DE95CD4244C415F00E31735 /* Model */,
 				9DE95C8F244C3F6C00E31735 /* IndexViewController.h */,
 				9DE95C90244C3F6C00E31735 /* IndexViewController.m */,
+				9D0E52D424C2B62C00FA8D88 /* PicClassTableView.h */,
+				9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */,
+				9D0E52D724C2B96100FA8D88 /* PicClassTableViewCell.h */,
+				9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */,
 			);
 			path = Index;
 			sourceTree = "<group>";
@@ -460,14 +483,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
+				9D0E52D924C2B96100FA8D88 /* PicClassTableViewCell.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
+				9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,

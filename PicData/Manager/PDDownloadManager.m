@@ -23,7 +23,9 @@ singleton_implementation(PDDownloadManager);
     if (nil == _sessionManager) {
         TRSessionManager.logLevel = TRLogLevelSimple;
 
-        _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
+        });
     }
     return _sessionManager;
 }
@@ -55,30 +57,32 @@ singleton_implementation(PDDownloadManager);
 }
 
 - (void)downWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel urls:(NSArray *)urls {
-//    [[DGDownloadManager shareManager] setCachePath:[self getDirPathWithSource:sourceModel contentModel:contentModel]];
-//    NSInteger count = urls.count;
-//    for (NSInteger index = 0; index < count; index ++) {
-//        NSString *url = urls[index];
-//        [[DGDownloadManager shareManager] DG_DownloadWithUrl:url withCustomCacheName:url.lastPathComponent];
-//    }
-    [[DGDownloadManager shareManager] setCachePath:[self getDirPathWithSource:sourceModel contentModel:contentModel]];
+
     NSInteger count = urls.count;
     for (NSInteger index = 0; index < count; index ++) {
         NSString *url = urls[index];
         
+        NSString *fileName = url.lastPathComponent;
+        NSLog(@"文件%@开始下载", fileName);
         [[[[[self.sessionManager downloadWithUrl:url headers:@{@"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)"} fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            NSLog(@"task.error:%@", task.error);
+            if (task.error) {
+                NSLog(@"task.error:%@", task.error);
+            }
         }] successOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             NSError *copyError = nil;
             [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:[[self getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent] error:&copyError];
             if (nil == copyError) {
-                
+                NSLog(@"文件%@下载完成", fileName);
             }
         }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            NSLog(@"task.error:%@", task.error);
+            if (task.error) {
+                NSLog(@"task.error:%@", task.error);
+            }
         }] validateFileWithCode:@"9e2a3650530b563da297c9246acaad5c" type:TRFileVerificationTypeMd5 onMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            NSLog(@"task.error:%@", task.error);
             
+            if (task.error) {
+                NSLog(@"task.error:%@", task.error);
+            }
         }];
     }
 }

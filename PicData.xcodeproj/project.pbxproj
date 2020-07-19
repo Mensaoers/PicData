@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
 		9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */; };
 		9D0E52D924C2B96100FA8D88 /* PicClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */; };
@@ -47,6 +48,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
 		9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassifyPage.h; sourceTree = "<group>"; };
 		9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassifyPage.m; sourceTree = "<group>"; };
@@ -143,6 +146,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		33AB92B024C3F57D00E97E42 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				9D0E52D424C2B62C00FA8D88 /* PicClassTableView.h */,
+				9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */,
+				9D0E52D724C2B96100FA8D88 /* PicClassTableViewCell.h */,
+				9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		33AB92B124C3F58900E97E42 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				33AB92B224C3F5AA00E97E42 /* SettingViewController.h */,
+				33AB92B324C3F5AA00E97E42 /* SettingViewController.m */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		8EAEFB2266B35620CEA3AC34 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,15 +254,13 @@
 		9DE95C8E244C3F5500E31735 /* Index */ = {
 			isa = PBXGroup;
 			children = (
+				33AB92B124C3F58900E97E42 /* Setting */,
+				33AB92B024C3F57D00E97E42 /* view */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
 				9DE95CD4244C415F00E31735 /* Model */,
 				9DE95C8F244C3F6C00E31735 /* IndexViewController.h */,
 				9DE95C90244C3F6C00E31735 /* IndexViewController.m */,
-				9D0E52D424C2B62C00FA8D88 /* PicClassTableView.h */,
-				9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */,
-				9D0E52D724C2B96100FA8D88 /* PicClassTableViewCell.h */,
-				9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */,
 			);
 			path = Index;
 			sourceTree = "<group>";
@@ -498,6 +519,7 @@
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
+				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,

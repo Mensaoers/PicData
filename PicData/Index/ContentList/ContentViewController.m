@@ -107,15 +107,15 @@
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据成功"];
                 // 解析数据
                 [weakSelf parserContentListHtmlData:resultString];
-                [self.collectionView reloadData];
+                [weakSelf.collectionView reloadData];
                 [weakSelf.collectionView.mj_header endRefreshing];
             });
         } else {
-            NSLog(@"获取%@数据错误:%@", self.sourceModel.url,  error);
+            NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:self.view WithStatus:@"获取数据失败"];
                 [weakSelf parserContentListHtmlData:@""];
-                [self.collectionView reloadData];
+                [weakSelf.collectionView reloadData];
                 [weakSelf.collectionView.mj_header endRefreshing];
             });
         }

@@ -10,6 +10,7 @@
 #import "ContentViewController.h"
 #import "PicClassTableView.h"
 #import "ClassifyPage.h"
+#import "SettingViewController.h"
 
 @interface IndexViewController () <PicClassTableViewActionDelegate>
 
@@ -38,11 +39,19 @@
 - (void)loadNavigationItem {
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"网络分类" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToClassifyPage)];
     self.navigationItem.leftBarButtonItem = leftItem;
+
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToSettingPage)];
+    self.navigationItem.rightBarButtonItem = rightItem;
 }
 
 - (void)jumpToClassifyPage {
     ClassifyPage *classifyPage = [[ClassifyPage alloc] init];
     [self.navigationController pushViewController:classifyPage animated:YES];
+}
+
+- (void)jumpToSettingPage {
+    SettingViewController *settingPage = [[SettingViewController alloc] init];
+    [self.navigationController pushViewController:settingPage animated:YES];
 }
 
 - (void)loadMainView {

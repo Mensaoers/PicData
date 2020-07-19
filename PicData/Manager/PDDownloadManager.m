@@ -23,20 +23,83 @@ singleton_implementation(PDDownloadManager);
     if (nil == _sessionManager) {
         TRSessionManager.logLevel = TRLogLevelSimple;
 
-        dispatch_sync(dispatch_get_main_queue(), ^{
+//        dispatch_sync(dispatch_get_main_queue(), ^{
             _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
-        });
+//        });
     }
     return _sessionManager;
+}
+
+- (NSString *)defaultDownloadPath {
+    NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *targetPath = [documentDir stringByAppendingPathComponent:@"PicDownloads"];
+    [[NSFileManager defaultManager] createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:nil];
+    return targetPath;
+}
+
+/// 获取默认下载地址
+- (nonnull NSString *)systemDownloadPath {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *downloadPath = [defaults valueForKey:DOWNLOADSPATHKEY];
+
+    if (nil == downloadPath || downloadPath.length == 0) {
+        downloadPath = [self defaultDownloadPath];
+        [self updateSystemDownloadPath:downloadPath];
+    }
+
+    NSLog(@"当前下载地址为%@", downloadPath);
+    return downloadPath;
+}
+
+- (BOOL)checkSystemDownloadPathExistNeedNotice:(BOOL)need {
+
+    BOOL isExist = [self checkDownloadPathExist:[self systemDownloadPath]];
+    if (!isExist && need) {
+        // 不存在
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECKDOWNLOADPATHKEY object:nil];
+    }
+    return isExist;
+}
+
+- (BOOL)checkDownloadPathExist:(NSString *)path {
+    BOOL isDir = YES;
+
+    BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
+
+    if (!isExist) {
+        BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        if (!result) {
+            return NO;
+        } else {
+            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+            return YES;
+        }
+    }
+
+    return isExist;
+}
+
+/// 设置下载地址
+- (BOOL)updateSystemDownloadPath:(nonnull NSString *)downloadPath {
+    BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:nil error:nil];
+    if (!result) {
+        return NO;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (downloadPath.length == 0) {
+        downloadPath = [self defaultDownloadPath];
+    }
+    [defaults setValue:downloadPath forKey:DOWNLOADSPATHKEY];
+    return [defaults synchronize];
 }
 
 - (NSString *)getDirPathWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel {
     
     if (sourceModel == nil) {
-        return DOWNLOADSPATH;
+        return [self systemDownloadPath];
     }
     
-    NSString *targetPath = [DOWNLOADSPATH stringByAppendingPathComponent:sourceModel.title];
+    NSString *targetPath = [[self systemDownloadPath] stringByAppendingPathComponent:sourceModel.title];
     BOOL isDir = YES;
     if (![[NSFileManager defaultManager] fileExistsAtPath:targetPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
@@ -58,6 +121,10 @@ singleton_implementation(PDDownloadManager);
 
 - (void)downWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel urls:(NSArray *)urls {
 
+    if (![self checkSystemDownloadPathExistNeedNotice:YES]) {
+        return;
+    }
+
     NSInteger count = urls.count;
     for (NSInteger index = 0; index < count; index ++) {
         NSString *url = urls[index];
@@ -70,7 +137,8 @@ singleton_implementation(PDDownloadManager);
             }
         }] successOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             NSError *copyError = nil;
-            [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:[[self getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent] error:&copyError];
+            NSString *targetPath = [[self getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent];
+            [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
             if (nil == copyError) {
                 NSLog(@"文件%@下载完成", fileName);
             }

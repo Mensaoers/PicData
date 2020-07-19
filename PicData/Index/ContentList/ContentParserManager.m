@@ -52,7 +52,7 @@ singleton_implementation(ContentParserManager);
             } else {
                 NSLog(@"第%d页, %@, 完成", count, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
                 
-                NSDictionary *result = [self dealWithHtmlData_xunqinji:content WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+                NSDictionary *result = [weakSelf dealWithHtmlData_xunqinji:content WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
                 nextUrl = result[@"nextUrl"];
                 NSError *writeError = nil;
                 [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -134,7 +134,9 @@ singleton_implementation(ContentParserManager);
         }
         
         if (needDownload) {
-            [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
+            });
         }
     }
     

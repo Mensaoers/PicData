@@ -91,7 +91,7 @@
 
                     [weakSelf parserDetailListHtmlData:@""];
                     [weakSelf refreshMainView];
-                    [MBProgressHUD showInfoOnView:self.view WithStatus:@"获取数据失败"];
+                    [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
                 });
             }
         }];

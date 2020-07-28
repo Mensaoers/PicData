@@ -134,9 +134,7 @@ singleton_implementation(ContentParserManager);
         }
         
         if (needDownload) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
-            });
+            [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
         }
     }
     

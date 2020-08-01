@@ -72,7 +72,7 @@
 }
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
-        PDBlockSelf
+    PDBlockSelf
     NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession]dataTaskWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:HOST_URL]] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             
             if (nil == error) {
@@ -86,7 +86,7 @@
                     [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
                 });
             } else {
-                NSLog(@"获取%@数据错误:%@", self.sourceModel.url,  error);
+                NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
                 dispatch_async(dispatch_get_main_queue(), ^{
 
                     [weakSelf parserDetailListHtmlData:@""];

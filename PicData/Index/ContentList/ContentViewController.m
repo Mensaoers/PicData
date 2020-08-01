@@ -113,7 +113,7 @@
         } else {
             NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD showInfoOnView:self.view WithStatus:@"获取数据失败"];
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
                 [weakSelf parserContentListHtmlData:@""];
                 [weakSelf.collectionView reloadData];
                 [weakSelf.collectionView.mj_header endRefreshing];

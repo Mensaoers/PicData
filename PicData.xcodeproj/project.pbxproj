@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
 		9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */; };
@@ -48,6 +49,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
+		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
@@ -376,6 +379,8 @@
 			children = (
 				9DE95CF8244CA25900E31735 /* PDDownloadManager.h */,
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
+				335124E024D6E2C9004489CA /* PDRequest.h */,
+				335124E124D6E2C9004489CA /* PDRequest.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -516,6 +521,7 @@
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
 				9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
+				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
@@ -678,7 +684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = garenge.pic.data.PicData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -701,7 +707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = garenge.pic.data.PicData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;

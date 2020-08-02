@@ -16,9 +16,22 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) DetailViewModel *detailModel;
 
+@property (nonatomic, strong) NSMutableArray <NSDictionary *>*historyInfos;
+
 @end
 
 @implementation DetailViewController
+
+- (void)dealloc {
+    NSLog(@"啊, 我被释放了%s", __func__);
+}
+
+- (NSMutableArray<NSDictionary *> *)historyInfos {
+    if (nil == _historyInfos) {
+        _historyInfos = [NSMutableArray array];
+    }
+    return _historyInfos;
+}
 
 - (DetailViewModel *)detailModel {
     if (nil == _detailModel) {
@@ -38,9 +51,24 @@
     [super viewDidLoad];
     
     self.navigationItem.title = self.contentModel.title;
-    
+    [self refreshLeftBarButtons];
     [self loadMainView];
     [self.tableView.mj_header beginRefreshing];
+}
+
+- (void)refreshLeftBarButtons {
+    NSMutableArray *leftBarButtonItems = [NSMutableArray array];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
+    [leftBarButtonItems addObject:backItem];
+    if (self.historyInfos.count > 0) {
+        UIBarButtonItem *lastPageItem = [[UIBarButtonItem alloc] initWithTitle:@"上一页" style:UIBarButtonItemStyleDone target:self action:@selector(loadLastPageDetailData)];
+        [leftBarButtonItems addObject:lastPageItem];
+    }
+    self.navigationItem.leftBarButtonItems = leftBarButtonItems;
+}
+
+- (void)backAction:(UIBarButtonItem *)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)loadMainView {
@@ -66,36 +94,48 @@
 
 }
 
+- (void)loadLastPageDetailData {
+    NSDictionary *lastInfo = self.historyInfos.lastObject;
+    if (nil != lastInfo) {
+        self.detailModel.nextUrl = self.detailModel.currentUrl;
+        self.detailModel.currentUrl = lastInfo[@"url"];
+        self.detailModel.detailTitle = lastInfo[@"title"];
+        [self loadDetailData];
+        [self.historyInfos removeLastObject];
+    }
+    [self refreshLeftBarButtons];
+}
+
 - (void)loadNextDetailData {
     self.detailModel.currentUrl = self.detailModel.nextUrl;
     [self loadDetailData];
+    [self refreshLeftBarButtons];
 }
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     PDBlockSelf
-    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession]dataTaskWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:HOST_URL]] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            
-            if (nil == error) {
+    [PDRequest getWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:HOST_URL]] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+        if (nil == error) {
                 // 获取字符串
-                NSString *resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            dispatch_async(dispatch_get_main_queue(), ^{
 
                     // 解析数据
-                    [weakSelf parserDetailListHtmlData:resultString];
-                    [weakSelf refreshMainView];
-                    [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
-                });
-            } else {
-                NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
-                dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf parserDetailListHtmlData:resultString];
+                [weakSelf refreshMainView];
+                [MBProgressHUD hideHUDForView:weakSelf.view animated:NO];
+            });
+        } else {
+            NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
+            dispatch_async(dispatch_get_main_queue(), ^{
 
-                    [weakSelf parserDetailListHtmlData:@""];
-                    [weakSelf refreshMainView];
-                    [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
-                });
-            }
-        }];
-        [dataTask resume];
+                [weakSelf parserDetailListHtmlData:@""];
+                [weakSelf refreshMainView];
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
+            });
+        }
+    }];
 }
 
 - (void)refreshMainView {
@@ -285,6 +325,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
         [self loadNextDetailData];
     }
 }
@@ -340,6 +381,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     PicContentModel *model = self.detailModel.suggesArray[indexPath.item];
+    [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
     self.contentModel = model;
     [self loadNextDetailData];
 }

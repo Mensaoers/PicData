@@ -53,7 +53,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 
 - (void)loadData_list {
     __weak typeof(self) weakSelf = self;
-    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:tagUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:tagUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [weakSelf.tableView.mj_header endRefreshing];
         if (nil == error) {
             NSLog(@"获取分类列表成功");
@@ -74,7 +74,6 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
             });
         }
     }];
-    [dataTask resume];
 }
 
 /// 分类标签可能type都是2

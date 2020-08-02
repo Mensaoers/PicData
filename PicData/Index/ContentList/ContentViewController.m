@@ -20,6 +20,10 @@
 
 @implementation ContentViewController
 
+- (void)dealloc {
+    NSLog(@"啊, 我被释放了%s", __func__);
+}
+
 - (instancetype)initWithSourceModel:(PicSourceModel *)sourceModel {
     if (self = [super init]) {
         self.sourceModel = sourceModel;
@@ -95,7 +99,7 @@
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     
     PDBlockSelf
-    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession]dataTaskWithURL:[NSURL URLWithString:self.sourceModel.url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:self.sourceModel.url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         if (nil == error) {
             // 获取字符串
@@ -120,7 +124,6 @@
             });
         }
     }];
-    [dataTask resume];
 }
 
 - (void)parserContentListHtmlData:(NSString *)htmlString {

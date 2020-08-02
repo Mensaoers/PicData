@@ -34,11 +34,11 @@
 }
 
 - (void)setUrl:(NSString *)url {
-    PDBlockSelf
+//    PDBlockSelf
     [self.conImgView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"blank"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (nil == error) {
-            CGSize imageSize = image.size;
-            NSLog(@"imageSize:%@, imageView.width: %f, height:%f", NSStringFromCGSize(imageSize), weakSelf.conImgView.mj_w, imageSize.height * weakSelf.conImgView.mj_w / imageSize.width);
+            // CGSize imageSize = image.size;
+            // NSLog(@"imageSize:%@, imageView.width: %f, height:%f", NSStringFromCGSize(imageSize), weakSelf.conImgView.mj_w, imageSize.height * weakSelf.conImgView.mj_w / imageSize.width);
         }
     }];
 }

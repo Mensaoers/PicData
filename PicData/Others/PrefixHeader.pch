@@ -24,6 +24,7 @@
     #import "PDDownloadManager.h"
     #import <DGDownloadManager/DGDownloadManager.h>
     #import "ContentParserManager.h"
+    #import "PDRequest.h"
 #endif
 
 #endif /* PrefixHeader_pch */

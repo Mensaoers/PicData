@@ -58,7 +58,8 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
         if (nil == error) {
             NSLog(@"获取分类列表成功");
             NSString *htmlString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            [data writeToFile:[[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:nil contentModel:nil] stringByAppendingPathComponent:@"classify.txt"] atomically:YES];
+            NSString *filePath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:nil contentModel:nil] stringByAppendingPathComponent:@"classify.txt"];
+            [data writeToFile:filePath atomically:YES];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取成功"];
                 // 解析数据
@@ -111,7 +112,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
         
         for (OCGumboElement *aEle in aEles) {
             NSString *tmp = aEle.attr(@"href");
-            NSLog(@"%@", HOST_URL);
+
             NSString *href = [NSString stringWithFormat:@"%@%@", HOST_URL, tmp ?: @""];
             NSString *title = aEle.text();
             
@@ -133,6 +134,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 #pragma mark delegate
 - (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
+    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
 }

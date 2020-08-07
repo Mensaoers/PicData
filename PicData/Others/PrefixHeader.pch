@@ -25,6 +25,9 @@
     #import <DGDownloadManager/DGDownloadManager.h>
     #import "ContentParserManager.h"
     #import "PDRequest.h"
+    #import "JKSqliteModelTool.h"
+    #import <YYCategories/YYCategories.h>
+    #import "TransViewController.h"
 #endif
 
 #endif /* PrefixHeader_pch */

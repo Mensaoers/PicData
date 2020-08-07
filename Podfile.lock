@@ -26,7 +26,11 @@ PODS:
   - Tiercel (2.4.1)
   - TiercelObjCBridge (1.0.4):
     - Tiercel (= 2.4.1)
+  - WMZFloatView (1.0.1)
   - XHWebImageAutoSize (1.1.2)
+  - YYCategories (1.0.4):
+    - YYCategories/no-arc (= 1.0.4)
+  - YYCategories/no-arc (1.0.4)
   - YYModel (1.0.4)
 
 DEPENDENCIES:
@@ -39,7 +43,9 @@ DEPENDENCIES:
   - SDWebImage (~> 4.0.0)
   - Tiercel
   - TiercelObjCBridge
+  - WMZFloatView
   - XHWebImageAutoSize
+  - YYCategories
   - YYModel
 
 SPEC REPOS:
@@ -53,7 +59,9 @@ SPEC REPOS:
     - SDWebImage
     - Tiercel
     - TiercelObjCBridge
+    - WMZFloatView
     - XHWebImageAutoSize
+    - YYCategories
     - YYModel
 
 SPEC CHECKSUMS:
@@ -66,9 +74,11 @@ SPEC CHECKSUMS:
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   Tiercel: ce5c6347fea7ec877beea4530ca5a208f1b40f7e
   TiercelObjCBridge: 491ed4fe97e14e6f6b55d4a0d192a577399a53e1
+  WMZFloatView: 06bb6c10d079f4929b9bdd9cda3eaa2f6231dfea
   XHWebImageAutoSize: 8e5d7bf036f960885769dbe3410579024d3ac1a1
+  YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 043ffbdce2f1a40a4bff277fab2e48fa73e41e6e
+PODFILE CHECKSUM: 32339850340c265052e0eea84f76b16aab56287d
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.3

@@ -94,13 +94,20 @@ singleton_implementation(PDDownloadManager);
 }
 
 - (NSString *)getDirPathWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel {
-    
+
+    BOOL isDir = YES;
+
     if (sourceModel == nil) {
-        return [self systemDownloadPath];
+        NSString *path = [self systemDownloadPath];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir]) {
+            NSError *createDirError = nil;
+            [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&createDirError];
+        }
+        return path;
     }
     
     NSString *targetPath = [[self systemDownloadPath] stringByAppendingPathComponent:sourceModel.title];
-    BOOL isDir = YES;
+
     if (![[NSFileManager defaultManager] fileExistsAtPath:targetPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:&createDirError];

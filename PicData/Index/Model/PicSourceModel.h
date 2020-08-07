@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JKSqliteProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PicSourceModel : NSObject
+@interface PicSourceModel : NSObject<JKSqliteProtocol>
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *url;
-//@property (nonatomic, strong) NSString *sourceType;
 @property (nonatomic, assign) int sourceType;
 @end
 

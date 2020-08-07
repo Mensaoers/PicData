@@ -11,6 +11,7 @@ target 'PicData' do
   pod 'MJExtension', '~> 3.0.13'
   pod 'SDWebImage', '~> 4.0.0'
   pod 'YYModel'
+  pod 'YYCategories'
   pod 'MJRefresh', '~> 3.1.12'
   pod 'XHWebImageAutoSize'
   pod 'DGDownloadManager', '~> 0.0.1'

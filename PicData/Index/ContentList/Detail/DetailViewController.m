@@ -217,7 +217,7 @@
                 OCGumboElement *aE = dtE.Query(@"a").firstObject;
                 if (aE) {
                     PicContentModel *contentModel = [[PicContentModel alloc] init];
-                    
+                    contentModel.sourceTitle = self.sourceModel.title;
                     NSString *url = aE.attr(@"href");
                     if (url.length > 0) {
                         // url
@@ -240,7 +240,8 @@
                         // alt
                         contentModel.title = alt;
                     }
-                    
+
+                    [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
                     [suggesM addObject:contentModel];
                 }
             }
@@ -387,10 +388,17 @@
 }
 
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {
-    if (contentModel.hasAdded) {
+    NSArray *results = [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
+    // 理论上一定有一条数据
+    if (results.count == 0) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:[NSString stringWithFormat:@"获取该内容: %@-%@ 数据异常", contentModel.sourceTitle, contentModel.title] afterDelay:0.5];
+    }
+    PicContentModel *tmpModel = results[0];
+    if (tmpModel.hasAdded) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"任务已存在" afterDelay:0.5];
     } else {
-        contentModel.hasAdded = YES;
+        tmpModel.hasAdded = YES;
+        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
         [[ContentParserManager sharedContentParserManager] parserWithSourceModel:self.sourceModel ContentModel:contentModel needDownload:YES];
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"任务已添加" afterDelay:0.5];
     }

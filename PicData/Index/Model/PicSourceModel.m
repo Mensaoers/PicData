@@ -10,4 +10,8 @@
 
 @implementation PicSourceModel
 
++ (NSString *)primaryKey {
+    return @"title";
+}
+
 @end

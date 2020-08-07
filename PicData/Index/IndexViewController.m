@@ -11,6 +11,7 @@
 #import "PicClassTableView.h"
 #import "ClassifyPage.h"
 #import "SettingViewController.h"
+#import "FloatingWindowView.h"
 
 @interface IndexViewController () <PicClassTableViewActionDelegate>
 
@@ -40,8 +41,8 @@
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"网络分类" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToClassifyPage)];
     self.navigationItem.leftBarButtonItem = leftItem;
 
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToSettingPage)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+    UIBarButtonItem *settingItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToSettingPage)];
+    self.navigationItem.rightBarButtonItem = settingItem;
 }
 
 - (void)jumpToClassifyPage {
@@ -64,6 +65,23 @@
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
     }];
+
+    [[FloatingWindowView shareInstance] isHidden:NO];
+    PDBlockSelf
+    [FloatingWindowView shareInstance].ClickAction = ^{
+        NSArray *viewControllers = weakSelf.navigationController.viewControllers;
+        BOOL jumped = NO;
+        for (UIViewController *viewController in viewControllers) {
+            if ([viewController isKindOfClass:[TransViewController class]]) {
+                // 弹过了, 不弹了
+                jumped = YES;
+                break;
+            }
+        }
+        if (!jumped) {
+            [weakSelf.navigationController pushViewController:[TransViewController new] animated:YES];
+        }
+    };
 }
 
 - (void)loadSourceData {
@@ -89,6 +107,7 @@
 
 - (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
+    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
 }

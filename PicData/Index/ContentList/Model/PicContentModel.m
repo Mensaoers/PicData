@@ -10,4 +10,8 @@
 
 @implementation PicContentModel
 
++ (NSString *)primaryKey {
+    return @"href";
+}
+
 @end

@@ -114,7 +114,7 @@
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     PDBlockSelf
-    [PDRequest getWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:HOST_URL]] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         if (nil == error) {
                 // 获取字符串
@@ -217,6 +217,7 @@
                 OCGumboElement *aE = dtE.Query(@"a").firstObject;
                 if (aE) {
                     PicContentModel *contentModel = [[PicContentModel alloc] init];
+                    contentModel.HOST_URL = self.sourceModel.HOST_URL;
                     contentModel.sourceTitle = self.sourceModel.title;
                     NSString *url = aE.attr(@"href");
                     if (url.length > 0) {
@@ -388,31 +389,15 @@
 }
 
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {
-    NSArray *results = [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
-    // 理论上一定有一条数据
-    if (results.count == 0) {
-        [MBProgressHUD showInfoOnView:self.view WithStatus:[NSString stringWithFormat:@"获取该内容: %@-%@ 数据异常", contentModel.sourceTitle, contentModel.title] afterDelay:0.5];
-    }
-    PicContentModel *tmpModel = results[0];
-    if (tmpModel.hasAdded) {
-        [MBProgressHUD showInfoOnView:self.view WithStatus:@"任务已存在" afterDelay:0.5];
-    } else {
-        tmpModel.hasAdded = YES;
-        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
-        [[ContentParserManager sharedContentParserManager] parserWithSourceModel:self.sourceModel ContentModel:contentModel needDownload:YES];
-        [MBProgressHUD showInfoOnView:self.view WithStatus:@"任务已添加" afterDelay:0.5];
-    }
+    [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel needDownload:YES operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+    }];
 }
 
-- (void)downloadThisContent:(UIButton *)sender {
-
-    if (self.contentModel.hasAdded) {
-        [MBProgressHUD showInfoOnView:self.view WithStatus:@"任务已存在" afterDelay:0.5];
-    } else {
-        self.contentModel.hasAdded = YES;
-        [[ContentParserManager sharedContentParserManager] parserWithSourceModel:self.sourceModel ContentModel:self.contentModel needDownload:YES];
-        [MBProgressHUD showInfoOnView:self.view WithStatus:@"任务已添加" afterDelay:0.5];
-    }
+- (void)downloadThisContent:(UIBarButtonItem *)sender {
+    [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:self.contentModel needDownload:YES operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+    }];
 }
 
 @end

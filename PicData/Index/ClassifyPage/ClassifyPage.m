@@ -9,6 +9,7 @@
 #import "ClassifyPage.h"
 #import "PicClassTableView.h"
 #import "ContentViewController.h"
+#import "AddNetTaskVC.h"
 
 @interface ClassifyPage () <PicClassTableViewActionDelegate>
 
@@ -18,6 +19,7 @@
 
 @implementation ClassifyPage
 
+static NSString *HOSTURL = @"https://m.aitaotu.com";
 static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 - (NSArray *)dataArray {
     if (nil == _dataArray) {
@@ -28,9 +30,13 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"标签";
+    [self loadNavigationItem];
     [self loadMainView];
     [self.tableView.mj_header beginRefreshing];
+}
+
+- (void)loadNavigationItem {
+    self.navigationItem.title = @"标签";
 }
 
 - (void)loadMainView {
@@ -113,18 +119,19 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
         for (OCGumboElement *aEle in aEles) {
             NSString *tmp = aEle.attr(@"href");
 
-            NSString *href = [NSString stringWithFormat:@"%@%@", HOST_URL, tmp ?: @""];
+            NSString *href = [NSString stringWithFormat:@"%@%@", HOSTURL, tmp ?: @""];
             NSString *title = aEle.text();
             
             PicSourceModel *sourceMdoel = [[PicSourceModel alloc] init];
             sourceMdoel.title = title;
             sourceMdoel.url = href;
             sourceMdoel.sourceType = 2;
+            sourceMdoel.HOST_URL = HOSTURL;
             
             [sourceModels addObject:sourceMdoel];
         }
         
-        PicClassModel *classModel = [PicClassModel modelWithTitle:title sourceType:@"2" subTitles:sourceModels.copy];
+        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:HOSTURL Title:title sourceType:@"2" subTitles:sourceModels.copy];
         [classModels addObject:classModel];
     }
     

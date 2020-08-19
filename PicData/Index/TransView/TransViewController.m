@@ -7,6 +7,7 @@
 //
 
 #import "TransViewController.h"
+#import "AddNetTaskVC.h"
 
 @interface TransViewController ()
 
@@ -14,18 +15,43 @@
 
 @implementation TransViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.title = @"下载列表";
-    [self loadMainView];
+- (void)dealloc {
+    NSLog(@"我要被释放了, %s", __func__);
 }
 
-////可选实现协议的方法 传入标题和图片
-// - (NSDictionary *)floatViewConfig{
-//   return @{@"name":@"下载列表",@"icon":@"float_image"};
-//}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self loadNavigationItem];
+    [self loadMainView];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewTask:) name:NOTICECHEADDNEWTASK object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewDetailTask:) name:NOTICECHEADDNEWDETAILTASK object:nil];
+}
+
+- (void)loadNavigationItem {
+    self.title = @"下载列表";
+    // 下载
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTaskButtonClickAction:)];
+    self.navigationItem.rightBarButtonItem = addItem;
+}
 
 - (void)loadMainView {
     self.view.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)receiveNoticeAboutAddNewTask:(NSNotification *)notice {
+    NSDictionary *userInfo = notice.userInfo;
+    NSLog(@"新增套图: %@, %@", userInfo[@"contentTitle"], userInfo[@"contentHref"]);
+}
+
+- (void)receiveNoticeAboutAddNewDetailTask:(NSNotification *)notice {
+    NSDictionary *userInfo = notice.userInfo;
+    NSLog(@"新增套图:%@, 一共采集到:%@", userInfo[@"contentHref"], userInfo[@"contentCount"]);
+}
+
+#pragma mark 创建网络下载任务
+- (void)addTaskButtonClickAction:(UIBarButtonItem *)sender {
+    AddNetTaskVC *addVC = [[AddNetTaskVC alloc] init];
+    [self.navigationController pushViewController:addVC animated:YES];
 }
 @end

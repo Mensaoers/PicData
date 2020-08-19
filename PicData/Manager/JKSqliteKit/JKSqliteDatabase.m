@@ -14,9 +14,6 @@
 
 #define JKSqliteCachePath [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Caches"]
 
-
-// #define JKSqliteCachePath @"/Users/wangchong/Desktop/"
-
 // 全局的数据库对象
 sqlite3 *ppDb = nil;
 

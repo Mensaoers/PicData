@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.m */; };
+		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
+		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
+		332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 332C285624EBA5720083A5DC /* AddNetTaskVC.m */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
@@ -55,6 +59,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3323205724ECB4A300FE5E33 /* PicBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBaseModel.h; sourceTree = "<group>"; };
+		3323205824ECB4A300FE5E33 /* PicBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBaseModel.m; sourceTree = "<group>"; };
+		3323206124ECE3D000FE5E33 /* PicRuleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleModel.m; sourceTree = "<group>"; };
+		3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleStepModel.h; sourceTree = "<group>"; };
+		3323206324ECE3D100FE5E33 /* PicRuleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleModel.h; sourceTree = "<group>"; };
+		3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleStepModel.m; sourceTree = "<group>"; };
+		332C285524EBA5720083A5DC /* AddNetTaskVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddNetTaskVC.h; sourceTree = "<group>"; };
+		332C285624EBA5720083A5DC /* AddNetTaskVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddNetTaskVC.m; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
@@ -169,6 +181,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		332C285424EBA5570083A5DC /* AddNetTask */ = {
+			isa = PBXGroup;
+			children = (
+				332C285524EBA5720083A5DC /* AddNetTaskVC.h */,
+				332C285624EBA5720083A5DC /* AddNetTaskVC.m */,
+			);
+			path = AddNetTask;
+			sourceTree = "<group>";
+		};
 		33AB92B024C3F57D00E97E42 /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +230,7 @@
 		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
 			isa = PBXGroup;
 			children = (
+				332C285424EBA5570083A5DC /* AddNetTask */,
 				33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */,
 				33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */,
 			);
@@ -308,7 +330,7 @@
 				33AB92B024C3F57D00E97E42 /* view */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
-				9DE95CD4244C415F00E31735 /* Model */,
+				9DE95CD4244C415F00E31735 /* Models */,
 				9DE95C8F244C3F6C00E31735 /* IndexViewController.h */,
 				9DE95C90244C3F6C00E31735 /* IndexViewController.m */,
 				335719B324DD358C00303E83 /* FloatingWindowView.h */,
@@ -379,28 +401,33 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
-		9DE95CD4244C415F00E31735 /* Model */ = {
+		9DE95CD4244C415F00E31735 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9DE95CD5244C417900E31735 /* PicSourceModel.h */,
-				9DE95CD6244C417900E31735 /* PicSourceModel.m */,
-				9DE95CD8244C418700E31735 /* PicSource.json */,
+				3323205724ECB4A300FE5E33 /* PicBaseModel.h */,
+				3323205824ECB4A300FE5E33 /* PicBaseModel.m */,
 				9DE95CDA244C43A400E31735 /* PicClassModel.h */,
 				9DE95CDB244C43A400E31735 /* PicClassModel.m */,
+				9DE95CD5244C417900E31735 /* PicSourceModel.h */,
+				9DE95CD6244C417900E31735 /* PicSourceModel.m */,
+				9DE95CE6244C4E5700E31735 /* PicContentModel.h */,
+				9DE95CE7244C4E5700E31735 /* PicContentModel.m */,
+				3323206324ECE3D100FE5E33 /* PicRuleModel.h */,
+				3323206124ECE3D000FE5E33 /* PicRuleModel.m */,
+				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
+				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
+				9DE95CD8244C418700E31735 /* PicSource.json */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		9DE95CDD244C465C00E31735 /* ContentList */ = {
 			isa = PBXGroup;
 			children = (
 				9D3593E2244D5FA4005ADF05 /* Detail */,
-				9DE95CE5244C4E3900E31735 /* Model */,
 				9DE95CE1244C49A600E31735 /* View */,
 				9DE95CDE244C468500E31735 /* ContentViewController.h */,
 				9DE95CDF244C468500E31735 /* ContentViewController.m */,
-				9D3593DF244D3D38005ADF05 /* ContentParserManager.h */,
-				9D3593E0244D3D38005ADF05 /* ContentParserManager.m */,
 			);
 			path = ContentList;
 			sourceTree = "<group>";
@@ -414,15 +441,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		9DE95CE5244C4E3900E31735 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				9DE95CE6244C4E5700E31735 /* PicContentModel.h */,
-				9DE95CE7244C4E5700E31735 /* PicContentModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		9DE95CF6244CA23000E31735 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -431,6 +449,8 @@
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
 				335124E024D6E2C9004489CA /* PDRequest.h */,
 				335124E124D6E2C9004489CA /* PDRequest.m */,
+				9D3593DF244D3D38005ADF05 /* ContentParserManager.h */,
+				9D3593E0244D3D38005ADF05 /* ContentParserManager.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -471,7 +491,7 @@
 		9DE95C67244C3E0F00E31735 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = garenge;
 				TargetAttributes = {
 					9DE95C6E244C3E0F00E31735 = {
@@ -564,11 +584,13 @@
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
 				9D0E52D924C2B96100FA8D88 /* PicClassTableViewCell.m in Sources */,
+				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
+				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
@@ -583,6 +605,7 @@
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,
 				33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */,
+				3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */,
 				335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */,
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
 				33B9EEBC24DC7A8400ABE3E2 /* JKSqliteTableTool.m in Sources */,
@@ -590,6 +613,7 @@
 				9DE95CD7244C417900E31735 /* PicSourceModel.m in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,
+				3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */,
 				33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */,
 				33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
@@ -729,6 +753,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D90F68A13B5C2B86263A6017 /* Pods-PicData.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -752,6 +777,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_STYLE = Automatic;

@@ -23,9 +23,9 @@ singleton_implementation(PDDownloadManager);
     if (nil == _sessionManager) {
         TRSessionManager.logLevel = TRLogLevelSimple;
 
-//        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_sync(dispatch_get_main_queue(), ^{
             _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
-//        });
+        });
     }
     return _sessionManager;
 }

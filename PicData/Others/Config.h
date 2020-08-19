@@ -10,7 +10,6 @@
 #ifndef Config_h
 #define Config_h
 
-#define HOST_URL @"https://m.aitaotu.com"
 #define SQLite_USER @"admin"
 
 #define PDBlockSelf __weak __typeof(&*self)weakSelf = self;

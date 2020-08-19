@@ -1,6 +1,0 @@
-framework module WMZFloatView {
-  umbrella header "WMZFloatView-umbrella.h"
-
-  export *
-  module * { export * }
-}

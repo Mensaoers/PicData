@@ -9,12 +9,11 @@ target 'PicData' do
   pod 'MBProgressHUD', '~> 1.1.0'  
   pod 'Masonry'
   pod 'MJExtension', '~> 3.0.13'
-  pod 'SDWebImage', '~> 4.0.0'
+  pod 'SDWebImage', '~> 5.0'
   pod 'YYModel'
   pod 'YYCategories'
   pod 'MJRefresh', '~> 3.1.12'
   pod 'XHWebImageAutoSize'
-  pod 'DGDownloadManager', '~> 0.0.1'
   pod 'Tiercel'
   pod 'TiercelObjCBridge'
   # Pods for PicData

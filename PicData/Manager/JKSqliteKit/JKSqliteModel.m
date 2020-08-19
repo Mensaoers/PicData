@@ -45,50 +45,55 @@
 +(NSDictionary *)classIvarNameTypeDictionary:(Class)cls{
     
     NSMutableDictionary *nameTypeDictionary = [NSMutableDictionary dictionary];
-    
-    NSArray *ignoreNamesArray = nil;
-    if ([cls respondsToSelector:@selector(ignoreColumnNames)]) {
-        
-        ignoreNamesArray = [cls ignoreColumnNames];
-    }
-    
-    // 获取所有的成员变量
-    unsigned int  outCount = 0;
-    Ivar *varList = class_copyIvarList(cls, &outCount);
 
-    for (int i = 0; i<outCount; ++i) {
-        
-        Ivar ivar = varList[i];
-        
-        // 1.获取成员变量名字
-        NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];
-        
-        /**
-         "_studentAge" = i;
-         "_studentName" = "@\"NSString\"";
-         "_studentNumber" = i;
-         "_studentScore" = f;
-         */
-        if ([ivarName hasPrefix:@"_"]) {
-            // 把 _ 去掉，读取后面的
-            ivarName = [ivarName substringFromIndex:1];
+    /// 这个地方加了while, 方便获取这个类父类的属性
+    while (cls != [NSObject class]) {
+        NSArray *ignoreNamesArray = nil;
+        if ([cls respondsToSelector:@selector(ignoreColumnNames)]) {
+
+            ignoreNamesArray = [cls ignoreColumnNames];
         }
-        
-        // 1.1、查看有没有忽略字段，如果有就不去创建(根据自己模型里面是否设置了忽略字段)
-        if ([ignoreNamesArray containsObject:ivarName]) {
-            continue;
+
+        // 获取所有的成员变量
+        unsigned int  outCount = 0;
+        Ivar *varList = class_copyIvarList(cls, &outCount);
+
+        for (int i = 0; i<outCount; ++i) {
+
+            Ivar ivar = varList[i];
+
+            // 1.获取成员变量名字
+            NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];
+
+            /**
+             "_studentAge" = i;
+             "_studentName" = "@\"NSString\"";
+             "_studentNumber" = i;
+             "_studentScore" = f;
+             */
+            if ([ivarName hasPrefix:@"_"]) {
+                // 把 _ 去掉，读取后面的
+                ivarName = [ivarName substringFromIndex:1];
+            }
+
+            // 1.1、查看有没有忽略字段，如果有就不去创建(根据自己模型里面是否设置了忽略字段)
+            if ([ignoreNamesArray containsObject:ivarName]) {
+                continue;
+            }
+
+            // 2.获取成员变量类型
+            NSString *ivarType = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];
+            // 把包含 @\" 的去掉，如 "@\"NSString\"";-> NSString
+            ivarType = [ivarType stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"@\""]];
+
+//            NSLog(@"ivarType=%@",ivarType);
+
+            // 3.成员变量的类型可能重复，成员变量的名字不会重复，所以以成员变量的名字为key
+            [nameTypeDictionary setValue:ivarType forKey:ivarName];
+
         }
-        
-        // 2.获取成员变量类型
-        NSString *ivarType = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];
-        // 把包含 @\" 的去掉，如 "@\"NSString\"";-> NSString
-        ivarType = [ivarType stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"@\""]];
-        
-        NSLog(@"ivarType=%@",ivarType);
-        
-        // 3.成员变量的类型可能重复，成员变量的名字不会重复，所以以成员变量的名字为key
-        [nameTypeDictionary setValue:ivarType forKey:ivarName];
-        
+
+        cls = class_getSuperclass(cls);
     }
     
     return nameTypeDictionary;

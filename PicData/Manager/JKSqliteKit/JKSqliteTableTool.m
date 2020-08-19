@@ -33,7 +33,7 @@
       sql = "CREATE TABLE Student(studentName text,studentNumber integer,studentAge integer,studentScore real, primary key(studentNumber))";
       }
      */
-    NSLog(@"resultDic=%@",resultDic);
+//    NSLog(@"resultDic=%@",resultDic);
     
     // 4、根据sql键取出创建模型的sql语句
     /**

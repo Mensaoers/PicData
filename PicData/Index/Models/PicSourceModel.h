@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PicSourceModel : PicBaseModel<JKSqliteProtocol>
+@interface PicSourceModel : PicBaseModel//<JKSqliteProtocol>
 
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, assign) int sourceType;

@@ -30,6 +30,9 @@
     TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
     configuraion.allowsCellularAccess = YES;
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
+
+    NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];
     return YES;
 }
 

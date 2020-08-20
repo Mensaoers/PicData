@@ -8,12 +8,23 @@
 
 #import "TransViewController.h"
 #import "AddNetTaskVC.h"
+#import "TransViewCell.h"
 
-@interface TransViewController ()
+@interface TransViewController ()<UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) NSMutableArray *tasksMarray;
 @end
 
 @implementation TransViewController
+
+- (NSMutableArray *)tasksMarray {
+    if (nil == _tasksMarray) {
+        _tasksMarray = [NSMutableArray array];
+    }
+    return _tasksMarray;
+}
 
 - (void)dealloc {
     NSLog(@"我要被释放了, %s", __func__);
@@ -24,8 +35,20 @@
     [self loadNavigationItem];
     [self loadMainView];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewTask:) name:NOTICECHEADDNEWTASK object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewDetailTask:) name:NOTICECHEADDNEWDETAILTASK object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewTask:) name:NOTICECHEADDNEWTASK object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewDetailTask:) name:NOTICECHEADDNEWDETAILTASK object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutDownSuccessTask:) name:NOTICEPICDOWNLOADSUCCESS object:nil];
+//
+//    [self loadData];
+}
+
+- (void)loadData {
+    // 查询isAdded=1的模型
+    NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where hasAdded = 1"]];
+    // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"hasAdded = 1"] uid:SQLite_USER];
+    [self.tasksMarray addObjectsFromArray:results];
+
+    [self.tableView reloadData];
 }
 
 - (void)loadNavigationItem {
@@ -37,16 +60,82 @@
 
 - (void)loadMainView {
     self.view.backgroundColor = [UIColor whiteColor];
+
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+
+    [tableView registerClass:[TransViewCell class] forCellReuseIdentifier:identifier];
+
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+    }];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.tasksMarray.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+static NSString *identifier = @"TransViewCell";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    TransViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    cell.contentModel = self.tasksMarray[indexPath.section];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 108;
 }
 
 - (void)receiveNoticeAboutAddNewTask:(NSNotification *)notice {
     NSDictionary *userInfo = notice.userInfo;
-    NSLog(@"新增套图: %@, %@", userInfo[@"contentTitle"], userInfo[@"contentHref"]);
+    PicContentModel *contentModel = userInfo[@"contentModel"];
+    NSLog(@"新增套图: %@, %@", contentModel.title, contentModel.href);
+
+    [self.tasksMarray addObject:contentModel];
+
+    [self.tableView insertSection:self.tasksMarray.count - 1 withRowAnimation:UITableViewRowAnimationBottom];
 }
 
 - (void)receiveNoticeAboutAddNewDetailTask:(NSNotification *)notice {
     NSDictionary *userInfo = notice.userInfo;
-    NSLog(@"新增套图:%@, 一共采集到:%@", userInfo[@"contentHref"], userInfo[@"contentCount"]);
+    PicContentModel *contentModel = userInfo[@"contentModel"];
+    NSLog(@"新增套图:%@, 一共采集到:%d", contentModel.href, contentModel.totalCount);
+
+    NSInteger count = self.tasksMarray.count;
+    for (NSInteger index = 0; index < count; index ++) {
+        PicContentModel *model = self.tasksMarray[index];
+        if ([model.href isEqualToString:contentModel.href]) {
+            TransViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+            [cell setTotalCount:contentModel.totalCount];
+            break;
+        }
+    }
+}
+
+- (void)receiveNoticeAboutDownSuccessTask:(NSNotification *)notice {
+    NSDictionary *userInfo = notice.userInfo;
+    PicDownRecoreModel *recordModel = userInfo[@"recordModel"];
+    NSLog(@"新增套图:%@, 下载: %@完成", recordModel.contentName, recordModel.title);
+
+    NSInteger count = self.tasksMarray.count;
+    for (NSInteger index = 0; index < count; index ++) {
+        PicContentModel *model = self.tasksMarray[index];
+        if ([model.href isEqualToString:recordModel.contentUrl]) {
+            TransViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+
+            NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", recordModel.contentUrl]];
+            // [JKSqliteModelTool queryDataModel:[PicDownRecoreModel class] whereStr:[NSString stringWithFormat:@"contentUrl = \"%@\"", recordModel.contentUrl] uid:SQLite_USER];
+            [cell setDownloadedCount:(int)results.count];
+            break;
+        }
+    }
 }
 
 #pragma mark 创建网络下载任务

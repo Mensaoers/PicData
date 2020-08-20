@@ -10,8 +10,8 @@
 
 @implementation PicRuleModel
 
-+ (NSString *)primaryKey {
-    return @"identifier";
-}
+//+ (NSString *)primaryKey {
+//    return @"identifier";
+//}
 
 @end

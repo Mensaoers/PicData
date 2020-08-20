@@ -107,7 +107,8 @@
 
 - (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
-    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
+    [sourceModel insertTable];
+//    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
 }

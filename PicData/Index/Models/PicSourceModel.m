@@ -10,8 +10,14 @@
 
 @implementation PicSourceModel
 
-+ (NSString *)primaryKey {
-    return @"title";
+//+ (NSString *)primaryKey {
+//    return @"title";
+//}
+
++ (void)initialize {
+    [super initialize];
+    Class cls = [self class];
+    [[JQFMDB shareDatabase] jq_createTable:NSStringFromClass(cls) dicOrModel:cls];
 }
 
 @end

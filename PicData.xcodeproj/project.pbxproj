@@ -19,6 +19,8 @@
 		33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */; };
 		33B9EEBC24DC7A8400ABE3E2 /* JKSqliteTableTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */; };
 		33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */; };
+		33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */; };
+		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
 		9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */; };
 		9D0E52D924C2B96100FA8D88 /* PicClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */; };
@@ -85,6 +87,10 @@
 		33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteTableTool.m; sourceTree = "<group>"; };
 		33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewController.h; sourceTree = "<group>"; };
 		33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewController.m; sourceTree = "<group>"; };
+		33E46BE024ED2CA000586D8B /* PicDownRecoreModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicDownRecoreModel.h; sourceTree = "<group>"; };
+		33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicDownRecoreModel.m; sourceTree = "<group>"; };
+		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
+		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
 		9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassifyPage.h; sourceTree = "<group>"; };
 		9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassifyPage.m; sourceTree = "<group>"; };
@@ -230,11 +236,21 @@
 		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
 			isa = PBXGroup;
 			children = (
+				33F0CD4624ED6BF30051D74E /* View */,
 				332C285424EBA5570083A5DC /* AddNetTask */,
 				33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */,
 				33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */,
 			);
 			path = TransView;
+			sourceTree = "<group>";
+		};
+		33F0CD4624ED6BF30051D74E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				33F0CD4724ED6C120051D74E /* TransViewCell.h */,
+				33F0CD4824ED6C120051D74E /* TransViewCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		8EAEFB2266B35620CEA3AC34 /* Pods */ = {
@@ -417,6 +433,8 @@
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
 				9DE95CD8244C418700E31735 /* PicSource.json */,
+				33E46BE024ED2CA000586D8B /* PicDownRecoreModel.h */,
+				33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -579,6 +597,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
@@ -587,6 +606,7 @@
 				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
+				33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,

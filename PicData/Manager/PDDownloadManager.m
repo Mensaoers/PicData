@@ -138,6 +138,16 @@ singleton_implementation(PDDownloadManager);
         
         NSString *fileName = url.lastPathComponent;
         NSLog(@"文件%@开始下载", fileName);
+
+//        PicDownRecoreModel *recordModel = [[PicDownRecoreModel alloc] init];
+//        recordModel.HOST_URL = contentModel.HOST_URL;
+//        recordModel.contentUrl = contentModel.href;
+//        recordModel.contentName = contentModel.title;
+//        recordModel.url = url;
+//        recordModel.title = fileName;
+//        recordModel.isFinished = 0;
+////        [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
+//        [recordModel insertTable];
         [[[[[self.sessionManager downloadWithUrl:url headers:@{@"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)"} fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
@@ -148,6 +158,10 @@ singleton_implementation(PDDownloadManager);
             [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
             if (nil == copyError) {
                 NSLog(@"文件%@下载完成", fileName);
+//                recordModel.isFinished = 1;
+//                [recordModel updateTable];
+//                [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICEPICDOWNLOADSUCCESS object:nil userInfo:@{@"recordModel": recordModel}];
             }
         }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {

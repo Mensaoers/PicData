@@ -188,7 +188,8 @@
             contentModel.title = alt;
         }
 
-        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+        [contentModel insertTable];
+//        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
         [contentModels addObject:contentModel];
     }
 
@@ -235,7 +236,8 @@
             contentModel.title = alt;
         }
 
-        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+        [contentModel insertTable];
+//        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
         [contentModels addObject:contentModel];
     }
 
@@ -282,7 +284,8 @@
             contentModel.title = alt;
         }
 
-        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+        [contentModel insertTable];
+//        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
         [contentModels addObject:contentModel];
     }
 

@@ -228,14 +228,20 @@ sqlite3 *ppDb = nil;
     // 1.2、对应的路径
     NSString *sqlitePath = [JKSqliteCachePath stringByAppendingPathComponent:sqliteName];
     // 2.打开数据库，不存在的情况下自动创建
-    return sqlite3_open(sqlitePath.UTF8String, &ppDb) == SQLITE_OK;
+    sqlite3_shutdown();
+    sqlite3_config(SQLITE_CONFIG_MULTITHREAD);
+    sqlite3_initialize();
+
+    NSLog(@"isThreadSafe %d", sqlite3_threadsafe());
+    return sqlite3_open_v2(sqlitePath.UTF8String, &ppDb, SQLITE_OPEN_READWRITE|SQLITE_OPEN_FULLMUTEX, NULL) == SQLITE_OK;
+//    return sqlite3_open(sqlitePath.UTF8String, &ppDb) == SQLITE_OK;
 }
 
 // 关闭数据库
-+(void)closeDB{
++ (void)closeDB{
     
     // 4、关闭数据库
-    sqlite3_close(ppDb);
+    sqlite3_close_v2(ppDb);
 }
 
 @end

@@ -29,4 +29,19 @@
     return result;
 }
 
+- (BOOL)insertTable {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_insertTable:NSStringFromClass(cls) dicOrModel:self];
+}
++ (NSArray *)queryTableWhere:(NSString *)where {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_lookupTable:NSStringFromClass(cls) dicOrModel:cls whereFormat:where];
+}
+- (BOOL)updateTableWhere:(NSString *)where {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:self whereFormat:where];
+}
+- (BOOL)updateTable {
+    return true;
+}
 @end

@@ -22,6 +22,7 @@
     #import "JKSqliteModelTool.h"
     #import "JKSqliteProtocol.h"
     #import <YYCategories/YYCategories.h>
+    #import <JQFMDB/JQFMDB.h>
 
     #import "UILabel+text.h"
     #import "OCGumbo+Query.h"

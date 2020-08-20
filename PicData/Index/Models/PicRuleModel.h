@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PicRuleModel : PicBaseModel<JKSqliteProtocol>
+@interface PicRuleModel : PicBaseModel// <JKSqliteProtocol>
 
 /** 规则步骤, 数组 */
 @property (nonatomic, strong) NSArray<PicRuleStepModel *> *rulerSteps;

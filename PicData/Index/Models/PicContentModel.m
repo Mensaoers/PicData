@@ -10,8 +10,19 @@
 
 @implementation PicContentModel
 
-+ (NSString *)primaryKey {
-    return @"href";
+//+ (NSString *)primaryKey {
+//    return @"href";
+//}
+//
+//+ (NSArray *)ignoreColumnNames {
+//    return @[@"downloadedCount"];
+//}
++ (void)initialize {
+    [super initialize];
+    Class cls = [self class];
+    [[JQFMDB shareDatabase] jq_createTable:NSStringFromClass(cls) dicOrModel:cls];
 }
-
+- (BOOL)updateTable {
+    return [self updateTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", self.href]];
+}
 @end

@@ -12,23 +12,22 @@
 @implementation ContentParserManager
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-    NSArray *results = [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
+    NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", contentModel.href]];
+    // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
     // 理论上一定有一条数据
     if (results.count == 0) {
         operationTips(NO, [NSString stringWithFormat:@"获取该内容: %@-%@ 数据异常", contentModel.sourceTitle, contentModel.title]);
         return;
     }
     PicContentModel *tmpModel = results[0];
-    if (tmpModel.hasAdded) {
+    if (tmpModel.hasAdded == 1) {
         operationTips(YES, @"任务已存在");
     } else {
-        tmpModel.hasAdded = YES;
-        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentTitle": tmpModel.title, @"contentHref": tmpModel.href}];
-//        ContentParserManager *manager = [[ContentParserManager alloc] init];
-            [ContentParserManager parserWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES];
-//        });
+        contentModel.hasAdded = 1;
+//        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
+        [contentModel updateTable];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": tmpModel}];
+        [ContentParserManager parserWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES];
         operationTips(YES, @"任务已添加");
     }
 }
@@ -85,8 +84,11 @@
                 }
             }
 
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentHref": contentModel.href, @"contentCount": @(picCount + count)}];
+            contentModel.totalCount = picCount + count;
+            [contentModel updateTable];
+//            [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentModel}];
             if (![nextUrl containsString:@".html"]) {
                 [targetHandle closeFile];
                 NSLog(@"完成");
@@ -163,7 +165,9 @@
         
         if (needDownload) {
             count += urls.count;
-            [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+                [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
+//            });
         }
     }
     

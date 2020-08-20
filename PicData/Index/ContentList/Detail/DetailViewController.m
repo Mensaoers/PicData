@@ -242,7 +242,8 @@
                         contentModel.title = alt;
                     }
 
-                    [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+                    [contentModel insertTable];
+//                    [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
                     [suggesM addObject:contentModel];
                 }
             }

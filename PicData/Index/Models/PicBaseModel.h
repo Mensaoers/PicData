@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *HOST_URL;
 - (BOOL)insertTable;
 + (NSArray *)queryTableWhere:(NSString *)where;
++ (int)queryCountWhere:(NSString *)where;
 - (BOOL)updateTableWhere:(NSString *)where;
 - (BOOL)updateTable;
 @end

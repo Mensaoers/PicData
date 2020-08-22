@@ -1,10 +1,10 @@
-//
-//  PDDownloadManager.m
-//  PicData
-//
-//  Created by Garenge on 2020/4/19.
-//  Copyright © 2020 garenge. All rights reserved.
-//
+    //
+    //  PDDownloadManager.m
+    //  PicData
+    //
+    //  Created by Garenge on 2020/4/19.
+    //  Copyright © 2020 garenge. All rights reserved.
+    //
 
 #import "PDDownloadManager.h"
 #import "AppDelegate.h"
@@ -37,7 +37,7 @@ singleton_implementation(PDDownloadManager);
     return targetPath;
 }
 
-/// 获取默认下载地址
+    /// 获取默认下载地址
 - (nonnull NSString *)systemDownloadPath {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *downloadPath = [defaults valueForKey:DOWNLOADSPATHKEY];
@@ -55,7 +55,7 @@ singleton_implementation(PDDownloadManager);
 
     BOOL isExist = [self checkDownloadPathExist:[self systemDownloadPath]];
     if (!isExist && need) {
-        // 不存在
+            // 不存在
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECKDOWNLOADPATHKEY object:nil];
     }
     return isExist;
@@ -79,7 +79,7 @@ singleton_implementation(PDDownloadManager);
     return isExist;
 }
 
-/// 设置下载地址
+    /// 设置下载地址
 - (BOOL)updateSystemDownloadPath:(nonnull NSString *)downloadPath {
     BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:nil error:nil];
     if (!result) {
@@ -139,30 +139,34 @@ singleton_implementation(PDDownloadManager);
         NSString *fileName = url.lastPathComponent;
         NSLog(@"文件%@开始下载", fileName);
 
-//        PicDownRecoreModel *recordModel = [[PicDownRecoreModel alloc] init];
-//        recordModel.HOST_URL = contentModel.HOST_URL;
-//        recordModel.contentUrl = contentModel.href;
-//        recordModel.contentName = contentModel.title;
-//        recordModel.url = url;
-//        recordModel.title = fileName;
-//        recordModel.isFinished = 0;
-////        [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
-//        [recordModel insertTable];
+            //        PicDownRecoreModel *recordModel = [[PicDownRecoreModel alloc] init];
+            //        recordModel.HOST_URL = contentModel.HOST_URL;
+            //        recordModel.contentUrl = contentModel.href;
+            //        recordModel.contentName = contentModel.title;
+            //        recordModel.url = url;
+            //        recordModel.title = fileName;
+            //        recordModel.isFinished = 0;
+            ////        [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
+            //        [recordModel insertTable];
+        PDBlockSelf
         [[[[[self.sessionManager downloadWithUrl:url headers:@{@"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)"} fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
             }
-        }] successOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            NSError *copyError = nil;
-            NSString *targetPath = [[self getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent];
-            [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
-            if (nil == copyError) {
-                NSLog(@"文件%@下载完成", fileName);
-//                recordModel.isFinished = 1;
-//                [recordModel updateTable];
-//                [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICEPICDOWNLOADSUCCESS object:nil userInfo:@{@"recordModel": recordModel}];
-            }
+        }] successOnMainQueue:NO handler:^(TRDownloadTask * _Nonnull task) {
+            dispatch_queue_t concurrentDiapatchQueue = dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_CONCURRENT);
+            dispatch_async(concurrentDiapatchQueue, ^{
+                NSError *copyError = nil;
+                NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent];
+                [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
+                if (nil == copyError) {
+                    NSLog(@"文件%@下载完成", fileName);
+                        //                recordModel.isFinished = 1;
+                        //                [recordModel updateTable];
+                        //                [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
+                        //                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICEPICDOWNLOADSUCCESS object:nil userInfo:@{@"recordModel": recordModel}];
+                }
+            });
         }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);

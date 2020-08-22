@@ -32,6 +32,10 @@
     #import "ContentParserManager.h"
     #import "PDRequest.h"
     #import "TransViewController.h"
+    #import "AddNetTaskVC.h"
+    #import "ClassifyPage.h"
+    #import "DetailViewController.h"
+    #import "ContentParserManager.h"
 #endif
 
 #endif /* PrefixHeader_pch */

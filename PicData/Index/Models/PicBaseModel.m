@@ -37,6 +37,10 @@
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_lookupTable:NSStringFromClass(cls) dicOrModel:cls whereFormat:where];
 }
++ (int)queryCountWhere:(NSString *)where {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_totalCount:NSStringFromClass(cls) whereFormat:where];
+}
 - (BOOL)updateTableWhere:(NSString *)where {
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:self whereFormat:where];

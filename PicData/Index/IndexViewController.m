@@ -72,14 +72,14 @@
         NSArray *viewControllers = weakSelf.navigationController.viewControllers;
         BOOL jumped = NO;
         for (UIViewController *viewController in viewControllers) {
-            if ([viewController isKindOfClass:[TransViewController class]]) {
+            if ([viewController isKindOfClass:[AddNetTaskVC class]]) {
                 // 弹过了, 不弹了
                 jumped = YES;
                 break;
             }
         }
         if (!jumped) {
-            [weakSelf.navigationController pushViewController:[TransViewController new] animated:YES];
+            [weakSelf.navigationController pushViewController:[[AddNetTaskVC alloc] init] animated:YES];
         }
     };
 }

@@ -78,7 +78,7 @@
  @return 是否更改成功
  */
 - (BOOL)jq_updateTable:(NSString *)tableName dicOrModel:(id)parameters whereFormat:(NSString *)format, ...;
-
+- (int)jq_totalCount:(NSString *)tableName whereFormat:(NSString *)format, ...;
 /**
  查找: 根据条件查找表中数据
 

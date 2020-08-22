@@ -15,9 +15,18 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray *tasksMarray;
+
+@property (nonatomic, strong) NSLock *lock;
 @end
 
 @implementation TransViewController
+
+- (NSLock *)lock {
+    if (nil == _lock) {
+        _lock = [[NSLock alloc] init];
+    }
+    return _lock;
+}
 
 - (NSMutableArray *)tasksMarray {
     if (nil == _tasksMarray) {
@@ -44,7 +53,13 @@
 
 - (void)loadData {
     // 查询isAdded=1的模型
+    [self.lock lock];
     NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where hasAdded = 1"]];
+//    for (PicContentModel *contentModel in results) {
+//        int count = [PicDownRecoreModel queryCountWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", contentModel.href]];
+//        contentModel.downloadedCount = count;
+//    }
+    [self.lock unlock];
     // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"hasAdded = 1"] uid:SQLite_USER];
     [self.tasksMarray addObjectsFromArray:results];
 
@@ -130,9 +145,11 @@ static NSString *identifier = @"TransViewCell";
         if ([model.href isEqualToString:recordModel.contentUrl]) {
             TransViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
 
-            NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", recordModel.contentUrl]];
+//            [self.lock lock];
+//            NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", recordModel.contentUrl]];
+//            [self.lock unlock];
             // [JKSqliteModelTool queryDataModel:[PicDownRecoreModel class] whereStr:[NSString stringWithFormat:@"contentUrl = \"%@\"", recordModel.contentUrl] uid:SQLite_USER];
-            [cell setDownloadedCount:(int)results.count];
+//            [cell setDownloadedCount:(int)results.count];
             break;
         }
     }

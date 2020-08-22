@@ -380,6 +380,21 @@ static JQFMDB *jqdb = nil;
     return flag;
 }
 
+- (int)jq_totalCount:(NSString *)tableName whereFormat:(NSString *)format, ...
+{
+    va_list args;
+    va_start(args, format);
+    NSString *where = format?[[NSString alloc] initWithFormat:format locale:[NSLocale currentLocale] arguments:args]:format;
+    va_end(args);
+    NSString *sqlstr = [NSString stringWithFormat:@"SELECT count(*) as 'count' FROM %@ %@", tableName, where?where:@""];
+    FMResultSet *set = [_db executeQuery:sqlstr];
+    while ([set next])
+    {
+        return [set intForColumn:@"count"];
+    }
+    return 0;
+}
+
 - (NSArray *)jq_lookupTable:(NSString *)tableName dicOrModel:(id)parameters whereFormat:(NSString *)format, ...
 {
     va_list args;

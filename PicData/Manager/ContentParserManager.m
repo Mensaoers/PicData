@@ -1,10 +1,10 @@
-//
-//  ContentParserManager.m
-//  PicData
-//
-//  Created by Garenge on 2020/4/20.
-//  Copyright © 2020 garenge. All rights reserved.
-//
+    //
+    //  ContentParserManager.m
+    //  PicData
+    //
+    //  Created by Garenge on 2020/4/20.
+    //  Copyright © 2020 garenge. All rights reserved.
+    //
 
 #import "ContentParserManager.h"
 #import "PDDownloadManager.h"
@@ -13,8 +13,8 @@
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
     NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", contentModel.href]];
-    // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
-    // 理论上一定有一条数据
+        // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
+        // 理论上一定有一条数据
     if (results.count == 0) {
         operationTips(NO, [NSString stringWithFormat:@"获取该内容: %@-%@ 数据异常", contentModel.sourceTitle, contentModel.title]);
         return;
@@ -24,7 +24,7 @@
         operationTips(YES, @"任务已存在");
     } else {
         contentModel.hasAdded = 1;
-//        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
+            //        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
         [contentModel updateTable];
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": tmpModel}];
         [ContentParserManager parserWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES];
@@ -35,10 +35,10 @@
 + (void)parserWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
     NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:contentModel];
     
-    // 1.创建队列
+        // 1.创建队列
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     
-    // 2.设置最大并发操作数
+        // 2.设置最大并发操作数
     queue.maxConcurrentOperationCount = 1; // 串行队列
     NSString *filePath = [targetPath stringByAppendingPathComponent:@"urlList.txt"];
     NSLog(@"%@", filePath);
@@ -58,12 +58,12 @@
 }
 
 + (void)operationQueue:(NSOperationQueue *)queue withUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
-//    __weak typeof(self) weakSelf = self;
-    // 错误-1, 网络部分错误
-    // 错误-2, 写入部分错误
+        //    __weak typeof(self) weakSelf = self;
+        // 错误-1, 网络部分错误
+        // 错误-2, 写入部分错误
     if ([url containsString:@".html"]) {
         [queue addOperationWithBlock:^{
-//            __strong typeof(self) strongSelf = weakSelf;
+                //            __strong typeof(self) strongSelf = weakSelf;
             NSError *error = nil;
             NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
             NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:NSUTF8StringEncoding error:&error];
@@ -85,8 +85,8 @@
             }
 
             contentModel.totalCount = picCount + count;
-            [contentModel updateTable];
-//            [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+//            [contentModel updateTable];
+                //            [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
 
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentModel}];
             if (![nextUrl containsString:@".html"]) {
@@ -106,8 +106,15 @@
     if (htmlString.length > 0) {
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-        //        OCGumboElement *root = document.rootElement;
+            //        OCGumboElement *root = document.rootElement;
         NSMutableArray *urls = [NSMutableArray array];
+
+//        OCQueryObject *H1Es = document.Query(@"meta");
+//        if (H1Es.count > 0) {
+//            OCGumboElement *H1Ele = H1Es[0];
+//            NSString *content = H1Ele.attr(@"content");
+//            contentModel.title = content;
+//        }
 
         OCQueryObject *liResults = document.Query(@".tal");
         if (liResults.count > 0) {
@@ -125,7 +132,7 @@
                     NSString *src = imgE.attr(@"src");
                     if (src.length > 0) {
                         src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
-//                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                            //                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
                         [urls addObject:src];
                         if (urlsString.length > 0) {
                             [urlsString appendString:@"\n"];
@@ -151,7 +158,7 @@
                         NSString *src = imgE.attr(@"src");
                         if (src.length > 0) {
                             src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
-//                            src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                                //                            src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
                             [urls addObject:src];
                             if (urlsString.length > 0) {
                                 [urlsString appendString:@"\n"];
@@ -165,9 +172,11 @@
         
         if (needDownload) {
             count += urls.count;
-//            dispatch_async(dispatch_get_main_queue(), ^{
+                //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_queue_t serialDiapatchQueue=dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
+            dispatch_async(serialDiapatchQueue, ^{
                 [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
-//            });
+            });
         }
     }
     

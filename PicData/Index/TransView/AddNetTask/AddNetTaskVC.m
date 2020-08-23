@@ -49,10 +49,12 @@
 
 - (void)prepareSourceWithUrl:(NSString *)url title:(NSString *)title resultHandler:(void(^)(PicSourceModel *sourceModel, PicContentModel *contentModel))result {
 
+    NSString *HOST_URLString = @"https://m.aitaotu.com";
     if ([url containsString:@"_"]) {
         NSRange range = [url rangeOfString:@"_"];
         url = [[url substringToIndex:range.location] stringByAppendingString:@".html"];
     }
+    url = [url stringByReplacingOccurrencesOfString:HOST_URLString withString:@""];
     PDBlockSelf
     dispatch_queue_t serialDiapatchQueue = dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
     dispatch_sync(serialDiapatchQueue, ^{

@@ -172,7 +172,7 @@
         
         if (needDownload) {
             count += urls.count;
-                //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            /// 这个地方创建串行队列, 实测整个下载进度[好像]比直接调用下载更快
             dispatch_queue_t serialDiapatchQueue=dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
             dispatch_async(serialDiapatchQueue, ^{
                 [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];

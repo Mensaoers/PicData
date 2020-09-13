@@ -294,20 +294,12 @@
             if (nil == cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"collect"];
                 
-                UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-                layout.itemSize = CGSizeMake((self.view.mj_w - 30) / 2, (self.view.mj_w - 30) / 2 * 360.0 / 250 + 40);
-                layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
-                layout.minimumLineSpacing = 10;
-                layout.minimumInteritemSpacing = 10;
-                UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-                [collectionView registerClass:[PicContentCell class] forCellWithReuseIdentifier:@"PicContentCell"];
+                PicContentView *collectionView = [PicContentView collectionView];
                 collectionView.delegate = self;
                 collectionView.dataSource = self;
-                collectionView.backgroundColor = [UIColor whiteColor];
-                collectionView.scrollEnabled = NO;
-                [cell.contentView addSubview:collectionView];
                 collectionView.tag = 9527;
-                
+                [cell.contentView addSubview:collectionView];
+
                 [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
                 }];
@@ -327,6 +319,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
         [self loadNextDetailData];
@@ -337,7 +330,13 @@
     if (indexPath.section == 0) {
         return UITableViewAutomaticDimension;
     } else {
-        return ((self.detailModel.suggesArray ? self.detailModel.suggesArray.count : 0) + 1) / 2.0 * ((self.view.mj_w - 30) / 2 * 360.0 / 250 + 50);
+        if (self.detailModel.suggesArray.count > 0) {
+            NSInteger count = self.detailModel.suggesArray.count;
+            CGFloat height = ceil((count + 1) / (self.view.mj_w / [PicContentView itemWidth])) * ([PicContentView itemHeight] + 10);
+            return height;
+        } else {
+            return 0;
+        }
     }
 }
 

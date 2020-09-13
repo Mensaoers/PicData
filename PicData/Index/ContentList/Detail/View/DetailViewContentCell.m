@@ -18,6 +18,8 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImageView *conImgView = [[UIImageView alloc] init];
         conImgView.backgroundColor = UIColor.clearColor;
         conImgView.contentMode = UIViewContentModeScaleAspectFit;

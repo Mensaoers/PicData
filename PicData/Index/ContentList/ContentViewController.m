@@ -13,7 +13,7 @@
 
 @interface ContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource,PicContentCellDelegate>
 
-@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) PicContentView *collectionView;
 @property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
@@ -49,16 +49,9 @@
 
 - (void)loadMainView {
     
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake((self.view.mj_w - 30) / 2, (self.view.mj_w - 30) / 2 * 360.0 / 250 + 40);
-    layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
-    layout.minimumLineSpacing = 10;
-    layout.minimumInteritemSpacing = 10;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    [collectionView registerClass:[PicContentCell class] forCellWithReuseIdentifier:@"PicContentCell"];
+    PicContentView *collectionView = [PicContentView collectionView];
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    collectionView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:collectionView];
     
     self.collectionView = collectionView;

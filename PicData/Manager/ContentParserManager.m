@@ -173,8 +173,9 @@
         if (needDownload) {
             count += urls.count;
             /// 这个地方创建串行队列, 实测整个下载进度[好像]比直接调用下载更快
-            dispatch_queue_t serialDiapatchQueue=dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
-            dispatch_async(serialDiapatchQueue, ^{
+//            dispatch_queue_t serialDiapatchQueue=dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
+            dispatch_queue_t concurrentDiapatchQueue = dispatch_queue_create("com.test.queue.download", DISPATCH_QUEUE_CONCURRENT);
+            dispatch_async(concurrentDiapatchQueue, ^{
                 [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
             });
         }

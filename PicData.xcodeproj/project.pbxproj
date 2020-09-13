@@ -14,6 +14,7 @@
 		332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 332C285624EBA5720083A5DC /* AddNetTaskVC.m */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
+		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */; };
 		33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */; };
@@ -75,6 +76,8 @@
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
+		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
+		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		33B9EEAF24DC7A8400ABE3E2 /* JKSqliteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModel.h; sourceTree = "<group>"; };
@@ -456,6 +459,8 @@
 		9DE95CE1244C49A600E31735 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				336A9D99250DF17C00BF277C /* PicContentView.h */,
+				336A9D9A250DF17C00BF277C /* PicContentView.m */,
 				9DE95CE2244C49C900E31735 /* PicContentCell.h */,
 				9DE95CE3244C49C900E31735 /* PicContentCell.m */,
 			);
@@ -610,6 +615,7 @@
 				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
+				336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */,
 				33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
@@ -789,10 +795,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.4;
+				MARKETING_VERSION = 0.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = garenge.pic.data.PicData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -813,10 +819,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.4;
+				MARKETING_VERSION = 0.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = garenge.pic.data.PicData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

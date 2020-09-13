@@ -56,7 +56,7 @@
     }
     url = [url stringByReplacingOccurrencesOfString:HOST_URLString withString:@""];
     PDBlockSelf
-    dispatch_queue_t serialDiapatchQueue = dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t serialDiapatchQueue = dispatch_queue_create("com.test.queue.add", DISPATCH_QUEUE_SERIAL);
     dispatch_sync(serialDiapatchQueue, ^{
         // 创建一个SourceModel
         PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
@@ -135,6 +135,8 @@
             detailVC.contentModel = contentModel;
             [self.navigationController pushViewController:detailVC animated:YES];
         }];
+
+        self.contentTF.text = @"";
     }
 }
 
@@ -160,6 +162,7 @@
                 }];
             }];
         }
+        self.multiTextView.text = @"";
     }
 
 }

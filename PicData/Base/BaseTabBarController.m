@@ -20,6 +20,8 @@
     UITabBar *tabBar = [UITabBar appearance];
     //设置导航栏背景颜色
     [tabBar setBarTintColor:UIColor.whiteColor];
+    [tabBar setTintColor:ThemeColor];
+    [tabBar setUnselectedItemTintColor:ThemeDisabledColor];
 }
 
 @end

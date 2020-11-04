@@ -17,4 +17,7 @@
 #define PDSCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define PDSCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 
+#define ThemeColor [UIColor colorWithRed:212.0 / 255 green:35.0 / 255 blue:122.0 / 255 alpha:1]
+#define ThemeDisabledColor [UIColor colorWithRed:191.0 / 255 green:191.0 / 255 blue:191.0 / 255 alpha:1]
+
 #endif /* Config_h */

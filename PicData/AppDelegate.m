@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "IndexViewController.h"
 #import "SettingViewController.h"
+#import "ViewerController.h"
 
 @interface AppDelegate ()
 
@@ -26,14 +27,25 @@
     // 主页
     IndexViewController *indexVC = [[IndexViewController alloc] init];
     BaseNavigationController *indexNavi = [[BaseNavigationController alloc] initWithRootViewController:indexVC];
-    indexNavi.title = @"首页";
+    indexNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"home"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    indexNavi.tabBarItem.image = [[UIImage imageNamed:@"home_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    indexNavi.tabBarItem.title = @"首页";
+    
+    // 预览
+    ViewerController *viewerVC = [[ViewerController alloc] init];
+    BaseNavigationController *viewerNavi = [[BaseNavigationController alloc] initWithRootViewController:viewerVC];
+    viewerNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    viewerNavi.tabBarItem.image = [[UIImage imageNamed:@"folder_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    viewerNavi.tabBarItem.title = @"浏览";
     
     // 设置
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     BaseNavigationController *settingNavi = [[BaseNavigationController alloc] initWithRootViewController:settingVC];
-    settingNavi.title = @"设置";
+    settingNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"set"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    settingNavi.tabBarItem.image = [[UIImage imageNamed:@"set_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    settingNavi.tabBarItem.title = @"设置";
     
-    tabbarVC.viewControllers = @[indexNavi, settingNavi];
+    tabbarVC.viewControllers = @[indexNavi, viewerNavi, settingNavi];
     
     
     [self.window setRootViewController:tabbarVC];

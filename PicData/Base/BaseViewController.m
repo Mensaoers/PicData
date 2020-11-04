@@ -21,6 +21,15 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    [self loadNavigationItem];
+    [self loadMainView];
+}
+
+- (void)loadNavigationItem {
+    
+}
+
+- (void)loadMainView {
     self.view.backgroundColor = [UIColor whiteColor];
 }
 

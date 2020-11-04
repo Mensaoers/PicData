@@ -21,12 +21,12 @@
 		<key>FMDB.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>12</integer>
 		</dict>
 		<key>JQFMDB.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 		<key>MBProgressHUD.xcscheme</key>
 		<dict>
@@ -94,7 +94,7 @@
 		<key>YYCategories.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>15</integer>
 		</dict>
 		<key>YYModel.xcscheme</key>
 		<dict>

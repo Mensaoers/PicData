@@ -33,6 +33,7 @@
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
+		9DC94CAB2552F7E0008ACAF8 /* ViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */; };
 		9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95C73244C3E0F00E31735 /* AppDelegate.m */; };
 		9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C7E244C3E1100E31735 /* Assets.xcassets */; };
 		9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */; };
@@ -120,6 +121,8 @@
 		9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		9DC94CA12552ECFE008ACAF8 /* BaseTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTabBarController.h; sourceTree = "<group>"; };
 		9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseTabBarController.m; sourceTree = "<group>"; };
+		9DC94CA92552F7E0008ACAF8 /* ViewerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
+		9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerController.m; sourceTree = "<group>"; };
 		9DE95C6F244C3E0F00E31735 /* PicData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DE95C72244C3E0F00E31735 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9DE95C73244C3E0F00E31735 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -320,6 +323,15 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		9DC94CA82552F7C2008ACAF8 /* Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				9DC94CA92552F7E0008ACAF8 /* ViewerController.h */,
+				9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */,
+			);
+			path = Viewer;
+			sourceTree = "<group>";
+		};
 		9DE95C66244C3E0F00E31735 = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +353,7 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
+				9DC94CA82552F7C2008ACAF8 /* Viewer */,
 				9DC94C9A2552ECBB008ACAF8 /* Base */,
 				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
 				9DE95CB8244C3FDC00E31735 /* Categories */,
@@ -632,6 +645,7 @@
 				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
 				9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */,
+				9DC94CAB2552F7E0008ACAF8 /* ViewerController.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
@@ -816,12 +830,12 @@
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/PicData/Others/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.5;
+				MARKETING_VERSION = 0.1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = garenge.pic.data.PicData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -840,12 +854,12 @@
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/PicData/Others/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.5;
+				MARKETING_VERSION = 0.1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = garenge.pic.data.PicData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

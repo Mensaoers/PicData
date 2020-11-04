@@ -29,8 +29,6 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadNavigationItem];
-    [self loadMainView];
     [self.tableView.mj_header beginRefreshing];
 }
 
@@ -39,7 +37,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 }
 
 - (void)loadMainView {
-    self.view.backgroundColor = [UIColor whiteColor];
+    [super loadMainView];
     
     PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     tableView.actionDelegate = self;

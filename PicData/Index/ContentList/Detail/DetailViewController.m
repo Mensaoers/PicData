@@ -51,12 +51,11 @@
     [super viewDidLoad];
     
     self.navigationItem.title = self.contentModel.title;
-    [self refreshLeftBarButtons];
-    [self loadMainView];
+    [self loadNavigationItem];
     [self.tableView.mj_header beginRefreshing];
 }
 
-- (void)refreshLeftBarButtons {
+- (void)loadNavigationItem {
     NSMutableArray *leftBarButtonItems = [NSMutableArray array];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
     [leftBarButtonItems addObject:backItem];
@@ -72,6 +71,7 @@
 }
 
 - (void)loadMainView {
+    [super loadMainView];
     UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -103,13 +103,13 @@
         [self loadDetailData];
         [self.historyInfos removeLastObject];
     }
-    [self refreshLeftBarButtons];
+    [self loadNavigationItem];
 }
 
 - (void)loadNextDetailData {
     self.detailModel.currentUrl = self.detailModel.nextUrl;
     [self loadDetailData];
-    [self refreshLeftBarButtons];
+    [self loadNavigationItem];
 }
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];

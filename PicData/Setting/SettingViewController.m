@@ -31,9 +31,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    [self loadNavigationItem];
-    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)loadNavigationItem {
@@ -43,6 +40,7 @@
 }
 
 - (void)loadMainView {
+    [super loadMainView];
 
     UILabel *staticLabel = [[UILabel alloc] init];
     staticLabel.text = @"下载目录";

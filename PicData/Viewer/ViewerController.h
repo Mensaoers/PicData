@@ -1,19 +1,16 @@
 //
-//  BaseViewController.h
+//  ViewerController.h
 //  PicData
 //
 //  Created by Garenge on 2020/11/4.
 //  Copyright © 2020 garenge. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BaseViewController : UIViewController
-
-- (void)loadNavigationItem;
-- (void)loadMainView;
+@interface ViewerController : BaseViewController
 
 @end
 

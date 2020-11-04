@@ -41,8 +41,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadNavigationItem];
-    [self loadMainView];
 
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewTask:) name:NOTICECHEADDNEWTASK object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewDetailTask:) name:NOTICECHEADDNEWDETAILTASK object:nil];
@@ -74,7 +72,7 @@
 }
 
 - (void)loadMainView {
-    self.view.backgroundColor = [UIColor whiteColor];
+    [super loadMainView];
 
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     tableView.delegate = self;

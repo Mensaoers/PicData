@@ -20,6 +20,7 @@
     UINavigationBar *navigationBar = [UINavigationBar appearance];
     //设置导航栏背景颜色
     [navigationBar setBarTintColor:UIColor.whiteColor];
+    [navigationBar setTintColor:ThemeColor];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {

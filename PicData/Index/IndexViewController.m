@@ -31,9 +31,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self loadNavigationItem];
-    [self loadMainView];
     [self loadSourceData];
 }
 
@@ -48,8 +45,10 @@
 }
 
 - (void)loadMainView {
+    [super loadMainView];
     PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     tableView.actionDelegate = self;
+    tableView.backgroundColor = UIColor.clearColor;
     [self.view addSubview:tableView];
     
     self.tableView = tableView;

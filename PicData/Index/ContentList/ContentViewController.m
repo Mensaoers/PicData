@@ -41,13 +41,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.sourceModel.title;
-    [self loadMainView];
-
     [self.collectionView.mj_header beginRefreshing];
 }
 
 
 - (void)loadMainView {
+    [super loadMainView];
     
     PicContentView *collectionView = [PicContentView collectionView];
     collectionView.delegate = self;

@@ -31,8 +31,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadNavigationItem];
-    [self loadMainView];
 }
 
 - (void)loadNavigationItem {
@@ -41,7 +39,7 @@
 }
 
 - (void)loadMainView {
-    self.view.backgroundColor = UIColor.whiteColor;
+    [super loadMainView];
     self.multiTextView.layer.cornerRadius = 4;
     self.multiTextView.layer.borderWidth = 1;
     self.multiTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;

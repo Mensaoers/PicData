@@ -27,6 +27,9 @@
     #import "UILabel+text.h"
     #import "OCGumbo+Query.h"
 
+    #import "BaseViewController.h"
+    #import "BaseNavigationController.h"
+    #import "BaseTabBarController.h"
     #import "PicBaseModel.h"
     #import "PDDownloadManager.h"
     #import "ContentParserManager.h"

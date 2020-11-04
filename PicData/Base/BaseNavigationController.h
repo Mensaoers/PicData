@@ -1,8 +1,8 @@
 //
-//  SettingViewController.h
+//  BaseNavigationController.h
 //  PicData
 //
-//  Created by CleverPeng on 2020/7/19.
+//  Created by Garenge on 2020/11/4.
 //  Copyright © 2020 garenge. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SettingViewController : UIViewController
+@interface BaseNavigationController : UINavigationController
 
 @end
 

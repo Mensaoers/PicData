@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ContentViewController : UIViewController
+@interface ContentViewController : BaseViewController
 
 @property (nonatomic, strong) PicSourceModel *sourceModel;
 - (instancetype)initWithSourceModel:(PicSourceModel *)sourceModel;

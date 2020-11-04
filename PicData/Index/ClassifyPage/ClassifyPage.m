@@ -9,7 +9,6 @@
 #import "ClassifyPage.h"
 #import "PicClassTableView.h"
 #import "ContentViewController.h"
-#import "AddNetTaskVC.h"
 
 @interface ClassifyPage () <PicClassTableViewActionDelegate>
 

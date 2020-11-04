@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TransViewController : UIViewController
+@interface TransViewController : BaseViewController
 
 @end
 

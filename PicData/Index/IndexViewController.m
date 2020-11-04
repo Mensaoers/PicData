@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"爱套图手机资源";
+    
     [self loadNavigationItem];
     [self loadMainView];
     [self loadSourceData];
@@ -40,19 +40,11 @@
 - (void)loadNavigationItem {
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"网络分类" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToClassifyPage)];
     self.navigationItem.leftBarButtonItem = leftItem;
-
-    UIBarButtonItem *settingItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToSettingPage)];
-    self.navigationItem.rightBarButtonItem = settingItem;
 }
 
 - (void)jumpToClassifyPage {
     ClassifyPage *classifyPage = [[ClassifyPage alloc] init];
     [self.navigationController pushViewController:classifyPage animated:YES];
-}
-
-- (void)jumpToSettingPage {
-    SettingViewController *settingPage = [[SettingViewController alloc] init];
-    [self.navigationController pushViewController:settingPage animated:YES];
 }
 
 - (void)loadMainView {
@@ -67,9 +59,14 @@
     }];
 
     [[FloatingWindowView shareInstance] isHidden:NO];
-    PDBlockSelf
+    
     [FloatingWindowView shareInstance].ClickAction = ^{
-        NSArray *viewControllers = weakSelf.navigationController.viewControllers;
+        
+        BaseTabBarController *tabBarVC = (BaseTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        [tabBarVC setSelectedIndex:0];
+        BaseNavigationController *indexNavi = (BaseNavigationController *)tabBarVC.selectedViewController;
+        
+        NSArray *viewControllers = indexNavi.viewControllers;
         BOOL jumped = NO;
         for (UIViewController *viewController in viewControllers) {
             if ([viewController isKindOfClass:[AddNetTaskVC class]]) {
@@ -79,12 +76,16 @@
             }
         }
         if (!jumped) {
-            [weakSelf.navigationController pushViewController:[[AddNetTaskVC alloc] init] animated:YES];
+            [indexNavi pushViewController:[[AddNetTaskVC alloc] init] animated:YES];
         }
     };
 }
 
 - (void)loadSourceData {
+    
+#ifdef DEBUG
+#else
+    self.navigationItem.title = @"爱套图手机资源";
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"加载中"];
     PDBlockSelf
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -103,6 +104,8 @@
             });
         }
     });
+#endif
+    
 }
 
 - (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {

@@ -32,10 +32,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-
     [self loadNavigationItem];
     self.view.backgroundColor = [UIColor whiteColor];
 }
@@ -68,7 +64,7 @@
         make.left.equalTo(staticLabel.mas_left);
         make.right.mas_equalTo(-24);
         make.top.equalTo(staticLabel.mas_bottom).with.offset(10);
-        make.height.mas_equalTo(120);
+        make.height.mas_equalTo(150);
     }];
 
     textView.layer.cornerRadius = 4;

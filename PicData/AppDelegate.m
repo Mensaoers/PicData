@@ -20,9 +20,23 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    
+    BaseTabBarController *tabbarVC = [[BaseTabBarController alloc] init];
+    
+    // 主页
     IndexViewController *indexVC = [[IndexViewController alloc] init];
-    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:indexVC];
-    [self.window setRootViewController:navi];
+    BaseNavigationController *indexNavi = [[BaseNavigationController alloc] initWithRootViewController:indexVC];
+    indexNavi.title = @"首页";
+    
+    // 设置
+    SettingViewController *settingVC = [[SettingViewController alloc] init];
+    BaseNavigationController *settingNavi = [[BaseNavigationController alloc] initWithRootViewController:settingVC];
+    settingNavi.title = @"设置";
+    
+    tabbarVC.viewControllers = @[indexNavi, settingNavi];
+    
+    
+    [self.window setRootViewController:tabbarVC];
     [self.window makeKeyAndVisible];
 
     [self registerNotice];

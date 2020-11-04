@@ -1,8 +1,8 @@
 //
-//  ClassifyPage.h
+//  BaseViewController.h
 //  PicData
 //
-//  Created by Garenge on 2020/7/18.
+//  Created by Garenge on 2020/11/4.
 //  Copyright © 2020 garenge. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ClassifyPage : BaseViewController
+@interface BaseViewController : UIViewController
 
 @end
 

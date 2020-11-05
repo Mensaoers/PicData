@@ -30,30 +30,48 @@ singleton_implementation(PDDownloadManager);
     return _sessionManager;
 }
 
-- (NSString *)defaultDownloadPath {
-    NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *targetPath = [documentDir stringByAppendingPathComponent:@"PicDownloads"];
-    [[NSFileManager defaultManager] createDirectoryAtPath:targetPath withIntermediateDirectories:YES attributes:nil error:nil];
+- (BOOL)resetDownloadPath {
+    return [self updatesystemDownloadPath:[self defaultDownloadPath]];
+}
+
+- (nonnull NSString *)defaultDownloadPath {
+    NSString *targetPath = @"PicDownloads";
     return targetPath;
 }
 
-    /// 获取默认下载地址
 - (nonnull NSString *)systemDownloadPath {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *downloadPath = [defaults valueForKey:DOWNLOADSPATHKEY];
-
     if (nil == downloadPath || downloadPath.length == 0) {
         downloadPath = [self defaultDownloadPath];
-        [self updateSystemDownloadPath:downloadPath];
+        [self updatesystemDownloadPath:downloadPath];
     }
-
-    NSLog(@"当前下载地址为%@", downloadPath);
     return downloadPath;
 }
 
-- (BOOL)checkSystemDownloadPathExistNeedNotice:(BOOL)need {
+/// 获取默认下载地址
+- (nonnull NSString *)systemDownloadFullPath {
 
-    BOOL isExist = [self checkDownloadPathExist:[self systemDownloadPath]];
+    NSString *downloadPath = [self systemDownloadPath];
+
+    NSString *fullPath = [PDDownloadManager getDocumentPathWithTarget:downloadPath];
+    NSLog(@"当前下载地址为: %@\n完整地址: %@", downloadPath, fullPath);
+    return fullPath;
+}
+
++ (NSString *)getDocumentPathWithTarget:(NSString *)targetPath {
+    NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *resultPath = [documentDir stringByAppendingPathComponent: targetPath];
+    return resultPath;
+}
+
+- (NSString *)systemDownloadFullDirectory {
+    return [[self systemDownloadFullPath] lastPathComponent];
+}
+
+- (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need {
+
+    BOOL isExist = [self checkDownloadPathExist:[self systemDownloadFullPath]];
     if (!isExist && need) {
             // 不存在
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECKDOWNLOADPATHKEY object:nil];
@@ -80,8 +98,10 @@ singleton_implementation(PDDownloadManager);
 }
 
     /// 设置下载地址
-- (BOOL)updateSystemDownloadPath:(nonnull NSString *)downloadPath {
-    BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:nil error:nil];
+- (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath {
+
+    NSString *fullPath = [PDDownloadManager getDocumentPathWithTarget:downloadPath];
+    BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     if (!result) {
         return NO;
     }
@@ -98,7 +118,7 @@ singleton_implementation(PDDownloadManager);
     BOOL isDir = YES;
 
     if (sourceModel == nil) {
-        NSString *path = [self systemDownloadPath];
+        NSString *path = [self systemDownloadFullPath];
         if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir]) {
             NSError *createDirError = nil;
             [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&createDirError];
@@ -106,7 +126,7 @@ singleton_implementation(PDDownloadManager);
         return path;
     }
     
-    NSString *targetPath = [[self systemDownloadPath] stringByAppendingPathComponent:sourceModel.title];
+    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:sourceModel.title];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:targetPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
@@ -128,7 +148,7 @@ singleton_implementation(PDDownloadManager);
 
 - (void)downWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel urls:(NSArray *)urls {
 
-    if (![self checkSystemDownloadPathExistNeedNotice:YES]) {
+    if (![self checksystemDownloadFullPathExistNeedNotice:YES]) {
         return;
     }
 

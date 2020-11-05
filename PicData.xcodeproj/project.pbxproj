@@ -11,6 +11,7 @@
 		3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.m */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
 		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
+		3326ACE42553ED1F0035A473 /* NSObject+PPOutPut.m in Sources */ = {isa = PBXBuildFile; fileRef = 3326ACE22553ED1F0035A473 /* NSObject+PPOutPut.m */; };
 		332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 332C285624EBA5720083A5DC /* AddNetTaskVC.m */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
@@ -74,6 +75,9 @@
 		3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleStepModel.h; sourceTree = "<group>"; };
 		3323206324ECE3D100FE5E33 /* PicRuleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleModel.h; sourceTree = "<group>"; };
 		3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleStepModel.m; sourceTree = "<group>"; };
+		3326ACE22553ED1F0035A473 /* NSObject+PPOutPut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+PPOutPut.m"; sourceTree = "<group>"; };
+		3326ACE32553ED1F0035A473 /* NSObject+PPOutPut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+PPOutPut.h"; sourceTree = "<group>"; };
+		3326ACE62553EF700035A473 /* AmIBeingDebugged.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmIBeingDebugged.h; sourceTree = "<group>"; };
 		332C285524EBA5720083A5DC /* AddNetTaskVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddNetTaskVC.h; sourceTree = "<group>"; };
 		332C285624EBA5720083A5DC /* AddNetTaskVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddNetTaskVC.m; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
@@ -353,17 +357,17 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
-				9DC94CA82552F7C2008ACAF8 /* Viewer */,
-				9DC94C9A2552ECBB008ACAF8 /* Base */,
-				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
-				9DE95CB8244C3FDC00E31735 /* Categories */,
-				9DE95C93244C3FDC00E31735 /* OCGumbo */,
-				9DE95CF6244CA23000E31735 /* Manager */,
-				33AB92B124C3F58900E97E42 /* Setting */,
-				9DE95C8E244C3F5500E31735 /* Index */,
-				9DE95C8D244C3F3700E31735 /* Others */,
 				9DE95C72244C3E0F00E31735 /* AppDelegate.h */,
 				9DE95C73244C3E0F00E31735 /* AppDelegate.m */,
+				9DC94C9A2552ECBB008ACAF8 /* Base */,
+				9DE95CB8244C3FDC00E31735 /* Categories */,
+				9DE95C8E244C3F5500E31735 /* Index */,
+				9DE95CF6244CA23000E31735 /* Manager */,
+				9DE95C93244C3FDC00E31735 /* OCGumbo */,
+				9DE95C8D244C3F3700E31735 /* Others */,
+				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
+				33AB92B124C3F58900E97E42 /* Setting */,
+				9DC94CA82552F7C2008ACAF8 /* Viewer */,
 			);
 			path = PicData;
 			sourceTree = "<group>";
@@ -450,11 +454,14 @@
 		9DE95CB8244C3FDC00E31735 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				3326ACE32553ED1F0035A473 /* NSObject+PPOutPut.h */,
+				3326ACE22553ED1F0035A473 /* NSObject+PPOutPut.m */,
 				9DE95CFB244CA26F00E31735 /* Singleton.h */,
 				9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */,
 				9DE95CBE244C3FDC00E31735 /* MBProgressHUD+LZPShow.h */,
 				9DE95CEC244C5FBC00E31735 /* UILabel+text.h */,
 				9DE95CED244C5FBC00E31735 /* UILabel+text.m */,
+				3326ACE62553EF700035A473 /* AmIBeingDebugged.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -671,6 +678,7 @@
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
+				3326ACE42553ED1F0035A473 /* NSObject+PPOutPut.m in Sources */,
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,

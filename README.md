@@ -14,13 +14,21 @@
 <span id="jump"></span>
 ### 本地下载目录配置
 
-点击首页上的设置按钮进行下载目录的设置, 默认是app的`document/PicDownload`目录, 可以设置mac上的地址, 比如`/Users/***/Downloads/PicDownloads`
+点击切换到设置标签进行下载目录的设置, 默认是app的`Documents/PicDownload`目录, <del>可以设置mac上的地址, 比如`/Users/***/Downloads/PicDownloads`</del>全部改成app内部地址, 相对路径
 
 也可以在`PDDownloadManager.m`的`- (NSString *)defaultDownloadPath`方法中新写一个地址
 
 设置之后, 下载的图片即可保存到这个地址, 按照分类和标题创建文件夹
 
 (注意: 下载之前配置, 下载之前配置, 下载之前配置, 假如下载中配置, 下载到不同的目录下, 找都找不到)
+
+---- 补充 Xcode真机调试获取app的内部文件
+
+<img src="https://pic.downk.cc/item/5fa3c8e71cd1bbb86b604cc1.jpg" style="width:80%; height:80%; display:block;margin:0 auto">
+	<p style="text-align:center">
+		<span style="border-bottom:1px solid #ccc;color:#aaa;padding-bottom:10px;">真机导出测试app</span>
+	</p>
+<br/>
 
 ### 资源列表
 资源保存在`PicSource.json`里面, 如果想要添加, 照着原有的json格式添加即可, 然后重新运行

@@ -11,6 +11,7 @@
 @interface SettingViewController ()
 
 @property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong) UILabel *fullPathLabel;
 
 @end
 
@@ -31,7 +32,7 @@
 
 - (void)loadNavigationItem {
     self.navigationItem.title = @"设置";
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"确定修改" style:UIBarButtonItemStyleDone target:self action:@selector(confirmButtonClickAction)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"重置" style:UIBarButtonItemStyleDone target:self action:@selector(resetPath)];
     self.navigationItem.rightBarButtonItem = rightItem;
 }
 
@@ -39,13 +40,41 @@
     [super loadMainView];
 
     UILabel *staticLabel = [[UILabel alloc] init];
-    staticLabel.text = @"下载目录";
+    staticLabel.text = @"当前下载路径:";
     staticLabel.font = [UIFont systemFontOfSize:16];
     staticLabel.textColor = [UIColor darkTextColor];
     [self.view addSubview:staticLabel];
 
     [staticLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.mas_equalTo(24);
+        make.height.mas_equalTo(20);
+    }];
+
+    UILabel *fullPathLabel = [[UILabel alloc] init];
+    fullPathLabel.font = [UIFont systemFontOfSize:14];
+    fullPathLabel.textAlignment = NSTextAlignmentLeft;
+    fullPathLabel.numberOfLines = 0;
+    fullPathLabel.textColor = UIColor.lightGrayColor;
+    [self.view addSubview:fullPathLabel];
+    self.fullPathLabel = fullPathLabel;
+
+    [fullPathLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(staticLabel.mas_bottom).with.offset(8);
+        make.left.mas_equalTo(24);
+        make.right.mas_equalTo(-24);
+    }];
+
+    self.fullPathLabel.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+
+    UILabel *tipsLabel = [[UILabel alloc] init];
+    tipsLabel.text = @"设置路径:";
+    tipsLabel.font = [UIFont systemFontOfSize:16];
+    tipsLabel.textColor = [UIColor darkTextColor];
+    [self.view addSubview:tipsLabel];
+
+    [tipsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(fullPathLabel.mas_bottom).with.offset(24);
+        make.left.mas_equalTo(24);
         make.height.mas_equalTo(20);
     }];
 
@@ -57,8 +86,8 @@
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(staticLabel.mas_left);
         make.right.mas_equalTo(-24);
-        make.top.equalTo(staticLabel.mas_bottom).with.offset(10);
-        make.height.mas_equalTo(150);
+        make.top.equalTo(tipsLabel.mas_bottom).with.offset(8);
+        make.height.mas_equalTo(100);
     }];
 
     textView.layer.cornerRadius = 4;
@@ -81,9 +110,9 @@
     }];
 
     UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [resetButton setTitle:@"重置" forState:UIControlStateNormal];
+    [resetButton setTitle:@"确定修改" forState:UIControlStateNormal];
     resetButton.titleLabel.font = [UIFont systemFontOfSize:16];
-    [resetButton addTarget:self action:@selector(resetPath) forControlEvents:UIControlEventTouchUpInside];
+    [resetButton addTarget:self action:@selector(confirmButtonClickAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:resetButton];
 
     [resetButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -111,7 +140,8 @@
 }
 
 - (BOOL)checkPath {
-    BOOL isExist = [[PDDownloadManager sharedPDDownloadManager] checkDownloadPathExist:self.textView.text];
+    NSString *fullPath = [PDDownloadManager getDocumentPathWithTarget:self.textView.text];
+    BOOL isExist = [[PDDownloadManager sharedPDDownloadManager] checkDownloadPathExist:fullPath];
     [MBProgressHUD showInfoOnView:self.view WithStatus: isExist ? @"路径正确" : @"路径不存在"];
     return isExist;
 }
@@ -123,12 +153,13 @@
 
 - (void)resetPath {
     [MBProgressHUD showInfoOnView:self.view WithStatus:@"已恢复默认地址"];
-    NSString *path = [[PDDownloadManager sharedPDDownloadManager] defaultDownloadPath];
-    [[PDDownloadManager sharedPDDownloadManager] updateSystemDownloadPath:path];
-    self.textView.text = path;
+    [[PDDownloadManager sharedPDDownloadManager] resetDownloadPath];
+    self.fullPathLabel.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+    self.textView.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadPath];
 }
 
-- (void)confirmButtonClickAction{
+- (void)confirmButtonClickAction {
+    PDBlockSelf
     if (self.textView.text.length > 0) {
 
         if (![self checkPath]) {
@@ -137,9 +168,10 @@
 
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定修改下载路径吗, 最好在开始下载任务之前设置路径, 避免不必要的错误" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"确定设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self.view endEditing:YES];
-            [[PDDownloadManager sharedPDDownloadManager] updateSystemDownloadPath:self.textView.text];
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"设置地址成功"];
+            [weakSelf.view endEditing:YES];
+            [[PDDownloadManager sharedPDDownloadManager] updatesystemDownloadPath:weakSelf.textView.text];
+            weakSelf.fullPathLabel.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"设置地址成功"];
         }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];

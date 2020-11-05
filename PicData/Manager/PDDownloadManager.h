@@ -21,13 +21,23 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PDDownloadManager : NSObject
 
 singleton_interface(PDDownloadManager);
-/// 获取默认下载地址
-- (NSString *)defaultDownloadPath;
+/// 重置当前下载相对地址
+- (BOOL)resetDownloadPath;
+/// 获取默认下载相对地址
+- (nonnull NSString *)defaultDownloadPath;
+/// 获取系统下载相对地址
 - (nonnull NSString *)systemDownloadPath;
-- (BOOL)checkSystemDownloadPathExistNeedNotice:(BOOL)need;
+/// 获取当前系统的完整下载地址
+- (nonnull NSString *)systemDownloadFullPath;
+/// 获取当前系统的文件夹名
+- (nonnull NSString *)systemDownloadFullDirectory;
+/// 根据目标路径, 拼接基于document目录的完整路径
++ (NSString *)getDocumentPathWithTarget:(NSString *)targetPath;
+
+- (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need;
 - (BOOL)checkDownloadPathExist:(NSString *)path;
 /// 设置下载地址
-- (BOOL)updateSystemDownloadPath:(nonnull NSString *)downloadPath;
+- (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath;
 
 /// 根据模型获取下载地址
 - (NSString *)getDirPathWithSource:(nullable PicSourceModel *)sourceModel contentModel:(nullable PicContentModel *)contentModel;

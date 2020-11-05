@@ -11,12 +11,15 @@
 		3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.m */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
 		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
-		3326ACE42553ED1F0035A473 /* NSObject+PPOutPut.m in Sources */ = {isa = PBXBuildFile; fileRef = 3326ACE22553ED1F0035A473 /* NSObject+PPOutPut.m */; };
 		332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 332C285624EBA5720083A5DC /* AddNetTaskVC.m */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
+		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
+		33B43FBC2554490100C33FD0 /* ViewerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FBB2554490100C33FD0 /* ViewerCell.m */; };
+		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
+		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
 		33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */; };
 		33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */; };
 		33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */; };
@@ -75,8 +78,6 @@
 		3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleStepModel.h; sourceTree = "<group>"; };
 		3323206324ECE3D100FE5E33 /* PicRuleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleModel.h; sourceTree = "<group>"; };
 		3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleStepModel.m; sourceTree = "<group>"; };
-		3326ACE22553ED1F0035A473 /* NSObject+PPOutPut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+PPOutPut.m"; sourceTree = "<group>"; };
-		3326ACE32553ED1F0035A473 /* NSObject+PPOutPut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+PPOutPut.h"; sourceTree = "<group>"; };
 		3326ACE62553EF700035A473 /* AmIBeingDebugged.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmIBeingDebugged.h; sourceTree = "<group>"; };
 		332C285524EBA5720083A5DC /* AddNetTaskVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddNetTaskVC.h; sourceTree = "<group>"; };
 		332C285624EBA5720083A5DC /* AddNetTaskVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddNetTaskVC.m; sourceTree = "<group>"; };
@@ -88,6 +89,13 @@
 		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		33B43FB62554436C00C33FD0 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
+		33B43FBA2554490100C33FD0 /* ViewerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerCell.h; sourceTree = "<group>"; };
+		33B43FBB2554490100C33FD0 /* ViewerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerCell.m; sourceTree = "<group>"; };
+		33B43FC02554495100C33FD0 /* ViewerFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerFileModel.h; sourceTree = "<group>"; };
+		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
+		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
+		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
 		33B9EEAF24DC7A8400ABE3E2 /* JKSqliteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModel.h; sourceTree = "<group>"; };
 		33B9EEB024DC7A8400ABE3E2 /* JKSqliteModelTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModelTool.h; sourceTree = "<group>"; };
 		33B9EEB124DC7A8400ABE3E2 /* JKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteDatabase.h; sourceTree = "<group>"; };
@@ -238,6 +246,24 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		33B43FB9255448E700C33FD0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				33B43FBA2554490100C33FD0 /* ViewerCell.h */,
+				33B43FBB2554490100C33FD0 /* ViewerCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		33B43FBF2554493F00C33FD0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				33B43FC02554495100C33FD0 /* ViewerFileModel.h */,
+				33B43FC12554495100C33FD0 /* ViewerFileModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,6 +349,8 @@
 				9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */,
 				9DC94CA12552ECFE008ACAF8 /* BaseTabBarController.h */,
 				9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */,
+				33B43FC5255455B600C33FD0 /* UINavigationController+push.h */,
+				33B43FC6255455B600C33FD0 /* UINavigationController+push.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -330,6 +358,8 @@
 		9DC94CA82552F7C2008ACAF8 /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
+				33B43FBF2554493F00C33FD0 /* Model */,
+				33B43FB9255448E700C33FD0 /* View */,
 				9DC94CA92552F7E0008ACAF8 /* ViewerController.h */,
 				9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */,
 			);
@@ -454,9 +484,8 @@
 		9DE95CB8244C3FDC00E31735 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				3326ACE32553ED1F0035A473 /* NSObject+PPOutPut.h */,
-				3326ACE22553ED1F0035A473 /* NSObject+PPOutPut.m */,
 				9DE95CFB244CA26F00E31735 /* Singleton.h */,
+				33B43FB62554436C00C33FD0 /* Foundation+Log.m */,
 				9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */,
 				9DE95CBE244C3FDC00E31735 /* MBProgressHUD+LZPShow.h */,
 				9DE95CEC244C5FBC00E31735 /* UILabel+text.h */,
@@ -672,14 +701,17 @@
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
+				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
+				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
+				33B43FBC2554490100C33FD0 /* ViewerCell.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
-				3326ACE42553ED1F0035A473 /* NSObject+PPOutPut.m in Sources */,
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
+				33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */,
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,
 				33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */,

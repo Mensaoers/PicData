@@ -22,10 +22,6 @@
 
 @implementation DetailViewController
 
-- (void)dealloc {
-    NSLog(@"啊, 我被释放了%s", __func__);
-}
-
 - (NSMutableArray<NSDictionary *> *)historyInfos {
     if (nil == _historyInfos) {
         _historyInfos = [NSMutableArray array];

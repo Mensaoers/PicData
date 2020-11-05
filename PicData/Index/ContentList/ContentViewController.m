@@ -20,10 +20,6 @@
 
 @implementation ContentViewController
 
-- (void)dealloc {
-    NSLog(@"啊, 我被释放了%s", __func__);
-}
-
 - (instancetype)initWithSourceModel:(PicSourceModel *)sourceModel {
     if (self = [super init]) {
         self.sourceModel = sourceModel;

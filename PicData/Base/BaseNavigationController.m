@@ -8,7 +8,7 @@
 
 #import "BaseNavigationController.h"
 
-@interface BaseNavigationController ()
+@interface BaseNavigationController ()<UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @end
 
@@ -21,6 +21,18 @@
     //设置导航栏背景颜色
     [navigationBar setBarTintColor:UIColor.whiteColor];
     [navigationBar setTintColor:ThemeColor];
+
+    UIFont *font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
+    NSDictionary *dic = @{NSFontAttributeName:font,
+                          NSForegroundColorAttributeName: ThemeColor};
+    navigationBar.titleTextAttributes =dic;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    __weak typeof(self) wkself = self;
+    self.delegate = wkself;
+    self.interactivePopGestureRecognizer.delegate = wkself;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
@@ -28,6 +40,13 @@
         viewController.hidesBottomBarWhenPushed = YES;
     }
     [super pushViewController:viewController animated:animated];
+}
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    UIViewController *viewController = [super popViewControllerAnimated:animated];
+    __weak typeof(self) wkself = self;
+    self.delegate = wkself;
+    return viewController;
 }
 
 @end

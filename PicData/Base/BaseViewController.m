@@ -14,6 +14,10 @@
 
 @implementation BaseViewController
 
+- (void)dealloc {
+    NSLog(@"%s 被释放了?", __func__);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

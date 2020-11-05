@@ -16,10 +16,6 @@
 
 @implementation SettingViewController
 
-- (void)dealloc {
-    NSLog(@"被释放了?");
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"最好在开始下载任务之前设置路径, 避免不必要的错误" preferredStyle:UIAlertControllerStyleAlert];

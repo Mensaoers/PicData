@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BaseViewController : UIViewController
 
+/// 导航操作按钮, 重写不需要执行父类方法
 - (void)loadNavigationItem;
+/// 加载主界面, 重写不强制执行父类方法
 - (void)loadMainView;
 
 @end

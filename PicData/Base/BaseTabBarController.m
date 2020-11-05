@@ -22,6 +22,11 @@
     [tabBar setBarTintColor:UIColor.whiteColor];
     [tabBar setTintColor:ThemeColor];
     [tabBar setUnselectedItemTintColor:ThemeDisabledColor];
+
+    UITabBarItem *tabBarItem = [UITabBarItem appearance];
+    [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: ThemeDisabledColor, NSFontAttributeName: [UIFont systemFontOfSize:12]} forState: UIControlStateNormal];
+
+    [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: ThemeColor, NSFontAttributeName: [UIFont systemFontOfSize:12]} forState: UIControlStateSelected];
 }
 
 @end

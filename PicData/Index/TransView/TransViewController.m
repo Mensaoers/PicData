@@ -35,10 +35,6 @@
     return _tasksMarray;
 }
 
-- (void)dealloc {
-    NSLog(@"我要被释放了, %s", __func__);
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 

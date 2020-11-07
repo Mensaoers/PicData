@@ -12,9 +12,15 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated needHiddenTabBar:(BOOL)needHiddenTabBar {
     if (needHiddenTabBar) {
-        viewController.hidesBottomBarWhenPushed = YES;
+        if (self.viewControllers.count >= 1) {
+            viewController.hidesBottomBarWhenPushed = YES;
+        }
     }
-    [self pushViewController:viewController animated:animated];
+    [self pp_pushViewController:viewController animated:animated];
+}
+
+- (void)pp_pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    [self pushViewController:viewController animated:animated needHiddenTabBar:NO];
 }
 
 @end

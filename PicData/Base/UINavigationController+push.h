@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated needHiddenTabBar:(BOOL)needHiddenTabBar;
 
+- (void)pp_pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
 @end
 
 NS_ASSUME_NONNULL_END

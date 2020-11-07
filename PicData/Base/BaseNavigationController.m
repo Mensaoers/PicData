@@ -28,18 +28,20 @@
     navigationBar.titleTextAttributes =dic;
 }
 
++(void)load
+{
+    // hook：钩子函数
+    Method method1 = class_getInstanceMethod(self, @selector(pushViewController:animated:));
+
+    Method method2 = class_getInstanceMethod(self, @selector(pp_pushViewController:animated:));
+    method_exchangeImplementations(method1, method2);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     __weak typeof(self) wkself = self;
     self.delegate = wkself;
     self.interactivePopGestureRecognizer.delegate = wkself;
-}
-
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    if (self.viewControllers.count >= 1) {
-        viewController.hidesBottomBarWhenPushed = YES;
-    }
-    [super pushViewController:viewController animated:animated];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {

@@ -17,6 +17,8 @@ target 'PicData' do
   pod 'Tiercel'
   pod 'TiercelObjCBridge'
   pod 'JQFMDB'
+  pod 'YYImage', :git => 'https://github.com/QiuYeHong90/YYImage.git'
+  pod 'YBImageBrowser'
   # Pods for PicData
 
 end

@@ -92,13 +92,17 @@
         if (nil == error) {
             // 获取字符串
             NSString *resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSString *targetPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.txt", weakSelf.sourceModel.title]];
+            NSString *targetPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"htmlContent.txt"];
             [data writeToFile:targetPath atomically:YES];
 //            NSLog(@"获取%@数据成功:%@", self.typeModel.value, resultString);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据成功"];
                 // 解析数据
-                [weakSelf parserContentListHtmlData:resultString];
+                NSString *urlsString = [weakSelf parserContentListHtmlData:resultString];
+                
+                
+                NSString *itemUrlsPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"urls.txt"];
+                [[urlsString dataUsingEncoding:NSUTF8StringEncoding] writeToFile:itemUrlsPath atomically:YES];
                 [weakSelf.collectionView reloadData];
                 [weakSelf.collectionView.mj_header endRefreshing];
             });
@@ -114,10 +118,9 @@
     }];
 }
 
-- (void)parserContentListHtmlData:(NSString *)htmlString {
+- (NSString *)parserContentListHtmlData:(NSString *)htmlString {
     
     [self.dataList removeAllObjects];
-    
     if (htmlString.length > 0) {
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
@@ -134,6 +137,13 @@
             [self.dataList addObjectsFromArray:[results copy]];
         }
     }
+    
+    NSMutableString *urlsS = [NSMutableString string];
+    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
+    for (PicContentModel *contentModel in self.dataList) {
+        [urlsS appendFormat:@"\n%@", [NSURL URLWithString:contentModel.href relativeToURL:baseURL].absoluteString];
+    }
+    return urlsS;
 }
 
 - (NSArray *)parserContentListWithType1:(OCGumboDocument *)document {

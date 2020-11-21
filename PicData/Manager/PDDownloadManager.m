@@ -12,10 +12,21 @@
 @interface PDDownloadManager()
 
 @property (nonatomic, strong) TRSessionManager *sessionManager;
+@property (nonatomic, strong) dispatch_queue_t disDownFinishQueue;
 
 @end
 
 @implementation PDDownloadManager
+
+- (dispatch_queue_t)disDownFinishQueue {
+    if (nil == _disDownFinishQueue) {
+        dispatch_queue_t diapatchQueue = dispatch_queue_create("com.test.queue.downFinished", DISPATCH_QUEUE_CONCURRENT);
+        // DISPATCH_QUEUE_SERIAL
+        // DISPATCH_QUEUE_CONCURRENT
+        _disDownFinishQueue = diapatchQueue;
+    }
+    return _disDownFinishQueue;
+}
 
 singleton_implementation(PDDownloadManager);
 
@@ -173,9 +184,9 @@ singleton_implementation(PDDownloadManager);
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
             }
-        }] successOnMainQueue:NO handler:^(TRDownloadTask * _Nonnull task) {
-            dispatch_queue_t concurrentDiapatchQueue = dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_CONCURRENT);
-            dispatch_async(concurrentDiapatchQueue, ^{
+        }] successOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
+            
+            dispatch_async(self.disDownFinishQueue, ^{
                 NSError *copyError = nil;
                 NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent];
                 [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];

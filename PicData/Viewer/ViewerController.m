@@ -93,12 +93,12 @@
     NSMutableArray *fileContents = [[fileManager contentsOfDirectoryAtPath:self.targetFilePath error:&subError] mutableCopy];
     [fileContents sortUsingSelector:@selector(localizedStandardCompare:)];
     if (nil == subError) {
-        NSLog(@"%@", fileContents);
+//        NSLog(@"%@", fileContents);
 
         [self.fileNamesList removeAllObjects];
         for (NSString *fileName in fileContents) {
             // fileName.pathExtension
-            NSLog(@"%@", fileName.pathExtension);
+//            NSLog(@"%@", fileName.pathExtension);
             NSString *pathExtension = fileName.pathExtension;
             if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];

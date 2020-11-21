@@ -9,7 +9,25 @@
 #import "ContentParserManager.h"
 #import "PDDownloadManager.h"
 
+@interface ContentParserManager()
+
+@property (nonatomic, strong) dispatch_queue_t disToDownQueue;
+
+@end
+
 @implementation ContentParserManager
+
+singleton_implementation(ContentParserManager)
+
+- (dispatch_queue_t)disToDownQueue {
+    if (nil == _disToDownQueue) {
+        dispatch_queue_t dispatchQueue = dispatch_queue_create("com.test.queue.download", DISPATCH_QUEUE_SERIAL);
+        // DISPATCH_QUEUE_SERIAL
+        // DISPATCH_QUEUE_CONCURRENT
+        _disToDownQueue = dispatchQueue;
+    }
+    return _disToDownQueue;
+}
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
     NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", contentModel.href]];
@@ -172,12 +190,9 @@
         
         if (needDownload) {
             count += urls.count;
-            /// 这个地方创建串行队列, 实测整个下载进度[好像]比直接调用下载更快
-//            dispatch_queue_t serialDiapatchQueue=dispatch_queue_create("com.test.queue", DISPATCH_QUEUE_SERIAL);
-            dispatch_queue_t concurrentDiapatchQueue = dispatch_queue_create("com.test.queue.download", DISPATCH_QUEUE_CONCURRENT);
-            dispatch_async(concurrentDiapatchQueue, ^{
+//            dispatch_async([ContentParserManager sharedContentParserManager].disToDownQueue, ^{
                 [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
-            });
+//            });
         }
     }
     

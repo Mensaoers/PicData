@@ -44,6 +44,9 @@ singleton_interface(PDDownloadManager);
 /// 创建下载任务
 - (void)downWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel urls:(NSArray *)urls;
 
+/// 全部取消
+- (void)totalCancel;
+
 @end
 
 NS_ASSUME_NONNULL_END

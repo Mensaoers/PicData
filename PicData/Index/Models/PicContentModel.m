@@ -22,7 +22,21 @@
     Class cls = [self class];
     [[JQFMDB shareDatabase] jq_createTable:NSStringFromClass(cls) dicOrModel:cls];
 }
+
++ (BOOL)unAddALLWithSourceTitle:(NSString *)sourceTitle {
+    return [self updateTableWithDicOrModel:@{@"hasAdded": @0} Where:[NSString stringWithFormat:@"where sourceTitle = \"%@\"", sourceTitle]];
+}
+
++ (BOOL)unAddALL {
+    return [self updateTableWithDicOrModel:@{@"hasAdded": @0} Where:@""];
+}
+
 - (BOOL)updateTable {
     return [self updateTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", self.href]];
 }
+
+- (BOOL)deleteFromTable {
+    return [PicContentModel deleteFromTable_Where:[NSString stringWithFormat:@"where title = \"%@\"", self.title]];
+}
+
 @end

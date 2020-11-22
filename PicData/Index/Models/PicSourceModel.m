@@ -20,4 +20,9 @@
     [[JQFMDB shareDatabase] jq_createTable:NSStringFromClass(cls) dicOrModel:cls];
 }
 
+- (BOOL)deleteFromTable {
+    [PicContentModel deleteFromTable_Where:[NSString stringWithFormat:@"where sourceTitle = \"%@\"", self.title]];
+    return [PicSourceModel deleteFromTable_Where:[NSString stringWithFormat:@"where title = \"%@\"", self.title]];
+}
+
 @end

@@ -41,6 +41,10 @@ singleton_implementation(PDDownloadManager);
     return _sessionManager;
 }
 
+- (void)totalCancel {
+    [self.sessionManager totalCancel];
+}
+
 - (BOOL)resetDownloadPath {
     return [self updatesystemDownloadPath:[self defaultDownloadPath]];
 }

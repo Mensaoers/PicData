@@ -22,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int totalCount;
 /// 已下载多少张, 这个属性忽略, 不存数据库
 @property (nonatomic, assign) int downloadedCount;
+
+/// 取消已添加任务, 根据父级title
++ (BOOL)unAddALLWithSourceTitle:(NSString *)sourceTitle;
+    /// 取消已添加任务
++ (BOOL)unAddALL;
 @end
 
 NS_ASSUME_NONNULL_END

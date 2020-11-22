@@ -37,9 +37,28 @@
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_lookupTable:NSStringFromClass(cls) dicOrModel:cls whereFormat:where];
 }
++ (NSArray *)queryTableWithTitle:(NSString *)title {
+    return [self queryTableWhere:[NSString stringWithFormat:@"where title = \"%@\"", title]];
+}
 + (int)queryCountWhere:(NSString *)where {
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_totalCount:NSStringFromClass(cls) whereFormat:where];
+}
+
+- (BOOL)deleteFromTable {
+    return YES;
+}
++ (BOOL)deleteFromTable_Where:(NSString *)where {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_deleteTable:NSStringFromClass(cls) whereFormat:where];
+}
++ (BOOL)deleteFromTable_All {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_deleteAllDataFromTable:NSStringFromClass(cls)];
+}
++ (BOOL)updateTableWithDicOrModel:(id)parameters Where:(NSString *)where {
+    Class cls = [self class];
+    return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:parameters whereFormat:where];
 }
 - (BOOL)updateTableWhere:(NSString *)where {
     Class cls = [self class];

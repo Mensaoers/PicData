@@ -122,17 +122,36 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [MBProgressHUD showHUDAddedTo:weakSelf.view WithStatus:@"正在删除"];
         NSError *rmError = nil;
-        if (self.navigationController.viewControllers.count > 1) {
-//            [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
-             [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括文件夹(包括目录本身)
+        if (weakSelf.navigationController.viewControllers.count > 1) {
+
+                // 还要把数据库数据更新
+            if (weakSelf.navigationController.viewControllers.count == 2) {
+                // 进到列表中, 只需要更新这个类别下面所有的数据就好了
+                [PicContentModel unAddALLWithSourceTitle:[weakSelf.targetFilePath lastPathComponent]];
+            } else {
+                // 更新contentModel就好了
+                NSArray *result = [PicContentModel queryTableWithTitle:[weakSelf.targetFilePath lastPathComponent]];
+                if (result > 0) {
+                    PicContentModel *contentModel = result[0];
+                    contentModel.hasAdded = 0;
+                    [contentModel updateTable];
+                }
+            }
+
+            // [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
+            [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括文件夹(包括目录本身)
         } else {
+            // 根视图, 删除所有
+            [PDDownloadManager.sharedPDDownloadManager totalCancel];
+            // 取消所有已添加
+            [PicContentModel unAddALL];
             [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
         }
         if (nil == rmError) {
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除成功" afterDelay:1];
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
-//            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除失败" afterDelay:1];
+            // [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除失败" afterDelay:1];
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
             [weakSelf.tableView.mj_header beginRefreshing];
         }

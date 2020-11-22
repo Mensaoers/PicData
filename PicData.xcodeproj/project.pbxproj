@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
 		3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.m */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
@@ -37,7 +38,7 @@
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
-		9DC94CAB2552F7E0008ACAF8 /* ViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */; };
+		9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */; };
 		9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95C73244C3E0F00E31735 /* AppDelegate.m */; };
 		9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C7E244C3E1100E31735 /* Assets.xcassets */; };
 		9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */; };
@@ -71,6 +72,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
+		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
 		3323205724ECB4A300FE5E33 /* PicBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBaseModel.h; sourceTree = "<group>"; };
 		3323205824ECB4A300FE5E33 /* PicBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBaseModel.m; sourceTree = "<group>"; };
@@ -133,8 +136,8 @@
 		9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		9DC94CA12552ECFE008ACAF8 /* BaseTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseTabBarController.h; sourceTree = "<group>"; };
 		9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseTabBarController.m; sourceTree = "<group>"; };
-		9DC94CA92552F7E0008ACAF8 /* ViewerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
-		9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerController.m; sourceTree = "<group>"; };
+		9DC94CA92552F7E0008ACAF8 /* LocalFileListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalFileListVC.h; sourceTree = "<group>"; };
+		9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalFileListVC.m; sourceTree = "<group>"; };
 		9DE95C6F244C3E0F00E31735 /* PicData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DE95C72244C3E0F00E31735 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9DE95C73244C3E0F00E31735 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -360,8 +363,10 @@
 			children = (
 				33B43FBF2554493F00C33FD0 /* Model */,
 				33B43FB9255448E700C33FD0 /* View */,
-				9DC94CA92552F7E0008ACAF8 /* ViewerController.h */,
-				9DC94CAA2552F7E0008ACAF8 /* ViewerController.m */,
+				9DC94CA92552F7E0008ACAF8 /* LocalFileListVC.h */,
+				9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */,
+				33178B92256A184700CB47F2 /* ViewerViewController.h */,
+				33178B93256A184700CB47F2 /* ViewerViewController.m */,
 			);
 			path = Viewer;
 			sourceTree = "<group>";
@@ -682,7 +687,7 @@
 				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
 				9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */,
-				9DC94CAB2552F7E0008ACAF8 /* ViewerController.m in Sources */,
+				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
@@ -703,6 +708,7 @@
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
+				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
 				33B43FBC2554490100C33FD0 /* ViewerCell.m in Sources */,

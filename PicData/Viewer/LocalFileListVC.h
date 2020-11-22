@@ -1,5 +1,5 @@
 //
-//  ViewerController.h
+//  LocalFileListVC.h
 //  PicData
 //
 //  Created by Garenge on 2020/11/4.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewerController : BaseViewController
+@interface LocalFileListVC : BaseViewController
 
 /// 上衣个页面传过来的路径
 @property (nonatomic, strong) NSString *targetFilePath;

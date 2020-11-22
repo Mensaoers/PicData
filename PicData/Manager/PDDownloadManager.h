@@ -11,6 +11,7 @@
 #import "PicSourceModel.h"
 #import "PicContentModel.h"
 #import "PicDownRecoreModel.h"
+#import "AppDelegate.h"
 
 #define DOWNLOADSPATHKEY @"DOWNLOADSPATHKEY"
 #define NOTICECHECKDOWNLOADPATHKEY @"NOTICECHECKDOWNLOADPATHKEY"
@@ -19,6 +20,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PDDownloadManager : NSObject
+
+@property (nonatomic, strong) TRSessionManager *sessionManager;
 
 singleton_interface(PDDownloadManager);
 /// 重置当前下载相对地址

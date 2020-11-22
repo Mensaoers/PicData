@@ -1,15 +1,16 @@
 //
-//  ViewerController.m
+//  LocalFileListVC.m
 //  PicData
 //
 //  Created by Garenge on 2020/11/4.
 //  Copyright © 2020 garenge. All rights reserved.
 //
 
-#import "ViewerController.h"
+#import "LocalFileListVC.h"
 #import "ViewerCell.h"
+#import "ViewerViewController.h"
 
-@interface ViewerController () <UITableViewDelegate, UITableViewDataSource, YBImageBrowserDataSource>
+@interface LocalFileListVC () <UITableViewDelegate, UITableViewDataSource, YBImageBrowserDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
@@ -17,7 +18,7 @@
 
 @end
 
-@implementation ViewerController
+@implementation LocalFileListVC
 
 - (NSMutableArray<ViewerFileModel *> *)fileNamesList {
     if (nil == _fileNamesList) {
@@ -174,6 +175,33 @@
     return 64;
 }
 
+- (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath tableView:(UITableView * _Nonnull)tableView {
+    [self.imgsList removeAllObjects];
+    NSInteger currentIndex = 0;
+    for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
+        ViewerFileModel *tempModel = self.fileNamesList[index];
+        if ([tempModel.fileName.pathExtension containsString:@"jpg"]) {
+                //                [self.imgsList addObject:tempModel];
+
+            if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
+                currentIndex = index;
+            }
+
+            YBIBImageData *data = [YBIBImageData new];
+            data.imagePath = [self.targetFilePath stringByAppendingPathComponent:tempModel.fileName];
+            data.projectiveView = [tableView cellForRowAtIndexPath:indexPath];
+            [self.imgsList addObject:data];
+        }
+    }
+
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.dataSourceArray = self.imgsList;
+    browser.currentPage = currentIndex;
+    // 只有一个保存操作的时候，可以直接右上角显示保存按钮
+    browser.defaultToolViewHandler.topView.operationType = YBIBTopViewOperationTypeSave;
+    [browser show];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     [tableView deselectRowAtIndexPath:indexPath animated: YES];
@@ -181,39 +209,18 @@
     ViewerFileModel *fileModel = self.fileNamesList[indexPath.row];
 
     if (fileModel.isFolder) {
-        ViewerController *viewerVC = [[ViewerController alloc] init];
-        viewerVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-        [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:NO];
+        LocalFileListVC *localListVC = [[LocalFileListVC alloc] init];
+        localListVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+        [self.navigationController pushViewController:localListVC animated:YES needHiddenTabBar:NO];
     } else {
 
-        if (![fileModel.fileName.pathExtension containsString:@"jpg"]) {
-            return;
+        if ([fileModel.fileName.pathExtension containsString:@"jpg"]) {
+            [self viewPicFile:fileModel indexPath:indexPath tableView:tableView];
+        } else if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
+            ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
+            viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+            [self.navigationController pushViewController:viewerVC animated:YES];
         }
-
-        [self.imgsList removeAllObjects];
-        NSInteger currentIndex = 0;
-        for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
-            ViewerFileModel *tempModel = self.fileNamesList[index];
-            if ([tempModel.fileName.pathExtension containsString:@"jpg"]) {
-//                [self.imgsList addObject:tempModel];
-
-                if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
-                    currentIndex = index;
-                }
-
-                YBIBImageData *data = [YBIBImageData new];
-                data.imagePath = [self.targetFilePath stringByAppendingPathComponent:tempModel.fileName];
-                data.projectiveView = [tableView cellForRowAtIndexPath:indexPath];
-                [self.imgsList addObject:data];
-            }
-        }
-
-        YBImageBrowser *browser = [YBImageBrowser new];
-        browser.dataSourceArray = self.imgsList;
-        browser.currentPage = currentIndex;
-        // 只有一个保存操作的时候，可以直接右上角显示保存按钮
-        browser.defaultToolViewHandler.topView.operationType = YBIBTopViewOperationTypeSave;
-        [browser show];
     }
 }
 

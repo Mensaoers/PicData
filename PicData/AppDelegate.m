@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "IndexViewController.h"
 #import "SettingViewController.h"
-#import "ViewerController.h"
+#import "LocalFileListVC.h"
 
 @interface AppDelegate ()
 
@@ -32,7 +32,7 @@
     indexNavi.tabBarItem.title = @"首页";
     
     // 预览
-    ViewerController *viewerVC = [[ViewerController alloc] init];
+    LocalFileListVC *viewerVC = [[LocalFileListVC alloc] init];
     BaseNavigationController *viewerNavi = [[BaseNavigationController alloc] initWithRootViewController:viewerVC];
     viewerNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     viewerNavi.tabBarItem.image = [[UIImage imageNamed:@"folder_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -56,6 +56,7 @@
     TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
     configuraion.allowsCellularAccess = YES;
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
+    NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
 
     NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];

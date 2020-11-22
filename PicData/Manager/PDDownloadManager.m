@@ -7,11 +7,9 @@
     //
 
 #import "PDDownloadManager.h"
-#import "AppDelegate.h"
 
 @interface PDDownloadManager()
 
-@property (nonatomic, strong) TRSessionManager *sessionManager;
 @property (nonatomic, strong) dispatch_queue_t disDownFinishQueue;
 
 @end
@@ -33,10 +31,7 @@ singleton_implementation(PDDownloadManager);
 - (TRSessionManager *)sessionManager {
     if (nil == _sessionManager) {
         TRSessionManager.logLevel = TRLogLevelSimple;
-
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
-        });
+        _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
     }
     return _sessionManager;
 }

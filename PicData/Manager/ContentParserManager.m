@@ -22,8 +22,8 @@ singleton_implementation(ContentParserManager)
 - (dispatch_queue_t)disToDownQueue {
     if (nil == _disToDownQueue) {
         dispatch_queue_t dispatchQueue = dispatch_queue_create("com.test.queue.download", DISPATCH_QUEUE_SERIAL);
-        // DISPATCH_QUEUE_SERIAL
-        // DISPATCH_QUEUE_CONCURRENT
+        // DISPATCH_QUEUE_SERIAL // 串行
+        // DISPATCH_QUEUE_CONCURRENT // 并行
         _disToDownQueue = dispatchQueue;
     }
     return _disToDownQueue;
@@ -53,10 +53,10 @@ singleton_implementation(ContentParserManager)
 + (void)parserWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
     NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:contentModel];
     
-        // 1.创建队列
+    // 1.创建队列
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     
-        // 2.设置最大并发操作数
+    // 2.设置最大并发操作数
     queue.maxConcurrentOperationCount = 1; // 串行队列
     NSString *filePath = [targetPath stringByAppendingPathComponent:@"urlList.txt"];
     NSLog(@"%@", filePath);
@@ -76,12 +76,10 @@ singleton_implementation(ContentParserManager)
 }
 
 + (void)operationQueue:(NSOperationQueue *)queue withUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
-        //    __weak typeof(self) weakSelf = self;
-        // 错误-1, 网络部分错误
-        // 错误-2, 写入部分错误
+    // 错误-1, 网络部分错误
+    // 错误-2, 写入部分错误
     if ([url containsString:@".html"]) {
         [queue addOperationWithBlock:^{
-                //            __strong typeof(self) strongSelf = weakSelf;
             NSError *error = nil;
             NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
             NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:NSUTF8StringEncoding error:&error];
@@ -124,7 +122,6 @@ singleton_implementation(ContentParserManager)
     if (htmlString.length > 0) {
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-            //        OCGumboElement *root = document.rootElement;
         NSMutableArray *urls = [NSMutableArray array];
 
 //        OCQueryObject *H1Es = document.Query(@"meta");
@@ -149,8 +146,9 @@ singleton_implementation(ContentParserManager)
                     OCGumboElement *imgE = imgEs.firstObject;
                     NSString *src = imgE.attr(@"src");
                     if (src.length > 0) {
-                        src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
-                            //                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                        // img.aitaotu.cc:8089 是大图
+                        // wapimg.aitaotu.cc:8090 是小图
+                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
                         [urls addObject:src];
                         if (urlsString.length > 0) {
                             [urlsString appendString:@"\n"];
@@ -175,8 +173,9 @@ singleton_implementation(ContentParserManager)
                         OCGumboElement *imgE = imgEs.firstObject;
                         NSString *src = imgE.attr(@"src");
                         if (src.length > 0) {
-                            src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
-                                //                            src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                            // img.aitaotu.cc:8089 是大图
+                            // wapimg.aitaotu.cc:8090 是小图
+                            src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
                             [urls addObject:src];
                             if (urlsString.length > 0) {
                                 [urlsString appendString:@"\n"];
@@ -190,9 +189,8 @@ singleton_implementation(ContentParserManager)
         
         if (needDownload) {
             count += urls.count;
-//            dispatch_async([ContentParserManager sharedContentParserManager].disToDownQueue, ^{
-                [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
-//            });
+            // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
+            [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
         }
     }
     

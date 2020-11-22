@@ -154,6 +154,9 @@
         NSString *targetUrls = self.multiTextView.text;
         NSArray *urls = [targetUrls componentsSeparatedByString:@"\n"];
         for (NSString *url in urls) {
+            if (url.length == 0) {
+                continue;
+            }
             [self prepareSourceWithUrl:url title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
                 [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                     [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];

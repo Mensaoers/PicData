@@ -180,7 +180,16 @@ singleton_implementation(PDDownloadManager);
             ////        [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
             //        [recordModel insertTable];
         PDBlockSelf
-        [[[[[self.sessionManager downloadWithUrl:url headers:@{@"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)"} fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
+
+        // 研究了一下web端下载图片时候的header, 添加一些字段, 这样可以下载大图
+        NSDictionary *headers = @{
+            @"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36 Edg/87.0.664.41",
+            @"Sec-Fetch-Site" : @"cross-site",
+            @"Sec-Fetch-Mode" : @"no-cors",
+            @"Sec-Fetch-Dest" : @"image",
+            @"Referer" : @"https://www.aitaotu.com/",
+        };
+        [[[[[self.sessionManager downloadWithUrl:url headers:headers fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
             }

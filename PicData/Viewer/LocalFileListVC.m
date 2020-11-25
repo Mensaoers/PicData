@@ -9,6 +9,7 @@
 #import "LocalFileListVC.h"
 #import "ViewerCell.h"
 #import "ViewerViewController.h"
+#import "PicBrowserToolViewHandler.h"
 
 @interface LocalFileListVC () <UITableViewDelegate, UITableViewDataSource, YBImageBrowserDataSource>
 
@@ -48,7 +49,7 @@
 - (void)loadNavigationItem {
     self.navigationItem.title = @"浏览";
 
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
     self.navigationItem.rightBarButtonItem = rightItem;
 }
 
@@ -184,7 +185,7 @@
                 //                [self.imgsList addObject:tempModel];
 
             if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
-                currentIndex = index;
+                currentIndex = self.imgsList.count;
             }
 
             YBIBImageData *data = [YBIBImageData new];
@@ -198,7 +199,9 @@
     browser.dataSourceArray = self.imgsList;
     browser.currentPage = currentIndex;
     // 只有一个保存操作的时候，可以直接右上角显示保存按钮
-    browser.defaultToolViewHandler.topView.operationType = YBIBTopViewOperationTypeSave;
+    PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
+    browser.toolViewHandlers = @[handler];
+    // toolViewHandlers; // topView.operationType = YBIBTopViewOperationTypeSave;
     [browser show];
 }
 

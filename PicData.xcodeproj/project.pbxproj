@@ -35,6 +35,7 @@
 		9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E4244D5FC7005ADF05 /* DetailViewController.m */; };
 		9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E7244D66C7005ADF05 /* DetailViewModel.m */; };
 		9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */; };
+		9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
@@ -130,6 +131,8 @@
 		9D3593E7244D66C7005ADF05 /* DetailViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewModel.m; sourceTree = "<group>"; };
 		9D3593ED244D6D32005ADF05 /* DetailViewContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewContentCell.h; sourceTree = "<group>"; };
 		9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewContentCell.m; sourceTree = "<group>"; };
+		9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBrowserToolViewHandler.h; sourceTree = "<group>"; };
+		9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBrowserToolViewHandler.m; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -367,6 +370,8 @@
 				9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */,
 				33178B92256A184700CB47F2 /* ViewerViewController.h */,
 				33178B93256A184700CB47F2 /* ViewerViewController.m */,
+				9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */,
+				9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */,
 			);
 			path = Viewer;
 			sourceTree = "<group>";
@@ -705,6 +710,7 @@
 				9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
+				9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
@@ -884,7 +890,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.9;
+				MARKETING_VERSION = 0.1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -914,7 +920,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.9;
+				MARKETING_VERSION = 0.1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

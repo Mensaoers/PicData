@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E5B87F77DF75E99B75EB2CF79ECC21E6"
-               BuildableName = "DGDownloadManager.framework"
-               BlueprintName = "DGDownloadManager"
+               BlueprintIdentifier = "F60E38364AFF5E1349FF07415B944396"
+               BuildableName = "SSZipArchive.framework"
+               BlueprintName = "SSZipArchive"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

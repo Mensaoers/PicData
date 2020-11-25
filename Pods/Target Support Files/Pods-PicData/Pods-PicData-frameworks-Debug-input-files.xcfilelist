@@ -7,6 +7,7 @@ ${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework
 ${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework
 ${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
+${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework
 ${BUILT_PRODUCTS_DIR}/Tiercel/Tiercel.framework
 ${BUILT_PRODUCTS_DIR}/TiercelObjCBridge/TiercelObjCBridge.framework
 ${BUILT_PRODUCTS_DIR}/XHWebImageAutoSize/XHWebImageAutoSize.framework

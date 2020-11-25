@@ -19,6 +19,7 @@ target 'PicData' do
   pod 'JQFMDB'
   pod 'YYImage', :git => 'https://github.com/QiuYeHong90/YYImage.git'
   pod 'YBImageBrowser'
+  pod 'SSZipArchive'
   # Pods for PicData
 
 end

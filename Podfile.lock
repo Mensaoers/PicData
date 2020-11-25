@@ -26,6 +26,7 @@ PODS:
   - SDWebImage (5.9.4):
     - SDWebImage/Core (= 5.9.4)
   - SDWebImage/Core (5.9.4)
+  - SSZipArchive (2.2.3)
   - Tiercel (2.4.1)
   - TiercelObjCBridge (1.0.4):
     - Tiercel (= 2.4.1)
@@ -51,6 +52,7 @@ DEPENDENCIES:
   - MJExtension (~> 3.0.13)
   - MJRefresh (~> 3.1.12)
   - SDWebImage (~> 5.0)
+  - SSZipArchive
   - Tiercel
   - TiercelObjCBridge
   - XHWebImageAutoSize
@@ -69,6 +71,7 @@ SPEC REPOS:
     - MJExtension
     - MJRefresh
     - SDWebImage
+    - SSZipArchive
     - Tiercel
     - TiercelObjCBridge
     - XHWebImageAutoSize
@@ -94,6 +97,7 @@ SPEC CHECKSUMS:
   MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
   MJRefresh: ee5b68f639775462faba4db0fd243baf4d42c2cf
   SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Tiercel: ce5c6347fea7ec877beea4530ca5a208f1b40f7e
   TiercelObjCBridge: 491ed4fe97e14e6f6b55d4a0d192a577399a53e1
   XHWebImageAutoSize: 8e5d7bf036f960885769dbe3410579024d3ac1a1
@@ -102,6 +106,6 @@ SPEC CHECKSUMS:
   YYImage: 20ec986d18a8d0ad421619d166a9e628097e2433
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 94fa8dde00959cb9a450710958b145de6e539a05
+PODFILE CHECKSUM: 33263f3a6dd8943426fac450a8d006f5bfcab862
 
 COCOAPODS: 1.10.0

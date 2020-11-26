@@ -57,6 +57,8 @@
     configuraion.allowsCellularAccess = YES;
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
     NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
+    
+    [self.sessionManager totalCancel];
 
     NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];

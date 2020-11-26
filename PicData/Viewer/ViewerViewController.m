@@ -38,6 +38,41 @@
 
 - (void)loadNavigationItem {
     self.navigationItem.title = [self getNaviTitle:@"文件"];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(shareToOtherAction:) forControlEvents:UIControlEventTouchUpInside];
+    button.frame = CGRectMake(0, 0, 44, 44);
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+}
+
+- (void)shareToOtherAction:(UIButton *)sender {
+
+    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[self.fileURL] applicationActivities:nil];
+    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    };
+
+    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
+        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
+    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
+        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
+        if (popover) {
+            popover.sourceView = sender;
+            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        }
+        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
+    } else {
+        //do nothing
+    }
 }
 
 - (void)loadMainView {

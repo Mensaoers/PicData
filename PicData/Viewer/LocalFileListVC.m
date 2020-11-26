@@ -214,7 +214,7 @@
     if (fileModel.isFolder) {
         LocalFileListVC *localListVC = [[LocalFileListVC alloc] init];
         localListVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-        [self.navigationController pushViewController:localListVC animated:YES needHiddenTabBar:NO];
+        [self.navigationController pushViewController:localListVC animated:YES];
     } else {
 
         if ([fileModel.fileName.pathExtension containsString:@"jpg"]) {
@@ -222,7 +222,7 @@
         } else if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
             ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
             viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-            [self.navigationController pushViewController:viewerVC animated:YES];
+            [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
         }
     }
 }

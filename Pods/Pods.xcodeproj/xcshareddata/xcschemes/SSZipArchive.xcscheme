@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B97FC50FB8C4390DDCCA281E85E7AD84"
-               BuildableName = "YBImageBrowser.framework"
-               BlueprintName = "YBImageBrowser"
+               BlueprintIdentifier = "F60E38364AFF5E1349FF07415B944396"
+               BuildableName = "SSZipArchive.framework"
+               BlueprintName = "SSZipArchive"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,6 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F60E38364AFF5E1349FF07415B944396"
+            BuildableName = "SSZipArchive.framework"
+            BlueprintName = "SSZipArchive"
+            ReferencedContainer = "container:Pods.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

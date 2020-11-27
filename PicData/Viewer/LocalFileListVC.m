@@ -49,8 +49,13 @@
 - (void)loadNavigationItem {
     self.navigationItem.title = @"浏览";
 
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
+    button.frame = CGRectMake(0, 0, 44, 44);
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
+    self.navigationItem.rightBarButtonItems = @[shareItem, deleteItem];
 }
 
 - (void)loadMainView {
@@ -95,12 +100,12 @@
     NSMutableArray *fileContents = [[fileManager contentsOfDirectoryAtPath:self.targetFilePath error:&subError] mutableCopy];
     [fileContents sortUsingSelector:@selector(localizedStandardCompare:)];
     if (nil == subError) {
-//        NSLog(@"%@", fileContents);
+        // NSLog(@"%@", fileContents);
 
         [self.fileNamesList removeAllObjects];
         for (NSString *fileName in fileContents) {
             // fileName.pathExtension
-//            NSLog(@"%@", fileName.pathExtension);
+            // NSLog(@"%@", fileName.pathExtension);
             NSString *pathExtension = fileName.pathExtension;
             if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
@@ -116,6 +121,109 @@
         NSLog(@"%@", subError);
     }
     [self.tableView.mj_header endRefreshing];
+}
+
+/// 创建压缩包
+- (void)createZipWithTargetPathName:(NSString *)targetPathName ZipNameTFText:(NSString *)zipNameTFText pwdNameTFText:(NSString *)pwdNameTFText sourceView:(UIView *)sourceView {
+
+    PDBlockSelf
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // 压缩文件
+        NSString *zippedFileName;
+        if (zipNameTFText.length == 0) {
+            zippedFileName = targetPathName;
+        } else {
+            if ([zipNameTFText.pathExtension.lowercaseString isEqualToString:@"zip"]) {
+                // 用户已经写好了".zip"
+                zippedFileName = zipNameTFText;
+            } else {
+                // 用户没写, 我补上
+                zippedFileName = [NSString stringWithFormat:@"%@.zip", zipNameTFText];
+            }
+        }
+        NSString *zippedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:zippedFileName];
+        BOOL zipResult = [SSZipArchive createZipFileAtPath:zippedPath withContentsOfDirectory:weakSelf.targetFilePath keepParentDirectory:YES withPassword:pwdNameTFText.length > 0 ? pwdNameTFText : nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (zipResult) {
+                // 压缩成功
+                [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"压缩成功" afterDelay:1];
+
+                /// 压缩之后弹出分享框
+                [weakSelf showActivityViewControllerWithItems:@[[NSURL fileURLWithPath:zippedPath]] sourceView:sourceView ComleteHandler:^{
+                    // 不分享了, 那得删了临时数据
+                    NSError *rmError = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:zippedPath error:&rmError];
+                    if (rmError) {
+                        NSLog(@"删除文件失败: %@", rmError);
+                    }
+                }];
+            } else {
+                [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"压缩失败" afterDelay:1];
+            }
+        });
+
+    });
+}
+
+- (void)shareAllFiles:(UIButton *)sender {
+    PDBlockSelf
+    NSString *targetPathName = [NSString stringWithFormat:@"%@.zip", [self.targetFilePath lastPathComponent]];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享文件" message:@"请输入压缩包的名字, 默认为文件夹名称, 密码选填" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = targetPathName;
+    }];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = @"密码选填";
+    }];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"去压缩" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        UITextField *zipNameTF = alert.textFields[0];
+        NSString *zipNameTFText = zipNameTF.text;
+        UITextField *pwdNameTF = alert.textFields[1];
+        NSString *pwdNameTFText = pwdNameTF.text;
+
+        /// 创建压缩包
+        [weakSelf createZipWithTargetPathName:targetPathName ZipNameTFText:zipNameTFText pwdNameTFText:pwdNameTFText sourceView:sender];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+/// 压缩之后弹出分享框
+- (void)showActivityViewControllerWithItems:(NSArray *)activityItems sourceView:(UIView *)sourceView ComleteHandler:(void(^)(void))completeHandler {
+    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+
+        completeHandler();
+
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    };
+
+    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
+        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
+    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
+        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
+        if (popover) {
+            popover.sourceView = sourceView;
+            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        }
+        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
+    } else {
+        //do nothing
+    }
 }
 
 - (void)clearAllFiles {

@@ -25,6 +25,7 @@
     #import <YYCategories/YYCategories.h>
     #import <JQFMDB/JQFMDB.h>
     #import <YBImageBrowser/YBImageBrowser.h>
+    #import <SSZipArchive/SSZipArchive.h>
 
     #import "UILabel+text.h"
     #import "UINavigationController+push.h"

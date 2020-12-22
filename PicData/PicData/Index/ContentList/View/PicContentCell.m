@@ -34,8 +34,8 @@
 
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.textAlignment = NSTextAlignmentLeft;
-        titleLabel.numberOfLines = 2;
-        titleLabel.font = [UIFont systemFontOfSize:15];
+        titleLabel.numberOfLines = 3;
+        titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.textColor = pdColor(63, 63, 63, 1);
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
@@ -44,7 +44,8 @@
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(-35);
             make.top.equalTo(thumbnailIV.mas_bottom);
-            make.height.mas_equalTo(40);
+            make.bottom.mas_equalTo(0);
+//            make.height.mas_equalTo(40);
         }];
         
         UIButton *downBtn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -54,8 +55,8 @@
         
         [downBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(titleLabel);
-            make.right.mas_equalTo(-5);
-            make.size.mas_equalTo(CGSizeMake(30, 30));
+            make.right.mas_equalTo(-3);
+            make.size.mas_equalTo(CGSizeMake(40, 40));
         }];
         
         self.layer.shadowColor = [UIColor blackColor].CGColor;//shadowColor阴影颜色

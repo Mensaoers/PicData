@@ -11,7 +11,7 @@
 #import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
 
-@interface LocalFileListVC () <UITableViewDelegate, UITableViewDataSource, YBImageBrowserDataSource>
+@interface LocalFileListVC () <UITableViewDelegate, UITableViewDataSource, YBImageBrowserDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
@@ -48,6 +48,11 @@
 
 - (void)loadNavigationItem {
     self.navigationItem.title = @"浏览";
+
+    if ([self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
+        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeAllFiles)];
+        self.navigationItem.leftBarButtonItem = arrangeItem;
+    }
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
@@ -226,6 +231,38 @@
     }
 }
 
+- (void)arrangeAllFiles {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    for (ViewerFileModel *fileModel in self.fileNamesList) {
+        if (!fileModel.isFolder) {
+            continue;
+        }
+        NSString *dirPath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+        NSError *subError = nil;
+        NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
+        BOOL hasFolder = NO;
+        for (NSString *fileName in fileContents) {
+            NSString *pathExtension = fileName.pathExtension;
+            if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
+
+            } else {
+                hasFolder = YES;
+            }
+        }
+        if (!hasFolder) {
+            // 没有文件夹, 干掉
+            NSError *rmError = nil;
+            [fileManager removeItemAtPath:dirPath error:&rmError];
+        }
+    }
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+
+    [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:2];
+    [self refreshLoadData];
+}
+
 - (void)clearAllFiles {
     PDBlockSelf
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定清空所有文件吗?(该目录也将一并清除), 该过程不可逆" preferredStyle:UIAlertControllerStyleAlert];
@@ -276,6 +313,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ViewerCell *cell = [tableView dequeueReusableCellWithIdentifier:ViewerCellIdentifier forIndexPath:indexPath];
+    cell.targetPath = self.targetFilePath;
     cell.fileModel = self.fileNamesList[indexPath.row];
     return cell;
 }
@@ -304,6 +342,7 @@
     }
 
     YBImageBrowser *browser = [YBImageBrowser new];
+    browser.delegate = self;
     browser.dataSourceArray = self.imgsList;
     browser.currentPage = currentIndex;
     // 只有一个保存操作的时候，可以直接右上角显示保存按钮
@@ -336,6 +375,9 @@
 }
 
 #pragma mark YBImageBrowserDataSource
+- (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+}
 //- (NSInteger)yb_numberOfCellsInImageBrowser:(YBImageBrowser *)imageBrowser {
 //    return self.imgsList.count;
 //}

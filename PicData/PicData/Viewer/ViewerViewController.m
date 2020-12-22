@@ -15,8 +15,8 @@
 /** 主view */
 @property(nonatomic, strong) QLPreviewController *preview;
 
-    // 预览文件资源路径
-    @property(nonatomic, strong) NSURL *fileURL;
+// 预览文件资源路径
+@property(nonatomic, strong) NSURL *fileURL;
 // 解决txt乱码需创建一个临时文件  页面退出通过协议方法删除临时文件
 @property(nonatomic, strong) NSString *tmpFilePath;
 

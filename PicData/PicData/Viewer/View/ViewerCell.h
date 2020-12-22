@@ -15,6 +15,8 @@ static NSString *ViewerCellIdentifier = @"ViewerCellIdentifier";
 
 @interface ViewerCell : UITableViewCell
 
+@property (nonatomic, strong) NSString *targetPath;
+
 @property (nonatomic, strong) ViewerFileModel *fileModel;
 
 @end

@@ -16,11 +16,11 @@
 @implementation PicContentView
 
 + (CGFloat)itemWidth {
-    CGFloat itemWidth = MIN(200, (PDSCREENWIDTH - 30) * 0.5);
+    CGFloat itemWidth = MIN(200, (PDSCREENWIDTH - 30) * 0.333);
     return itemWidth;
 }
 + (CGFloat)itemHeight {
-    CGFloat itemHeight = [PicContentView itemWidth] * 360.0 / 250.0 + 40;
+    CGFloat itemHeight = [PicContentView itemWidth] * 360.0 / 250.0 + 50;
     return itemHeight;
 }
 + (CGSize)itemSize {

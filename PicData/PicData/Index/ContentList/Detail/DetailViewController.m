@@ -328,7 +328,7 @@
     } else {
         if (self.detailModel.suggesArray.count > 0) {
             NSInteger count = self.detailModel.suggesArray.count;
-            CGFloat height = ceil((count + 1) / (self.view.mj_w / [PicContentView itemWidth])) * ([PicContentView itemHeight] + 10);
+            CGFloat height = ceil((count) / (self.view.mj_w / [PicContentView itemWidth])) * ([PicContentView itemHeight] + 10);
             return height;
         } else {
             return 0;

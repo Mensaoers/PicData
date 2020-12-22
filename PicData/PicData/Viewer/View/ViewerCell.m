@@ -44,6 +44,7 @@
         bgView.layer.cornerRadius = 4;
 
         UIImageView *iconImageView = [[UIImageView alloc] init];
+        iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.bgView addSubview:iconImageView];
         self.iconImageView = iconImageView;
 
@@ -83,7 +84,15 @@
 - (void)setFileModel:(ViewerFileModel *)fileModel {
     _fileModel = fileModel;
 
-    self.iconImageView.image = [UIImage imageNamed:fileModel.isFolder ? @"file_type_v_folder" : ([fileModel.fileName.pathExtension containsString:@"txt"] ? @"file_type_v_txt" : @"file_type_v_image")];
+    if (fileModel.isFolder) {
+        self.iconImageView.image = [UIImage imageNamed:@"file_type_v_folder"];
+    } else {
+        if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
+            self.iconImageView.image = [UIImage imageNamed:@"file_type_v_txt"];
+        } else {
+            [self.iconImageView sd_setImageWithURL:[NSURL fileURLWithPath:[self.targetPath stringByAppendingPathComponent:fileModel.fileName]] placeholderImage:[UIImage imageNamed:@"file_type_v_image"]];
+        }
+    }
     self.fileNameLabel.text = fileModel.fileName;
 }
 

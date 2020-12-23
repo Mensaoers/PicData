@@ -41,8 +41,6 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewTask:) name:NOTICECHEADDNEWTASK object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutAddNewDetailTask:) name:NOTICECHEADDNEWDETAILTASK object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeAboutDownSuccessTask:) name:NOTICEPICDOWNLOADSUCCESS object:nil];
-//
-//    [self loadData];
 }
 
 - (void)loadData {

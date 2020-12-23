@@ -27,6 +27,7 @@
     #import <YBImageBrowser/YBImageBrowser.h>
     #import <SSZipArchive/SSZipArchive.h>
 
+    #import "NSString+ChangeUnicode.h"
     #import "UILabel+text.h"
     #import "UINavigationController+push.h"
     #import "OCGumbo+Query.h"

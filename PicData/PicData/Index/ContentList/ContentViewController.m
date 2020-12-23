@@ -40,7 +40,6 @@
     [self.collectionView.mj_header beginRefreshing];
 }
 
-
 - (void)loadMainView {
     [super loadMainView];
     
@@ -294,7 +293,7 @@
 
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {
     [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel needDownload:YES operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
-        [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+        [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:1];
     }];
 }
 

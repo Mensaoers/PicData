@@ -26,10 +26,6 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (void)loadNavigationItem {
     self.navigationItem.title = @"设置";
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"重置" style:UIBarButtonItemStyleDone target:self action:@selector(resetPath)];
@@ -133,6 +129,118 @@
         make.centerY.equalTo(checkButton);
         make.height.mas_equalTo(35);
     }];
+
+    // version
+    UIButton *versionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [versionButton setTitle:[NSString stringWithFormat:@"V%@ [检查更新]", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]] forState:UIControlStateNormal];
+    versionButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [versionButton addTarget:self action:@selector(checkNewVersion:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:versionButton];
+
+    [versionButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(200, 40));
+        make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-20);
+    }];
+    versionButton.layer.cornerRadius = 4;
+    versionButton.layer.borderColor = versionButton.tintColor.CGColor;
+    versionButton.layer.borderWidth = 1;
+    versionButton.layer.masksToBounds = YES;
+}
+
+- (void)checkNewVersion:(UIButton *)sender {
+
+    NSString *paramsString = [NSString stringWithFormat:@"_api_key=afa1255fbfe95e7e5cc2502d0b159b0c&appKey=de806dcb2f8f3f74c1f04ce6a18b610c&buildVersion=%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+    PDBlockSelf
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self postWith:@"https://www.pgyer.com/apiv2/app/check" paramsString:paramsString completeHandler:^(NSString * _Nullable responseString, NSDictionary * _Nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message) {
+
+        [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+
+        if (!isSuccess) {
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:message afterDelay:1];
+            return;
+        }
+        NSString *urlString = @"https://www.pgyer.com/PicData";
+        NSString *buildPassword = @"527888";
+        NSString *messageAlert = [NSString stringWithFormat:@"即将打开地址: %@, 密码: %@", urlString, buildPassword];
+        NSString *titleAlert = @"版本提醒";
+        BOOL buildHaveNewVersion = [responseDataDic[@"buildHaveNewVersion"] boolValue];
+        if (buildHaveNewVersion) {
+            // 有新版本
+            NSString *buildUpdateDescription = responseDataDic[@"buildUpdateDescription"];
+            NSString *buildVersion = responseDataDic[@"buildVersion"];
+            messageAlert = [NSString stringWithFormat:@"检测到最新版本V%@%@", buildVersion, buildUpdateDescription.length > 0 ? [NSString stringWithFormat:@"\n%@", buildUpdateDescription] : @""];
+        } else {
+            // 无新版本
+            messageAlert = [NSString stringWithFormat:@"当前已是最新版本, 打开地址: %@, 密码: %@", urlString, buildPassword];
+        }
+
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleAlert message:messageAlert preferredStyle:UIAlertControllerStyleAlert];
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"复制密码去打开网页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = buildPassword;
+            [UIApplication.sharedApplication openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
+        }]];
+
+        if (buildHaveNewVersion) {
+            NSString *downloadURL = responseDataDic[@"downloadURL"];
+            [alert addAction:[UIAlertAction actionWithTitle:@"直接安装" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [UIApplication.sharedApplication openURL:[NSURL URLWithString:downloadURL] options:@{} completionHandler:nil];
+            }]];
+        }
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil]];
+        [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
+
+    }];
+}
+
+- (void)postWith:( NSString * _Nonnull )urlString paramsString:( NSString * _Nullable )paramsString completeHandler:(void(^)(NSString * __nullable responseString, NSDictionary * __nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message))completeHandler; {
+
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"POST"];
+    [mutableRequest setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [mutableRequest setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
+    NSURLSession *session = [NSURLSession sharedSession];
+
+    PDBlockSelf
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+        [weakSelf parasResponse:data completeHandler:^(NSString * _Nullable responseString, NSDictionary * _Nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(error) {
+                    completeHandler(responseString, nil, NO, @"网络请求失败");
+                    return;
+                }
+                completeHandler(responseString, responseDataDic, isSuccess, message);
+            });
+        }];
+    }];
+    [dataTask resume];
+}
+
+- (void)parasResponse:(NSData *)data completeHandler:(void(^)(NSString * __nullable responseString, NSDictionary * __nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message))completeHandler {
+    NSString *returnDataStr = [NSString stringByReplaceUnicode:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+
+        // 解析
+    NSError *readError = nil;
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&readError];
+
+    if (readError) {
+        completeHandler(returnDataStr, nil, NO, @"数据解析失败");
+        return;
+    }
+
+    if ([dictionary[@"code"] intValue] == 0) {
+        NSDictionary *dic = dictionary[@"data"];
+        completeHandler(returnDataStr, dic, YES, @"");
+        return;
+    } else {
+        completeHandler(returnDataStr, nil, NO, @"请求失败");
+        return;
+    }
 }
 
 - (void)checkButtonClickAction:(UIButton *)sender {

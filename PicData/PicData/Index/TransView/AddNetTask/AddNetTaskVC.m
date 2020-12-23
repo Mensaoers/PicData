@@ -29,10 +29,6 @@
     return _lock;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (void)loadNavigationItem {
     self.navigationItem.title = @"创建网络任务";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(sureToAdd:)];

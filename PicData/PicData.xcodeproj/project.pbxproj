@@ -28,6 +28,7 @@
 		33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */; };
 		33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
+		33F1460C25932BC50042CF31 /* NSString+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSString+ChangeUnicode.m */; };
 		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
 		9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D524C2B62C00FA8D88 /* PicClassTableView.m */; };
 		9D0E52D924C2B96100FA8D88 /* PicClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52D824C2B96100FA8D88 /* PicClassTableViewCell.m */; };
@@ -116,6 +117,8 @@
 		33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicDownRecoreModel.m; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
 		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
+		33F1460A25932BC50042CF31 /* NSString+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ChangeUnicode.h"; sourceTree = "<group>"; };
+		33F1460B25932BC50042CF31 /* NSString+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ChangeUnicode.m"; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
 		9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassifyPage.h; sourceTree = "<group>"; };
 		9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassifyPage.m; sourceTree = "<group>"; };
@@ -494,6 +497,8 @@
 		9DE95CB8244C3FDC00E31735 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				33F1460A25932BC50042CF31 /* NSString+ChangeUnicode.h */,
+				33F1460B25932BC50042CF31 /* NSString+ChangeUnicode.m */,
 				9DE95CFB244CA26F00E31735 /* Singleton.h */,
 				33B43FB62554436C00C33FD0 /* Foundation+Log.m */,
 				9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */,
@@ -707,6 +712,7 @@
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
+				33F1460C25932BC50042CF31 /* NSString+ChangeUnicode.m in Sources */,
 				9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,

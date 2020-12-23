@@ -24,10 +24,6 @@
 
 @implementation ViewerViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (NSString *)getNaviTitle:(NSString *)defaultTitle {
     if (self.filePath.length > 0) {
         return self.filePath.lastPathComponent;

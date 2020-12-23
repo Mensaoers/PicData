@@ -42,10 +42,6 @@
     return _targetFilePath;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (void)loadNavigationItem {
     self.navigationItem.title = @"浏览";
 
@@ -259,7 +255,7 @@
     }
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 
-    [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:2];
+    [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:1];
     [self refreshLoadData];
 }
 

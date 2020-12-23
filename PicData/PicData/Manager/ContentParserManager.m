@@ -13,20 +13,20 @@
 
 @property (nonatomic, strong) dispatch_queue_t disToDownQueue;
 
+@property (nonatomic, strong) NSOperationQueue *queue;
+
 @end
 
 @implementation ContentParserManager
 
 singleton_implementation(ContentParserManager)
 
-- (dispatch_queue_t)disToDownQueue {
-    if (nil == _disToDownQueue) {
-        dispatch_queue_t dispatchQueue = dispatch_queue_create("com.test.queue.download", DISPATCH_QUEUE_SERIAL);
-        // DISPATCH_QUEUE_SERIAL // 串行
-        // DISPATCH_QUEUE_CONCURRENT // 并行
-        _disToDownQueue = dispatchQueue;
+- (NSOperationQueue *)queue {
+    if (nil == _queue) {
+        _queue = [[NSOperationQueue alloc] init];
+        _queue.maxConcurrentOperationCount = 3; // 串行队列
     }
-    return _disToDownQueue;
+    return _queue;
 }
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
@@ -52,12 +52,7 @@ singleton_implementation(ContentParserManager)
 
 + (void)parserWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
     NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:contentModel];
-    
-    // 1.创建队列
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    
-    // 2.设置最大并发操作数
-    queue.maxConcurrentOperationCount = 1; // 串行队列
+
     NSString *filePath = [targetPath stringByAppendingPathComponent:@"urlList.txt"];
     NSLog(@"%@", filePath);
     
@@ -72,46 +67,46 @@ singleton_implementation(ContentParserManager)
     
     NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
 
-    [self operationQueue:queue withUrl:contentModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+    [[ContentParserManager sharedContentParserManager].queue addOperationWithBlock:^{
+        [ContentParserManager dealWithUrl:contentModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+    }];
 }
 
-+ (void)operationQueue:(NSOperationQueue *)queue withUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
++ (void)dealWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
     // 错误-1, 网络部分错误
     // 错误-2, 写入部分错误
     if ([url containsString:@".html"]) {
-        [queue addOperationWithBlock:^{
-            NSError *error = nil;
-            NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
-            NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:NSUTF8StringEncoding error:&error];
-            NSString *nextUrl = @"";
-            int count = 0;
-            if (error) {
-                NSLog(@"第%d页, %@, 出现错误-1, %@", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
-            } else {
-                NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
-                
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
-                nextUrl = result[@"nextUrl"];
-                NSError *writeError = nil;
-                count = [result[@"count"] intValue];
-                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
-                if (writeError) {
-                    NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
-                }
-            }
+        NSError *error = nil;
+        NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
+        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:NSUTF8StringEncoding error:&error];
+        NSString *nextUrl = @"";
+        int count = 0;
+        if (error) {
+            NSLog(@"第%d页, %@, 出现错误-1, %@", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
+        } else {
+            NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-            contentModel.totalCount = picCount + count;
-//            [contentModel updateTable];
-                //            [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
-
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentModel}];
-            if (![nextUrl containsString:@".html"]) {
-                [targetHandle closeFile];
-                NSLog(@"完成");
-            } else {
-                [ContentParserManager operationQueue:queue withUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+            NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+            nextUrl = result[@"nextUrl"];
+            NSError *writeError = nil;
+            count = [result[@"count"] intValue];
+            [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
+            if (writeError) {
+                NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
             }
-        }];
+        }
+
+        contentModel.totalCount = picCount + count;
+        // [contentModel updateTable];
+        // [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentModel}];
+        if (![nextUrl containsString:@".html"]) {
+            [targetHandle closeFile];
+            NSLog(@"完成");
+        } else {
+            [ContentParserManager dealWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+        }
     }
 }
 

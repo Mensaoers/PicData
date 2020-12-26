@@ -17,9 +17,23 @@
 @property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
 @property (nonatomic, strong) NSMutableArray *imgsList;
 
+@property (nonatomic, strong) UILabel *contentLabel;
+@property (nonatomic, strong) PicContentModel *contentModel;
+
+
 @end
 
 @implementation LocalFileListVC
+
+- (PicContentModel *)contentModel {
+    if (nil == _contentModel) {
+        NSArray *result = [PicContentModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];
+        if (result.count > 0) {
+            _contentModel = result[0];
+        }
+    }
+    return _contentModel;
+}
 
 - (NSMutableArray<ViewerFileModel *> *)fileNamesList {
     if (nil == _fileNamesList) {
@@ -43,24 +57,50 @@
 }
 
 - (void)loadNavigationItem {
-    self.navigationItem.title = @"浏览";
 
     if ([self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
         UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeAllFiles)];
         self.navigationItem.leftBarButtonItem = arrangeItem;
     }
 
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    [button setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
-    button.frame = CGRectMake(0, 0, 44, 44);
-    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    NSMutableArray *items = [NSMutableArray array];
+    
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
+    shareButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
+    [items addObject:shareItem];
+    
     UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
-    self.navigationItem.rightBarButtonItems = @[shareItem, deleteItem];
+    [items addObject:deleteItem];
+    
+    if (self.navigationController.viewControllers.count > 2) {
+        UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
+        [items addObject:likeItem];
+    }
+    
+    self.navigationItem.rightBarButtonItems = items;
 }
 
 - (void)loadMainView {
     [super loadMainView];
+    
+    self.view.backgroundColor = BackgroundColor;
+    
+    UILabel *contentLabel = [[UILabel alloc] init];
+    contentLabel.font = [UIFont systemFontOfSize:14];
+    contentLabel.textAlignment = NSTextAlignmentLeft;
+    contentLabel.textColor = UIColor.lightGrayColor;
+    contentLabel.numberOfLines = 0;
+    [self.view addSubview:contentLabel];
+    self.contentLabel = contentLabel;
+    
+    [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(24);
+        make.right.mas_equalTo(-24);
+        make.top.mas_equalTo(8);
+    }];
 
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     tableView.delegate = self;
@@ -74,7 +114,8 @@
     tableView.tableFooterView = [UIView new];
 
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+        make.top.equalTo(contentLabel.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
     }];
 
     PDBlockSelf
@@ -92,7 +133,8 @@
 - (void)refreshLoadData {
     // 每次页面加载出来的时候, 需要当前目录名字
     NSString *directory = [self.targetFilePath lastPathComponent];
-    self.navigationItem.title = [NSString stringWithFormat:@"%@", directory];
+//    self.navigationItem.title = [NSString stringWithFormat:@"%@", directory];
+    self.contentLabel.text = [NSString stringWithFormat:@"%@", directory];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
@@ -273,22 +315,20 @@
                 [PicContentModel unAddALLWithSourceTitle:[weakSelf.targetFilePath lastPathComponent]];
             } else {
                 // 更新contentModel就好了
-                NSArray *result = [PicContentModel queryTableWithTitle:[weakSelf.targetFilePath lastPathComponent]];
-                if (result > 0) {
-                    PicContentModel *contentModel = result[0];
-                    contentModel.hasAdded = 0;
-                    [contentModel updateTable];
+                if (self.contentModel) {
+                    self.contentModel.hasAdded = 0;
+                    [self.contentModel updateTable];
                 }
             }
 
             // [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
-            [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括文件夹(包括目录本身)
+            [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
         } else {
             // 根视图, 删除所有
             [PDDownloadManager.sharedPDDownloadManager totalCancel];
             // 取消所有已添加
             [PicContentModel unAddALL];
-            [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
+            [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件不包括该文件夹本身
         }
         if (nil == rmError) {
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除成功" afterDelay:1];
@@ -297,6 +337,39 @@
             // [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除失败" afterDelay:1];
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
             [weakSelf.tableView.mj_header beginRefreshing];
+        }
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)likeAllFiles {
+    PDBlockSelf
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定移动该文件至收藏夹吗?" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // 构造收藏文件夹
+        NSString *systemPath = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+        NSString *likePath = [systemPath stringByAppendingPathComponent:@"我的收藏"];
+        if ([[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:likePath]) {
+            NSString *toPath = [likePath stringByAppendingPathComponent:[self.targetFilePath lastPathComponent]];
+            NSError *copyError = nil;
+            BOOL result = [[NSFileManager defaultManager] copyItemAtPath:self.targetFilePath toPath:toPath error:&copyError];
+            if (result) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"收藏成功, 文件已移至\"根目录/我的收藏/\"目录下" preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"删除该目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    NSError *rmError = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }]];
+                [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }]];
+                [weakSelf presentViewController:alert animated:YES completion:nil];
+            } else {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", copyError] preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+                [weakSelf presentViewController:alert animated:YES completion:nil];
+            }
         }
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
@@ -315,7 +388,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    return 64;
+    return 88;
 }
 
 - (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath tableView:(UITableView * _Nonnull)tableView {
@@ -374,12 +447,5 @@
 - (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
-//- (NSInteger)yb_numberOfCellsInImageBrowser:(YBImageBrowser *)imageBrowser {
-//    return self.imgsList.count;
-//}
-//
-//- (id<YBIBDataProtocol>)yb_imageBrowser:(YBImageBrowser *)imageBrowser dataForCellAtIndex:(NSInteger)index {
-//
-//}
 
 @end

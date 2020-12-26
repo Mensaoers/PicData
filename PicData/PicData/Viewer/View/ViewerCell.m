@@ -49,9 +49,10 @@
         self.iconImageView = iconImageView;
 
         [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.bgView);
+            make.top.mas_equalTo(8);
+            make.bottom.mas_equalTo(-8);
             make.left.mas_equalTo(16);
-            make.size.mas_equalTo(CGSizeMake(44, 44));
+            make.width.equalTo(iconImageView.mas_height);
         }];
 
         UIImageView *arrowImageView = [[UIImageView alloc] init];

@@ -139,7 +139,7 @@
 
     [versionButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
-        make.size.mas_equalTo(CGSizeMake(200, 40));
+        make.size.mas_equalTo(CGSizeMake(MIN(300, self.view.mj_w - 40), 40));
         make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-20);
     }];
     versionButton.layer.cornerRadius = 4;
@@ -249,7 +249,7 @@
 
 - (BOOL)checkPath {
     NSString *fullPath = [PDDownloadManager getDocumentPathWithTarget:self.textView.text];
-    BOOL isExist = [[PDDownloadManager sharedPDDownloadManager] checkDownloadPathExist:fullPath];
+    BOOL isExist = [[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:fullPath];
     [MBProgressHUD showInfoOnView:self.view WithStatus: isExist ? @"路径正确" : @"路径不存在"];
     return isExist;
 }

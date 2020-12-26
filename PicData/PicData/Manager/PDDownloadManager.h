@@ -38,7 +38,7 @@ singleton_interface(PDDownloadManager);
 + (NSString *)getDocumentPathWithTarget:(NSString *)targetPath;
 
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need;
-- (BOOL)checkDownloadPathExist:(NSString *)path;
+- (BOOL)checkFilePathExist:(NSString *)path;
 /// 设置下载地址
 - (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath;
 

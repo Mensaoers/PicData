@@ -24,7 +24,7 @@ singleton_implementation(ContentParserManager)
 - (NSOperationQueue *)queue {
     if (nil == _queue) {
         _queue = [[NSOperationQueue alloc] init];
-        _queue.maxConcurrentOperationCount = 3; // 串行队列
+        _queue.maxConcurrentOperationCount = 5; // 串行队列
     }
     return _queue;
 }

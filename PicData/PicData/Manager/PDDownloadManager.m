@@ -81,7 +81,7 @@ singleton_implementation(PDDownloadManager);
 
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need {
 
-    BOOL isExist = [self checkDownloadPathExist:[self systemDownloadFullPath]];
+    BOOL isExist = [self checkFilePathExist:[self systemDownloadFullPath]];
     if (!isExist && need) {
             // 不存在
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECKDOWNLOADPATHKEY object:nil];
@@ -89,19 +89,18 @@ singleton_implementation(PDDownloadManager);
     return isExist;
 }
 
-- (BOOL)checkDownloadPathExist:(NSString *)path {
+- (BOOL)checkFilePathExist:(NSString *)path {
     BOOL isDir = YES;
 
     BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
 
     if (!isExist) {
-        BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-        if (!result) {
-            return NO;
-        } else {
-            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-            return YES;
+        NSError *createError = nil;
+        BOOL result =  [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&createError];
+        if (createError) {
+            NSLog(@"- checkFilePathExist - 创建文件失败: %@", createError);
         }
+        return result;
     }
 
     return isExist;

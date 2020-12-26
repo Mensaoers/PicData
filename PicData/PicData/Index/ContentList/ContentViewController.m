@@ -43,7 +43,7 @@
 - (void)loadMainView {
     [super loadMainView];
     
-    PicContentView *collectionView = [PicContentView collectionView];
+    PicContentView *collectionView = [PicContentView collectionView:self.view.mj_w];
     collectionView.delegate = self;
     collectionView.dataSource = self;
     [self.view addSubview:collectionView];

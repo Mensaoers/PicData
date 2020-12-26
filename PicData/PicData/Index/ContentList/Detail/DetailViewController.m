@@ -18,9 +18,20 @@
 
 @property (nonatomic, strong) NSMutableArray <NSDictionary *>*historyInfos;
 
+@property (nonatomic, strong) UILabel *contentLabel;
+
+@property (nonatomic, strong) NSMutableDictionary *heightDic;
+
 @end
 
 @implementation DetailViewController
+
+- (NSMutableDictionary *)heightDic {
+    if (nil == _heightDic) {
+        _heightDic = [NSMutableDictionary dictionary];
+    }
+    return _heightDic;
+}
 
 - (NSMutableArray<NSDictionary *> *)historyInfos {
     if (nil == _historyInfos) {
@@ -46,8 +57,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = self.contentModel.title;
-    [self loadNavigationItem];
     [self.tableView.mj_header beginRefreshing];
 }
 
@@ -60,6 +69,8 @@
         [leftBarButtonItems addObject:lastPageItem];
     }
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"下载" style:UIBarButtonItemStyleDone target:self action:@selector(downloadThisContent:)];
 }
 
 - (void)backAction:(UIBarButtonItem *)sender {
@@ -68,7 +79,23 @@
 
 - (void)loadMainView {
     [super loadMainView];
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    
+    UILabel *contentLabel = [[UILabel alloc] init];
+    contentLabel.font = [UIFont systemFontOfSize:14];
+    contentLabel.textAlignment = NSTextAlignmentLeft;
+    contentLabel.textColor = UIColor.lightGrayColor;
+    contentLabel.numberOfLines = 0;
+    contentLabel.text = self.contentModel.title;
+    [self.view addSubview:contentLabel];
+    self.contentLabel = contentLabel;
+    
+    [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(8);
+        make.right.mas_equalTo(-8);
+        make.top.mas_equalTo(8);
+    }];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     [self.view addSubview:tableView];
@@ -76,7 +103,9 @@
     self.tableView = tableView;
     
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+        make.top.equalTo(contentLabel.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-10);
     }];
     
     tableView.tableFooterView = [UIView new];
@@ -85,9 +114,6 @@
     tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf loadDetailData];
     }];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"下载" style:UIBarButtonItemStyleDone target:self action:@selector(downloadThisContent:)];
-
 }
 
 - (void)loadLastPageDetailData {
@@ -135,9 +161,9 @@
 }
 
 - (void)refreshMainView {
-    self.navigationItem.title = self.detailModel.detailTitle;
+    self.contentLabel.text = self.detailModel.detailTitle;
     [self.tableView reloadData];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     [self.tableView.mj_header endRefreshing];
 }
 
@@ -281,7 +307,17 @@
 
             cell.indexpath = indexPath;
             cell.url = self.detailModel.contentImgsUrl[indexPath.row];
-
+            PDBlockSelf
+            cell.updateCellHeightBlock = ^(NSIndexPath * _Nonnull indexPath_, CGFloat height) {
+                [weakSelf.heightDic setValue:@(height) forKey:[NSString stringWithFormat:@"%ld-%ld", (long)indexPath_.section, (long)indexPath_.row]];
+                dispatch_async( dispatch_get_main_queue(), ^{
+                    UITableViewCell  *existcell = [tableView cellForRowAtIndexPath:indexPath_];
+                    if (existcell) {
+                        // assign image to cell here
+                        [tableView reloadRowsAtIndexPaths:@[indexPath_] withRowAnimation:UITableViewRowAnimationNone];
+                    }
+                });
+            };
             tCell = cell;
         }
             break;
@@ -290,9 +326,10 @@
             if (nil == cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"collect"];
                 
-                PicContentView *collectionView = [PicContentView collectionView];
+                PicContentView *collectionView = [PicContentView collectionView:self.tableView.mj_w];
                 collectionView.delegate = self;
                 collectionView.dataSource = self;
+                collectionView.scrollEnabled = NO;
                 collectionView.tag = 9527;
                 [cell.contentView addSubview:collectionView];
 
@@ -324,11 +361,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        NSNumber *height = [self.heightDic valueForKey:[NSString stringWithFormat:@"%ld-%ld", (long)indexPath.section, (long)indexPath.row]];
+        if (height && [height floatValue] > 0) {
+            return [height floatValue];
+        }
         return UITableViewAutomaticDimension;
     } else {
         if (self.detailModel.suggesArray.count > 0) {
             NSInteger count = self.detailModel.suggesArray.count;
-            CGFloat height = ceil((count) / (self.view.mj_w / [PicContentView itemWidth])) * ([PicContentView itemHeight] + 10);
+            CGFloat width = self.tableView.mj_w;
+            CGFloat height = ceil((count) / (self.view.mj_w / [PicContentView itemWidth:width])) * ([PicContentView itemHeight:width] + 10);
             return height;
         } else {
             return 0;
@@ -341,25 +383,33 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *titleLabel = [[UILabel alloc] init];
-
+    
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = UIColor.whiteColor;
+    CGRect frame = CGRectMake(0, 0, tableView.mj_w, 25);
+    bgView.frame = frame;
+    
+    frame.origin.x = 8;
+    frame.size.width -= 16;
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
     titleLabel.font = [UIFont systemFontOfSize:15];
     titleLabel.textColor = pdColor(153, 153, 153, 1);
+    [bgView addSubview:titleLabel];
 
     if (section == 0) {
-        titleLabel.text = self.detailModel.detailTitle ?: @"";
+        titleLabel.text = @"图片";// self.detailModel.detailTitle ?: @"";
     } else {
         titleLabel.text = self.detailModel.suggesTitle ?: @"";
     }
 
-    return titleLabel;
+    return bgView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         return 200;
     } else {
-        return ((self.detailModel.suggesArray ? self.detailModel.suggesArray.count : 0) + 1) / 2.0 * ((self.view.mj_w - 30) / 2 * 360.0 / 250 + 50);
+        return 100;//((self.detailModel.suggesArray ? self.detailModel.suggesArray.count : 0) + 1) / 2.0 * ((self.view.mj_w - 30) / 2 * 360.0 / 250 + 50);
     }
 }
 

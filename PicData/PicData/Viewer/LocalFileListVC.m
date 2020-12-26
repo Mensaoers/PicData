@@ -115,7 +115,8 @@
 
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom);
-        make.left.right.bottom.equalTo(self.view);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-10);
     }];
 
     PDBlockSelf
@@ -445,7 +446,7 @@
 
 #pragma mark YBImageBrowserDataSource
 - (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 }
 
 @end

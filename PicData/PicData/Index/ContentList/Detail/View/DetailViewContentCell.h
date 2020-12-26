@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *url;
 
+@property (nonatomic, copy) void(^updateCellHeightBlock)(NSIndexPath *indexPath, CGFloat height);
+
 @end
 
 NS_ASSUME_NONNULL_END

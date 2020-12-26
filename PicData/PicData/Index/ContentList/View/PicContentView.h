@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PicContentView : UICollectionView
 
-+ (CGFloat)itemWidth;
-+ (CGFloat)itemHeight;
-+ (CGSize)itemSize;
++ (CGFloat)itemWidth:(CGFloat)wholeWidth;
++ (CGFloat)itemHeight:(CGFloat)wholeWidth;
++ (CGSize)itemSize:(CGFloat)wholeWidth;
 
-+ (instancetype)collectionView;
++ (instancetype)collectionView:(CGFloat)wholeWidth;
 @property (nonatomic, strong) NSArray<PicContentModel *> *dataList;
 
 @end

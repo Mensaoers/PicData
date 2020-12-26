@@ -27,20 +27,34 @@
         self.conImgView = conImgView;
         
         [conImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
+            make.left.top.mas_equalTo(5);
+            make.right.mas_equalTo(-5);
+            make.bottom.mas_equalTo(-4);
         }];
+        
+        conImgView.layer.cornerRadius = 4;
+        conImgView.layer.masksToBounds = YES;
     }
     return self;
 }
 
 - (void)setUrl:(NSString *)url {
-//    PDBlockSelf
+    if ([url isEqualToString:_url]) {
+        return;
+    }
+    _url = url;
+    PDBlockSelf
     [self.conImgView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"blank"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (nil == error) {
-            // CGSize imageSize = image.size;
-            // NSLog(@"imageSize:%@, imageView.width: %f, height:%f", NSStringFromCGSize(imageSize), weakSelf.conImgView.mj_w, imageSize.height * weakSelf.conImgView.mj_w / imageSize.width);
+            CGSize imageSize = image.size;
+            CGFloat height = imageSize.height * weakSelf.conImgView.mj_w / imageSize.width + 9;
+//            NSLog(@"imageSize:%@, imageView.width: %f, height:%f", NSStringFromCGSize(imageSize), weakSelf.conImgView.mj_w, height);
+            [weakSelf.conImgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(height);
+            }];
+            if (weakSelf.updateCellHeightBlock) {
+                weakSelf.updateCellHeightBlock(weakSelf.indexpath, height);
+            }
         }
     }];
 }

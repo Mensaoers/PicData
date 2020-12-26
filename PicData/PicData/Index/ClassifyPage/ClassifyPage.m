@@ -39,7 +39,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 - (void)loadMainView {
     [super loadMainView];
     
-    PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.actionDelegate = self;
     [self.view addSubview:tableView];
     self.tableView = tableView;

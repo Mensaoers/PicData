@@ -16,9 +16,10 @@
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
+		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
+		337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AE25982D9400A679BB /* ViewerContentCell.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
-		33B43FBC2554490100C33FD0 /* ViewerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FBB2554490100C33FD0 /* ViewerCell.m */; };
 		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
 		33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */; };
@@ -92,11 +93,13 @@
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
 		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
 		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
+		337DA9A925982D7700A679BB /* ViewerContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentView.h; sourceTree = "<group>"; };
+		337DA9AA25982D7700A679BB /* ViewerContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentView.m; sourceTree = "<group>"; };
+		337DA9AD25982D9400A679BB /* ViewerContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentCell.h; sourceTree = "<group>"; };
+		337DA9AE25982D9400A679BB /* ViewerContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentCell.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		33B43FB62554436C00C33FD0 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
-		33B43FBA2554490100C33FD0 /* ViewerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerCell.h; sourceTree = "<group>"; };
-		33B43FBB2554490100C33FD0 /* ViewerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerCell.m; sourceTree = "<group>"; };
 		33B43FC02554495100C33FD0 /* ViewerFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerFileModel.h; sourceTree = "<group>"; };
 		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
 		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
@@ -258,8 +261,10 @@
 		33B43FB9255448E700C33FD0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				33B43FBA2554490100C33FD0 /* ViewerCell.h */,
-				33B43FBB2554490100C33FD0 /* ViewerCell.m */,
+				337DA9A925982D7700A679BB /* ViewerContentView.h */,
+				337DA9AA25982D7700A679BB /* ViewerContentView.m */,
+				337DA9AD25982D9400A679BB /* ViewerContentCell.h */,
+				337DA9AE25982D9400A679BB /* ViewerContentCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -723,7 +728,6 @@
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
-				33B43FBC2554490100C33FD0 /* ViewerCell.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
@@ -732,8 +736,10 @@
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
 				33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */,
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
+				337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,
 				33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */,
+				337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */,
 				3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */,
 				335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */,
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
@@ -898,7 +904,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.13;
+				MARKETING_VERSION = 0.1.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -928,7 +934,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.13;
+				MARKETING_VERSION = 0.1.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

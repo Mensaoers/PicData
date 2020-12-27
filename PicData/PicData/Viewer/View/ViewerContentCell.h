@@ -1,8 +1,8 @@
 //
-//  ViewerCell.h
+//  ViewerContentCell.h
 //  PicData
 //
-//  Created by 鹏鹏 on 2020/11/5.
+//  Created by 鹏鹏 on 2020/12/27.
 //  Copyright © 2020 garenge. All rights reserved.
 //
 
@@ -10,10 +10,10 @@
 #import "ViewerFileModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
+static CGFloat ViewerContentImageScale = 1; // 360.0 / 250.0
+@interface ViewerContentCell : UICollectionViewCell
 
-static NSString *ViewerCellIdentifier = @"ViewerCellIdentifier";
-
-@interface ViewerCell : UITableViewCell
+@property (nonatomic, strong) UIImageView *imageView;
 
 @property (nonatomic, strong) NSString *targetPath;
 

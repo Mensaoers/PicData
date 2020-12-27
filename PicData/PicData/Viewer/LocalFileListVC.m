@@ -7,13 +7,14 @@
 //
 
 #import "LocalFileListVC.h"
-#import "ViewerCell.h"
+//#import "ViewerCell.h"
 #import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
+#import "ViewerContentView.h"
 
-@interface LocalFileListVC () <UITableViewDelegate, UITableViewDataSource, YBImageBrowserDelegate>
+@interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) ViewerContentView *contentView;
 @property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
 @property (nonatomic, strong) NSMutableArray *imgsList;
 
@@ -102,25 +103,22 @@
         make.top.mas_equalTo(8);
     }];
 
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.backgroundColor = BackgroundColor;
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [tableView registerClass:[ViewerCell class] forCellReuseIdentifier:ViewerCellIdentifier];
-    [self.view addSubview:tableView];
-    self.tableView = tableView;
+    ViewerContentView *contentView = [ViewerContentView collectionView:self.view.mj_w];
+    contentView.delegate = self;
+    contentView.dataSource = self;
+    [self.view addSubview:contentView];
 
-    tableView.tableFooterView = [UIView new];
+    self.contentView = contentView;
 
-    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom);
-        make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-10);
+        make.left.mas_equalTo(5);
+        make.right.mas_equalTo(-5);
+        make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(0);
     }];
 
     PDBlockSelf
-    tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    contentView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf refreshLoadData];
     }];
 }
@@ -134,7 +132,6 @@
 - (void)refreshLoadData {
     // 每次页面加载出来的时候, 需要当前目录名字
     NSString *directory = [self.targetFilePath lastPathComponent];
-//    self.navigationItem.title = [NSString stringWithFormat:@"%@", directory];
     self.contentLabel.text = [NSString stringWithFormat:@"%@", directory];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -160,11 +157,11 @@
             }
         }
 
-        [self.tableView reloadData];
+        [self.contentView reloadData];
     } else {
         NSLog(@"%@", subError);
     }
-    [self.tableView.mj_header endRefreshing];
+    [self.contentView.mj_header endRefreshing];
 }
 
 /// 创建压缩包
@@ -337,7 +334,7 @@
         } else {
             // [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除失败" afterDelay:1];
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
-            [weakSelf.tableView.mj_header beginRefreshing];
+            [weakSelf.contentView.mj_header beginRefreshing];
         }
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
@@ -357,12 +354,12 @@
             BOOL result = [[NSFileManager defaultManager] copyItemAtPath:self.targetFilePath toPath:toPath error:&copyError];
             if (result) {
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"收藏成功, 文件已移至\"根目录/我的收藏/\"目录下" preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }]];
                 [alert addAction:[UIAlertAction actionWithTitle:@"删除该目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     NSError *rmError = nil;
                     [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }]];
-                [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }]];
                 [weakSelf presentViewController:alert animated:YES completion:nil];
@@ -377,28 +374,45 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.fileNamesList.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ViewerCell *cell = [tableView dequeueReusableCellWithIdentifier:ViewerCellIdentifier forIndexPath:indexPath];
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ViewerContentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ViewerContentCell" forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor whiteColor];
     cell.targetPath = self.targetFilePath;
-    cell.fileModel = self.fileNamesList[indexPath.row];
+    cell.fileModel = self.fileNamesList[indexPath.item];
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    return 88;
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+
+    ViewerFileModel *fileModel = self.fileNamesList[indexPath.row];
+
+    if (fileModel.isFolder) {
+        LocalFileListVC *localListVC = [[LocalFileListVC alloc] init];
+        localListVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+        [self.navigationController pushViewController:localListVC animated:YES];
+    } else {
+
+        if ([fileModel.fileName.pathExtension containsString:@"jpg"]) {
+            [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
+        } else if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
+            ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
+            viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+            [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
+        }
+    }
 }
 
-- (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath tableView:(UITableView * _Nonnull)tableView {
+- (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath contentView:(UICollectionView * _Nonnull)contentView {
     [self.imgsList removeAllObjects];
     NSInteger currentIndex = 0;
     for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
         ViewerFileModel *tempModel = self.fileNamesList[index];
         if ([tempModel.fileName.pathExtension containsString:@"jpg"]) {
-                //                [self.imgsList addObject:tempModel];
 
             if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
                 currentIndex = self.imgsList.count;
@@ -406,7 +420,8 @@
 
             YBIBImageData *data = [YBIBImageData new];
             data.imagePath = [self.targetFilePath stringByAppendingPathComponent:tempModel.fileName];
-            data.projectiveView = [tableView cellForRowAtIndexPath:indexPath];
+            ViewerContentCell *contentCell = (ViewerContentCell *)[contentView cellForItemAtIndexPath:indexPath];
+            data.projectiveView = contentCell.imageView;
             [self.imgsList addObject:data];
         }
     }
@@ -422,31 +437,12 @@
     [browser show];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    [tableView deselectRowAtIndexPath:indexPath animated: YES];
-
-    ViewerFileModel *fileModel = self.fileNamesList[indexPath.row];
-
-    if (fileModel.isFolder) {
-        LocalFileListVC *localListVC = [[LocalFileListVC alloc] init];
-        localListVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-        [self.navigationController pushViewController:localListVC animated:YES];
-    } else {
-
-        if ([fileModel.fileName.pathExtension containsString:@"jpg"]) {
-            [self viewPicFile:fileModel indexPath:indexPath tableView:tableView];
-        } else if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
-            ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
-            viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-            [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
-        }
-    }
-}
-
 #pragma mark YBImageBrowserDataSource
 - (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+    [self.contentView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    YBIBImageData *data_ = (YBIBImageData *)data;// (YBIBImageData <YBIBDataProtocol>*)data;
+    ViewerContentCell *contentCell = (ViewerContentCell *)[self.contentView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
+    data_.projectiveView = contentCell.imageView;
 }
 
 @end

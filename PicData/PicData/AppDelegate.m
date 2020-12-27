@@ -63,7 +63,7 @@
     NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];
 
-
+    [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
     return YES;
 }
 

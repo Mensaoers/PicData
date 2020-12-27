@@ -65,7 +65,15 @@
 
        if (downloadURL.length > 0) {
            [alert addAction:[UIAlertAction actionWithTitle:downloadTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-               [UIApplication.sharedApplication openURL:[NSURL URLWithString:downloadURL] options:@{} completionHandler:nil];
+
+               BOOL isDebugged = AmIBeingDebugged();
+               if (isDebugged) {
+                   UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"调试模式下不支持直接安装app" preferredStyle:UIAlertControllerStyleAlert];
+                   [alert addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil]];
+                   [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
+               } else {
+                   [UIApplication.sharedApplication openURL:[NSURL URLWithString:downloadURL] options:@{} completionHandler:nil];
+               }
            }]];
        }
 

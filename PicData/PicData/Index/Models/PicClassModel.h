@@ -14,9 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PicClassModel: PicBaseModel
 
 @property (nonatomic, strong) NSString *sourceType;
-@property (nonatomic, strong) NSArray *subTitles;
+@property (nonatomic, strong) NSArray <PicSourceModel *>*subTitles;
+@property (nonatomic, strong) NSArray <NSString *> *subTitleStrings;
 
-+ (instancetype)modelWithHOST_URL:(NSString *)HOST_URL Title:(NSString *)title sourceType:(NSString *)sourceType subTitles:(NSArray *)subTitles;
++ (instancetype)modelWithHOST_URL:(NSString *)HOST_URL Title:(NSString *)title sourceType:(NSString *)sourceType subTitles:(nullable NSArray <PicSourceModel *>*)subTitles;
 
 @end
 

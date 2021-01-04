@@ -42,6 +42,7 @@
     #import "PDRequest.h"
     #import "TransViewController.h"
     #import "AddNetTaskVC.h"
+    #import "PicClassModel.h"
     #import "ClassifyPage.h"
     #import "DetailViewController.h"
     #import "ContentParserManager.h"

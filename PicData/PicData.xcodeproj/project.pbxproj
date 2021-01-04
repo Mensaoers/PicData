@@ -39,6 +39,9 @@
 		9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */; };
 		9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
+		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
+		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
+		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
@@ -142,6 +145,12 @@
 		9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBrowserToolViewHandler.m; sourceTree = "<group>"; };
 		9D96DC9C25A376080045D123 /* AppTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppTool.h; sourceTree = "<group>"; };
 		9D96DC9D25A376080045D123 /* AppTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppTool.m; sourceTree = "<group>"; };
+		9D96DCA125A379540045D123 /* PicClassifyTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassifyTableView.h; sourceTree = "<group>"; };
+		9D96DCA225A379540045D123 /* PicClassifyTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTableView.m; sourceTree = "<group>"; };
+		9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTagsViewCell.m; sourceTree = "<group>"; };
+		9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTagsFrame.m; sourceTree = "<group>"; };
+		9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsViewCell.h; sourceTree = "<group>"; };
+		9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsFrame.h; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -330,6 +339,7 @@
 		9D0E52CA24C2B35300FA8D88 /* ClassifyPage */ = {
 			isa = PBXGroup;
 			children = (
+				9D96DCA025A379230045D123 /* View */,
 				9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */,
 				9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */,
 			);
@@ -353,6 +363,19 @@
 			children = (
 				9D3593ED244D6D32005ADF05 /* DetailViewContentCell.h */,
 				9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9D96DCA025A379230045D123 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9D96DCA125A379540045D123 /* PicClassifyTableView.h */,
+				9D96DCA225A379540045D123 /* PicClassifyTableView.m */,
+				9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */,
+				9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */,
+				9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */,
+				9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -704,6 +727,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */,
 				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
 				9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */,
@@ -721,6 +745,7 @@
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
+				9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				33F1460C25932BC50042CF31 /* NSString+ChangeUnicode.m in Sources */,
 				9D0E52D624C2B62C00FA8D88 /* PicClassTableView.m in Sources */,
@@ -730,6 +755,7 @@
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
+				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,

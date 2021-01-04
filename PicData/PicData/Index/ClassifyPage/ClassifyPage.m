@@ -7,12 +7,12 @@
 //
 
 #import "ClassifyPage.h"
-#import "PicClassTableView.h"
+#import "PicClassifyTableView.h"
 #import "ContentViewController.h"
 
-@interface ClassifyPage () <PicClassTableViewActionDelegate>
+@interface ClassifyPage () <PicClassifyTableViewActionDelegate>
 
-@property (nonatomic, strong) PicClassTableView *tableView;
+@property (nonatomic, strong) PicClassifyTableView *tableView;
 @property (nonatomic, strong) NSArray *dataArray;
 @end
 
@@ -39,7 +39,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 - (void)loadMainView {
     [super loadMainView];
     
-    PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    PicClassifyTableView *tableView = [[PicClassifyTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.actionDelegate = self;
     [self.view addSubview:tableView];
     self.tableView = tableView;
@@ -136,7 +136,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 }
 
 #pragma mark delegate
-- (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
+- (void)tableView:(PicClassifyTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
     [sourceModel insertTable];
 //    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];

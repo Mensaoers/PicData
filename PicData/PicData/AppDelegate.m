@@ -18,38 +18,42 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
+- (void)setUpMainTab {
     BaseTabBarController *tabbarVC = [[BaseTabBarController alloc] init];
-    
+
     // 主页
     IndexViewController *indexVC = [[IndexViewController alloc] init];
     BaseNavigationController *indexNavi = [[BaseNavigationController alloc] initWithRootViewController:indexVC];
     indexNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"home"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     indexNavi.tabBarItem.image = [[UIImage imageNamed:@"home_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     indexNavi.tabBarItem.title = @"首页";
-    
+
     // 预览
     LocalFileListVC *viewerVC = [[LocalFileListVC alloc] init];
     BaseNavigationController *viewerNavi = [[BaseNavigationController alloc] initWithRootViewController:viewerVC];
     viewerNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     viewerNavi.tabBarItem.image = [[UIImage imageNamed:@"folder_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     viewerNavi.tabBarItem.title = @"浏览";
-    
+
     // 设置
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     BaseNavigationController *settingNavi = [[BaseNavigationController alloc] initWithRootViewController:settingVC];
     settingNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"set"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     settingNavi.tabBarItem.image = [[UIImage imageNamed:@"set_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     settingNavi.tabBarItem.title = @"设置";
-    
+
     tabbarVC.viewControllers = @[indexNavi, viewerNavi, settingNavi];
-    
-    
+
+
     [self.window setRootViewController:tabbarVC];
     [self.window makeKeyAndVisible];
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    
+    [self setUpMainTab];
 
     [self registerNotice];
 
@@ -84,6 +88,15 @@
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
     if (identifier == self.sessionManager.identifier) {
         self.sessionManager.completionHandler = completionHandler;
+    }
+}
+
+/// 屏幕旋转相关
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    if ([AppTool getCanChangeOrientation]) {
+        return UIInterfaceOrientationMaskAll;
+    } else {
+        return UIInterfaceOrientationMaskPortrait;
     }
 }
 

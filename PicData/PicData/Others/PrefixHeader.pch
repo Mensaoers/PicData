@@ -32,6 +32,7 @@
     #import "UINavigationController+push.h"
     #import "OCGumbo+Query.h"
 
+    #import "AppTool.h"
     #import "BaseViewController.h"
     #import "BaseNavigationController.h"
     #import "BaseTabBarController.h"

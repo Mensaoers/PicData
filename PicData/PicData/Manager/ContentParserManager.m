@@ -30,23 +30,19 @@ singleton_implementation(ContentParserManager)
 }
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-    NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", contentModel.href]];
+    NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\" and hasAdded = 1", contentModel.href]];
         // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
-        // 理论上一定有一条数据
+
     if (results.count == 0) {
-        operationTips(NO, [NSString stringWithFormat:@"获取该内容: %@-%@ 数据异常", contentModel.sourceTitle, contentModel.title]);
-        return;
-    }
-    PicContentModel *tmpModel = results[0];
-    if (tmpModel.hasAdded == 1) {
-        operationTips(YES, @"任务已存在");
-    } else {
+        // 没有查到, 说明没有添加过
         contentModel.hasAdded = 1;
-            //        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
+        //        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
         [contentModel updateTable];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": tmpModel}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": contentModel}];
         [ContentParserManager parserWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES];
         operationTips(YES, @"任务已添加");
+    } else {
+        operationTips(YES, @"任务已存在");
     }
 }
 
@@ -118,13 +114,6 @@ singleton_implementation(ContentParserManager)
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
         NSMutableArray *urls = [NSMutableArray array];
-
-//        OCQueryObject *H1Es = document.Query(@"meta");
-//        if (H1Es.count > 0) {
-//            OCGumboElement *H1Ele = H1Es[0];
-//            NSString *content = H1Ele.attr(@"content");
-//            contentModel.title = content;
-//        }
 
         OCQueryObject *liResults = document.Query(@".tal");
         if (liResults.count > 0) {

@@ -117,6 +117,9 @@
         make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(0);
     }];
 
+    contentView.layer.cornerRadius = 4;
+    contentView.layer.masksToBounds = YES;
+
     PDBlockSelf
     contentView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf refreshLoadData];

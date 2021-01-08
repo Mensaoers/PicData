@@ -181,7 +181,6 @@
 
         NSString *alt = imgE.attr(@"alt");
         if (alt.length > 0) {
-            // alt
             contentModel.title = alt;
         }
 

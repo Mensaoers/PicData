@@ -124,6 +124,11 @@
         self.detailModel.detailTitle = lastInfo[@"title"];
         [self loadDetailData];
         [self.historyInfos removeLastObject];
+
+        NSArray *result = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", self.detailModel.currentUrl]];
+        if (result.count > 0) {
+            self.contentModel = result[0];
+        }
     }
     [self loadNavigationItem];
 }
@@ -379,7 +384,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 25;
+    return  section == 0 ? CGFLOAT_MIN : 25;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

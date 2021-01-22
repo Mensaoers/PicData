@@ -43,7 +43,7 @@
 
 - (void)prepareSourceWithUrl:(NSString *)url title:(NSString *)title resultHandler:(void(^)(PicSourceModel *sourceModel, PicContentModel *contentModel))result {
 
-    NSString *HOST_URLString = @"https://m.aitaotu.com";
+    NSString *HOST_URLString = HOST_URL_M_AITAOTU;
     if ([url containsString:@"_"]) {
         NSRange range = [url rangeOfString:@"_"];
         url = [[url substringToIndex:range.location] stringByAppendingString:@".html"];
@@ -56,13 +56,13 @@
         PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
         sourceModel.title = @"网络美女";
 
-        sourceModel.HOST_URL = @"https://m.aitaotu.com";
+        sourceModel.HOST_URL = HOST_URLString;
         sourceModel.url = @"";
         sourceModel.sourceType = 2;
 
 
         [weakSelf.lock lock];
-        if ([PicSourceModel queryTableWhere:[NSString stringWithFormat:@"where title = \"%@\"", @"网络美女"]].count == 0) {
+        if ([PicSourceModel queryTableWithTitle:@"网络美女"].count == 0) {
             [sourceModel insertTable];
         }
         [weakSelf.lock unlock];
@@ -75,7 +75,7 @@
         contentModel.href = url;
 
         [weakSelf.lock lock];
-        if ([PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", url]].count == 0) {
+        if ([PicContentModel queryTableWithHref:url].count == 0) {
 
             [contentModel insertTable];
         }

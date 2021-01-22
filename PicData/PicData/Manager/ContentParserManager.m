@@ -30,7 +30,7 @@ singleton_implementation(ContentParserManager)
 }
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-    NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\" and hasAdded = 1", contentModel.href]];
+    NSArray *results = [PicContentModel queryTableWhereHasAddedWithHref:contentModel.href];
         // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
 
     if (results.count == 0) {

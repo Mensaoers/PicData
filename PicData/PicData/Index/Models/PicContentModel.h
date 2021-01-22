@@ -27,6 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)unAddALLWithSourceTitle:(NSString *)sourceTitle;
     /// 取消已添加任务
 + (BOOL)unAddALL;
+
++ (NSArray *)queryTableWithHref:(NSString *)href;
++ (NSArray *)queryTableWithHref:(NSString *)href;
+
++ (NSArray *)queryTableWhereHasAdded;
+/// 获取是否已添加任务
++ (NSArray *)queryTableWhereHasAddedWithHref:(NSString *)href;
 @end
 
 NS_ASSUME_NONNULL_END

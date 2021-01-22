@@ -185,7 +185,7 @@ singleton_implementation(PDDownloadManager);
             @"Sec-Fetch-Site" : @"cross-site",
             @"Sec-Fetch-Mode" : @"no-cors",
             @"Sec-Fetch-Dest" : @"image",
-            @"Referer" : @"https://www.aitaotu.com/",
+            @"Referer" : HOST_URL_AITAOTU,
         };
         [[[[[self.sessionManager downloadWithUrl:url headers:headers fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {

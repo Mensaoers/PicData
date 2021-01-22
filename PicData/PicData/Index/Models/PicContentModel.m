@@ -39,4 +39,17 @@
     return [PicContentModel deleteFromTable_Where:[NSString stringWithFormat:@"where title = \"%@\"", self.title]];
 }
 
++ (NSArray *)queryTableWithHref:(NSString *)href {
+    return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", href]];
+}
+
++ (NSArray *)queryTableWhereHasAdded {
+    return [self queryTableWhere:[NSString stringWithFormat:@"where hasAdded = 1"]];
+}
+
+/// 获取是否已添加任务
++ (NSArray *)queryTableWhereHasAddedWithHref:(NSString *)href {
+    return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\" and hasAdded = 1", href]];
+}
+
 @end

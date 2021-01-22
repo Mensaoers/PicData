@@ -22,4 +22,7 @@
     return [self updateTableWhere:[NSString stringWithFormat:@"where url = \"%@\"", self.url]];
 }
 
++ (int)queryCountWithContentUrl:(NSString *)contentUrl {
+    return [self queryCountWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", contentUrl]];
+}
 @end

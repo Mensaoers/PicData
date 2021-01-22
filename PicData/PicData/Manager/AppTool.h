@@ -12,6 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AppTool : NSObject
 
+/// web主地址
+FOUNDATION_EXTERN NSString *const HOST_URL_AITAOTU;
+/// wap主地址
+FOUNDATION_EXTERN NSString *const HOST_URL_M_AITAOTU;
+/// wap标签地址
+FOUNDATION_EXTERN NSString *const HOST_URL_M_AITAOTU_TAG;
+
 /// 获取当前是否支持横屏
 + (BOOL)getCanChangeOrientation;
 

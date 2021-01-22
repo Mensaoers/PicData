@@ -13,15 +13,22 @@ static BOOL canChangeOrientation = NO;
 
 @implementation AppTool
 
+/// web主地址
+NSString *const HOST_URL_AITAOTU = @"https://www.aitaotu.com/";
+/// wap主地址
+NSString *const HOST_URL_M_AITAOTU = @"https://m.aitaotu.com/";
+/// wap标签地址
+NSString *const HOST_URL_M_AITAOTU_TAG = @"https://m.aitaotu.com/tag/";
+
 /// 获取当前是否支持横屏
 + (BOOL)getCanChangeOrientation {
-return canChangeOrientation;
+    return canChangeOrientation;
 }
 
 /// 设置当前是否支持横屏
 + (BOOL)setCanChangeOrientation:(BOOL)value {
-canChangeOrientation = value;
-return YES;
+    canChangeOrientation = value;
+    return YES;
 }
 
 @end

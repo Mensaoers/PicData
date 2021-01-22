@@ -46,9 +46,9 @@
 - (void)loadData {
     // 查询isAdded=1的模型
     [self.lock lock];
-    NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where hasAdded = 1"]];
+    NSArray *results = [PicContentModel queryTableWhereHasAdded];
 //    for (PicContentModel *contentModel in results) {
-//        int count = [PicDownRecoreModel queryCountWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", contentModel.href]];
+//        int count = [PicDownRecoreModel queryCountWithContentUrl:contentModel.href];
 //        contentModel.downloadedCount = count;
 //    }
     [self.lock unlock];
@@ -138,7 +138,7 @@ static NSString *identifier = @"TransViewCell";
             TransViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
 
 //            [self.lock lock];
-//            NSArray *results = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where contentUrl = \"%@\"", recordModel.contentUrl]];
+//            NSArray *results = [PicContentModel queryTableWithHref:recordModel.contentUrl]];
 //            [self.lock unlock];
             // [JKSqliteModelTool queryDataModel:[PicDownRecoreModel class] whereStr:[NSString stringWithFormat:@"contentUrl = \"%@\"", recordModel.contentUrl] uid:SQLite_USER];
 //            [cell setDownloadedCount:(int)results.count];

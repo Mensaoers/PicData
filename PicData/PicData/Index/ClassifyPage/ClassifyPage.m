@@ -18,8 +18,6 @@
 
 @implementation ClassifyPage
 
-static NSString *HOSTURL = @"https://m.aitaotu.com";
-static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 - (NSArray *)dataArray {
     if (nil == _dataArray) {
         _dataArray = @[];
@@ -56,7 +54,7 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
 
 - (void)loadData_list {
     __weak typeof(self) weakSelf = self;
-    [PDRequest getWithURL:[NSURL URLWithString:tagUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:HOST_URL_M_AITAOTU_TAG] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [weakSelf.tableView.mj_header endRefreshing];
         if (nil == error) {
             NSLog(@"获取分类列表成功");
@@ -115,20 +113,22 @@ static NSString *tagUrl = @"https://m.aitaotu.com/tag/";
         
         for (OCGumboElement *aEle in aEles) {
             NSString *tmp = aEle.attr(@"href");
-
-            NSString *href = [NSString stringWithFormat:@"%@%@", HOSTURL, tmp ?: @""];
+            if (tmp.length == 0) {
+                continue;
+            }
+            NSString *href = [HOST_URL_M_AITAOTU stringByAppendingPathComponent:tmp];
             NSString *title = aEle.text();
             
             PicSourceModel *sourceMdoel = [[PicSourceModel alloc] init];
             sourceMdoel.title = title;
             sourceMdoel.url = href;
             sourceMdoel.sourceType = 2;
-            sourceMdoel.HOST_URL = HOSTURL;
+            sourceMdoel.HOST_URL = HOST_URL_M_AITAOTU;
             
             [sourceModels addObject:sourceMdoel];
         }
         
-        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:HOSTURL Title:title sourceType:@"2" subTitles:sourceModels.copy];
+        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:HOST_URL_M_AITAOTU Title:title sourceType:@"2" subTitles:sourceModels.copy];
         [classModels addObject:classModel];
     }
     

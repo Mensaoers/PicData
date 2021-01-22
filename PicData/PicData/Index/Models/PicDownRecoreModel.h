@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *contentName;
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, assign) int isFinished;
+
++ (int)queryCountWithContentUrl:(NSString *)contentUrl;
+
 @end
 
 NS_ASSUME_NONNULL_END

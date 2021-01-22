@@ -125,7 +125,7 @@
         [self loadDetailData];
         [self.historyInfos removeLastObject];
 
-        NSArray *result = [PicContentModel queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", self.detailModel.currentUrl]];
+        NSArray *result = [PicContentModel queryTableWithHref:self.detailModel.currentUrl];
         if (result.count > 0) {
             self.contentModel = result[0];
         }
@@ -195,8 +195,7 @@
                     OCGumboElement *imgE = imgEs.firstObject;
                     NSString *src = imgE.attr(@"src");
                     if (src.length > 0) {
-                                                src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
-//                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                        src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
                         [urls addObject:src];
                         
                     }
@@ -218,8 +217,7 @@
                         OCGumboElement *imgE = imgEs.firstObject;
                         NSString *src = imgE.attr(@"src");
                         if (src.length > 0) {
-                                                        src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
-//                            src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                            src = [src stringByReplacingOccurrencesOfString:@"img.aitaotu.cc:8089" withString:@"wapimg.aitaotu.cc:8090"];
                             [urls addObject:src];
                             
                         }

@@ -46,10 +46,10 @@
     
     for (NSInteger i=0; i<tagsArray.count; i++) {
         
-        btnW = [self sizeWithText:tagsArray[i] font:PDSYSTEMFONT_13].width + _tagsMinPadding * 2;
+        btnW = [self sizeWithText:tagsArray[i] font:PDSYSTEMFONT_15].width + _tagsMinPadding * 2;
         
         if (i < tagsArray.count-1) {
-            nextWidth = [self sizeWithText:tagsArray[i+1] font:PDSYSTEMFONT_13].width + _tagsMinPadding * 2;
+            nextWidth = [self sizeWithText:tagsArray[i+1] font:PDSYSTEMFONT_15].width + _tagsMinPadding * 2;
         }
         CGFloat nextBtnX = btnX + btnW + _tagsMargin;
         // 如果下一个按钮，标签最右边则换行
@@ -100,7 +100,7 @@
     
         for (NSInteger j=0; j<newArr.count; j++) {
             
-            tagW = [self sizeWithText:newArr[j] font:PDSYSTEMFONT_13].width + _tagsMinPadding * 2 + averageW;
+            tagW = [self sizeWithText:newArr[j] font:PDSYSTEMFONT_15].width + _tagsMinPadding * 2 + averageW;
             
             CGRect btnF = CGRectMake(tagX, tagY, tagW, tagH);
             

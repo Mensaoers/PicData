@@ -29,7 +29,7 @@ static NSInteger tagsC = 9527;
         UIButton *tagsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [tagsBtn setTitle:tagsFrame.tagsArray[i] forState:UIControlStateNormal];
         [tagsBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        tagsBtn.titleLabel.font = PDSYSTEMFONT_13;
+        tagsBtn.titleLabel.font = PDSYSTEMFONT_15;
         tagsBtn.backgroundColor = [UIColor whiteColor];
         tagsBtn.layer.borderWidth = 1;
         tagsBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;

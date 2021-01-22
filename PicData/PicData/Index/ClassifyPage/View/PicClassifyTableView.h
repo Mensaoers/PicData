@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PicClassifyTagsViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM(NSInteger, PicClassifyTableViewStyle) {
+    PicClassifyTableViewStyleDefault, // 常规tableView
+    PicClassifyTableViewStyleTags, // 多标签样式
+};
+
 @class PicClassifyTableView;
 @protocol PicClassifyTableViewActionDelegate <NSObject>
 
@@ -17,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface PicClassifyTableView : UITableView
+
+/// 界面展示样式
+@property (nonatomic, assign) PicClassifyTableViewStyle classifyStyle;
 
 @property (nonatomic, strong) NSArray <PicClassModel *> *dataList;
 - (void)reloadDataWithSource:(NSArray <PicClassModel *>*)dataList;

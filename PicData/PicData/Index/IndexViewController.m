@@ -8,14 +8,14 @@
 
 #import "IndexViewController.h"
 #import "ContentViewController.h"
-#import "PicClassTableView.h"
+#import "PicClassifyTableView.h"
 #import "ClassifyPage.h"
 #import "SettingViewController.h"
 #import "FloatingWindowView.h"
 
-@interface IndexViewController () <PicClassTableViewActionDelegate>
+@interface IndexViewController () <PicClassifyTableViewActionDelegate>
 
-@property (nonatomic, strong) PicClassTableView *tableView;
+@property (nonatomic, strong) PicClassifyTableView *tableView;
 @property (nonatomic, strong) NSArray *dataList;
 
 @end
@@ -39,6 +39,28 @@
     self.navigationItem.leftBarButtonItem = leftItem;
 }
 
+- (void)loadRightNavigationItem:(BOOL)isList {
+    if (isList) {
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list_tags"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(rightNavigationItemClickAction:)];
+        self.navigationItem.rightBarButtonItem = leftItem;
+    } else {
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(rightNavigationItemClickAction:)];
+        self.navigationItem.rightBarButtonItem = leftItem;
+    }
+}
+
+- (void)rightNavigationItemClickAction:(UIBarButtonItem *)sender {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    if (self.tableView.classifyStyle == PicClassifyTableViewStyleDefault) {
+        [self loadRightNavigationItem:NO];
+        self.tableView.classifyStyle = PicClassifyTableViewStyleTags;
+    } else if (self.tableView.classifyStyle == PicClassifyTableViewStyleTags) {
+        [self loadRightNavigationItem:YES];
+        self.tableView.classifyStyle = PicClassifyTableViewStyleDefault;
+    }
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
 - (void)jumpToClassifyPage {
     ClassifyPage *classifyPage = [[ClassifyPage alloc] init];
     [self.navigationController pushViewController:classifyPage animated:YES];
@@ -46,7 +68,8 @@
 
 - (void)loadMainView {
     [super loadMainView];
-    PicClassTableView *tableView = [[PicClassTableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    PicClassifyTableView *tableView = [[PicClassifyTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self loadRightNavigationItem:tableView.classifyStyle == PicClassifyTableViewStyleDefault];
     tableView.actionDelegate = self;
     tableView.backgroundColor = UIColor.clearColor;
     [self.view addSubview:tableView];
@@ -107,12 +130,19 @@
     
 }
 
-- (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
+-  (void)tableView:(PicClassifyTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
     [sourceModel insertTable];
 //    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
 }
+//- (void)tableView:(PicClassTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
+//    PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
+//    [sourceModel insertTable];
+////    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
+//    ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
+//    [self.navigationController pushViewController:contentVC animated:YES];
+//}
 
 @end

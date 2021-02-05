@@ -23,9 +23,9 @@ PODS:
   - MBProgressHUD (1.1.0)
   - MJExtension (3.0.17)
   - MJRefresh (3.1.17)
-  - SDWebImage (5.10.2):
-    - SDWebImage/Core (= 5.10.2)
-  - SDWebImage/Core (5.10.2)
+  - SDWebImage (5.10.4):
+    - SDWebImage/Core (= 5.10.4)
+  - SDWebImage/Core (5.10.4)
   - SSZipArchive (2.2.3)
   - Tiercel (2.4.1)
   - TiercelObjCBridge (1.0.4):
@@ -96,7 +96,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
   MJRefresh: ee5b68f639775462faba4db0fd243baf4d42c2cf
-  SDWebImage: b969dcfc02c40a5da71eac0b03b8f1a0c794a86f
+  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Tiercel: ce5c6347fea7ec877beea4530ca5a208f1b40f7e
   TiercelObjCBridge: 491ed4fe97e14e6f6b55d4a0d192a577399a53e1

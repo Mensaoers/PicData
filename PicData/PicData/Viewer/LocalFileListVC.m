@@ -76,9 +76,13 @@
     UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
     [items addObject:deleteItem];
     
-    if (self.navigationController.viewControllers.count > 2) {
-        UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
-        [items addObject:likeItem];
+    if (self.navigationController.viewControllers.count >= 2) {
+        if ([self.targetFilePath containsString:likeString]) {
+            // 我已经是收藏文件夹了
+        } else {
+            UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
+            [items addObject:likeItem];
+        }
     }
     
     self.navigationItem.rightBarButtonItems = items;
@@ -344,19 +348,36 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+static NSString *likeString = @"我的收藏";
 - (void)likeAllFiles {
     PDBlockSelf
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定移动该文件至收藏夹吗?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定移动该文件夹至收藏夹吗?" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         // 构造收藏文件夹
         NSString *systemPath = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
-        NSString *likePath = [systemPath stringByAppendingPathComponent:@"我的收藏"];
+        NSString *likePath = [systemPath stringByAppendingPathComponent:likeString];
+
+        BOOL result = YES;
+        NSError *copyError = nil;
         if ([[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:likePath]) {
-            NSString *toPath = [likePath stringByAppendingPathComponent:[self.targetFilePath lastPathComponent]];
-            NSError *copyError = nil;
-            BOOL result = [[NSFileManager defaultManager] copyItemAtPath:self.targetFilePath toPath:toPath error:&copyError];
+
+            if (weakSelf.navigationController.viewControllers.count == 2) {
+                /// 多图集页面
+                for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
+                    if (!fileModel.isFolder) {
+                        continue;
+                    }
+                NSString *toPath = [likePath stringByAppendingPathComponent:fileModel.fileName];
+                    result = [[NSFileManager defaultManager] copyItemAtPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName] toPath:toPath error:&copyError];
+                }
+            } else {
+                /// 子页面
+                NSString *toPath = [likePath stringByAppendingPathComponent:[self.targetFilePath lastPathComponent]];
+                result = [[NSFileManager defaultManager] copyItemAtPath:self.targetFilePath toPath:toPath error:&copyError];
+            }
+
             if (result) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"收藏成功, 文件已移至\"根目录/我的收藏/\"目录下" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@/\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
                 [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }]];

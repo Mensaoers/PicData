@@ -49,25 +49,48 @@
     [self.window makeKeyAndVisible];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
-    [self setUpMainTab];
-
-    [self registerNotice];
-
+- (void)setupDownloadManager {
     TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
     configuraion.allowsCellularAccess = YES;
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
     NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
-    
-    [self.sessionManager totalCancel];
 
+    [self.sessionManager totalCancel];
+}
+
+- (void)setupDataBase {
     NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];
+}
 
+- (void)setupPgyManager {
+    //启动基本SDK
+    [[PgyManager sharedPgyManager] startManagerWithAppId:[PDRequest appkey]];
+    //启动更新检查SDK
+    [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:[PDRequest appkey]];
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+    // 设置主页
+    [self setUpMainTab];
+
+    // 注册通知
+    [self registerNotice];
+
+    // 下载模块初始化
+    [self setupDownloadManager];
+
+    // 数据库初始化
+    [self setupDataBase];
+
+    // 检查更新
     [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
+
+    // 集成蒲公英SDK
+    [self setupPgyManager];
     return YES;
 }
 

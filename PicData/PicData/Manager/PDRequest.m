@@ -17,11 +17,8 @@
     [dataTask resume];
 }
 
-+ (NSString *)appkey {
-    return @"de806dcb2f8f3f74c1f04ce6a18b610c";
-}
 + (void)requestToCheckVersion:(BOOL)autoCheck onView:(UIView *)onView completehandler:(void (^)(void))completehandler {
-    NSString *paramsString = [NSString stringWithFormat:@"_api_key=afa1255fbfe95e7e5cc2502d0b159b0c&appKey=%@&buildVersion=%@", [PDRequest appkey], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+    NSString *paramsString = [NSString stringWithFormat:@"_api_key=afa1255fbfe95e7e5cc2502d0b159b0c&appKey=%@&buildVersion=%@", [AppTool app_key_pgy], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
    [self postWith:@"https://www.pgyer.com/apiv2/app/check" paramsString:paramsString completeHandler:^(NSString * _Nullable responseString, NSDictionary * _Nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message) {
 
        if (completehandler) {
@@ -110,6 +107,11 @@
 }
 
 + (void)parasResponse:(NSData *)data completeHandler:(void(^)(NSString * __nullable responseString, NSDictionary * __nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message))completeHandler {
+    if (nil == data || data.length == 0) {
+        completeHandler(@"", nil, NO, @"数据解析失败");
+        return;
+    }
+
     NSString *returnDataStr = [NSString stringByReplaceUnicode:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
 
         // 解析

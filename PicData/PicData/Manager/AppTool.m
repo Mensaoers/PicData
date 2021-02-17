@@ -20,6 +20,15 @@ NSString *const HOST_URL_M_AITAOTU = @"https://m.aitaotu.com/";
 /// wap标签地址
 NSString *const HOST_URL_M_AITAOTU_TAG = @"https://m.aitaotu.com/tag/";
 
+/// 蒲公英appKey
++ (NSString *)app_key_pgy {
+    return @"de806dcb2f8f3f74c1f04ce6a18b610c";
+}
+/// bugly app_id
++ (NSString *)app_id_bugly {
+    return @"8eb9d79660";
+}
+
 /// 获取当前是否支持横屏
 + (BOOL)getCanChangeOrientation {
     return canChangeOrientation;

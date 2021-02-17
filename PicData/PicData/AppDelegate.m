@@ -63,11 +63,8 @@
     [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];
 }
 
-- (void)setupPgyManager {
-    //启动基本SDK
-    [[PgyManager sharedPgyManager] startManagerWithAppId:[PDRequest appkey]];
-    //启动更新检查SDK
-    [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:[PDRequest appkey]];
+- (void)setupBugly {
+    [Bugly startWithAppId:[AppTool app_id_bugly]];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -80,6 +77,9 @@
     // 注册通知
     [self registerNotice];
 
+    // 初始化bugly
+    [self setupBugly];
+
     // 下载模块初始化
     [self setupDownloadManager];
 
@@ -89,8 +89,6 @@
     // 检查更新
     [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
 
-    // 集成蒲公英SDK
-    [self setupPgyManager];
     return YES;
 }
 

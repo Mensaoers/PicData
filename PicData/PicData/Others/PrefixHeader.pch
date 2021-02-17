@@ -13,9 +13,7 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 #ifdef __OBJC__
     #import "Config.h"
-
-    #import <PgySDK/PgyManager.h>
-    #import <PgyUpdate/PgyUpdateManager.h>
+    #import <Bugly/Bugly.h>
     #import "AmIBeingDebugged.h"
     #import <Masonry/Masonry.h>
     #import <MBProgressHUD/MBProgressHUD.h>

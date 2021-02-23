@@ -18,6 +18,34 @@
 }
 
 + (void)requestToCheckVersion:(BOOL)autoCheck onView:(UIView *)onView completehandler:(void (^)(void))completehandler {
+    // 蒲公英封禁了该app bundleID, 目前不请求更新了
+    if (autoCheck) {
+        return;
+    } else {
+        NSString *urlString = @"itms-services://?action=download-manifest&url=https://www.garenge.top/PicData/picdata.plist";
+        NSString *messageAlert = [NSString stringWithFormat:@"是否直接安装: %@", urlString];
+        NSString *titleAlert = @"版本提醒";
+        NSString *downloadTitle = @"安装";
+
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleAlert message:messageAlert preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:downloadTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            BOOL isDebugged = AmIBeingDebugged();
+            if (isDebugged) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"调试模式下不支持直接安装app" preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil]];
+                [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
+            } else {
+                [UIApplication.sharedApplication openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
+            }
+        }]];
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil]];
+        [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
+    }
+
+    return;
+
     NSString *paramsString = [NSString stringWithFormat:@"_api_key=afa1255fbfe95e7e5cc2502d0b159b0c&appKey=%@&buildVersion=%@", [AppTool app_key_pgy], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
    [self postWith:@"https://www.pgyer.com/apiv2/app/check" paramsString:paramsString completeHandler:^(NSString * _Nullable responseString, NSDictionary * _Nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message) {
 

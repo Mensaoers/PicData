@@ -9,10 +9,9 @@
 #import "LocalFileListVC.h"
 //#import "ViewerCell.h"
 #import "ViewerViewController.h"
-#import "PicBrowserToolViewHandler.h"
 #import "ViewerContentView.h"
 
-@interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
+@interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) ViewerContentView *contentView;
 @property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
@@ -50,40 +49,23 @@
     return _imgsList;
 }
 
+- (NSString *)systemDownloadFullPath {
+    return [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+//    return @"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File";
+}
 - (NSString *)targetFilePath {
     if (nil == _targetFilePath) {
-        _targetFilePath = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+        _targetFilePath = [self systemDownloadFullPath];
     }
     return _targetFilePath;
 }
 
 - (void)loadNavigationItem {
 
-    if ([self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
-        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeAllFiles)];
-        self.navigationItem.leftBarButtonItem = arrangeItem;
-    }
-
     NSMutableArray *items = [NSMutableArray array];
-    
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
-    shareButton.frame = CGRectMake(0, 0, 25, 25);
-    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
-    [items addObject:shareItem];
     
     UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
     [items addObject:deleteItem];
-    
-    if (self.navigationController.viewControllers.count >= 2) {
-        if ([self.targetFilePath containsString:likeString]) {
-            // 我已经是收藏文件夹了
-        } else {
-            UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
-            [items addObject:likeItem];
-        }
-    }
     
     self.navigationItem.rightBarButtonItems = items;
 }
@@ -354,7 +336,7 @@ static NSString *likeString = @"我的收藏";
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定移动该文件夹至收藏夹吗?" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         // 构造收藏文件夹
-        NSString *systemPath = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+        NSString *systemPath = [self systemDownloadFullPath];
         NSString *likePath = [systemPath stringByAppendingPathComponent:likeString];
 
         BOOL result = YES;
@@ -433,40 +415,6 @@ static NSString *likeString = @"我的收藏";
 
 - (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath contentView:(UICollectionView * _Nonnull)contentView {
     [self.imgsList removeAllObjects];
-    NSInteger currentIndex = 0;
-    for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
-        ViewerFileModel *tempModel = self.fileNamesList[index];
-        if ([tempModel.fileName.pathExtension containsString:@"jpg"]) {
-
-            if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
-                currentIndex = self.imgsList.count;
-            }
-
-            YBIBImageData *data = [YBIBImageData new];
-            data.imagePath = [self.targetFilePath stringByAppendingPathComponent:tempModel.fileName];
-            ViewerContentCell *contentCell = (ViewerContentCell *)[contentView cellForItemAtIndexPath:indexPath];
-            data.projectiveView = contentCell.imageView;
-            [self.imgsList addObject:data];
-        }
-    }
-
-    YBImageBrowser *browser = [YBImageBrowser new];
-    browser.delegate = self;
-    browser.dataSourceArray = self.imgsList;
-    browser.currentPage = currentIndex;
-    // 只有一个保存操作的时候，可以直接右上角显示保存按钮
-    PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
-    browser.toolViewHandlers = @[handler];
-    // toolViewHandlers; // topView.operationType = YBIBTopViewOperationTypeSave;
-    [browser show];
-}
-
-#pragma mark YBImageBrowserDataSource
-- (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
-    [self.contentView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
-    YBIBImageData *data_ = (YBIBImageData *)data;// (YBIBImageData <YBIBDataProtocol>*)data;
-    ViewerContentCell *contentCell = (ViewerContentCell *)[self.contentView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
-    data_.projectiveView = contentCell.imageView;
 }
 
 @end

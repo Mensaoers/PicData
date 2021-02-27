@@ -14,7 +14,6 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - Bugly (2.5.71)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -32,22 +31,13 @@ PODS:
   - TiercelObjCBridge (1.0.4):
     - Tiercel (= 2.4.1)
   - XHWebImageAutoSize (1.1.2)
-  - YBImageBrowser (3.0.9):
-    - YBImageBrowser/Core (= 3.0.9)
-  - YBImageBrowser/Core (3.0.9):
-    - SDWebImage (>= 5.0.0)
-    - YYImage
   - YYCategories (1.0.4):
     - YYCategories/no-arc (= 1.0.4)
   - YYCategories/no-arc (1.0.4)
-  - YYImage (1.0.4):
-    - YYImage/Core (= 1.0.4)
-  - YYImage/Core (1.0.4)
   - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking
-  - Bugly
   - JQFMDB
   - Masonry
   - MBProgressHUD (~> 1.1.0)
@@ -58,15 +48,12 @@ DEPENDENCIES:
   - Tiercel
   - TiercelObjCBridge
   - XHWebImageAutoSize
-  - YBImageBrowser
   - YYCategories
-  - YYImage (from `https://github.com/QiuYeHong90/YYImage.git`)
   - YYModel
 
 SPEC REPOS:
   trunk:
     - AFNetworking
-    - Bugly
     - FMDB
     - JQFMDB
     - Masonry
@@ -78,22 +65,11 @@ SPEC REPOS:
     - Tiercel
     - TiercelObjCBridge
     - XHWebImageAutoSize
-    - YBImageBrowser
     - YYCategories
     - YYModel
 
-EXTERNAL SOURCES:
-  YYImage:
-    :git: https://github.com/QiuYeHong90/YYImage.git
-
-CHECKOUT OPTIONS:
-  YYImage:
-    :commit: 4164acb76e8979c0612530bd874e099a1fa51e9d
-    :git: https://github.com/QiuYeHong90/YYImage.git
-
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
-  Bugly: fd066c75c4a0eca1440f9b6a84bd37d51bfc85ac
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   JQFMDB: 39ab0d6d7c26fd30e51c4dd92edcb27506a34c3a
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -105,11 +81,9 @@ SPEC CHECKSUMS:
   Tiercel: ce5c6347fea7ec877beea4530ca5a208f1b40f7e
   TiercelObjCBridge: 491ed4fe97e14e6f6b55d4a0d192a577399a53e1
   XHWebImageAutoSize: 8e5d7bf036f960885769dbe3410579024d3ac1a1
-  YBImageBrowser: 7ecc8bf33ffa5f3b94c397c29b4f3638dd37f527
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
-  YYImage: 20ec986d18a8d0ad421619d166a9e628097e2433
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: f5e867fd6f998d8867880cb04f63b2270a8755ec
+PODFILE CHECKSUM: b20657381ff7a12888cae8204a7493b3cb646e26
 
 COCOAPODS: 1.10.0

@@ -64,7 +64,7 @@
 }
 
 - (void)setupBugly {
-    [Bugly startWithAppId:[AppTool app_id_bugly]];
+//    [Bugly startWithAppId:[AppTool app_id_bugly]];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

@@ -22,6 +22,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>我给你保存两张图, 不用谢</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

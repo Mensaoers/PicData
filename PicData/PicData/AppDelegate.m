@@ -89,6 +89,9 @@
     // 检查更新
     [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
 
+    /// 设置屏幕常亮
+    application.idleTimerDisabled = YES;
+
     return YES;
 }
 

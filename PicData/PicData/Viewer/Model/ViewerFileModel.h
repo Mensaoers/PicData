@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, assign) BOOL isFolder;
+@property (nonatomic, assign) NSInteger fileCount;
+@property (nonatomic, assign) long long fileSize;
 
 - (instancetype)initWithName:(NSString *)fileName isFolder:(BOOL)isFolder;
 + (instancetype)modelWithName:(NSString *)fileName isFolder:(BOOL)isFolder;

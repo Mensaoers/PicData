@@ -1,5 +1,5 @@
 //
-//  NSString+ChangeUnicode.h
+//  NSObject+ChangeUnicode.h
 //  PPToolSKYD
 //
 //  Created by 鹏鹏 on 2020/11/6.

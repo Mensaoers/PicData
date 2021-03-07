@@ -29,7 +29,7 @@
 		33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */; };
 		33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
-		33F1460C25932BC50042CF31 /* NSString+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSString+ChangeUnicode.m */; };
+		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
 		9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E4244D5FC7005ADF05 /* DetailViewController.m */; };
@@ -40,6 +40,7 @@
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
 		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
+		9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9956C125F4B1BB00370811 /* NSString+string.m */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
@@ -122,8 +123,8 @@
 		33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicDownRecoreModel.m; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
 		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
-		33F1460A25932BC50042CF31 /* NSString+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ChangeUnicode.h"; sourceTree = "<group>"; };
-		33F1460B25932BC50042CF31 /* NSString+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ChangeUnicode.m"; sourceTree = "<group>"; };
+		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
+		33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ChangeUnicode.m"; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
 		9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassifyPage.h; sourceTree = "<group>"; };
 		9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassifyPage.m; sourceTree = "<group>"; };
@@ -145,6 +146,8 @@
 		9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTagsFrame.m; sourceTree = "<group>"; };
 		9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsViewCell.h; sourceTree = "<group>"; };
 		9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsFrame.h; sourceTree = "<group>"; };
+		9D9956C025F4B1BB00370811 /* NSString+string.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+string.h"; sourceTree = "<group>"; };
+		9D9956C125F4B1BB00370811 /* NSString+string.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+string.m"; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -510,8 +513,8 @@
 		9DE95CB8244C3FDC00E31735 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				33F1460A25932BC50042CF31 /* NSString+ChangeUnicode.h */,
-				33F1460B25932BC50042CF31 /* NSString+ChangeUnicode.m */,
+				33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */,
+				33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */,
 				9DE95CFB244CA26F00E31735 /* Singleton.h */,
 				33B43FB62554436C00C33FD0 /* Foundation+Log.m */,
 				9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */,
@@ -519,6 +522,8 @@
 				9DE95CEC244C5FBC00E31735 /* UILabel+text.h */,
 				9DE95CED244C5FBC00E31735 /* UILabel+text.m */,
 				3326ACE62553EF700035A473 /* AmIBeingDebugged.h */,
+				9D9956C025F4B1BB00370811 /* NSString+string.h */,
+				9D9956C125F4B1BB00370811 /* NSString+string.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -747,7 +752,7 @@
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
 				9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
-				33F1460C25932BC50042CF31 /* NSString+ChangeUnicode.m in Sources */,
+				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */,
@@ -756,6 +761,7 @@
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
+				9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
@@ -937,7 +943,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.16;
+				MARKETING_VERSION = 0.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -970,7 +976,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.16;
+				MARKETING_VERSION = 0.1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -59,10 +59,16 @@
 
 - (void)loadNavigationItem {
 
-    if ([self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
-        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeAllFiles)];
-        self.navigationItem.leftBarButtonItem = arrangeItem;
+    NSMutableArray *leftBarButtonItems = [NSMutableArray array];
+    if (self.navigationController.viewControllers.count >= 2) {
+        UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
+        [leftBarButtonItems addObject:backItem];
     }
+    if (self.navigationController.viewControllers.count <= 2) {
+        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeAllFiles)];
+        [leftBarButtonItems addObject:arrangeItem];
+    }
+    self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     NSMutableArray *items = [NSMutableArray array];
     
@@ -86,6 +92,10 @@
     }
     
     self.navigationItem.rightBarButtonItems = items;
+}
+
+- (void)backAction:(UIBarButtonItem *)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)loadMainView {
@@ -146,6 +156,7 @@
     // 获取该目录下所有的文件夹和文件
     NSError *subError = nil;
     NSMutableArray *fileContents = [[fileManager contentsOfDirectoryAtPath:self.targetFilePath error:&subError] mutableCopy];
+    // 文件夹排序
     [fileContents sortUsingSelector:@selector(localizedStandardCompare:)];
     if (nil == subError) {
         // NSLog(@"%@", fileContents);
@@ -159,7 +170,24 @@
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
                 [self.fileNamesList addObject:fileModel];
             } else {
+
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:YES];
+
+                NSString *dirPath = [self.targetFilePath stringByAppendingPathComponent:fileName];
+                NSError *subError = nil;
+                NSArray *subFileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
+                
+                NSEnumerator *childFilesEnumerator = [[fileManager subpathsAtPath:dirPath] objectEnumerator];
+                NSString *subFileName = nil;
+                long long folderSize = 0;
+                while ((subFileName = [childFilesEnumerator nextObject]) != nil) {
+                    NSString *fileAbsolutePath = [dirPath stringByAppendingPathComponent:subFileName];
+                    folderSize += [self getFileSize:fileAbsolutePath];
+                }
+
+                fileModel.fileSize = folderSize > 0 ? folderSize : 0;
+
+                fileModel.fileCount = subFileContents.count;
                 [self.fileNamesList addObject:fileModel];
             }
         }
@@ -169,6 +197,20 @@
         NSLog(@"%@", subError);
     }
     [self.contentView.mj_header endRefreshing];
+}
+
+- (long long)getFileSize:(NSString *)path {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path]) {
+        NSDictionary *attributes = [fileManager attributesOfItemAtPath:path error:nil];
+        NSNumber *fileSize;
+        if ((fileSize = [attributes objectForKey:NSFileSize]))
+            return [fileSize longLongValue];
+        else
+            return -1;
+    } else {
+        return -1;
+    }
 }
 
 /// 创建压缩包
@@ -275,6 +317,9 @@
 }
 
 - (void)arrangeAllFiles {
+
+    BOOL isRoot = [self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
+
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -285,16 +330,25 @@
         NSString *dirPath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
         NSError *subError = nil;
         NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
-        BOOL hasFolder = NO;
+        BOOL isEmptyF = YES;
         for (NSString *fileName in fileContents) {
             NSString *pathExtension = fileName.pathExtension;
-            if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
+            if (isRoot) {
+                // 根目录整理, 移除没有文件夹的子项目
+                if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
 
+                } else {
+                    isEmptyF = NO;
+                }
             } else {
-                hasFolder = YES;
+                // 图库整理, 移除没有图片的子项目
+                if ([pathExtension containsString:@"jpg"]) {
+                    isEmptyF = NO;
+                }
             }
+
         }
-        if (!hasFolder) {
+        if (isEmptyF) {
             // 没有文件夹, 干掉
             NSError *rmError = nil;
             [fileManager removeItemAtPath:dirPath error:&rmError];

@@ -14,6 +14,8 @@
     if (self = [super init]) {
         self.fileName = fileName;
         self.isFolder = isFolder;
+        self.fileCount = 0;
+        self.fileSize = 0;
     }
     return self;
 }

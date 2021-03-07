@@ -21,6 +21,10 @@
 
 @implementation AddNetTaskVC
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
 - (NSLock *)lock {
     if (nil == _lock) {
         _lock = [[NSLock alloc] init];

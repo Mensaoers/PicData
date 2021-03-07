@@ -1,12 +1,12 @@
 //
-//  NSString+ChangeUnicode.m
+//  NSObject+ChangeUnicode.m
 //  PPToolSKYD
 //
 //  Created by 鹏鹏 on 2020/11/6.
 //  Copyright © 2020 CleverPeng. All rights reserved.
 //
 
-#import "NSString+ChangeUnicode.h"
+#import "NSObject+ChangeUnicode.h"
 
 #import <objc/runtime.h>   // 导入运行时
 

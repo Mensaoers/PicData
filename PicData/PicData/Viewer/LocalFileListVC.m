@@ -136,17 +136,21 @@
 
     PDBlockSelf
     contentView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf refreshLoadData];
+        [weakSelf refreshLoadData:NO];
     }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [self refreshLoadData];
+    [self refreshLoadData:YES];
 }
 
-- (void)refreshLoadData {
+- (void)refreshLoadData: (BOOL)animated {
+
+    if (animated) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     // 每次页面加载出来的时候, 需要当前目录名字
     NSString *directory = [self.targetFilePath lastPathComponent];
     self.contentLabel.text = [NSString stringWithFormat:@"%@", directory];
@@ -197,6 +201,9 @@
         NSLog(@"%@", subError);
     }
     [self.contentView.mj_header endRefreshing];
+    if (animated) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }
 }
 
 - (long long)getFileSize:(NSString *)path {
@@ -354,10 +361,10 @@
             [fileManager removeItemAtPath:dirPath error:&rmError];
         }
     }
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [self refreshLoadData:NO];
 
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:1];
-    [self refreshLoadData];
 }
 
 - (void)clearAllFiles {

@@ -20,6 +20,9 @@
 + (void)requestToCheckVersion:(BOOL)autoCheck onView:(UIView *)onView completehandler:(void (^)(void))completehandler {
     // 蒲公英封禁了该app bundleID, 目前不请求更新了
     if (autoCheck) {
+        if (completehandler) {
+            completehandler();
+        }
         return;
     } else {
         NSString *urlString = @"itms-services://?action=download-manifest&url=https://www.garenge.top/PicData/picdata.plist";
@@ -38,9 +41,17 @@
             } else {
                 [UIApplication.sharedApplication openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
             }
+
+            if (completehandler) {
+                completehandler();
+            }
         }]];
 
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            if (completehandler) {
+                completehandler();
+            }
+        }]];
         [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
     }
 

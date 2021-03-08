@@ -130,6 +130,8 @@
         make.height.mas_equalTo(35);
     }];
 
+    // 不用检查
+    return;
     // version
     UIButton *versionButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [versionButton setTitle:[NSString stringWithFormat:@"V%@ [检查更新]", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]] forState:UIControlStateNormal];

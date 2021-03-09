@@ -177,7 +177,8 @@
                 NSString *dirPath = [self.targetFilePath stringByAppendingPathComponent:fileName];
                 NSError *subError = nil;
                 NSArray *subFileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
-                
+
+                /** 屏蔽获取大小的代码, 节约资源(有明显卡顿)
                 NSEnumerator *childFilesEnumerator = [[fileManager subpathsAtPath:dirPath] objectEnumerator];
                 NSString *subFileName = nil;
                 long long folderSize = 0;
@@ -187,6 +188,7 @@
                 }
 
                 fileModel.fileSize = folderSize > 0 ? folderSize : 0;
+                 */
 
                 fileModel.fileCount = subFileContents.count;
                 [self.fileNamesList addObject:fileModel];

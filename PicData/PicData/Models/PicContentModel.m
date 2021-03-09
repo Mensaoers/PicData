@@ -23,14 +23,6 @@
     [[JQFMDB shareDatabase] jq_createTable:NSStringFromClass(cls) dicOrModel:cls];
 }
 
-+ (BOOL)unAddALLWithSourceTitle:(NSString *)sourceTitle {
-    return [self updateTableWithDicOrModel:@{@"hasAdded": @0} Where:[NSString stringWithFormat:@"where sourceTitle = \"%@\"", sourceTitle]];
-}
-
-+ (BOOL)unAddALL {
-    return [self updateTableWithDicOrModel:@{@"hasAdded": @0} Where:@""];
-}
-
 - (BOOL)updateTable {
     return [self updateTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", self.href]];
 }
@@ -43,17 +35,29 @@
     return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", href]];
 }
 
-+ (NSArray *)queryTableWhereHasAdded {
-    return [self queryTableWhere:[NSString stringWithFormat:@"where hasAdded = 1"]];
+@end
+
+@implementation PicContentTaskModel
+
+/// 利用已有的contentModel初始化一个子类对象
++ (instancetype)taskModelWithContentModel:(PicContentModel *)contentModel {
+    NSMutableDictionary *keyValues = [contentModel mj_keyValues];
+    PicContentTaskModel *taskModel = [PicContentTaskModel mj_objectWithKeyValues:keyValues];
+    taskModel.status = 0;
+    return taskModel;
 }
 
 /// 获取是否已添加任务
 + (NSArray *)queryTableWhereHasAddedWithHref:(NSString *)href {
-    return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\" and hasAdded = 1", href]];
+    return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", href]];
 }
 
-@end
++ (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle {
+    return [self deleteFromTable_Where:[NSString stringWithFormat:@"where sourceTitle = \"%@\"", sourceTitle]];
+}
 
-@implementation PicContentTaskModel
++ (BOOL)deleteFromTableWithTitle:(NSString *)title {
+    return [self deleteFromTable_Where:[NSString stringWithFormat:@"where title = \"%@\"", title]];
+}
 
 @end

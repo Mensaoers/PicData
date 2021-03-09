@@ -378,12 +378,11 @@
                 // 还要把数据库数据更新
             if (weakSelf.navigationController.viewControllers.count == 2) {
                 // 进到列表中, 只需要更新这个类别下面所有的数据就好了
-                [PicContentModel unAddALLWithSourceTitle:[weakSelf.targetFilePath lastPathComponent]];
+                [PicContentTaskModel deleteFromTableWithSourceTitle:[weakSelf.targetFilePath lastPathComponent]];
             } else {
                 // 更新contentModel就好了
                 if (self.contentModel) {
-                    self.contentModel.hasAdded = 0;
-                    [self.contentModel updateTable];
+                    [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.title];
                 }
             }
 
@@ -393,7 +392,7 @@
             // 根视图, 删除所有
             [PDDownloadManager.sharedPDDownloadManager totalCancel];
             // 取消所有已添加
-            [PicContentModel unAddALL];
+            [PicContentTaskModel deleteFromTable_All];
             [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件不包括该文件夹本身
         }
         if (nil == rmError) {

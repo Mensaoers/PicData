@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 //- (BOOL)updateTable:(nullable Class)clsPre Where:(NSString *)where;
 //- (BOOL)updateTable:(nullable Class)clsPre;
 - (BOOL)insertTable;
++ (NSArray *)queryAll;
 + (NSArray *)queryTableWhere:(NSString *)where;
 + (NSArray *)queryTableWithTitle:(NSString *)title;
 + (int)queryCountWhere:(NSString *)where;

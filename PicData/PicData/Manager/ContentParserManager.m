@@ -30,14 +30,14 @@ singleton_implementation(ContentParserManager)
 }
 
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-    NSArray *results = [PicContentModel queryTableWhereHasAddedWithHref:contentModel.href];
+    NSArray *results = [PicContentTaskModel queryTableWhereHasAddedWithHref:contentModel.href];
         // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
 
     if (results.count == 0) {
         // 没有查到, 说明没有添加过
-        contentModel.hasAdded = 1;
+        PicContentTaskModel *taskModel = [PicContentTaskModel taskModelWithContentModel:contentModel];
+        [taskModel insertTable];
         //        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
-        [contentModel updateTable];
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": contentModel}];
         [ContentParserManager parserWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES];
         operationTips(YES, @"任务已添加");

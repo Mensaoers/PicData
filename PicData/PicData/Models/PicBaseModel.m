@@ -72,6 +72,9 @@
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_insertTable:NSStringFromClass(cls) dicOrModel:self];
 }
++ (NSArray *)queryAll {
+    return [self queryTableWhere:@""];
+}
 + (NSArray *)queryTableWhere:(NSString *)where {
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_lookupTable:NSStringFromClass(cls) dicOrModel:cls whereFormat:where];

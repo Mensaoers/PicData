@@ -46,7 +46,7 @@
 - (void)loadData {
     // 查询isAdded=1的模型
     [self.lock lock];
-    NSArray *results = [PicContentModel queryTableWhereHasAdded];
+    NSArray *results = [PicContentTaskModel queryAll];
 //    for (PicContentModel *contentModel in results) {
 //        int count = [PicDownRecoreModel queryCountWithContentUrl:contentModel.href];
 //        contentModel.downloadedCount = count;

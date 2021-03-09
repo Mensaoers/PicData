@@ -18,6 +18,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *identifier;
 /** 主服务 */
 @property (nonatomic, strong) NSString *HOST_URL;
+//- (BOOL)insertTable:(nullable Class)clsPre;
+//+ (NSArray *)queryTable:(nullable Class)clsPre Where:(NSString *)where;
+//+ (NSArray *)queryTable:(nullable Class)clsPre WithTitle:(NSString *)title;
+//+ (int)queryCount:(nullable Class)clsPre Where:(NSString *)where;
+//
+//- (BOOL)deleteFromTable:(nullable Class)clsPre;
+//+ (BOOL)deleteFromTable:(nullable Class)clsPre Where:(NSString *)where;
+//+ (BOOL)deleteFromTable_All:(nullable Class)clsPre;
+//
+//+ (BOOL)updateTable:(nullable Class)clsPre WithDicOrModel:(id)parameters Where:(NSString *)where;
+//- (BOOL)updateTable:(nullable Class)clsPre Where:(NSString *)where;
+//- (BOOL)updateTable:(nullable Class)clsPre;
 - (BOOL)insertTable;
 + (NSArray *)queryTableWhere:(NSString *)where;
 + (NSArray *)queryTableWithTitle:(NSString *)title;

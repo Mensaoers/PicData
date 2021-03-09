@@ -29,6 +29,45 @@
     return result;
 }
 
+//- (BOOL)insertTable:(Class)clsPre {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_insertTable:NSStringFromClass(cls) dicOrModel:self];
+//}
+//+ (NSArray *)queryTable:(Class)clsPre Where:(NSString *)where {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_lookupTable:NSStringFromClass(cls) dicOrModel:cls whereFormat:where];
+//}
+//+ (NSArray *)queryTable:(Class)clsPre WithTitle:(nonnull NSString *)title {
+//    return [self queryTable:clsPre Where:[NSString stringWithFormat:@"where title = \"%@\"", title]];
+//}
+//+ (int)queryCount:(Class)clsPre Where:(NSString *)where {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_totalCount:NSStringFromClass(cls) whereFormat:where];
+//}
+//
+//- (BOOL)deleteFromTable:(Class)clsPre {
+//    return YES;
+//}
+//+ (BOOL)deleteFromTable:(Class)clsPre Where:(NSString *)where {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_deleteTable:NSStringFromClass(cls) whereFormat:where];
+//}
+//+ (BOOL)deleteFromTable_All:(Class)clsPre {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_deleteAllDataFromTable:NSStringFromClass(cls)];
+//}
+//+ (BOOL)updateTable:(Class)clsPre WithDicOrModel:(id)parameters Where:(NSString *)where {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:parameters whereFormat:where];
+//}
+//- (BOOL)updateTable:(Class)clsPre Where:(NSString *)where {
+//    Class cls = clsPre == nil ? [self class] : clsPre;
+//    return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:self whereFormat:where];
+//}
+//- (BOOL)updateTable:(Class)clsPre {
+//    return true;
+//}
+
 - (BOOL)insertTable {
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_insertTable:NSStringFromClass(cls) dicOrModel:self];

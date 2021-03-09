@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+
+
 @interface PicContentModel : PicBaseModel///<JKSqliteProtocol>
 
 @property (nonatomic, strong) NSString *sourceTitle;
@@ -29,11 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)unAddALL;
 
 + (NSArray *)queryTableWithHref:(NSString *)href;
-+ (NSArray *)queryTableWithHref:(NSString *)href;
 
 + (NSArray *)queryTableWhereHasAdded;
 /// 获取是否已添加任务
 + (NSArray *)queryTableWhereHasAddedWithHref:(NSString *)href;
+@end
+
+@interface PicContentTaskModel : PicContentModel
+// 一致就行了
 @end
 
 NS_ASSUME_NONNULL_END

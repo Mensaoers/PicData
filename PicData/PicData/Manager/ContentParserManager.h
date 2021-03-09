@@ -24,9 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 singleton_interface(ContentParserManager)
 
 /// 尝试下载某一个套图, 做出基本判断,
-+ (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void(^ __nonnull)(BOOL isSuccess, NSString *tips))operationTips;
-/// 解析对应的数据, 开始创建下载任务
-+ (void)parserWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload;
++ (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel operationTips:(void(^ __nonnull)(BOOL isSuccess, NSString *tips))operationTips;
+
+/// app启动的时候, 将所有1的任务取出来开始进行
++ (void)prepareForAppLaunch;
+/// 查询接下来要开始的任务
++ (void)prepareToDoNextTask;
 
 @end
 

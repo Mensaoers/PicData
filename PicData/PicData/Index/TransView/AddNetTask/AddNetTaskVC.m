@@ -141,7 +141,7 @@
 - (IBAction)downAction:(id)sender {
     if (self.contentTF.text.length > 0) {
         [self prepareSourceWithUrl:self.contentTF.text title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
-            [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+            [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                 [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
             }];
         }];
@@ -158,7 +158,7 @@
                 continue;
             }
             [self prepareSourceWithUrl:url title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
-                [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+                [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                     [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
                 }];
             }];

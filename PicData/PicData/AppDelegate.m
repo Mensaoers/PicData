@@ -55,7 +55,12 @@
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
     NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
 
-    [self.sessionManager totalCancel];
+    for (TRDownloadTask *task in self.sessionManager.tasks) {
+        if (task.status != TRStatusSucceeded) {
+            [self.sessionManager startWithTask:task];
+        }
+    }
+    [ContentParserManager prepareForAppLaunch];
 }
 
 - (void)setupDataBase {
@@ -77,14 +82,14 @@
     // 注册通知
     [self registerNotice];
 
+    // 数据库初始化
+    [self setupDataBase];
+
     // 初始化bugly
     [self setupBugly];
 
     // 下载模块初始化
     [self setupDownloadManager];
-
-    // 数据库初始化
-    [self setupDataBase];
 
     // 检查更新
     [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];

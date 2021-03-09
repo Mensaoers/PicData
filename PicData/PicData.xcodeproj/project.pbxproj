@@ -247,6 +247,15 @@
 			path = AddNetTask;
 			sourceTree = "<group>";
 		};
+		333ECEF725F71DFB00762219 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				9DE95C93244C3FDC00E31735 /* OCGumbo */,
+				33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
 		33AB92B124C3F58900E97E42 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,13 +424,14 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
+				333ECEF725F71DFB00762219 /* ThirdParty */,
 				9DE95C72244C3E0F00E31735 /* AppDelegate.h */,
 				9DE95C73244C3E0F00E31735 /* AppDelegate.m */,
 				9DC94C9A2552ECBB008ACAF8 /* Base */,
 				9DE95CB8244C3FDC00E31735 /* Categories */,
+				9DE95CD4244C415F00E31735 /* Models */,
 				9DE95C8E244C3F5500E31735 /* Index */,
 				9DE95CF6244CA23000E31735 /* Manager */,
-				9DE95C93244C3FDC00E31735 /* OCGumbo */,
 				9DE95C8D244C3F3700E31735 /* Others */,
 				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
 				33AB92B124C3F58900E97E42 /* Setting */,
@@ -449,7 +459,6 @@
 				33B9EEC024DCA9EB00ABE3E2 /* TransView */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
-				9DE95CD4244C415F00E31735 /* Models */,
 				9DE95C8F244C3F6C00E31735 /* IndexViewController.h */,
 				9DE95C90244C3F6C00E31735 /* IndexViewController.m */,
 				335719B324DD358C00303E83 /* FloatingWindowView.h */,
@@ -573,7 +582,6 @@
 		9DE95CF6244CA23000E31735 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */,
 				9DE95CF8244CA25900E31735 /* PDDownloadManager.h */,
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
 				335124E024D6E2C9004489CA /* PDRequest.h */,

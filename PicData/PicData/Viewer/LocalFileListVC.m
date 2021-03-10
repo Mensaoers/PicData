@@ -51,7 +51,7 @@
 
 - (NSString *)systemDownloadFullPath {
     return [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
-//    return @"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File";
+//    return @"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File/ODg4OA==";
 }
 - (NSString *)targetFilePath {
     if (nil == _targetFilePath) {
@@ -67,18 +67,26 @@
         UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
         [leftBarButtonItems addObject:backItem];
     }
-    /** mac端屏蔽整理按钮
+    // mac端也允许整理按钮, 加警告框即可
     if (self.navigationController.viewControllers.count <= 2) {
-        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeAllFiles)];
+        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
         [leftBarButtonItems addObject:arrangeItem];
     }
-     */
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     NSMutableArray *items = [NSMutableArray array];
     
     UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
     [items addObject:deleteItem];
+
+    if (self.navigationController.viewControllers.count >= 2) {
+        if ([self.targetFilePath containsString:likeString]) {
+            // 我已经是收藏文件夹了
+        } else {
+            UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
+            [items addObject:likeItem];
+        }
+    }
     
     self.navigationItem.rightBarButtonItems = items;
 }
@@ -308,11 +316,22 @@
     }
 }
 
-- (void)arrangeAllFiles {
+- (void)arrangeItemClickAction:(UIBarButtonItem *)sender {
 
+    PDBlockSelf
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"整理文件夹" message:@"该操作会删除空文件夹, 且不可恢复, 确定要整理吗?" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定整理" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        [weakSelf arrangeAllFiles];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)arrangeAllFiles {
     BOOL isRoot = [self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
 
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
     for (ViewerFileModel *fileModel in self.fileNamesList) {
@@ -348,7 +367,7 @@
     }
     [self refreshLoadData:YES];
 
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
     [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:1];
 }
 
@@ -426,7 +445,7 @@ static NSString *likeString = @"我的收藏";
                 [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }]];
-                [alert addAction:[UIAlertAction actionWithTitle:@"删除该目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [alert addAction:[UIAlertAction actionWithTitle:@"删除原目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     NSError *rmError = nil;
                     [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
                     [weakSelf.navigationController popViewControllerAnimated:YES];

@@ -438,13 +438,16 @@ static NSString *likeString = @"我的收藏";
                     if (!fileModel.isFolder) {
                         continue;
                     }
-                NSString *toPath = [likePath stringByAppendingPathComponent:fileModel.fileName];
+                    NSString *toPath = [likePath stringByAppendingPathComponent:fileModel.fileName];
                     result = [[NSFileManager defaultManager] copyItemAtPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName] toPath:toPath error:&copyError];
+                    [PicContentTaskModel updateTableWithSourceTitle:likeString WhenTitle:fileModel.fileName];
                 }
             } else {
                 /// 子页面
-                NSString *toPath = [likePath stringByAppendingPathComponent:[self.targetFilePath lastPathComponent]];
+                NSString *folderName = [self.targetFilePath lastPathComponent];
+                NSString *toPath = [likePath stringByAppendingPathComponent:folderName];
                 result = [[NSFileManager defaultManager] copyItemAtPath:self.targetFilePath toPath:toPath error:&copyError];
+                [PicContentTaskModel updateTableWithSourceTitle:likeString WhenTitle:folderName];
             }
 
             if (result) {

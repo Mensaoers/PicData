@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) dispatch_queue_t disToDownQueue;
 
+@property (nonatomic, assign) int maxConcurrentTasksLimit; // 默认为5
 @property (nonatomic, strong) NSOperationQueue *queue;
 
 @end
@@ -21,33 +22,57 @@
 
 singleton_implementation(ContentParserManager)
 
+- (int)maxConcurrentTasksLimit {
+    return 2;
+}
 - (NSOperationQueue *)queue {
     if (nil == _queue) {
         _queue = [[NSOperationQueue alloc] init];
-        _queue.maxConcurrentOperationCount = 2; // 串行队列
+        _queue.maxConcurrentOperationCount = self.maxConcurrentTasksLimit; // 串行队列
     }
     return _queue;
 }
 
-+ (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-    NSArray *results = [PicContentTaskModel queryTableWhereHasAddedWithHref:contentModel.href];
+/// 新增套图下载任务
++ (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
+    NSArray *results = [PicContentTaskModel queryTableWithHref:contentModel.href];
         // [JKSqliteModelTool queryDataModel:[PicContentModel class] whereStr:[NSString stringWithFormat:@"href = \"%@\"", contentModel.href] uid:SQLite_USER];
 
     if (results.count == 0) {
         // 没有查到, 说明没有添加过
         PicContentTaskModel *taskModel = [PicContentTaskModel taskModelWithContentModel:contentModel];
+
+        // 这里判断过, 那么就没必要重写这个insert方法
         [taskModel insertTable];
         //        [JKSqliteModelTool saveOrUpdateModel:tmpModel uid:SQLite_USER];
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": contentModel}];
-        [ContentParserManager parserWithSourceModel:sourceModel ContentModel:contentModel needDownload:YES];
+        [ContentParserManager parserWithSourceModel:sourceModel ContentTaskModel:taskModel];
         operationTips(YES, @"任务已添加");
     } else {
         operationTips(YES, @"任务已存在");
     }
 }
 
-+ (void)parserWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
-    NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:contentModel];
+/// app启动的时候, 将所有1的任务取出来开始进行
++ (void)prepareForAppLaunch {
+    [PicContentTaskModel resetHalfWorkingTasks];
+    [self prepareToDoNextTask];
+}
+/// 查询接下来要开始的任务
++ (void)prepareToDoNextTask {
+    NSArray *results = [PicContentTaskModel queryNextTask];
+    if (results.count > 0) {
+        PicContentTaskModel *nextTaskModel = results.firstObject;
+        PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:nextTaskModel.sourceTitle] firstObject];
+        if (sourceModel != nil) {
+            [self parserWithSourceModel:sourceModel ContentTaskModel:nextTaskModel];
+        }
+    }
+}
+
+/// 准备下载 解析对应的数据, 开始创建下载任务
++ (void)parserWithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel {
+    NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:contentTaskModel];
 
     NSString *filePath = [targetPath stringByAppendingPathComponent:@"urlList.txt"];
     NSLog(@"%@", filePath);
@@ -63,12 +88,19 @@ singleton_implementation(ContentParserManager)
     
     NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
 
-    [[ContentParserManager sharedContentParserManager].queue addOperationWithBlock:^{
-        [ContentParserManager dealWithUrl:contentModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
-    }];
+    NSOperationQueue *queue = [ContentParserManager sharedContentParserManager].queue;
+    if (queue.operationCount < queue.maxConcurrentOperationCount) {
+
+        contentTaskModel.status = 1;
+        [contentTaskModel updateTable];
+        [queue addOperationWithBlock:^{
+            [ContentParserManager dealWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+        }];
+    }
 }
 
-+ (void)dealWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
+/// 处理页面源码, 提取页面数据
++ (void)dealWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel {
     // 错误-1, 网络部分错误
     // 错误-2, 写入部分错误
     if ([url containsString:@".html"]) {
@@ -82,7 +114,7 @@ singleton_implementation(ContentParserManager)
         } else {
             NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-            NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+            NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
             nextUrl = result[@"nextUrl"];
             NSError *writeError = nil;
             count = [result[@"count"] intValue];
@@ -92,21 +124,26 @@ singleton_implementation(ContentParserManager)
             }
         }
 
-        contentModel.totalCount = picCount + count;
+        contentTaskModel.totalCount = picCount + count;
         // [contentModel updateTable];
         // [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentModel}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
         if (![nextUrl containsString:@".html"]) {
             [targetHandle closeFile];
             NSLog(@"完成");
+            contentTaskModel.status = 2;
+            [contentTaskModel updateTable];
+            // 我们需要做一个操作, 是让他继续下一个任务
+            [ContentParserManager prepareToDoNextTask];
         } else {
-            [ContentParserManager dealWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentModel:contentModel needDownload:needDownload];
+            [ContentParserManager dealWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
         }
     }
 }
 
-+ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString WithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel needDownload:(BOOL)needDownload {
+/// 处理html标签, 创建下载图片任务开始下载
++ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel {
     NSString *url = @"";
     NSMutableString *urlsString = [NSMutableString string];
     int count = 0;
@@ -170,12 +207,11 @@ singleton_implementation(ContentParserManager)
                 }
             }
         }
-        
-        if (needDownload) {
-            count += urls.count;
-            // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
-            [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentModel urls:[urls copy]];
-        }
+
+        count += urls.count;
+        // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
+        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel contentModel:contentTaskModel urls:[urls copy]];
+
     }
     
     if (url.length == 0) {

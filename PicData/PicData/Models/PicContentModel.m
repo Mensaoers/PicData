@@ -47,9 +47,17 @@
     return taskModel;
 }
 
-/// 获取是否已添加任务
-+ (NSArray *)queryTableWhereHasAddedWithHref:(NSString *)href {
-    return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", href]];
+/// 获取下一个任务
++ (NSArray *)queryNextTask {
+    return [self queryTableWhere:[NSString stringWithFormat:@"where status = 0 order by href limit 1"]];
+}
+
+/// 初始化所有任务
++ (BOOL)resetHalfWorkingTasks {
+    return [self updateTableWithStatus:0 Where:@"where status = 1"];
+}
++ (BOOL)updateTableWithStatus:(int)status Where:(NSString *)where {
+    return [self updateTableWithDicOrModel:@{@"status": @(status)} Where:where];
 }
 
 + (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle {

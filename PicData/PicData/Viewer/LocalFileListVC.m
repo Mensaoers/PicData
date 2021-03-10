@@ -136,17 +136,17 @@
 
     PDBlockSelf
     contentView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf refreshLoadData];
+        [weakSelf refreshLoadData:NO];
     }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [self.contentView.mj_header beginRefreshing];
+    [self refreshLoadData:NO];
 }
 
-- (void)refreshLoadData {
+- (void)refreshLoadData:(BOOL)needFileSize {
 
     // 每次页面加载出来的时候, 需要当前目录名字
     NSString *directory = [self.targetFilePath lastPathComponent];
@@ -178,18 +178,18 @@
                 NSError *subError = nil;
                 NSArray *subFileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
 
-                /** 屏蔽获取大小的代码, 节约资源(有明显卡顿)
-                NSEnumerator *childFilesEnumerator = [[fileManager subpathsAtPath:dirPath] objectEnumerator];
-                NSString *subFileName = nil;
-                long long folderSize = 0;
-                while ((subFileName = [childFilesEnumerator nextObject]) != nil) {
-                    NSString *fileAbsolutePath = [dirPath stringByAppendingPathComponent:subFileName];
-                    folderSize += [self getFileSize:fileAbsolutePath];
+                // 获取大小的代码, 节约资源(有明显卡顿)
+                if (needFileSize) {
+                    NSEnumerator *childFilesEnumerator = [[fileManager subpathsAtPath:dirPath] objectEnumerator];
+                    NSString *subFileName = nil;
+                    long long folderSize = 0;
+                    while ((subFileName = [childFilesEnumerator nextObject]) != nil) {
+                        NSString *fileAbsolutePath = [dirPath stringByAppendingPathComponent:subFileName];
+                        folderSize += [self getFileSize:fileAbsolutePath];
+                    }
+
+                    fileModel.fileSize = folderSize > 0 ? folderSize : 0;
                 }
-
-                fileModel.fileSize = folderSize > 0 ? folderSize : 0;
-                 */
-
                 fileModel.fileCount = subFileContents.count;
                 [self.fileNamesList addObject:fileModel];
             }
@@ -357,7 +357,7 @@
             [fileManager removeItemAtPath:dirPath error:&rmError];
         }
     }
-    [self refreshLoadData];
+    [self refreshLoadData:YES];
 
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:1];

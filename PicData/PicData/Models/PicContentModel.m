@@ -35,6 +35,19 @@
     return [self queryTableWhere:[NSString stringWithFormat:@"where href = \"%@\"", href]];
 }
 
++ (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle WhenTitle:(NSString *)title {
+    if (sourceTitle.length == 0) {
+        return YES;
+    }
+    return [self updateTableWithSourceTitle:sourceTitle Where:[NSString stringWithFormat:@"where title = \"%@\"", title]];
+}
++ (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle Where:(NSString *)where {
+    if (sourceTitle.length == 0) {
+        return YES;
+    }
+    return [self updateTableWithDicOrModel:@{@"sourceTitle": sourceTitle} Where:where];
+}
+
 @end
 
 @implementation PicContentTaskModel

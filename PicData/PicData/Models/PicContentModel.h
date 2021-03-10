@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray *)queryTableWithHref:(NSString *)href;
 
++ (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle WhenTitle:(NSString *)title;
 @end
 
 /// 已添加下载的任务
@@ -41,7 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 初始化所有任务
 + (BOOL)resetHalfWorkingTasks;
-+ (BOOL)updateTableWithStatus:(int)status Where:(NSString *)where;
 
 /// 删除已添加任务, 根据父级title
 + (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle;

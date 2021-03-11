@@ -55,17 +55,12 @@
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
     NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
 
-    for (TRDownloadTask *task in self.sessionManager.tasks) {
-        if (task.status != TRStatusSucceeded) {
-            [self.sessionManager startWithTask:task];
-        }
-    }
+    [self.sessionManager totalCancel];
     [ContentParserManager prepareForAppLaunch];
 }
 
 - (void)setupDataBase {
-    NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    [JQFMDB shareDatabase:@"picdata.sqlite" path:documentDir];
+    [JQFMDB shareDatabase:[PDDownloadManager sharedPDDownloadManager].databaseFileName path:[PDDownloadManager getDocumentPathWithTarget:@""]];
 }
 
 - (void)setupBugly {

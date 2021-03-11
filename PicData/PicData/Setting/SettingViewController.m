@@ -28,6 +28,7 @@
 
 - (void)loadNavigationItem {
     self.navigationItem.title = @"设置";
+
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"重置" style:UIBarButtonItemStyleDone target:self action:@selector(resetPath)];
     self.navigationItem.rightBarButtonItem = rightItem;
 }
@@ -146,6 +147,23 @@
     versionButton.layer.borderColor = versionButton.tintColor.CGColor;
     versionButton.layer.borderWidth = 1;
     versionButton.layer.masksToBounds = YES;
+
+    // 分享数据库
+    UIButton *dbButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [dbButton setTitle:@"导出数据库" forState:UIControlStateNormal];
+    dbButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [dbButton addTarget:self action:@selector(shareDatabase:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:dbButton];
+
+    [dbButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(120, 35));
+        make.bottom.equalTo(versionButton.mas_top).with.offset(-20);
+    }];
+    dbButton.layer.cornerRadius = 4;
+    dbButton.layer.borderColor = versionButton.tintColor.CGColor;
+    dbButton.layer.borderWidth = 1;
+    dbButton.layer.masksToBounds = YES;
 }
 
 - (void)checkNewVersion:(UIButton *)sender {
@@ -171,6 +189,33 @@
 - (void)clearContent {
     self.textView.text = @"";
     [MBProgressHUD showInfoOnView:self.view WithStatus:@"已清空"];
+}
+
+- (void)shareDatabase:(UIButton *)sender {
+    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:[PDDownloadManager sharedPDDownloadManager].databaseFilePath]] applicationActivities:nil];
+    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    };
+
+    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
+        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
+    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
+        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
+        if (popover) {
+            popover.sourceView = sender;
+            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        }
+        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
+    } else {
+        //do nothing
+    }
 }
 
 - (void)resetPath {

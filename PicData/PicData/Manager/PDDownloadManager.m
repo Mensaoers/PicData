@@ -26,6 +26,16 @@
     return _disDownFinishQueue;
 }
 
+/// 数据库文件名
+- (NSString *)databaseFileName {
+    return @"picdata.sqlite";
+}
+
+/// 数据库文件路径
+- (NSString *)databaseFilePath {
+    return [PDDownloadManager getDocumentPathWithTarget:self.databaseFileName];
+}
+
 singleton_implementation(PDDownloadManager);
 
 - (TRSessionManager *)sessionManager {
@@ -71,7 +81,7 @@ singleton_implementation(PDDownloadManager);
 
 + (NSString *)getDocumentPathWithTarget:(NSString *)targetPath {
     NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *resultPath = [documentDir stringByAppendingPathComponent: targetPath];
+    NSString *resultPath = targetPath.length > 0 ? [documentDir stringByAppendingPathComponent: targetPath] : documentDir;
     return resultPath;
 }
 
@@ -155,7 +165,7 @@ singleton_implementation(PDDownloadManager);
     return contentPath;
 }
 
-- (void)downWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel urls:(NSArray *)urls {
+- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls {
 
     if (![self checksystemDownloadFullPathExistNeedNotice:YES]) {
         return;
@@ -195,12 +205,22 @@ singleton_implementation(PDDownloadManager);
             
             dispatch_async(self.disDownFinishQueue, ^{
                 NSError *copyError = nil;
-                NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentModel] stringByAppendingPathComponent:url.lastPathComponent];
+                NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:url.lastPathComponent];
                 [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
                 if (nil == copyError) {
                     NSLog(@"文件%@下载完成", fileName);
-                        //                recordModel.isFinished = 1;
-                        //                [recordModel updateTable];
+                    contentTaskModel.downloadedCount += 1;
+
+                    // 我们是开始遍历的时候就开始下载了
+                    if (contentTaskModel.status == 1) {
+
+                    } else if (contentTaskModel.status == 2) {
+                        // 遍历完成
+                        if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
+                            contentTaskModel.status = 3;
+                        }
+                    }
+                    [contentTaskModel updateTable];
                         //                [JKSqliteModelTool saveOrUpdateModel:recordModel uid:SQLite_USER];
                         //                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICEPICDOWNLOADSUCCESS object:nil userInfo:@{@"recordModel": recordModel}];
                 }

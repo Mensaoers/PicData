@@ -67,7 +67,8 @@
 
 /// 初始化所有任务
 + (BOOL)resetHalfWorkingTasks {
-    return [self updateTableWithStatus:0 Where:@"where status = 1"];
+    [self updateTableWithStatus:3 Where:@"where downloadedCount > 0 and downloadedCount = totalCount"];
+    return [self updateTableWithStatus:0 Where:@"where status != 3"];
 }
 + (BOOL)updateTableWithStatus:(int)status Where:(NSString *)where {
     return [self updateTableWithDicOrModel:@{@"status": @(status)} Where:where];

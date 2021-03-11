@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 利用已有的contentModel初始化一个子类对象
 + (instancetype)taskModelWithContentModel:(PicContentModel *)contentModel;
 
-/// 表示该任务是否已经开始进行(不表示全部下载完成) 0尚未开始, 1开始遍历, 2完成遍历
+/// 表示该任务是否已经开始进行(不表示全部下载完成) 0尚未开始, 1开始遍历, 2完成遍历, 3下载完成
 @property (nonatomic, assign) int status;
 
 /// 获取下一个没有开始的任务

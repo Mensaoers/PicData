@@ -36,6 +36,10 @@ singleton_interface(PDDownloadManager);
 - (nonnull NSString *)systemDownloadFullDirectory;
 /// 根据目标路径, 拼接基于document目录的完整路径
 + (NSString *)getDocumentPathWithTarget:(NSString *)targetPath;
+/// 数据库文件名
+@property (nonatomic, strong) NSString *databaseFileName;
+/// 数据库文件路径
+@property (nonatomic, strong) NSString *databaseFilePath;
 
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need;
 - (BOOL)checkFilePathExist:(NSString *)path;
@@ -45,7 +49,7 @@ singleton_interface(PDDownloadManager);
 /// 根据模型获取下载地址
 - (NSString *)getDirPathWithSource:(nullable PicSourceModel *)sourceModel contentModel:(nullable PicContentModel *)contentModel;
 /// 创建下载任务
-- (void)downWithSource:(PicSourceModel *)sourceModel contentModel:(PicContentModel *)contentModel urls:(NSArray *)urls;
+- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls;
 
 /// 全部取消
 - (void)totalCancel;

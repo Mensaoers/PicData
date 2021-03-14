@@ -319,8 +319,12 @@
 - (void)arrangeItemClickAction:(UIBarButtonItem *)sender {
 
     PDBlockSelf
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"整理文件夹" message:@"该操作会删除空文件夹, 且不可恢复, 确定要整理吗?" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定整理" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"整理文件夹" message:@"该操作可能会删除本地文件(夹), 重要文件请再三确认" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"仅刷新文件夹大小" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        [weakSelf refreshLoadData:YES];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"清空无图文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
         [weakSelf arrangeAllFiles];
     }]];
@@ -329,46 +333,54 @@
 }
 
 - (void)arrangeAllFiles {
-    BOOL isRoot = [self.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
 
-    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    PDBlockSelf
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"清空无图文件夹" message:@"该操作会删除该目录下空文件夹, 且不可恢复, 确定要整理吗?" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确认删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    for (ViewerFileModel *fileModel in self.fileNamesList) {
-        if (!fileModel.isFolder) {
-            continue;
-        }
-        NSString *dirPath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-        NSError *subError = nil;
-        NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
-        BOOL isEmptyF = YES;
-        for (NSString *fileName in fileContents) {
-            NSString *pathExtension = fileName.pathExtension;
-            if (isRoot) {
-                // 根目录整理, 移除没有文件夹的子项目
-                if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
+        BOOL isRoot = [weakSelf.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
 
-                } else {
-                    isEmptyF = NO;
-                }
-            } else {
-                // 图库整理, 移除没有图片的子项目
-                if ([pathExtension containsString:@"jpg"]) {
-                    isEmptyF = NO;
-                }
+        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
+            if (!fileModel.isFolder) {
+                continue;
             }
+            NSString *dirPath = [weakSelf.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+            NSError *subError = nil;
+            NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
+            BOOL isEmptyF = YES;
+            for (NSString *fileName in fileContents) {
+                NSString *pathExtension = fileName.pathExtension;
+                if (isRoot) {
+                    // 根目录整理, 移除没有文件夹的子项目
+                    if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
 
-        }
-        if (isEmptyF) {
-            // 没有文件夹, 干掉
-            NSError *rmError = nil;
-            [fileManager removeItemAtPath:dirPath error:&rmError];
-        }
-    }
-    [self refreshLoadData:YES];
+                    } else {
+                        isEmptyF = NO;
+                    }
+                } else {
+                    // 图库整理, 移除没有图片的子项目
+                    if ([pathExtension containsString:@"jpg"]) {
+                        isEmptyF = NO;
+                    }
+                }
 
-    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
-    [MBProgressHUD showInfoOnView:self.view WithStatus:@"整理完成" afterDelay:1];
+            }
+            if (isEmptyF) {
+                // 没有文件夹, 干掉
+                NSError *rmError = nil;
+                [fileManager removeItemAtPath:dirPath error:&rmError];
+            }
+        }
+        [weakSelf refreshLoadData:YES];
+
+        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"整理完成" afterDelay:1];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)clearAllFiles {

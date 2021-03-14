@@ -433,48 +433,87 @@ static NSString *likeString = @"我的收藏";
         NSString *systemPath = [self systemDownloadFullPath];
         NSString *likePath = [systemPath stringByAppendingPathComponent:likeString];
 
-        BOOL result = YES;
-        NSError *copyError = nil;
-        if ([[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:likePath]) {
+        __block BOOL result = YES;
+        __block NSError *copyError = nil;
 
-            if (weakSelf.navigationController.viewControllers.count == 2) {
-                /// 多图集页面
-                for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
-                    if (!fileModel.isFolder) {
-                        continue;
-                    }
-                    NSString *toPath = [likePath stringByAppendingPathComponent:fileModel.fileName];
-                    result = [[NSFileManager defaultManager] copyItemAtPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName] toPath:toPath error:&copyError];
-                    [PicContentTaskModel updateTableWithSourceTitle:likeString WhenTitle:fileModel.fileName];
+        if (![[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:likePath]) {
+            return;
+        }
+        if (weakSelf.navigationController.viewControllers.count == 2) {
+            /// 多图集页面
+            for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
+                if (!fileModel.isFolder) {
+                    continue;
                 }
-            } else {
-                /// 子页面
-                NSString *folderName = [self.targetFilePath lastPathComponent];
-                NSString *toPath = [likePath stringByAppendingPathComponent:folderName];
-                result = [[NSFileManager defaultManager] copyItemAtPath:self.targetFilePath toPath:toPath error:&copyError];
-                [PicContentTaskModel updateTableWithSourceTitle:likeString WhenTitle:folderName];
+                // 多套图就循环处理收藏
+                [weakSelf likeOneFolderWithName:fileModel.fileName folderPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName] withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
+                    result = result_l;
+                    copyError = copyError_l;
+                }];
             }
+        } else {
+            /// 子页面
+            [weakSelf likeOneFolderWithName:weakSelf.targetFilePath.lastPathComponent folderPath:self.targetFilePath withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
+                result = result_l;
+                copyError = copyError_l;
+            }];
+        }
 
-            if (result) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }]];
-                [alert addAction:[UIAlertAction actionWithTitle:@"删除原目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    NSError *rmError = nil;
-                    [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }]];
-                [weakSelf presentViewController:alert animated:YES completion:nil];
-            } else {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", copyError] preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [weakSelf presentViewController:alert animated:YES completion:nil];
-            }
+        if (result) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }]];
+            [alert addAction:[UIAlertAction actionWithTitle:@"删除原目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSError *rmError = nil;
+                [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }]];
+            [weakSelf presentViewController:alert animated:YES completion:nil];
+        } else {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", copyError] preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+            [weakSelf presentViewController:alert animated:YES completion:nil];
         }
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+/// 专门处理一套图对的收藏逻辑
+- (void)likeOneFolderWithName:(NSString *)folderName folderPath:(NSString *)folderPath withLikePath:(NSString *)likePath completeHandler:(void(^)(BOOL result_l, NSError *copyError_l))completeHandler {
+    BOOL result = YES;
+    NSError *copyError = nil;
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // 拼接目标路径
+    NSString *toFolderPath = [likePath stringByAppendingPathComponent:folderName];
+
+    // 判断下目标路径存不存在
+    BOOL isDirectory = YES;
+    if ([fileManager fileExistsAtPath:toFolderPath isDirectory:&isDirectory]) {
+        // 这个文件夹存在了
+        // 我要把这个文件夹里面的文件, 逐个拷贝过去
+        NSError *subError = nil;
+        NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:folderPath error:&subError];
+        for (NSString *fileName in fileContents) {
+            // 拼接子文件路径
+            NSString *filePath = [folderPath stringByAppendingPathComponent:fileName];
+            NSString *toFilePath = [toFolderPath stringByAppendingPathComponent:fileName];
+            // 如果这个文件本地有了, 没事, 复制也不会生效, 报错也不管
+            [fileManager copyItemAtPath:filePath toPath:toFilePath error:&copyError];
+        }
+        result = YES;
+    } else {
+        // 目标文件夹不存在, 直接拷贝
+        result = [[NSFileManager defaultManager] copyItemAtPath:folderPath toPath:toFolderPath error:&copyError];
+    }
+
+    [PicContentTaskModel updateTableWithSourceTitle:likeString WhenTitle:folderName];
+    if (completeHandler) {
+        completeHandler(result, copyError);
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

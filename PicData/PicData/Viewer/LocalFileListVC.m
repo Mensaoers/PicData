@@ -451,7 +451,7 @@ static NSString *likeString = @"我的收藏";
             }
 
             if (result) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@/\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
                 [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }]];

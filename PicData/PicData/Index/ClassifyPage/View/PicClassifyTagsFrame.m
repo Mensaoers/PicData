@@ -24,6 +24,7 @@
         _tagsMinPadding = 10;
         _tagsMargin = 10;
         _tagsLineSpacing = 10;
+        _currWidth = PDSCREENWIDTH;
     }
     return self;
 }
@@ -53,9 +54,9 @@
         }
         CGFloat nextBtnX = btnX + btnW + _tagsMargin;
         // 如果下一个按钮，标签最右边则换行
-        if ((nextBtnX + nextWidth) > (PDSCREENWIDTH - _tagsMargin)) {
+        if ((nextBtnX + nextWidth) > (self.currWidth - _tagsMargin)) {
             // 计算超过的宽度
-            moreWidth = PDSCREENWIDTH - nextBtnX;
+            moreWidth = self.currWidth - nextBtnX;
             
             [lastIndexs addObject:[NSNumber numberWithInteger:i]];
             [moreWidths addObject:[NSNumber numberWithFloat:moreWidth]];

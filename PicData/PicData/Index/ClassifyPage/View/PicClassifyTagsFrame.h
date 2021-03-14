@@ -23,4 +23,6 @@
 /** 标签最小内边距 default is 10*/
 @property (nonatomic, assign) CGFloat tagsMinPadding;
 
+@property (nonatomic, assign) CGFloat currWidth;
+
 @end

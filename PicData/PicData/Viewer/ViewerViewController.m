@@ -45,33 +45,18 @@
 
 - (void)shareToOtherAction:(UIButton *)sender {
 
-    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[self.fileURL] applicationActivities:nil];
-    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
+    [AppTool shareFileWithURLs:@[self.fileURL] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         NSLog(@"调用分享的应用id :%@", activityType);
         if (completed) {
             NSLog(@"分享成功!");
         } else {
             NSLog(@"分享失败!");
         }
-    };
-
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
-        if (popover) {
-            popover.sourceView = sender;
-            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        }
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else {
-        //do nothing
-    }
+    }];
 }
 
 - (void)loadMainView {
+    self.view.backgroundColor = UIColor.whiteColor;
     QLPreviewController *preview = [[QLPreviewController alloc] init];
     preview.dataSource = self;
     preview.delegate = self;

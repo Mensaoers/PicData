@@ -198,49 +198,14 @@
 - (void)shareDatabase:(UIButton *)sender {
 
     NSString *dbFilePath = [PDDownloadManager sharedPDDownloadManager].databaseFilePath;
-
-#if TARGET_OS_MACCATALYST
-    NSString *release = @"release";
-#ifdef DEBUG
-    release = @"debug";
-#endif
-    NSString *bundleFile = [NSString stringWithFormat:@"PicData_macPlugin_%@.bundle", release];
-    NSURL *bundleURL = [[[NSBundle mainBundle] builtInPlugInsURL] URLByAppendingPathComponent:bundleFile];
-    if (!bundleURL) {
-        return;
-    }
-    NSBundle *pluginBundle = [NSBundle bundleWithURL:bundleURL];
-    NSString *className = @"Plugin";
-    Class Plugin= [pluginBundle classNamed:className];
-//    Plugin *obj = [[Plugin alloc] init];
-    [Plugin performSelector:NSSelectorFromString(@"openFileOrDirWithPath:") withObject:dbFilePath];
-    return;
-#endif
-
-    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
-
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:dbFilePath]] applicationActivities:nil];
-    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
+    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:dbFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         NSLog(@"调用分享的应用id :%@", activityType);
         if (completed) {
             NSLog(@"分享成功!");
         } else {
             NSLog(@"分享失败!");
         }
-    };
-
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
-        if (popover) {
-            popover.sourceView = sender;
-            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        }
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else {
-        //do nothing
-    }
+    }];
 }
 
 - (void)resetPath {

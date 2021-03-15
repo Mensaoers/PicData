@@ -76,6 +76,13 @@
 
     NSMutableArray *items = [NSMutableArray array];
     
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
+    shareButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
+    [items addObject:shareItem];
+
     UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
     [items addObject:deleteItem];
 
@@ -265,6 +272,14 @@
 }
 
 - (void)shareAllFiles:(UIButton *)sender {
+
+#if TARGET_OS_MACCATALYST
+    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:self.targetFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+    }];
+        return;
+#endif
+
     PDBlockSelf
     NSString *targetPathName = [NSString stringWithFormat:@"%@.zip", [self.targetFilePath lastPathComponent]];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享文件" message:@"请输入压缩包的名字, 默认为文件夹名称, 密码选填" preferredStyle:UIAlertControllerStyleAlert];
@@ -526,6 +541,9 @@ static NSString *likeString = @"我的收藏";
 
 - (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath contentView:(UICollectionView * _Nonnull)contentView {
     [self.imgsList removeAllObjects];
+    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]]] sourceView:self.view completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+    }];
 }
 
 @end

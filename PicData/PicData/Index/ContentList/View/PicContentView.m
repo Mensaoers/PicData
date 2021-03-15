@@ -8,6 +8,7 @@
 
 #import "PicContentView.h"
 #import "PicContentCell.h"
+#import "PicContentViewFlowLayout.h"
 
 @interface PicContentView()
 
@@ -18,12 +19,12 @@
 static CGFloat sideMargin = 5;
 
 + (CGFloat)itemWidth:(CGFloat)wholeWidth {
-    // 最小宽度
-    CGFloat minWidth = MIN(180, (wholeWidth - 30) * 0.333);
+    // cell的排布, 想让cell的宽度逐渐增大, 大到一定程度, 加一个cell, 以此往复
+    // 最大宽度
+    CGFloat maxWidth = MIN(180, wholeWidth * 0.333);
     // 这一行至少可以放几个
-    NSInteger count = floorf(wholeWidth / minWidth);
+    NSInteger count = floorf(wholeWidth / maxWidth);
     CGFloat itemWidth = wholeWidth / count;
-    // MIN(200, MAX((PDSCREENWIDTH - 30) * 0.333, MIN(130, (PDSCREENWIDTH - 30) * 0.333)));
     return itemWidth - 2 * sideMargin;
 }
 + (CGFloat)itemHeight:(CGFloat)wholeWidth {
@@ -39,15 +40,24 @@ static CGFloat sideMargin = 5;
 
 + (instancetype)collectionView:(CGFloat)wholeWidth {
 
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    PicContentViewFlowLayout *layout = [[PicContentViewFlowLayout alloc] init];
     layout.itemSize = [PicContentView itemSize:wholeWidth];
-    layout.sectionInset = UIEdgeInsetsMake(10, sideMargin, 10, sideMargin);
-    layout.minimumLineSpacing = 10;
-    layout.minimumInteritemSpacing = 0;
+    layout.sectionInset = UIEdgeInsetsMake(2 * sideMargin, sideMargin, 2 * sideMargin, sideMargin);
+    layout.minimumLineSpacing = 2 * sideMargin;
+    layout.minimumInteritemSpacing = 2 * sideMargin;
     PicContentView *collectionView = [[PicContentView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     [collectionView registerClass:[PicContentCell class] forCellWithReuseIdentifier:@"PicContentCell"];
     collectionView.backgroundColor = [UIColor whiteColor];
+    collectionView.wholeWidth = wholeWidth;
     return collectionView;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    // mac端拖拽之后, 界面重新适配
+    PicContentViewFlowLayout *layout = (PicContentViewFlowLayout *)self.collectionViewLayout;
+    layout.itemSize = [PicContentView itemSize:self.mj_w];
 }
 
 @end

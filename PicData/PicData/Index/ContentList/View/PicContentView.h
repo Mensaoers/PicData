@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PicContentView : UICollectionView
 
+@property (nonatomic, assign) CGFloat wholeWidth;
+
 + (CGFloat)itemWidth:(CGFloat)wholeWidth;
 + (CGFloat)itemHeight:(CGFloat)wholeWidth;
 + (CGSize)itemSize:(CGFloat)wholeWidth;

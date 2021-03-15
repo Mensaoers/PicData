@@ -40,6 +40,12 @@
     [self.collectionView.mj_header beginRefreshing];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    /// mac端拖拽之后, 界面重新适配
+    self.collectionView.wholeWidth = self.view.mj_w;
+}
+
 - (void)loadMainView {
     [super loadMainView];
     

@@ -53,6 +53,7 @@
     [self.tagsFrames removeAllObjects];
     for (PicClassModel *classModel in self.dataList) {
         PicClassifyTagsFrame *frame = [[PicClassifyTagsFrame alloc] init];
+        frame.currWidth = self.mj_w;
         frame.tagsMinPadding = 5;
         frame.tagsMargin = 12;
         frame.tagsLineSpacing = 8;
@@ -115,7 +116,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.classifyStyle == PicClassifyTableViewStyleTags) {
-        NSLog(@"%f",[self.tagsFrames[indexPath.section] tagsHeight]);
+//        NSLog(@"%f",[self.tagsFrames[indexPath.section] tagsHeight]);
         return [self.tagsFrames[indexPath.section] tagsHeight];
     } else {
         return 44;

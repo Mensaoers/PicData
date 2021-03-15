@@ -248,7 +248,13 @@
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"压缩成功" afterDelay:1];
 
                 /// 压缩之后弹出分享框
-                [weakSelf showActivityViewControllerWithItems:@[[NSURL fileURLWithPath:zippedPath]] sourceView:sourceView ComleteHandler:^{
+                [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:zippedPath]] sourceView:sourceView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+                    if (completed) {
+                        NSLog(@"分享成功!");
+                    } else {
+                        NSLog(@"分享失败!");
+                    }
                     // 不分享了, 那得删了临时数据
                     NSError *rmError = nil;
                     [[NSFileManager defaultManager] removeItemAtPath:zippedPath error:&rmError];
@@ -290,37 +296,6 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
-}
-
-/// 压缩之后弹出分享框
-- (void)showActivityViewControllerWithItems:(NSArray *)activityItems sourceView:(UIView *)sourceView ComleteHandler:(void(^)(void))completeHandler {
-    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
-
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
-        NSLog(@"调用分享的应用id :%@", activityType);
-
-        completeHandler();
-
-        if (completed) {
-            NSLog(@"分享成功!");
-        } else {
-            NSLog(@"分享失败!");
-        }
-    };
-
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
-        if (popover) {
-            popover.sourceView = sourceView;
-            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        }
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else {
-        //do nothing
-    }
 }
 
 - (void)arrangeItemClickAction:(UIBarButtonItem *)sender {

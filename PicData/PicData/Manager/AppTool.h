@@ -30,6 +30,9 @@ FOUNDATION_EXTERN NSString *const HOST_URL_M_AITAOTU_TAG;
 /// 设置当前是否支持横屏
 + (BOOL)setCanChangeOrientation:(BOOL)value;
 
+/// 分享app中的文件,区分是iOS端或者mac端
++ (void)shareFileWithURLs:(NSArray <NSURL *>*)urls sourceView:(UIView *)sourceView completionWithItemsHandler:(UIActivityViewControllerCompletionWithItemsHandler)completionWithItemsHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

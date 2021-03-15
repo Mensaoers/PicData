@@ -12,6 +12,8 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *contentTF;
 @property (weak, nonatomic) IBOutlet UITextField *titleTF;
+@property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
+@property (weak, nonatomic) IBOutlet UIButton *batchDownloadBtn;
 
 @property (weak, nonatomic) IBOutlet UITextView *multiTextView;
 
@@ -43,6 +45,16 @@
     self.multiTextView.layer.cornerRadius = 4;
     self.multiTextView.layer.borderWidth = 1;
     self.multiTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+
+    self.downloadBtn.layer.cornerRadius = 4;
+    self.downloadBtn.layer.borderColor = self.downloadBtn.tintColor.CGColor;
+    self.downloadBtn.layer.borderWidth = 1;
+    self.downloadBtn.layer.masksToBounds = YES;
+
+    self.batchDownloadBtn.layer.cornerRadius = 4;
+    self.batchDownloadBtn.layer.borderColor = self.batchDownloadBtn.tintColor.CGColor;
+    self.batchDownloadBtn.layer.borderWidth = 1;
+    self.batchDownloadBtn.layer.masksToBounds = YES;
 }
 
 - (void)prepareSourceWithUrl:(NSString *)url title:(NSString *)title resultHandler:(void(^)(PicSourceModel *sourceModel, PicContentModel *contentModel))result {

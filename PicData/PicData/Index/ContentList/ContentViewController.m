@@ -36,7 +36,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = self.sourceModel.title;
     [self.collectionView.mj_header beginRefreshing];
 }
 
@@ -64,6 +63,13 @@
     collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf loadContentData];
     }];
+}
+
+- (void)loadNavigationItem {
+    self.navigationItem.title = self.sourceModel.title;
+
+    UIBarButtonItem *allDownItem = [[UIBarButtonItem alloc] initWithTitle:@"全部下载" style:UIBarButtonItemStyleDone target:self action:@selector(downloadAllContents:)];
+    self.navigationItem.rightBarButtonItem = allDownItem;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -191,7 +197,6 @@
         }
 
         [contentModel insertTable];
-//        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
         [contentModels addObject:contentModel];
     }
 
@@ -239,7 +244,6 @@
         }
 
         [contentModel insertTable];
-//        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
         [contentModels addObject:contentModel];
     }
 
@@ -287,11 +291,18 @@
         }
 
         [contentModel insertTable];
-//        [JKSqliteModelTool saveOrUpdateModel:contentModel uid:SQLite_USER];
         [contentModels addObject:contentModel];
     }
 
     return [contentModels copy];
+}
+
+- (void)downloadAllContents:(UIBarButtonItem *)sender {
+    for (PicContentModel *contentModel in self.dataList) {
+        [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+        }];
+    }
 }
 
 #pragma mark PicContentCellDelegate

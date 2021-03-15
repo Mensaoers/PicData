@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void(^ClickAction)(void);
 
+/// 可活动区域
+@property (nonatomic, assign) CGRect areaActFrame;
+
 @end
 
 NS_ASSUME_NONNULL_END

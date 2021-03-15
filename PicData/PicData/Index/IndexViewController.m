@@ -29,6 +29,12 @@
     return _dataList;
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    [FloatingWindowView shareInstance].areaActFrame = self.view.bounds;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadSourceData];

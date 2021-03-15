@@ -382,14 +382,14 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return  section == 0 ? CGFLOAT_MIN : 25;
+    return  section == 0 ? CGFLOAT_MIN : 40;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *bgView = [[UIView alloc] init];
     bgView.backgroundColor = UIColor.whiteColor;
-    CGRect frame = CGRectMake(0, 0, tableView.mj_w, 25);
+    CGRect frame = CGRectMake(0, 0, tableView.mj_w, 40);
     bgView.frame = frame;
     
     frame.origin.x = 8;
@@ -403,6 +403,16 @@
         titleLabel.text = @"图片";// self.detailModel.detailTitle ?: @"";
     } else {
         titleLabel.text = self.detailModel.suggesTitle ?: @"";
+        if (titleLabel.text.length > 0) {
+            // 添加一个全部下载按钮
+            UIButton *downloadAllBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+            downloadAllBtn.frame = CGRectMake(tableView.mj_w - 88, 0, 80, 40);
+            [downloadAllBtn setTitle:@"全部下载" forState:UIControlStateNormal];
+            [downloadAllBtn setTitleColor:ThemeColor forState:UIControlStateNormal];
+            [downloadAllBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+            [downloadAllBtn addTarget:self action:@selector(downloadAllContents:) forControlEvents:UIControlEventTouchUpInside];
+            [bgView addSubview:downloadAllBtn];
+        }
     }
 
     return bgView;
@@ -449,4 +459,11 @@
     }];
 }
 
+- (void)downloadAllContents:(UIButton *)sender {
+    for (PicContentModel *contentModel in self.detailModel.suggesArray) {
+        [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+        }];
+    }
+}
 @end

@@ -30,6 +30,7 @@
         floatingWindowView.backgroundColor = [UIColor redColor];
         floatingWindowView.image = [UIImage imageNamed:@"calculate"];
         floatingWindowView.layer.cornerRadius = 25;
+        floatingWindowView.areaActFrame = [UIApplication sharedApplication].keyWindow.bounds;
     });
     return floatingWindowView;
 }
@@ -52,6 +53,14 @@
     }
 }
 
+- (CGFloat)areaWidth {
+    return self.areaActFrame.size.width;
+}
+
+- (CGFloat)areaHeight {
+    return self.areaActFrame.size.height;
+}
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSSet *allTouches = [event allTouches];
     UITouch *touch = [allTouches anyObject];
@@ -64,37 +73,47 @@
     UITouch *touch = [allTouches anyObject];
     CGPoint point = [touch locationInView:[touch window]];
     self.center = point;
+    CGFloat areaWidth = [self areaWidth];
+    CGFloat areaHeight = [self areaHeight];
     if (self.left <= 0 && self.top <= 0) {
         self.left = 0;
         self.top = 0;
-    }else if (self.left <= 0 && self.bottom >= kScreenHeight) {
+    }else if (self.left <= 0 && self.bottom >= areaHeight) {
         self.left = 0;
-        self.bottom = kScreenHeight;
-    }else if (self.bottom >= kScreenHeight && self.right >= kScreenWidth) {
-        self.bottom = kScreenHeight;
-        self.right = kScreenWidth;
-    }else if (self.right >= kScreenWidth && self.top <= 0) {
-        self.right = kScreenWidth;
+        self.bottom = areaHeight;
+    }else if (self.bottom >= areaHeight && self.right >= areaWidth) {
+        self.bottom = areaHeight;
+        self.right = areaWidth;
+    }else if (self.right >= areaWidth && self.top <= 0) {
+        self.right = areaWidth;
         self.top = 0;
     }else if (self.left <= 0) {
         self.left = 0;
     }else if (self.top <= 0) {
         self.top = 0;
-    }else if (self.right >= kScreenWidth) {
-        self.right = kScreenWidth;
-    }else if (self.bottom >= kScreenHeight) {
-        self.bottom = kScreenHeight;
+    }else if (self.right >= areaWidth) {
+        self.right = areaWidth;
+    }else if (self.bottom >= areaHeight) {
+        self.bottom = areaHeight;
     }
+}
+
+- (void)setAreaActFrame:(CGRect)areaActFrame {
+    _areaActFrame = areaActFrame;
+    self.right = MIN(self.right, areaActFrame.origin.x + areaActFrame.size.width - Margin);
+    self.bottom = MIN(self.bottom, areaActFrame.origin.y + areaActFrame.size.height - (Margin + kiPhoneX ? 20 : 0));
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSSet *allTouches = [event allTouches];
     UITouch *touch = [allTouches anyObject];
     CGPoint point = [touch locationInView:[touch window]];
+    CGFloat areaWidth = [self areaWidth];
+    CGFloat areaHeight = [self areaHeight];
     if (point.x == _touchesBeganPoint.x && point.y == _touchesBeganPoint.y) {
         [self click];
     }else{
-        if (self.left < kScreenWidth / 2.0) {
+        if (self.left < areaWidth / 2.0) {
             [UIView animateWithDuration:AnimateTime animations:^{
                 self.left = Margin;
             }];
@@ -108,17 +127,17 @@
                 }
             }];
         }
-        if (self.right >= kScreenWidth / 2.0) {
+        if (self.right >= areaWidth / 2.0) {
             [UIView animateWithDuration:AnimateTime animations:^{
-                self.right = kScreenWidth - Margin;
+                self.right = areaWidth - Margin;
             }];
         }
-        if (self.bottom >= kScreenHeight) {
+        if (self.bottom >= areaHeight) {
             [UIView animateWithDuration:AnimateTime animations:^{
                 if (kiPhoneX) {
-                    self.bottom = kScreenHeight - Margin - 20;
+                    self.bottom = areaHeight - Margin - 20;
                 }else{
-                    self.bottom = kScreenHeight - Margin;
+                    self.bottom = areaHeight - Margin;
                 }
             }];
         }

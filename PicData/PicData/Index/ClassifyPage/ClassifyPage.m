@@ -64,7 +64,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取成功"];
                 // 解析数据
-                weakSelf.dataArray = [weakSelf dealWithHtml:htmlString];
+                weakSelf.dataArray = [weakSelf dealWithHtml:htmlString HOST_URLString:HOST_URL_M_AITAOTU];
                 [weakSelf.tableView reloadDataWithSource:weakSelf.dataArray];
             });
             
@@ -79,7 +79,7 @@
 }
 
 /// 分类标签可能type都是2
-- (NSArray *)dealWithHtml:(NSString *)htmlString {
+- (NSArray *)dealWithHtml:(NSString *)htmlString HOST_URLString:(NSString *)HOST_URLString {
     if (nil == htmlString || htmlString.length == 0) {
         NSLog(@"标签页数据为空");
         return @[];
@@ -116,19 +116,19 @@
             if (tmp.length == 0) {
                 continue;
             }
-            NSString *href = [HOST_URL_M_AITAOTU stringByAppendingPathComponent:tmp];
+            NSString *href = [HOST_URLString stringByAppendingPathComponent:tmp];
             NSString *title = aEle.text();
             
             PicSourceModel *sourceMdoel = [[PicSourceModel alloc] init];
             sourceMdoel.title = title;
             sourceMdoel.url = href;
             sourceMdoel.sourceType = 2;
-            sourceMdoel.HOST_URL = HOST_URL_M_AITAOTU;
+            sourceMdoel.HOST_URL = HOST_URLString;
             
             [sourceModels addObject:sourceMdoel];
         }
         
-        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:HOST_URL_M_AITAOTU Title:title sourceType:@"2" subTitles:sourceModels.copy];
+        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:HOST_URLString Title:title sourceType:@"2" subTitles:sourceModels.copy];
         [classModels addObject:classModel];
     }
     

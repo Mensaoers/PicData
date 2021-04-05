@@ -57,9 +57,8 @@
     self.batchDownloadBtn.layer.masksToBounds = YES;
 }
 
-- (void)prepareSourceWithUrl:(NSString *)url title:(NSString *)title resultHandler:(void(^)(PicSourceModel *sourceModel, PicContentModel *contentModel))result {
+- (void)prepareSourceWithUrl:(NSString *)url HOST_URLString:(NSString *)HOST_URLString title:(NSString *)title resultHandler:(void(^)(PicSourceModel *sourceModel, PicContentModel *contentModel))result {
 
-    NSString *HOST_URLString = HOST_URL_M_AITAOTU;
     if ([url containsString:@"_"]) {
         NSRange range = [url rangeOfString:@"_"];
         url = [[url substringToIndex:range.location] stringByAppendingString:@".html"];
@@ -139,7 +138,7 @@
 
 - (void)sureToAdd:(UIBarButtonItem *)sender {
     if (self.contentTF.text.length > 0) {
-        [self prepareSourceWithUrl:self.contentTF.text title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_M_AITAOTU title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
             DetailViewController *detailVC = [[DetailViewController alloc] init];
             detailVC.sourceModel = sourceModel;
             detailVC.contentModel = contentModel;
@@ -152,7 +151,7 @@
 
 - (IBAction)downAction:(id)sender {
     if (self.contentTF.text.length > 0) {
-        [self prepareSourceWithUrl:self.contentTF.text title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_M_AITAOTU title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
             [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                 [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
             }];
@@ -169,7 +168,7 @@
             if (url.length == 0) {
                 continue;
             }
-            [self prepareSourceWithUrl:url title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+            [self prepareSourceWithUrl:url HOST_URLString:HOST_URL_M_AITAOTU title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
                 [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                     [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
                 }];

@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 singleton_interface(ContentParserManager)
 
++ (void)cancelAll;
+
 /// 尝试下载某一个套图, 做出基本判断,
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel operationTips:(void(^ __nonnull)(BOOL isSuccess, NSString *tips))operationTips;
 

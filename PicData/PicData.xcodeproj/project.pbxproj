@@ -40,6 +40,7 @@
 		9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E4244D5FC7005ADF05 /* DetailViewController.m */; };
 		9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E7244D66C7005ADF05 /* DetailViewModel.m */; };
 		9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */; };
+		9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4B0E35262307CE0062AD82 /* SettingPathViewController.m */; };
 		9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */; };
 		9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
@@ -173,6 +174,8 @@
 		9D3593E7244D66C7005ADF05 /* DetailViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewModel.m; sourceTree = "<group>"; };
 		9D3593ED244D6D32005ADF05 /* DetailViewContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewContentCell.h; sourceTree = "<group>"; };
 		9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewContentCell.m; sourceTree = "<group>"; };
+		9D4B0E34262307CE0062AD82 /* SettingPathViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingPathViewController.h; sourceTree = "<group>"; };
+		9D4B0E35262307CE0062AD82 /* SettingPathViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingPathViewController.m; sourceTree = "<group>"; };
 		9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCGumboElement+query.m"; sourceTree = "<group>"; };
 		9D607E032622A9D000FE95B5 /* OCGumboElement+query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCGumboElement+query.h"; sourceTree = "<group>"; };
 		9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBrowserToolViewHandler.h; sourceTree = "<group>"; };
@@ -302,6 +305,8 @@
 			children = (
 				33AB92B224C3F5AA00E97E42 /* SettingViewController.h */,
 				33AB92B324C3F5AA00E97E42 /* SettingViewController.m */,
+				9D4B0E34262307CE0062AD82 /* SettingPathViewController.h */,
+				9D4B0E35262307CE0062AD82 /* SettingPathViewController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -846,6 +851,7 @@
 				9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
+				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,

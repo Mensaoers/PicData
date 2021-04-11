@@ -37,4 +37,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
+#pragma mark 执行自定义方法
+- (void)performSelfFuncWithString:(NSString *)funcString withObject:(nullable id)object {
+    if ([self respondsToSelector:NSSelectorFromString(funcString)]) {
+        SEL selector = NSSelectorFromString(funcString);
+        IMP imp = [self methodForSelector:selector];
+        void (*func)(id, SEL, id) = (void *)imp;
+        func(self, selector, object);
+    }
+}
+
 @end

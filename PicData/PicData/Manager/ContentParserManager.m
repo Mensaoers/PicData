@@ -56,6 +56,14 @@ singleton_implementation(ContentParserManager)
     }
 }
 
+/// 从数据库某条数据创建任务
++ (void)tryToAddTaskWithContentTaskModel:(PicContentTaskModel *)contentModel operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
+    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
+    if (sourceModel != nil) {
+        [self parserWithSourceModel:sourceModel ContentTaskModel:contentModel];
+    }
+}
+
 /// app启动的时候, 将所有1的任务取出来开始进行
 + (void)prepareForAppLaunch {
     [PicContentTaskModel resetHalfWorkingTasks];

@@ -68,10 +68,8 @@
         [leftBarButtonItems addObject:backItem];
     }
     // mac端也允许整理按钮, 加警告框即可
-    if (self.navigationController.viewControllers.count <= 2) {
-        UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
-        [leftBarButtonItems addObject:arrangeItem];
-    }
+    UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
+    [leftBarButtonItems addObject:arrangeItem];
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     NSMutableArray *items = [NSMutableArray array];
@@ -310,6 +308,12 @@
 
     PDBlockSelf
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"整理文件夹" message:@"该操作可能会删除本地文件(夹), 重要文件请再三确认" preferredStyle:UIAlertControllerStyleAlert];
+    if (self.navigationController.viewControllers.count > 2) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"重新下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            [weakSelf reDownloadContents];
+        }]];
+    }
     [alert addAction:[UIAlertAction actionWithTitle:@"仅刷新文件夹大小" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
         [weakSelf refreshLoadData:YES];
@@ -320,6 +324,17 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+/// 重新下载
+- (void)reDownloadContents {
+    PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithTitle:self.targetFilePath.lastPathComponent] firstObject];
+    if (taskModel != nil) {
+        MJWeakSelf
+        [ContentParserManager tryToAddTaskWithContentTaskModel:taskModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:tips afterDelay:1];
+        }];
+    }
 }
 
 - (void)arrangeAllFiles {
@@ -356,7 +371,6 @@
                         isEmptyF = NO;
                     }
                 }
-
             }
             if (isEmptyF) {
                 // 没有文件夹, 干掉

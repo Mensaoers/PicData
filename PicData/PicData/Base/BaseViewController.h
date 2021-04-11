@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 加载主界面, 重写不强制执行父类方法
 - (void)loadMainView;
 
+/// 执行自定义方法
+- (void)performSelfFuncWithString:(NSString *)funcString withObject:(nullable id)object;
+
 @end
 
 NS_ASSUME_NONNULL_END

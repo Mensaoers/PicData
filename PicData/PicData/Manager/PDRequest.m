@@ -11,8 +11,20 @@
 @implementation PDRequest
 
 + (void)getWithURL:(NSURL *)URL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    [PDRequest getWithURL:URL isPhone:YES completionHandler:completionHandler];
+}
+
++ (void)getWithURL:(NSURL *)URL isPhone:(BOOL)isPhone completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    if (isPhone) {
+        [PDRequest getWithURL:URL userAgent:@"Mozilla/5.0 (iPhone; CPU iPhone OS 12_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1" completionHandler:completionHandler];
+    } else {
+        [PDRequest getWithURL:URL userAgent:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36 Edg/89.0.774.63" completionHandler:completionHandler];
+    }
+}
+
++ (void)getWithURL:(NSURL *)URL userAgent:(NSString *)userAgent completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone OS 12_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1" forHTTPHeaderField:@"User-agent"];
+    [request setValue:userAgent forHTTPHeaderField:@"User-agent"];
     NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:completionHandler];
     [dataTask resume];
 }

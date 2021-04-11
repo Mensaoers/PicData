@@ -320,13 +320,18 @@
 
 /// 重新下载
 - (void)reDownloadContents {
-    PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithTitle:self.targetFilePath.lastPathComponent] firstObject];
-    if (taskModel != nil) {
-        MJWeakSelf
-        [ContentParserManager tryToAddTaskWithContentTaskModel:taskModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
-            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:tips afterDelay:1];
-        }];
+    PicContentModel *contentModel = [[PicContentModel queryTableWithTitle:self.targetFilePath.lastPathComponent] firstObject];
+    if (nil == contentModel) {
+        return;
     }
+    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
+    if (nil == sourceModel) {
+        return;
+    }
+    MJWeakSelf
+    [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+        [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:tips afterDelay:1];
+    }];
 }
 
 - (void)arrangeAllFiles {

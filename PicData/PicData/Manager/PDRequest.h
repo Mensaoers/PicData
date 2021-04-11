@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PDRequest : NSObject
 
 + (void)getWithURL:(NSURL *)URL completionHandler:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completionHandler;
++ (void)getWithURL:(NSURL *)URL isPhone:(BOOL)isPhone completionHandler:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completionHandler;
++ (void)getWithURL:(NSURL *)URL userAgent:(NSString *)userAgent completionHandler:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 + (void)requestToCheckVersion:(BOOL)autoCheck onView:(UIView *)onView completehandler:(void(^ __nullable )(void))completehandler;
 @end

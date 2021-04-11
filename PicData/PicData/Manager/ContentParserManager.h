@@ -27,7 +27,8 @@ singleton_interface(ContentParserManager)
 
 /// 尝试下载某一个套图, 做出基本判断,
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel operationTips:(void(^ __nonnull)(BOOL isSuccess, NSString *tips))operationTips;
-
+/// 从数据库某条数据创建任务
++ (void)tryToAddTaskWithContentTaskModel:(PicContentTaskModel *)contentModel operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips;
 /// app启动的时候, 将所有1的任务取出来开始进行
 + (void)prepareForAppLaunch;
 /// 查询接下来要开始的任务

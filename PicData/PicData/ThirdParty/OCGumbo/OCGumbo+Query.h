@@ -28,6 +28,13 @@ typedef NSString *      (^OCGumboQueryBlockSV) (void);
  */
 @property (nonatomic, weak, readonly) OCGumboQueryBlockAS Query;
 
+/// 快速查找class
+@property (nonatomic, weak, readonly) OCGumboQueryBlockAS QueryClass;
+/// 快速查找id
+@property (nonatomic, weak, readonly) OCGumboQueryBlockAS QueryID;
+/// 快速查找element
+@property (nonatomic, weak, readonly) OCGumboQueryBlockAS QueryElement;
+
 /**
  *  Get the attribute value of the element by attributeName.
  *

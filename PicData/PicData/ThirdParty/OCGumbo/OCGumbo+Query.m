@@ -144,6 +144,27 @@ NS_INLINE NSArray *oc_gumbo_find_parents(GumboNode *node, NSString *selector, BO
     return block;
 }
 
+- (OCGumboQueryBlockAS)QueryClass {
+    OCGumboQueryBlockAS block = ^ id (NSString *selector) {
+        return oc_gumbo_find_children(self->_gumboNode, [NSString stringWithFormat:@".%@", selector], true);
+    };
+    return block;
+}
+
+- (OCGumboQueryBlockAS)QueryID {
+    OCGumboQueryBlockAS block = ^ id (NSString *selector) {
+        return oc_gumbo_find_children(self->_gumboNode, [NSString stringWithFormat:@"#%@", selector], true);
+    };
+    return block;
+}
+
+- (OCGumboQueryBlockAS)QueryElement {
+    OCGumboQueryBlockAS block = ^ id (NSString *selector) {
+        return oc_gumbo_find_children(self->_gumboNode, selector, true);
+    };
+    return block;
+}
+
 - (OCGumboQueryBlockSV)text {
     OCGumboQueryBlockSV block = ^ NSString *(void) {
         NSMutableString *result = [NSMutableString string];

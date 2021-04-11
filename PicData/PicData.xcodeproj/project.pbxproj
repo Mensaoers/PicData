@@ -40,6 +40,8 @@
 		9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E4244D5FC7005ADF05 /* DetailViewController.m */; };
 		9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E7244D66C7005ADF05 /* DetailViewModel.m */; };
 		9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */; };
+		9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */; };
+		9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
@@ -171,6 +173,10 @@
 		9D3593E7244D66C7005ADF05 /* DetailViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewModel.m; sourceTree = "<group>"; };
 		9D3593ED244D6D32005ADF05 /* DetailViewContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewContentCell.h; sourceTree = "<group>"; };
 		9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewContentCell.m; sourceTree = "<group>"; };
+		9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCGumboElement+query.m"; sourceTree = "<group>"; };
+		9D607E032622A9D000FE95B5 /* OCGumboElement+query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCGumboElement+query.h"; sourceTree = "<group>"; };
+		9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBrowserToolViewHandler.h; sourceTree = "<group>"; };
+		9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBrowserToolViewHandler.m; sourceTree = "<group>"; };
 		9D96DC9C25A376080045D123 /* AppTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppTool.h; sourceTree = "<group>"; };
 		9D96DC9D25A376080045D123 /* AppTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppTool.m; sourceTree = "<group>"; };
 		9D96DCA125A379540045D123 /* PicClassifyTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassifyTableView.h; sourceTree = "<group>"; };
@@ -516,11 +522,13 @@
 		9DE95C93244C3FDC00E31735 /* OCGumbo */ = {
 			isa = PBXGroup;
 			children = (
-				9DE95C94244C3FDC00E31735 /* gumbo */,
-				9DE95CB4244C3FDC00E31735 /* OCGumbo+Query.h */,
 				9DE95CB5244C3FDC00E31735 /* OCGumbo.h */,
-				9DE95CB6244C3FDC00E31735 /* OCGumbo+Query.m */,
 				9DE95CB7244C3FDC00E31735 /* OCGumbo.m */,
+				9DE95CB4244C3FDC00E31735 /* OCGumbo+Query.h */,
+				9DE95CB6244C3FDC00E31735 /* OCGumbo+Query.m */,
+				9D607E032622A9D000FE95B5 /* OCGumboElement+query.h */,
+				9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */,
+				9DE95C94244C3FDC00E31735 /* gumbo */,
 			);
 			path = OCGumbo;
 			sourceTree = "<group>";
@@ -864,6 +872,7 @@
 				33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
+				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
 				33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */,
@@ -1016,7 +1025,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.17;
+				MARKETING_VERSION = 0.1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1048,7 +1057,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.17;
+				MARKETING_VERSION = 0.1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

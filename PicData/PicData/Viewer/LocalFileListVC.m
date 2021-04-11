@@ -396,7 +396,7 @@
             [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
         } else {
             // 根视图, 删除所有
-            [PDDownloadManager.sharedPDDownloadManager totalCancel];
+            [ContentParserManager cancelAll];
             // 取消所有已添加
             [PicContentTaskModel deleteFromTable_All];
             [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件不包括该文件夹本身

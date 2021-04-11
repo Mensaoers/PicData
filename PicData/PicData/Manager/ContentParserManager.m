@@ -1,10 +1,10 @@
-    //
-    //  ContentParserManager.m
-    //  PicData
-    //
-    //  Created by Garenge on 2020/4/20.
-    //  Copyright © 2020 garenge. All rights reserved.
-    //
+//
+//  ContentParserManager.m
+//  PicData
+//
+//  Created by Garenge on 2020/4/20.
+//  Copyright © 2020 garenge. All rights reserved.
+//
 
 #import "ContentParserManager.h"
 #import "PDDownloadManager.h"
@@ -21,6 +21,11 @@
 @implementation ContentParserManager
 
 singleton_implementation(ContentParserManager)
+
++ (void)cancelAll {
+    [ContentParserManager.sharedContentParserManager.queue cancelAllOperations];
+    [PDDownloadManager.sharedPDDownloadManager totalCancel];
+}
 
 - (int)maxConcurrentTasksLimit {
     return 2;
@@ -92,57 +97,70 @@ singleton_implementation(ContentParserManager)
         [contentTaskModel updateTable];
 
         [queue addOperationWithBlock:^{
+
+            //创建信号量并设置计数默认为0
+            dispatch_semaphore_t sema = dispatch_semaphore_create(0);
             NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
-            [ContentParserManager dealWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+            [ContentParserManager dealWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:^{
+
+                dispatch_semaphore_signal(sema);
+                // 我们需要做一个操作, 是让他继续下一个任务
+                [ContentParserManager prepareToDoNextTask];
+            }];
+            //若计数为0则一直等待
+            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
         }];
         [ContentParserManager prepareToDoNextTask];
     }
 }
 
 /// 处理页面源码, 提取页面数据
-+ (void)dealWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel {
++ (void)dealWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel taskCompleteHandler:(void(^)(void))taskCompleteHandler {
     // 错误-1, 网络部分错误
     // 错误-2, 写入部分错误
     if ([url containsString:@".html"]) {
-        NSError *error = nil;
         NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
-        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:NSUTF8StringEncoding error:&error];
-        NSString *nextUrl = @"";
-        int count = 0;
-        if (error) {
-            NSLog(@"第%d页, %@, 出现错误-1, %@", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
-        } else {
-            NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-            NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
-            nextUrl = result[@"nextUrl"];
-            NSError *writeError = nil;
-            count = [result[@"count"] intValue];
-            [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
-            if (writeError) {
-                NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
-            }
-        }
+        [PDRequest getWithURL:[NSURL URLWithString:url relativeToURL:baseURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
-        picCount += count;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
-        if (![nextUrl containsString:@".html"]) {
-            [targetHandle closeFile];
-            NSLog(@"完成");
-            // 获取到最后一页一直到这一行, 都是同步运行, 所以下载肯定会晚于遍历结束
-            contentTaskModel.totalCount = picCount;
-            contentTaskModel.status = 2;
-            // 遍历完成
-            if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
-                contentTaskModel.status = 3;
+            NSString *nextUrl = @"";
+            int count = 0;
+            if (nil == error) {
+                // 获取字符串
+                NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+                NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
+
+                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+                nextUrl = result[@"nextUrl"];
+                NSError *writeError = nil;
+                count = [result[@"count"] intValue];
+                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
+                if (writeError) {
+                    NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
+                }
+            } else {
+                NSLog(@"第%d页, %@, 出现错误-1, %@", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
             }
-            [contentTaskModel updateTable];
-            // 我们需要做一个操作, 是让他继续下一个任务
-            [ContentParserManager prepareToDoNextTask];
-        } else {
-            [ContentParserManager dealWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
-        }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
+            if (![nextUrl containsString:@".html"]) {
+                [targetHandle closeFile];
+                NSLog(@"完成");
+                // 获取到最后一页一直到这一行, 都是同步运行, 所以下载肯定会晚于遍历结束
+                contentTaskModel.totalCount = picCount + count;
+                contentTaskModel.status = 2;
+                // 遍历完成
+                if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
+                    contentTaskModel.status = 3;
+                }
+                [contentTaskModel updateTable];
+
+                PPIsBlockExecute(taskCompleteHandler)
+            } else {
+                [ContentParserManager dealWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:taskCompleteHandler];
+            }
+        }];
     }
 }
 

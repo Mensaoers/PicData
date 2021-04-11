@@ -23,4 +23,6 @@
 #define ThemeColor [UIColor colorWithRed:212.0 / 255 green:35.0 / 255 blue:122.0 / 255 alpha:1]
 #define ThemeDisabledColor [UIColor colorWithRed:191.0 / 255 green:191.0 / 255 blue:191.0 / 255 alpha:1]
 
+#define PPIsBlockExecute(block, ...) if (block) { block(__VA_ARGS__); };
+
 #endif /* Config_h */

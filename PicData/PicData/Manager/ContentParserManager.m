@@ -135,11 +135,22 @@ singleton_implementation(ContentParserManager)
             int count = 0;
             if (nil == error) {
                 // 获取字符串
-                NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSString *content;
+                if (sourceModel.sourceType == 4) {
+                    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                    content = [[NSString alloc] initWithData:data encoding:enc];
+                } else {
+                    content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                }
 
                 NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+                NSDictionary *result;
+                if (sourceModel.sourceType == 4) {
+                    result = [ContentParserManager dealWithHtmlData4:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+                } else {
+                    result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+                }
                 nextUrl = result[@"nextUrl"];
                 NSError *writeError = nil;
                 count = [result[@"count"] intValue];
@@ -244,6 +255,58 @@ singleton_implementation(ContentParserManager)
 
     }
     
+    if (url.length == 0) {
+        NSLog(@"获取到的下一个url是空的");
+    }
+
+    return @{@"nextUrl" : url, @"urls" : [urlsString copy], @"count": @(count)};
+}
+
+/// 处理html标签, 创建下载图片任务开始下载
++ (NSDictionary *)dealWithHtmlData4:(NSString *)htmlString WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel {
+    NSString *url = @"";
+    NSMutableString *urlsString = [NSMutableString string];
+    int count = 0;
+    if (htmlString.length > 0) {
+
+        OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+        NSMutableArray *urls = [NSMutableArray array];
+
+        OCQueryObject *aEs = document.Query(@"a");
+        for (OCGumboElement *aE in aEs) {
+            NSString *title = aE.attr(@"title");
+            if (![title isEqualToString:contentTaskModel.title]) {
+                continue;
+            }
+            NSString *href = aE.attr(@"href");
+            if (href.length > 0 && [href.lastPathComponent containsString:@"_"]) {
+                url = href;
+            }
+
+            OCQueryObject *imgEs = aE.Query(@"img");
+            if (imgEs.count > 0) {
+                OCGumboElement *imgE = imgEs.firstObject;
+                NSString *src = imgE.attr(@"src");
+                if (src.length > 0) {
+                    // img.aitaotu.cc:8089 是大图
+                    // wapimg.aitaotu.cc:8090 是小图
+                    //                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
+                    [urls addObject:src];
+                    if (urlsString.length > 0) {
+                        [urlsString appendString:@"\n"];
+                    }
+                    [urlsString appendFormat:@"%@", src];
+                }
+            }
+        }
+
+
+        count += urls.count;
+        // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
+        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[urls copy]];
+
+    }
+
     if (url.length == 0) {
         NSLog(@"获取到的下一个url是空的");
     }

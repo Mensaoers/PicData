@@ -111,9 +111,9 @@
 
 - (void)loadSourceData {
     
-#ifdef DEBUG
-#else
-    self.navigationItem.title = @"爱套图手机资源";
+//#ifdef DEBUG
+//#else
+    self.navigationItem.title = @"资源";
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"加载中"];
     PDBlockSelf
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -132,7 +132,7 @@
             });
         }
     });
-#endif
+//#endif
     
 }
 

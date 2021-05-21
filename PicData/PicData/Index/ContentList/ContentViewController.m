@@ -81,7 +81,6 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    
     DetailViewController *detailVC = [[DetailViewController alloc] init];
     detailVC.sourceModel = self.sourceModel;
     detailVC.contentModel = self.dataList[indexPath.item];
@@ -92,13 +91,21 @@
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     
     PDBlockSelf
-    [PDRequest getWithURL:[NSURL URLWithString:self.sourceModel.url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
+    [PDRequest getWithURL:[NSURL URLWithString:self.sourceModel.url] isPhone:self.sourceModel.sourceType != 3 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        PDBlockStrongSelf
         if (nil == error) {
             // 获取字符串
-            NSString *resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSString *resultString;
+            if (strongSelf.sourceModel.sourceType == 4) {
+                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                resultString = [[NSString alloc] initWithData:data encoding:enc];
+            } else {
+                resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            }
+
             NSString *targetPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"htmlContent.txt"];
             [data writeToFile:targetPath atomically:YES];
+
 //            NSLog(@"获取%@数据成功:%@", self.typeModel.value, resultString);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据成功"];
@@ -112,7 +119,7 @@
                 [weakSelf.collectionView.mj_header endRefreshing];
             });
         } else {
-            NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
+            NSLog(@"获取%@数据错误:%@", strongSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
                 [weakSelf parserContentListHtmlData:@""];
@@ -139,6 +146,9 @@
             [self.dataList addObjectsFromArray:[results copy]];
         } else if (self.sourceModel.sourceType == 3) {
             NSArray *results = [self parserContentListWithType3:document];
+            [self.dataList addObjectsFromArray:[results copy]];
+        } else if (self.sourceModel.sourceType == 4) {
+            NSArray *results = [self parserContentListWithType4:document];
             [self.dataList addObjectsFromArray:[results copy]];
         }
     }
@@ -245,7 +255,7 @@
 }
 
 - (NSArray *)parserContentListWithType3:(OCGumboDocument *)document {
-    OCQueryObject *itemResults = document.Query(@"#mainbodypul");
+    OCQueryObject *itemResults = document.Query(@"#pins");
     if (itemResults.count == 0) {
         return @[];
     }
@@ -273,6 +283,53 @@
         }
         OCGumboElement *imgE = imgEs.firstObject;
         NSString *imgSrc = imgE.attr(@"data-original");
+        if (imgSrc.length > 0) {
+            // imgSrc
+            contentModel.thumbnailUrl = imgSrc;
+        }
+
+        NSString *alt = imgE.attr(@"alt");
+        if (alt.length > 0) {
+            // alt
+            contentModel.title = alt;
+        }
+
+        [contentModel insertTable];
+        [contentModels addObject:contentModel];
+    }
+
+    return [contentModels copy];
+}
+
+- (NSArray *)parserContentListWithType4:(OCGumboDocument *)document {
+    OCQueryObject *itemResults = document.Query(@".ulPic");
+    if (itemResults.count == 0) {
+        return @[];
+    }
+    OCGumboElement *divElement = itemResults.firstObject;
+    NSMutableArray *contentModels = [NSMutableArray array];
+    for (OCGumboElement *element in divElement.childNodes) {
+        OCQueryObject *aEs = element.Query(@"a");
+        if (aEs.count == 0) {
+            continue;
+        }
+
+        PicContentModel *contentModel = [[PicContentModel alloc] init];
+        contentModel.HOST_URL = self.sourceModel.HOST_URL;
+        contentModel.sourceTitle = self.sourceModel.title;
+        OCGumboElement *aE = aEs.firstObject;
+        NSString *url = aE.attr(@"href");
+        if (url.length > 0) {
+            // url
+            contentModel.href = url;
+        }
+
+        OCQueryObject *imgEs = aE.Query(@"img");
+        if (imgEs.count == 0) {
+            continue;
+        }
+        OCGumboElement *imgE = imgEs.firstObject;
+        NSString *imgSrc = imgE.attr(@"src");
         if (imgSrc.length > 0) {
             // imgSrc
             contentModel.thumbnailUrl = imgSrc;

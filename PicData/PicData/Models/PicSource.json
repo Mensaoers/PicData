@@ -120,5 +120,31 @@
                 "HOST_URL": "https://m.aitaotu.com"
             },
         ]
+    },
+    {
+        "title" : "妹子图",
+        "sourceType" : 3,
+        "HOST_URL": "https://www.mzitu.com",
+        "subTitles" : [
+            {
+                "title" : "性感妹子",
+                "url" : "https://www.mzitu.com/xinggan",
+                "sourceType" : 3,
+                "HOST_URL": "https://www.mzitu.com"
+            }
+        ]
+    },
+    {
+        "title" : "西西人体",
+        "sourceType" : 4,
+        "HOST_URL": "http://www.4c4crt.cc",
+        "subTitles" : [
+            {
+                "title" : "亚洲人体",
+                "url" : "http://www.4c4crt.cc/html/yazhourenti",
+                "sourceType" : 4,
+                "HOST_URL": "http://www.4c4crt.cc"
+            }
+        ]
     }
 ]

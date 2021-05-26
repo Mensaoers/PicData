@@ -54,7 +54,7 @@
 
 - (void)loadData_list {
     __weak typeof(self) weakSelf = self;
-    [PDRequest getWithURL:[NSURL URLWithString:HOST_URL_M_AITAOTU_TAG] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:HOST_URL_4c4crt] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [weakSelf.tableView.mj_header endRefreshing];
         if (nil == error) {
             NSLog(@"获取分类列表成功");
@@ -64,7 +64,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取成功"];
                 // 解析数据
-                weakSelf.dataArray = [weakSelf dealWithHtml:htmlString HOST_URLString:HOST_URL_M_AITAOTU];
+                weakSelf.dataArray = [weakSelf dealWithHtml:htmlString HOST_URLString:HOST_URL_4c4crt];
                 [weakSelf.tableView reloadDataWithSource:weakSelf.dataArray];
             });
             
@@ -139,7 +139,7 @@
 - (void)tableView:(PicClassifyTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
     [sourceModel insertTable];
-//    [JKSqliteModelTool saveOrUpdateModel:sourceModel uid:SQLite_USER];
+
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
 }

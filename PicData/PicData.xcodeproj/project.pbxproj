@@ -22,11 +22,6 @@
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
 		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
-		33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */; };
-		33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */; };
-		33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */; };
-		33B9EEBC24DC7A8400ABE3E2 /* JKSqliteTableTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */; };
-		33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */; };
 		33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
@@ -110,18 +105,6 @@
 		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
 		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
 		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
-		33B9EEAF24DC7A8400ABE3E2 /* JKSqliteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModel.h; sourceTree = "<group>"; };
-		33B9EEB024DC7A8400ABE3E2 /* JKSqliteModelTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModelTool.h; sourceTree = "<group>"; };
-		33B9EEB124DC7A8400ABE3E2 /* JKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteDatabase.h; sourceTree = "<group>"; };
-		33B9EEB224DC7A8400ABE3E2 /* JKSqliteKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteKit.h; sourceTree = "<group>"; };
-		33B9EEB324DC7A8400ABE3E2 /* JKSqliteTableTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteTableTool.h; sourceTree = "<group>"; };
-		33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteModel.m; sourceTree = "<group>"; };
-		33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteModelTool.m; sourceTree = "<group>"; };
-		33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteDatabase.m; sourceTree = "<group>"; };
-		33B9EEB724DC7A8400ABE3E2 /* JKSqliteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteProtocol.h; sourceTree = "<group>"; };
-		33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteTableTool.m; sourceTree = "<group>"; };
-		33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewController.h; sourceTree = "<group>"; };
-		33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewController.m; sourceTree = "<group>"; };
 		33E46BE024ED2CA000586D8B /* PicDownRecoreModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicDownRecoreModel.h; sourceTree = "<group>"; };
 		33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicDownRecoreModel.m; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
@@ -260,7 +243,6 @@
 			isa = PBXGroup;
 			children = (
 				9DE95C93244C3FDC00E31735 /* OCGumbo */,
-				33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -296,30 +278,11 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */ = {
-			isa = PBXGroup;
-			children = (
-				33B9EEAF24DC7A8400ABE3E2 /* JKSqliteModel.h */,
-				33B9EEB024DC7A8400ABE3E2 /* JKSqliteModelTool.h */,
-				33B9EEB124DC7A8400ABE3E2 /* JKSqliteDatabase.h */,
-				33B9EEB224DC7A8400ABE3E2 /* JKSqliteKit.h */,
-				33B9EEB324DC7A8400ABE3E2 /* JKSqliteTableTool.h */,
-				33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */,
-				33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */,
-				33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */,
-				33B9EEB724DC7A8400ABE3E2 /* JKSqliteProtocol.h */,
-				33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */,
-			);
-			path = JKSqliteKit;
-			sourceTree = "<group>";
-		};
 		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
 			isa = PBXGroup;
 			children = (
 				33F0CD4624ED6BF30051D74E /* View */,
 				332C285424EBA5570083A5DC /* AddNetTask */,
-				33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */,
-				33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */,
 			);
 			path = TransView;
 			sourceTree = "<group>";
@@ -799,24 +762,19 @@
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
 				337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,
-				33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */,
 				337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */,
 				3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */,
 				335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */,
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
-				33B9EEBC24DC7A8400ABE3E2 /* JKSqliteTableTool.m in Sources */,
 				9DE95CCC244C3FDD00E31735 /* tokenizer.c in Sources */,
 				9DE95CD7244C417900E31735 /* PicSourceModel.m in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
 				9D96DC9E25A376080045D123 /* AppTool.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,
 				3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */,
-				33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */,
-				33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
-				33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,

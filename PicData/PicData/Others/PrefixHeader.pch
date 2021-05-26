@@ -21,8 +21,6 @@
     #import <MJExtension/MJExtension.h>
     #import <SDWebImage/UIImageView+WebCache.h>
     #import <MJRefresh/MJRefresh.h>
-    #import "JKSqliteModelTool.h"
-    #import "JKSqliteProtocol.h"
     #import <YYCategories/YYCategories.h>
     #import <JQFMDB/JQFMDB.h>
 //    #import <YBImageBrowser/YBImageBrowser.h>
@@ -42,7 +40,6 @@
     #import "PDDownloadManager.h"
     #import "ContentParserManager.h"
     #import "PDRequest.h"
-    #import "TransViewController.h"
     #import "AddNetTaskVC.h"
     #import "PicClassModel.h"
     #import "ClassifyPage.h"

@@ -22,15 +22,6 @@
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
 		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
-		33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */; };
-		33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */; };
-		33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */; };
-		33B9EEBC24DC7A8400ABE3E2 /* JKSqliteTableTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */; };
-		33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */; };
-		33CACBA225F9E276004964F2 /* PicData_macPlugin_release.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 33CACBA125F9E276004964F2 /* PicData_macPlugin_release.bundle */; };
-		33CACBA625F9E299004964F2 /* PicData_macPlugin_debug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 33CACBA525F9E299004964F2 /* PicData_macPlugin_debug.bundle */; };
-		33CACBA925F9E3E7004964F2 /* PicData_macPlugin_debug.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 33CACBA525F9E299004964F2 /* PicData_macPlugin_debug.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		33CACBAA25F9E3E7004964F2 /* PicData_macPlugin_release.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 33CACBA125F9E276004964F2 /* PicData_macPlugin_release.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
@@ -48,7 +39,6 @@
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
 		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
 		9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9956C125F4B1BB00370811 /* NSString+string.m */; };
-		9DA8336825EA317D002B9B4D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DA8336425EA311F002B9B4D /* AssetsLibrary.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
@@ -85,31 +75,6 @@
 		A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		33E241E625F9C14400CEED3B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 33E241E225F9C14300CEED3B /* PicData_macPlugin.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 33E241D925F9C14300CEED3B;
-			remoteInfo = PicData_macPlugin;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		33CACBAB25F9E3E7004964F2 /* Embed PlugIns */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				33CACBAA25F9E3E7004964F2 /* PicData_macPlugin_release.bundle in Embed PlugIns */,
-				33CACBA925F9E3E7004964F2 /* PicData_macPlugin_debug.bundle in Embed PlugIns */,
-			);
-			name = "Embed PlugIns";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
@@ -140,21 +105,6 @@
 		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
 		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
 		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
-		33B9EEAF24DC7A8400ABE3E2 /* JKSqliteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModel.h; sourceTree = "<group>"; };
-		33B9EEB024DC7A8400ABE3E2 /* JKSqliteModelTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteModelTool.h; sourceTree = "<group>"; };
-		33B9EEB124DC7A8400ABE3E2 /* JKSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteDatabase.h; sourceTree = "<group>"; };
-		33B9EEB224DC7A8400ABE3E2 /* JKSqliteKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteKit.h; sourceTree = "<group>"; };
-		33B9EEB324DC7A8400ABE3E2 /* JKSqliteTableTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteTableTool.h; sourceTree = "<group>"; };
-		33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteModel.m; sourceTree = "<group>"; };
-		33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteModelTool.m; sourceTree = "<group>"; };
-		33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteDatabase.m; sourceTree = "<group>"; };
-		33B9EEB724DC7A8400ABE3E2 /* JKSqliteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKSqliteProtocol.h; sourceTree = "<group>"; };
-		33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKSqliteTableTool.m; sourceTree = "<group>"; };
-		33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewController.h; sourceTree = "<group>"; };
-		33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewController.m; sourceTree = "<group>"; };
-		33CACBA125F9E276004964F2 /* PicData_macPlugin_release.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_release.bundle; sourceTree = "<group>"; };
-		33CACBA525F9E299004964F2 /* PicData_macPlugin_debug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_debug.bundle; sourceTree = "<group>"; };
-		33E241E225F9C14300CEED3B /* PicData_macPlugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PicData_macPlugin.xcodeproj; path = ../../PicData_macPlugin/PicData_macPlugin.xcodeproj; sourceTree = "<group>"; };
 		33E46BE024ED2CA000586D8B /* PicDownRecoreModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicDownRecoreModel.h; sourceTree = "<group>"; };
 		33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicDownRecoreModel.m; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
@@ -190,7 +140,6 @@
 		9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsFrame.h; sourceTree = "<group>"; };
 		9D9956C025F4B1BB00370811 /* NSString+string.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+string.h"; sourceTree = "<group>"; };
 		9D9956C125F4B1BB00370811 /* NSString+string.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+string.m"; sourceTree = "<group>"; };
-		9DA8336425EA311F002B9B4D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/iOSSupport/System/Library/Frameworks/AssetsLibrary.framework; sourceTree = DEVELOPER_DIR; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -273,7 +222,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DA8336825EA317D002B9B4D /* AssetsLibrary.framework in Frameworks */,
 				A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +243,6 @@
 			isa = PBXGroup;
 			children = (
 				9DE95C93244C3FDC00E31735 /* OCGumbo */,
-				33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -331,40 +278,13 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		33B9EEAE24DC7A8400ABE3E2 /* JKSqliteKit */ = {
-			isa = PBXGroup;
-			children = (
-				33B9EEAF24DC7A8400ABE3E2 /* JKSqliteModel.h */,
-				33B9EEB024DC7A8400ABE3E2 /* JKSqliteModelTool.h */,
-				33B9EEB124DC7A8400ABE3E2 /* JKSqliteDatabase.h */,
-				33B9EEB224DC7A8400ABE3E2 /* JKSqliteKit.h */,
-				33B9EEB324DC7A8400ABE3E2 /* JKSqliteTableTool.h */,
-				33B9EEB424DC7A8400ABE3E2 /* JKSqliteModel.m */,
-				33B9EEB524DC7A8400ABE3E2 /* JKSqliteModelTool.m */,
-				33B9EEB624DC7A8400ABE3E2 /* JKSqliteDatabase.m */,
-				33B9EEB724DC7A8400ABE3E2 /* JKSqliteProtocol.h */,
-				33B9EEB824DC7A8400ABE3E2 /* JKSqliteTableTool.m */,
-			);
-			path = JKSqliteKit;
-			sourceTree = "<group>";
-		};
 		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
 			isa = PBXGroup;
 			children = (
 				33F0CD4624ED6BF30051D74E /* View */,
 				332C285424EBA5570083A5DC /* AddNetTask */,
-				33B9EEC124DCAA1000ABE3E2 /* TransViewController.h */,
-				33B9EEC224DCAA1000ABE3E2 /* TransViewController.m */,
 			);
 			path = TransView;
-			sourceTree = "<group>";
-		};
-		33E241E325F9C14300CEED3B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				33E241E725F9C14400CEED3B /* PicData_macPlugin.bundle */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		33F0CD4624ED6BF30051D74E /* View */ = {
@@ -453,6 +373,8 @@
 				9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */,
 				33178B92256A184700CB47F2 /* ViewerViewController.h */,
 				33178B93256A184700CB47F2 /* ViewerViewController.m */,
+				9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */,
+				9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */,
 			);
 			path = Viewer;
 			sourceTree = "<group>";
@@ -478,7 +400,6 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
-				33E241E225F9C14300CEED3B /* PicData_macPlugin.xcodeproj */,
 				333ECEF725F71DFB00762219 /* ThirdParty */,
 				9DE95C72244C3E0F00E31735 /* AppDelegate.h */,
 				9DE95C73244C3E0F00E31735 /* AppDelegate.m */,
@@ -498,8 +419,6 @@
 		9DE95C8D244C3F3700E31735 /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				33CACBA525F9E299004964F2 /* PicData_macPlugin_debug.bundle */,
-				33CACBA125F9E276004964F2 /* PicData_macPlugin_release.bundle */,
 				9DE95C7E244C3E1100E31735 /* Assets.xcassets */,
 				9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */,
 				9DE95C83244C3E1100E31735 /* Info.plist */,
@@ -658,7 +577,6 @@
 		E272491668D574E526B80971 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9DA8336425EA311F002B9B4D /* AssetsLibrary.framework */,
 				AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */,
 			);
 			name = Frameworks;
@@ -677,7 +595,6 @@
 				9DE95C6D244C3E0F00E31735 /* Resources */,
 				C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */,
 				330F778B25DD26A100CD38FD /* Bugly */,
-				33CACBAB25F9E3E7004964F2 /* Embed PlugIns */,
 			);
 			buildRules = (
 			);
@@ -714,12 +631,6 @@
 			mainGroup = 9DE95C66244C3E0F00E31735;
 			productRefGroup = 9DE95C70244C3E0F00E31735 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 33E241E325F9C14300CEED3B /* Products */;
-					ProjectRef = 33E241E225F9C14300CEED3B /* PicData_macPlugin.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				9DE95C6E244C3E0F00E31735 /* PicData */,
@@ -727,25 +638,13 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		33E241E725F9C14400CEED3B /* PicData_macPlugin.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PicData_macPlugin.bundle;
-			remoteRef = 33E241E625F9C14400CEED3B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		9DE95C6D244C3E0F00E31735 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9DE95CC3244C3FDD00E31735 /* char_ref.rl in Resources */,
-				33CACBA625F9E299004964F2 /* PicData_macPlugin_debug.bundle in Resources */,
 				9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */,
-				33CACBA225F9E276004964F2 /* PicData_macPlugin_release.bundle in Resources */,
 				9DE95CD9244C418700E31735 /* PicSource.json in Resources */,
 				9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */,
 				9DE95CC9244C3FDD00E31735 /* tag.in in Resources */,
@@ -843,6 +742,7 @@
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
+				9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
@@ -862,24 +762,19 @@
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
 				337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,
-				33B9EEBA24DC7A8400ABE3E2 /* JKSqliteModelTool.m in Sources */,
 				337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */,
 				3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */,
 				335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */,
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
-				33B9EEBC24DC7A8400ABE3E2 /* JKSqliteTableTool.m in Sources */,
 				9DE95CCC244C3FDD00E31735 /* tokenizer.c in Sources */,
 				9DE95CD7244C417900E31735 /* PicSourceModel.m in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
 				9D96DC9E25A376080045D123 /* AppTool.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,
 				3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */,
-				33B9EEBB24DC7A8400ABE3E2 /* JKSqliteDatabase.m in Sources */,
-				33B9EEC324DCAA1000ABE3E2 /* TransViewController.m in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
-				33B9EEB924DC7A8400ABE3E2 /* JKSqliteModel.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,
@@ -1016,6 +911,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D90F68A13B5C2B86263A6017 /* Pods-PicData.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
@@ -1048,6 +944,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;

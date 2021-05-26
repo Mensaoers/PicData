@@ -12,15 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AppTool : NSObject
 
-/// web主地址
-FOUNDATION_EXTERN NSString *const HOST_URL_AITAOTU;
-/// wap主地址
-FOUNDATION_EXTERN NSString *const HOST_URL_M_AITAOTU;
-/// wap标签地址
-FOUNDATION_EXTERN NSString *const HOST_URL_M_AITAOTU_TAG;
+FOUNDATION_EXTERN NSString *const HOST_URL_4c4crt;
 
-/// 蒲公英appKey
-+ (NSString *)app_key_pgy;
 /// bugly app_id
 + (NSString *)app_id_bugly;
 

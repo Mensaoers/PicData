@@ -73,7 +73,7 @@
 
         sourceModel.HOST_URL = HOST_URLString;
         sourceModel.url = @"";
-        sourceModel.sourceType = 2;
+        sourceModel.sourceType = 4;
 
 
         [weakSelf.lock lock];
@@ -99,7 +99,9 @@
 
         NSError *error = nil;
         NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
-        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:NSUTF8StringEncoding error:&error];
+        NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:enc error:&error];
+
         if (error) {
             NSLog(@"%@, 出现错误-1, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
         } else {
@@ -107,6 +109,7 @@
 
             NSString *title = [weakSelf dealWithHtmlData:content];
             contentModel.title = title;
+            [contentModel updateTable];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             result(sourceModel, contentModel);
@@ -120,16 +123,9 @@
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-        OCQueryObject *metaEs = document.Query(@"meta");
-        for (OCGumboElement *metaEle in metaEs) {
-            NSString *name = metaEle.attr(@"name");
-            if ([name isEqualToString:@"keywords"]) {
-                NSString *content = metaEle.attr(@"content");
-                title = content;
-                break;
-            } else {
-                continue;
-            }
+        OCGumboElement *titleE = document.Query(@".content_title").firstObject;
+        if (titleE.text().length > 0) {
+            title = [titleE.text() stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         }
     }
 
@@ -138,7 +134,7 @@
 
 - (void)sureToAdd:(UIBarButtonItem *)sender {
     if (self.contentTF.text.length > 0) {
-        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_M_AITAOTU title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_4c4crt title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
             DetailViewController *detailVC = [[DetailViewController alloc] init];
             detailVC.sourceModel = sourceModel;
             detailVC.contentModel = contentModel;
@@ -151,7 +147,7 @@
 
 - (IBAction)downAction:(id)sender {
     if (self.contentTF.text.length > 0) {
-        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_M_AITAOTU title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_4c4crt title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
             [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                 [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
             }];
@@ -168,7 +164,7 @@
             if (url.length == 0) {
                 continue;
             }
-            [self prepareSourceWithUrl:url HOST_URLString:HOST_URL_M_AITAOTU title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+            [self prepareSourceWithUrl:url HOST_URLString:HOST_URL_4c4crt title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
                 [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                     [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
                 }];

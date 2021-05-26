@@ -96,12 +96,8 @@
         if (nil == error) {
             // 获取字符串
             NSString *resultString;
-            if (strongSelf.sourceModel.sourceType == 4) {
-                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                resultString = [[NSString alloc] initWithData:data encoding:enc];
-            } else {
-                resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            }
+            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            resultString = [[NSString alloc] initWithData:data encoding:enc];
 
             NSString *targetPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"htmlContent.txt"];
             [data writeToFile:targetPath atomically:YES];
@@ -136,21 +132,9 @@
     if (htmlString.length > 0) {
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-//        OCGumboElement *root = document.rootElement;
 
-        if (self.sourceModel.sourceType == 1) {
-            NSArray *results = [self parserContentListWithType1:document];
-            [self.dataList addObjectsFromArray:[results copy]];
-        } else if (self.sourceModel.sourceType == 2) {
-            NSArray *results = [self parserContentListWithType2:document];
-            [self.dataList addObjectsFromArray:[results copy]];
-        } else if (self.sourceModel.sourceType == 3) {
-            NSArray *results = [self parserContentListWithType3:document];
-            [self.dataList addObjectsFromArray:[results copy]];
-        } else if (self.sourceModel.sourceType == 4) {
-            NSArray *results = [self parserContentListWithType4:document];
-            [self.dataList addObjectsFromArray:[results copy]];
-        }
+        NSArray *results = [self parserContentListWithType:document];
+        [self.dataList addObjectsFromArray:[results copy]];
     }
     
     NSMutableString *urlsS = [NSMutableString string];
@@ -161,147 +145,7 @@
     return urlsS;
 }
 
-- (NSArray *)parserContentListWithType1:(OCGumboDocument *)document {
-    OCQueryObject *itemResults = document.Query(@".zt-l-rows-l");
-    if (itemResults.count == 0) {
-        return @[];
-    }
-    OCGumboElement *divElement = itemResults.firstObject;
-    NSMutableArray *contentModels = [NSMutableArray array];
-    for (OCGumboElement *element in divElement.childNodes) {
-        OCQueryObject *aEs = element.Query(@"a");
-        if (aEs.count == 0) {
-            continue;
-        }
-
-        PicContentModel *contentModel = [[PicContentModel alloc] init];
-        contentModel.HOST_URL = self.sourceModel.HOST_URL;
-        contentModel.sourceTitle = self.sourceModel.title;
-        OCGumboElement *aE = aEs.firstObject;
-        NSString *url = aE.attr(@"href");
-        if (url.length > 0) {
-            // url
-            contentModel.href = url;
-        }
-
-        OCQueryObject *imgEs = aE.Query(@"img");
-        if (imgEs.count == 0) {
-            continue;
-        }
-        OCGumboElement *imgE = imgEs.firstObject;
-        NSString *imgSrc = imgE.attr(@"data-original");
-        if (imgSrc.length > 0) {
-            // imgSrc
-            contentModel.thumbnailUrl = imgSrc;
-        }
-
-        NSString *alt = imgE.attr(@"alt");
-        if (alt.length > 0) {
-            contentModel.title = alt;
-        }
-
-        [contentModel insertTable];
-        [contentModels addObject:contentModel];
-    }
-
-    return [contentModels copy];
-}
-
-- (NSArray *)parserContentListWithType2:(OCGumboDocument *)document {
-    OCQueryObject *itemResults = document.Query(@".container");
-    if (itemResults.count == 0) {
-        return @[];
-    }
-    OCGumboElement *divElement = itemResults.firstObject;
-    NSMutableArray *contentModels = [NSMutableArray array];
-    for (OCGumboElement *element in divElement.childNodes) {
-        OCQueryObject *aEs = element.Query(@"a");
-        if (aEs.count == 0) {
-            continue;
-        }
-
-        PicContentModel *contentModel = [[PicContentModel alloc] init];
-        contentModel.HOST_URL = self.sourceModel.HOST_URL;
-        contentModel.sourceTitle = self.sourceModel.title;
-        OCGumboElement *aE = aEs.firstObject;
-        NSString *url = aE.attr(@"href");
-        if (url.length > 0) {
-            // url
-            contentModel.href = url;
-        }
-
-        OCQueryObject *imgEs = aE.Query(@"img");
-        if (imgEs.count == 0) {
-            continue;
-        }
-        OCGumboElement *imgE = imgEs.firstObject;
-        NSString *imgSrc = imgE.attr(@"data-original");
-        if (imgSrc.length > 0) {
-            // imgSrc
-            contentModel.thumbnailUrl = imgSrc;
-        }
-
-        NSString *alt = imgE.attr(@"alt");
-        if (alt.length > 0) {
-            // alt
-            contentModel.title = alt;
-        }
-
-        [contentModel insertTable];
-        [contentModels addObject:contentModel];
-    }
-
-    return [contentModels copy];
-}
-
-- (NSArray *)parserContentListWithType3:(OCGumboDocument *)document {
-    OCQueryObject *itemResults = document.Query(@"#pins");
-    if (itemResults.count == 0) {
-        return @[];
-    }
-    OCGumboElement *divElement = itemResults.firstObject;
-    NSMutableArray *contentModels = [NSMutableArray array];
-    for (OCGumboElement *element in divElement.childNodes) {
-        OCQueryObject *aEs = element.Query(@"a");
-        if (aEs.count == 0) {
-            continue;
-        }
-
-        PicContentModel *contentModel = [[PicContentModel alloc] init];
-        contentModel.HOST_URL = self.sourceModel.HOST_URL;
-        contentModel.sourceTitle = self.sourceModel.title;
-        OCGumboElement *aE = aEs.firstObject;
-        NSString *url = aE.attr(@"href");
-        if (url.length > 0) {
-            // url
-            contentModel.href = url;
-        }
-
-        OCQueryObject *imgEs = aE.Query(@"img");
-        if (imgEs.count == 0) {
-            continue;
-        }
-        OCGumboElement *imgE = imgEs.firstObject;
-        NSString *imgSrc = imgE.attr(@"data-original");
-        if (imgSrc.length > 0) {
-            // imgSrc
-            contentModel.thumbnailUrl = imgSrc;
-        }
-
-        NSString *alt = imgE.attr(@"alt");
-        if (alt.length > 0) {
-            // alt
-            contentModel.title = alt;
-        }
-
-        [contentModel insertTable];
-        [contentModels addObject:contentModel];
-    }
-
-    return [contentModels copy];
-}
-
-- (NSArray *)parserContentListWithType4:(OCGumboDocument *)document {
+- (NSArray *)parserContentListWithType:(OCGumboDocument *)document {
     OCQueryObject *itemResults = document.Query(@".ulPic");
     if (itemResults.count == 0) {
         return @[];

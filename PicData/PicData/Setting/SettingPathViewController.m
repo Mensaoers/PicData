@@ -128,6 +128,18 @@
         make.centerY.equalTo(checkButton);
         make.height.mas_equalTo(35);
     }];
+
+    UIButton *copyButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [copyButton setTitle:@"复制地址" forState:UIControlStateNormal];
+    copyButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    [copyButton addTarget:self action:@selector(copyContent) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:copyButton];
+
+    [copyButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-30);
+        make.height.mas_equalTo(35);
+    }];
 }
 
 - (void)checkButtonClickAction:(UIButton *)sender {
@@ -152,6 +164,11 @@
     [[PDDownloadManager sharedPDDownloadManager] resetDownloadPath];
     self.fullPathLabel.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
     self.textView.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadPath];
+}
+
+- (void)copyContent {
+    [UIPasteboard generalPasteboard].string = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+    [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
 }
 
 - (void)confirmButtonClickAction {

@@ -13,7 +13,7 @@ static BOOL canChangeOrientation = NO;
 
 @implementation AppTool
 
-NSString *const HOST_URL_4c4crt = @"http://www.4c4crt.cc/";
+NSString *const HOST_URL_4c4crt = @"https://v5.uc12k.vip:5560/";
 
 /// bugly app_id
 + (NSString *)app_id_bugly {

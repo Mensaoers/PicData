@@ -144,6 +144,9 @@ singleton_implementation(ContentParserManager)
                 NSDictionary *result;
                 result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
                 nextUrl = result[@"nextUrl"];
+                if (nextUrl.length > 0) {
+                    nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
+                }
                 NSError *writeError = nil;
                 count = [result[@"count"] intValue];
                 [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -185,34 +188,27 @@ singleton_implementation(ContentParserManager)
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
         NSMutableArray *urls = [NSMutableArray array];
 
-        OCQueryObject *aEs = document.Query(@"a");
-        for (OCGumboElement *aE in aEs) {
-            NSString *title = aE.attr(@"title");
-            if (![title isEqualToString:contentTaskModel.title]) {
-                continue;
-            }
-            NSString *href = aE.attr(@"href");
-            if (href.length > 0 && [href.lastPathComponent containsString:@"_"]) {
-                url = href;
-            }
-
-            OCQueryObject *imgEs = aE.Query(@"img");
-            if (imgEs.count > 0) {
-                OCGumboElement *imgE = imgEs.firstObject;
-                NSString *src = imgE.attr(@"src");
+        OCGumboElement *contentE = document.Query(@".article-content").firstObject;
+        if (nil != contentE) {
+            OCQueryObject *es = contentE.Query(@"img");
+            for (OCGumboElement *e in es) {
+                NSString *src = e.attr(@"src");
                 if (src.length > 0) {
-                    // img.aitaotu.cc:8089 是大图
-                    // wapimg.aitaotu.cc:8090 是小图
-                    //                        src = [src stringByReplacingOccurrencesOfString:@"wapimg.aitaotu.cc:8090" withString:@"img.aitaotu.cc:8089"];
                     [urls addObject:src];
-                    if (urlsString.length > 0) {
-                        [urlsString appendString:@"\n"];
-                    }
-                    [urlsString appendFormat:@"%@", src];
                 }
             }
         }
 
+        OCGumboElement *next = document.Query(@".next-page").firstObject;
+        if (nil != next) {
+            OCGumboElement *aE = next.Query(@"a").firstObject;
+            if (nil != aE) {
+                NSString *href = aE.attr(@"href");
+                if (href.length > 0 && [href.lastPathComponent containsString:@"_"]) {
+                    url = href;
+                }
+            }
+        }
 
         count += urls.count;
         // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的

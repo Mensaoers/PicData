@@ -19,9 +19,15 @@
 
 @property (nonatomic, strong) NSLock *lock;
 
+@property (nonatomic, strong) NSString *host_url;
+
 @end
 
 @implementation AddNetTaskVC
+
+- (NSString *)host_url {
+    return HOST_URL_4c4crt;
+}
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
@@ -123,7 +129,7 @@
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-        OCGumboElement *titleE = document.Query(@".content_title").firstObject;
+        OCGumboElement *titleE = document.Query(@".article-title").firstObject;
         if (titleE.text().length > 0) {
             title = [titleE.text() stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         }
@@ -134,7 +140,7 @@
 
 - (void)sureToAdd:(UIBarButtonItem *)sender {
     if (self.contentTF.text.length > 0) {
-        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_4c4crt title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:self.host_url title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
             DetailViewController *detailVC = [[DetailViewController alloc] init];
             detailVC.sourceModel = sourceModel;
             detailVC.contentModel = contentModel;
@@ -147,7 +153,7 @@
 
 - (IBAction)downAction:(id)sender {
     if (self.contentTF.text.length > 0) {
-        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:HOST_URL_4c4crt title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+        [self prepareSourceWithUrl:self.contentTF.text HOST_URLString:self.host_url title:self.titleTF.text resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
             [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                 [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
             }];
@@ -164,7 +170,7 @@
             if (url.length == 0) {
                 continue;
             }
-            [self prepareSourceWithUrl:url HOST_URLString:HOST_URL_4c4crt title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
+            [self prepareSourceWithUrl:url HOST_URLString:self.host_url title:@"" resultHandler:^(PicSourceModel *sourceModel, PicContentModel *contentModel) {
                 [ContentParserManager tryToAddTaskWithSourceModel:sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
                     [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
                 }];

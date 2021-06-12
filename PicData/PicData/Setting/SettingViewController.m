@@ -47,6 +47,7 @@
             [SettingOperationModel ModelWithName:@"导出数据库" value:@"" func:@"shareDatabase:"],
             [SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"],
         ];
+        NSLog(@"%@", [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]);
     }
     return _operationModels;
 }

@@ -104,7 +104,11 @@
 }
 - (BOOL)updateTableWhere:(NSString *)where {
     Class cls = [self class];
-    return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:self whereFormat:where];
+    [[JQFMDB shareDatabase] jq_inDatabase:^{
+        [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:self whereFormat:where];
+    }];
+    return YES;
+//    return [[JQFMDB shareDatabase] jq_updateTable:NSStringFromClass(cls) dicOrModel:self whereFormat:where];
 }
 - (BOOL)updateTable {
     return true;

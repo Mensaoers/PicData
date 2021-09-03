@@ -40,6 +40,12 @@ singleton_interface(PDDownloadManager);
 @property (nonatomic, strong) NSString *databaseFileName;
 /// 数据库文件路径
 @property (nonatomic, strong) NSString *databaseFilePath;
+/// 配置数据库
++ (void)prepareDataBase;
+/// 删除数据库
++ (BOOL)deleteDataBase;
+
++ (BOOL)clearAllData:(BOOL)andFiles;
 
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need;
 - (BOOL)checkFilePathExist:(NSString *)path;

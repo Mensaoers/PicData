@@ -36,6 +36,44 @@
     return [PDDownloadManager getDocumentPathWithTarget:self.databaseFileName];
 }
 
++ (void)prepareDataBase {
+    [JQFMDB shareDatabase:[PDDownloadManager sharedPDDownloadManager].databaseFileName path:[PDDownloadManager getDocumentPathWithTarget:@""]];
+}
+
++ (BOOL)deleteDataBase {
+    [[JQFMDB shareDatabase] close];
+    NSError *error = nil;
+    [[NSFileManager defaultManager] removeItemAtPath:[PDDownloadManager sharedPDDownloadManager].databaseFilePath error:&error];
+    if (error) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
++ (BOOL)clearAllData:(BOOL)andFiles {
+    [PDDownloadManager.sharedPDDownloadManager.sessionManager totalCancel];
+    [PDDownloadManager.sharedPDDownloadManager.sessionManager totalRemove];
+
+    if (![PDDownloadManager deleteDataBase]) {
+        return NO;
+    }
+    if (andFiles) {
+
+        if (![[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
+            return NO;
+        }
+
+        NSError *rmError = nil;
+        [[NSFileManager defaultManager] removeItemAtPath:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath] error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
+        if (rmError) {
+            return NO;
+        }
+    }
+
+    return YES;
+}
+
 singleton_implementation(PDDownloadManager);
 
 - (TRSessionManager *)sessionManager {
@@ -207,9 +245,10 @@ singleton_implementation(PDDownloadManager);
                         // 遍历完成
                         if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
                             contentTaskModel.status = 3;
+                            [contentTaskModel updateTable];
                         }
                     }
-                    [contentTaskModel updateTable];
+//                    [contentTaskModel updateTable];
                 }
             });
         }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {

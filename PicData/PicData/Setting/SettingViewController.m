@@ -40,12 +40,20 @@
 
 @implementation SettingViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [UIPasteboard generalPasteboard].string = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+    [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
+}
+
 - (NSArray<SettingOperationModel *> *)operationModels {
     if (nil == _operationModels) {
+        [[PDDownloadManager sharedPDDownloadManager] checksystemDownloadFullPathExistNeedNotice:NO];
         _operationModels = @[
             [SettingOperationModel ModelWithName:@"下载路径" value:[[PDDownloadManager sharedPDDownloadManager] systemDownloadPath] func:@"setDownloadPath:"],
             [SettingOperationModel ModelWithName:@"导出数据库" value:@"" func:@"shareDatabase:"],
             [SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"],
+            [SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"],
         ];
         NSLog(@"%@", [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]);
     }
@@ -126,6 +134,44 @@ static NSString *identifier = @"identifier";
             NSLog(@"分享失败!");
         }
     }];
+}
+
+- (void)resetCache:(UIView *)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"是否确认清除全部缓存" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确认清除(包括文件)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        if ([PDDownloadManager clearAllData:YES]) {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理完成"];
+            [self tipsToReOpenApp];
+        } else {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理失败"];
+        }
+    }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"确认清除(不包括文件)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        if ([PDDownloadManager clearAllData:NO]) {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理完成"];
+            [self tipsToReOpenApp];
+        } else {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理失败"];
+        }
+
+    }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)tipsToReOpenApp {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"清理完成, 请重启app" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"重新打开app" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        abort();
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

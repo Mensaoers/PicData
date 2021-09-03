@@ -60,7 +60,7 @@
 }
 
 - (void)setupDataBase {
-    [JQFMDB shareDatabase:[PDDownloadManager sharedPDDownloadManager].databaseFileName path:[PDDownloadManager getDocumentPathWithTarget:@""]];
+    [PDDownloadManager prepareDataBase];
 }
 
 - (void)setupBugly {

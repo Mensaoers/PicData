@@ -270,6 +270,29 @@
 }
 
 - (void)shareAllFiles:(UIButton *)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"分享文件" preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"复制链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        NSArray *result = [PicContentTaskModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];
+        if (result.count > 0) {
+            PicContentTaskModel *model = result[0];
+            NSString *url = [model.HOST_URL stringByAppendingString:model.href];
+            [UIPasteboard generalPasteboard].string = url;
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
+        } else {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图链接"];
+        }
+
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self shareZip:sender];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)shareZip:(UIButton *)sender {
     PDBlockSelf
     NSString *targetPathName = [NSString stringWithFormat:@"%@.zip", [self.targetFilePath lastPathComponent]];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享文件" message:@"请输入压缩包的名字, 默认为文件夹名称, 密码选填" preferredStyle:UIAlertControllerStyleAlert];
@@ -281,7 +304,7 @@
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.placeholder = @"密码选填";
     }];
-    
+
     [alert addAction:[UIAlertAction actionWithTitle:@"去压缩" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
         UITextField *zipNameTF = alert.textFields[0];

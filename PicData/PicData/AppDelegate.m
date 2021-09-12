@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "IndexViewController.h"
+#import "HomeViewController.h"
 #import "SettingViewController.h"
 #import "LocalFileListVC.h"
 
@@ -22,7 +23,7 @@
     BaseTabBarController *tabbarVC = [[BaseTabBarController alloc] init];
 
     // 主页
-    IndexViewController *indexVC = [[IndexViewController alloc] init];
+    HomeViewController *indexVC = [[HomeViewController alloc] init];
     BaseNavigationController *indexNavi = [[BaseNavigationController alloc] initWithRootViewController:indexVC];
     indexNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"home"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     indexNavi.tabBarItem.image = [[UIImage imageNamed:@"home_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];

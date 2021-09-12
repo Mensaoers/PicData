@@ -41,8 +41,8 @@
 }
 
 - (void)loadNavigationItem {
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"网络分类" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToClassifyPage)];
-    self.navigationItem.leftBarButtonItem = leftItem;
+//    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"网络分类" style:UIBarButtonItemStyleDone target:self action:@selector(jumpToClassifyPage)];
+//    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
 - (void)loadRightNavigationItem:(BOOL)isList {

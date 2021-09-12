@@ -94,6 +94,15 @@
 }
 
 - (void)loadContentData {
+
+    if (self.loadDataBlock) {
+
+        [self.dataList addObjectsFromArray:self.loadDataBlock()];
+        [self.collectionView reloadData];
+        [self.collectionView.mj_header endRefreshing];
+        return;
+    }
+
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     
     PDBlockSelf
@@ -152,50 +161,74 @@
 }
 
 - (NSArray *)parserContentListWithType:(OCGumboDocument *)document {
-    OCQueryObject *itemResults = document.Query(@".ulPic");
-    if (itemResults.count == 0) {
-        return @[];
-    }
-    OCGumboElement *divElement = itemResults.firstObject;
-    NSMutableArray *contentModels = [NSMutableArray array];
-    for (OCGumboElement *element in divElement.childNodes) {
-        OCQueryObject *aEs = element.Query(@"a");
-        if (aEs.count == 0) {
-            continue;
-        }
+//    OCQueryObject *itemResults = document.Query(@".ulPic");
+//    if (itemResults.count == 0) {
+//        return @[];
+//    }
+//    OCGumboElement *divElement = itemResults.firstObject;
+//    NSMutableArray *contentModels = [NSMutableArray array];
+//    for (OCGumboElement *element in divElement.childNodes) {
+//        OCQueryObject *aEs = element.Query(@"a");
+//        if (aEs.count == 0) {
+//            continue;
+//        }
+//
+//        PicContentModel *contentModel = [[PicContentModel alloc] init];
+//        contentModel.HOST_URL = self.sourceModel.HOST_URL;
+//        contentModel.sourceTitle = self.sourceModel.title;
+//        OCGumboElement *aE = aEs.firstObject;
+//        NSString *url = aE.attr(@"href");
+//        if (url.length > 0) {
+//            // url
+//            contentModel.href = url;
+//        }
+//
+//        OCQueryObject *imgEs = aE.Query(@"img");
+//        if (imgEs.count == 0) {
+//            continue;
+//        }
+//        OCGumboElement *imgE = imgEs.firstObject;
+//        NSString *imgSrc = imgE.attr(@"src");
+//        if (imgSrc.length > 0) {
+//            // imgSrc
+//            contentModel.thumbnailUrl = imgSrc;
+//        }
+//
+//        NSString *alt = imgE.attr(@"alt");
+//        if (alt.length > 0) {
+//            // alt
+//            contentModel.title = alt;
+//        }
+//
+//        [contentModel insertTable];
+//        [contentModels addObject:contentModel];
+//    }
+//
+//    return [contentModels copy];
+
+    OCQueryObject *articleEs = document.QueryElement(@"article");
+
+    NSMutableArray *articleContents = [NSMutableArray array];
+    for (OCGumboElement *articleE in articleEs) {
+
+        OCGumboElement *headerE = articleE.QueryElement(@"header").firstObject;
+        NSString *type = headerE.QueryElement(@"a").first().text();
+        OCGumboElement *h2E = headerE.QueryElement(@"h2").firstObject;
+        OCGumboElement *h2aE = h2E.QueryElement(@"a").firstObject;
+        NSString *title = h2aE.text();
+        NSString *href = h2aE.attr(@"href");
+        NSString *thumbnailUrl = articleE.QueryClass(@"thumb-span").first().QueryElement(@"img").first().attr(@"src");
 
         PicContentModel *contentModel = [[PicContentModel alloc] init];
-        contentModel.HOST_URL = self.sourceModel.HOST_URL;
+        contentModel.href = href;
         contentModel.sourceTitle = self.sourceModel.title;
-        OCGumboElement *aE = aEs.firstObject;
-        NSString *url = aE.attr(@"href");
-        if (url.length > 0) {
-            // url
-            contentModel.href = url;
-        }
-
-        OCQueryObject *imgEs = aE.Query(@"img");
-        if (imgEs.count == 0) {
-            continue;
-        }
-        OCGumboElement *imgE = imgEs.firstObject;
-        NSString *imgSrc = imgE.attr(@"src");
-        if (imgSrc.length > 0) {
-            // imgSrc
-            contentModel.thumbnailUrl = imgSrc;
-        }
-
-        NSString *alt = imgE.attr(@"alt");
-        if (alt.length > 0) {
-            // alt
-            contentModel.title = alt;
-        }
-
-        [contentModel insertTable];
-        [contentModels addObject:contentModel];
+        contentModel.HOST_URL = self.sourceModel.HOST_URL;
+        contentModel.title = title;
+        contentModel.thumbnailUrl = thumbnailUrl;
+        [articleContents addObject:contentModel];
     }
 
-    return [contentModels copy];
+    return [articleContents copy];
 }
 
 - (void)downloadAllContents:(UIBarButtonItem *)sender {

@@ -18,6 +18,7 @@
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
 		337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AE25982D9400A679BB /* ViewerContentCell.m */; };
+		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
 		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
@@ -98,6 +99,8 @@
 		337DA9AA25982D7700A679BB /* ViewerContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentView.m; sourceTree = "<group>"; };
 		337DA9AD25982D9400A679BB /* ViewerContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentCell.h; sourceTree = "<group>"; };
 		337DA9AE25982D9400A679BB /* ViewerContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentCell.m; sourceTree = "<group>"; };
+		33967B5026EDF44600B308B1 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		33967B5126EDF44600B308B1 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		33B43FB62554436C00C33FD0 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
@@ -245,6 +248,15 @@
 				9DE95C93244C3FDC00E31735 /* OCGumbo */,
 			);
 			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		33967B5326EE001500B308B1 /* home */ = {
+			isa = PBXGroup;
+			children = (
+				33967B5026EDF44600B308B1 /* HomeViewController.h */,
+				33967B5126EDF44600B308B1 /* HomeViewController.m */,
+			);
+			path = home;
 			sourceTree = "<group>";
 		};
 		33AB92B124C3F58900E97E42 /* Setting */ = {
@@ -432,6 +444,7 @@
 		9DE95C8E244C3F5500E31735 /* Index */ = {
 			isa = PBXGroup;
 			children = (
+				33967B5326EE001500B308B1 /* home */,
 				33B9EEC024DCA9EB00ABE3E2 /* TransView */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
@@ -742,6 +755,7 @@
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
+				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
 				9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,

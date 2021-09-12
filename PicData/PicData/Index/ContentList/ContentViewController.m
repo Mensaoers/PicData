@@ -91,6 +91,7 @@
 
     if (self.loadDataBlock) {
 
+        [self.dataList removeAllObjects];
         [self.dataList addObjectsFromArray:self.loadDataBlock()];
         [self.collectionView reloadData];
         [self.collectionView.mj_header endRefreshing];

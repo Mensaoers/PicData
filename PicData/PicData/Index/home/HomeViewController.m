@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "ContentViewController.h"
+#import "FloatingWindowView.h"
 
 @interface HomeViewController ()
 
@@ -67,6 +68,9 @@
     UITextField *searchTF = [[UITextField alloc] init];
     searchTF.font = [UIFont systemFontOfSize:17];
     searchTF.placeholder = @"请输入关键字";
+    searchTF.borderStyle = UITextBorderStyleRoundedRect;
+    searchTF.returnKeyType = UIReturnKeySearch;
+    [searchTF addTarget:self action:@selector(searchBtnClickedAction:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [self.view addSubview:searchTF];
     self.searchTF = searchTF;
 
@@ -88,6 +92,34 @@
         make.right.equalTo(addressLabel);
         make.width.mas_equalTo(70);
     }];
+
+    [[FloatingWindowView shareInstance] isHidden:NO];
+
+    [FloatingWindowView shareInstance].ClickAction = ^{
+
+        BaseTabBarController *tabBarVC = (BaseTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        [tabBarVC setSelectedIndex:0];
+        BaseNavigationController *indexNavi = (BaseNavigationController *)tabBarVC.selectedViewController;
+
+        NSArray *viewControllers = indexNavi.viewControllers;
+        BOOL jumped = NO;
+        for (UIViewController *viewController in viewControllers) {
+            if ([viewController isKindOfClass:[AddNetTaskVC class]]) {
+                // 弹过了, 不弹了
+                jumped = YES;
+                break;
+            }
+        }
+        if (!jumped) {
+            [indexNavi pushViewController:[[AddNetTaskVC alloc] init] animated:YES];
+        }
+    };
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    [FloatingWindowView shareInstance].areaActFrame = self.view.bounds;
 }
 
 - (void)viewDidLoad {

@@ -13,6 +13,23 @@
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
 		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
 		332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 332C285624EBA5720083A5DC /* AddNetTaskVC.m */; };
+		332D014126FD845F00E3F387 /* TKGestureLockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D012A26FD845F00E3F387 /* TKGestureLockManager.m */; };
+		332D014226FD845F00E3F387 /* TKGestureLockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D012B26FD845F00E3F387 /* TKGestureLockView.m */; };
+		332D014326FD845F00E3F387 /* gesture_headIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D012D26FD845F00E3F387 /* gesture_headIcon@2x.png */; };
+		332D014426FD845F00E3F387 /* gesture_normal@1.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D012E26FD845F00E3F387 /* gesture_normal@1.5x.png */; };
+		332D014526FD845F00E3F387 /* gesture_indicator_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D012F26FD845F00E3F387 /* gesture_indicator_normal@2x.png */; };
+		332D014626FD845F00E3F387 /* gesture_selected@1.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013026FD845F00E3F387 /* gesture_selected@1.5x.png */; };
+		332D014726FD845F00E3F387 /* gesture_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013126FD845F00E3F387 /* gesture_selected@3x.png */; };
+		332D014826FD845F00E3F387 /* gesture_normal@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013226FD845F00E3F387 /* gesture_normal@3x.png */; };
+		332D014926FD845F00E3F387 /* gesture_indicator_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013326FD845F00E3F387 /* gesture_indicator_selected@2x.png */; };
+		332D014A26FD845F00E3F387 /* gesture_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013426FD845F00E3F387 /* gesture_normal@2x.png */; };
+		332D014B26FD845F00E3F387 /* gesture_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013526FD845F00E3F387 /* gesture_selected@2x.png */; };
+		332D014C26FD845F00E3F387 /* gesture_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013626FD845F00E3F387 /* gesture_normal.png */; };
+		332D014D26FD845F00E3F387 /* gesture_normal@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013726FD845F00E3F387 /* gesture_normal@0.5x.png */; };
+		332D014E26FD845F00E3F387 /* gesture_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013826FD845F00E3F387 /* gesture_selected.png */; };
+		332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */; };
+		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
+		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
@@ -89,6 +106,27 @@
 		3326ACE62553EF700035A473 /* AmIBeingDebugged.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmIBeingDebugged.h; sourceTree = "<group>"; };
 		332C285524EBA5720083A5DC /* AddNetTaskVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddNetTaskVC.h; sourceTree = "<group>"; };
 		332C285624EBA5720083A5DC /* AddNetTaskVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddNetTaskVC.m; sourceTree = "<group>"; };
+		332D012A26FD845F00E3F387 /* TKGestureLockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockManager.m; sourceTree = "<group>"; };
+		332D012B26FD845F00E3F387 /* TKGestureLockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockView.m; sourceTree = "<group>"; };
+		332D012D26FD845F00E3F387 /* gesture_headIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_headIcon@2x.png"; sourceTree = "<group>"; };
+		332D012E26FD845F00E3F387 /* gesture_normal@1.5x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_normal@1.5x.png"; sourceTree = "<group>"; };
+		332D012F26FD845F00E3F387 /* gesture_indicator_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_indicator_normal@2x.png"; sourceTree = "<group>"; };
+		332D013026FD845F00E3F387 /* gesture_selected@1.5x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_selected@1.5x.png"; sourceTree = "<group>"; };
+		332D013126FD845F00E3F387 /* gesture_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_selected@3x.png"; sourceTree = "<group>"; };
+		332D013226FD845F00E3F387 /* gesture_normal@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_normal@3x.png"; sourceTree = "<group>"; };
+		332D013326FD845F00E3F387 /* gesture_indicator_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_indicator_selected@2x.png"; sourceTree = "<group>"; };
+		332D013426FD845F00E3F387 /* gesture_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_normal@2x.png"; sourceTree = "<group>"; };
+		332D013526FD845F00E3F387 /* gesture_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_selected@2x.png"; sourceTree = "<group>"; };
+		332D013626FD845F00E3F387 /* gesture_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gesture_normal.png; sourceTree = "<group>"; };
+		332D013726FD845F00E3F387 /* gesture_normal@0.5x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_normal@0.5x.png"; sourceTree = "<group>"; };
+		332D013826FD845F00E3F387 /* gesture_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gesture_selected.png; sourceTree = "<group>"; };
+		332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gesture_selected@0.5x.png"; sourceTree = "<group>"; };
+		332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockWindow.m; sourceTree = "<group>"; };
+		332D013B26FD845F00E3F387 /* TKGestureLockBackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockBackView.h; sourceTree = "<group>"; };
+		332D013D26FD845F00E3F387 /* TKGestureLockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockView.h; sourceTree = "<group>"; };
+		332D013E26FD845F00E3F387 /* TKGestureLockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockManager.h; sourceTree = "<group>"; };
+		332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockBackView.m; sourceTree = "<group>"; };
+		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
@@ -240,6 +278,42 @@
 				331ACC0824F0B5080027857B /* AddNetTaskVC.xib */,
 			);
 			path = AddNetTask;
+			sourceTree = "<group>";
+		};
+		332D012926FD845F00E3F387 /* GestureLock */ = {
+			isa = PBXGroup;
+			children = (
+				332D012A26FD845F00E3F387 /* TKGestureLockManager.m */,
+				332D012B26FD845F00E3F387 /* TKGestureLockView.m */,
+				332D012C26FD845F00E3F387 /* resources */,
+				332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */,
+				332D013B26FD845F00E3F387 /* TKGestureLockBackView.h */,
+				332D013D26FD845F00E3F387 /* TKGestureLockView.h */,
+				332D013E26FD845F00E3F387 /* TKGestureLockManager.h */,
+				332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */,
+				332D014026FD845F00E3F387 /* TKGestureLockWindow.h */,
+			);
+			path = GestureLock;
+			sourceTree = "<group>";
+		};
+		332D012C26FD845F00E3F387 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				332D012D26FD845F00E3F387 /* gesture_headIcon@2x.png */,
+				332D012E26FD845F00E3F387 /* gesture_normal@1.5x.png */,
+				332D012F26FD845F00E3F387 /* gesture_indicator_normal@2x.png */,
+				332D013026FD845F00E3F387 /* gesture_selected@1.5x.png */,
+				332D013126FD845F00E3F387 /* gesture_selected@3x.png */,
+				332D013226FD845F00E3F387 /* gesture_normal@3x.png */,
+				332D013326FD845F00E3F387 /* gesture_indicator_selected@2x.png */,
+				332D013426FD845F00E3F387 /* gesture_normal@2x.png */,
+				332D013526FD845F00E3F387 /* gesture_selected@2x.png */,
+				332D013626FD845F00E3F387 /* gesture_normal.png */,
+				332D013726FD845F00E3F387 /* gesture_normal@0.5x.png */,
+				332D013826FD845F00E3F387 /* gesture_selected.png */,
+				332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */,
+			);
+			path = resources;
 			sourceTree = "<group>";
 		};
 		333ECEF725F71DFB00762219 /* ThirdParty */ = {
@@ -418,6 +492,7 @@
 				9DC94C9A2552ECBB008ACAF8 /* Base */,
 				9DE95CB8244C3FDC00E31735 /* Categories */,
 				9DE95CD4244C415F00E31735 /* Models */,
+				332D012926FD845F00E3F387 /* GestureLock */,
 				9DE95C8E244C3F5500E31735 /* Index */,
 				9DE95CF6244CA23000E31735 /* Manager */,
 				9DE95C8D244C3F3700E31735 /* Others */,
@@ -657,11 +732,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DE95CC3244C3FDD00E31735 /* char_ref.rl in Resources */,
+				332D014D26FD845F00E3F387 /* gesture_normal@0.5x.png in Resources */,
+				332D014626FD845F00E3F387 /* gesture_selected@1.5x.png in Resources */,
+				332D014726FD845F00E3F387 /* gesture_selected@3x.png in Resources */,
 				9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */,
+				332D014326FD845F00E3F387 /* gesture_headIcon@2x.png in Resources */,
+				332D014A26FD845F00E3F387 /* gesture_normal@2x.png in Resources */,
 				9DE95CD9244C418700E31735 /* PicSource.json in Resources */,
+				332D014826FD845F00E3F387 /* gesture_normal@3x.png in Resources */,
 				9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */,
+				332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */,
+				332D014426FD845F00E3F387 /* gesture_normal@1.5x.png in Resources */,
+				332D014526FD845F00E3F387 /* gesture_indicator_normal@2x.png in Resources */,
+				332D014926FD845F00E3F387 /* gesture_indicator_selected@2x.png in Resources */,
+				332D014C26FD845F00E3F387 /* gesture_normal.png in Resources */,
 				9DE95CC9244C3FDD00E31735 /* tag.in in Resources */,
 				331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */,
+				332D014E26FD845F00E3F387 /* gesture_selected.png in Resources */,
+				332D014B26FD845F00E3F387 /* gesture_selected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,6 +831,7 @@
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
 				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
+				332D014126FD845F00E3F387 /* TKGestureLockManager.m in Sources */,
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
 				336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */,
 				33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */,
@@ -751,6 +840,7 @@
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
 				9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */,
+				332D014226FD845F00E3F387 /* TKGestureLockView.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
@@ -771,6 +861,7 @@
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
+				332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */,
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
 				33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */,
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
@@ -790,6 +881,7 @@
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
+				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
 				9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,
 			);

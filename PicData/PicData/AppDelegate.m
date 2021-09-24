@@ -75,6 +75,9 @@
     // 设置主页
     [self setUpMainTab];
 
+    // 设置手势
+    [self setupGestureLock];
+
     // 注册通知
     [self registerNotice];
 
@@ -96,6 +99,11 @@
     return YES;
 }
 
+- (void)setupGestureLock {
+    [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
+    [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
+}
+
 - (void)registerNotice {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeOfDownloadPath:) name:NOTICECHECKDOWNLOADPATHKEY object:nil];
 }
@@ -108,6 +116,18 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"稍后" style:UIAlertActionStyleCancel handler:nil]];
     [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {

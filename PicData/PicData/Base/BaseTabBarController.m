@@ -19,7 +19,14 @@
     //修改了这个外观对象，相当于修改了整个项目中的外观
     UITabBar *tabBar = [UITabBar appearance];
     //设置导航栏背景颜色
-    [tabBar setBarTintColor:UIColor.whiteColor];
+    if (@available(iOS 15.0, *)) {
+        UITabBarAppearance *appearence = [[UITabBarAppearance alloc] init];
+        appearence.backgroundColor = [UIColor whiteColor];
+        tabBar.standardAppearance = appearence;
+        tabBar.scrollEdgeAppearance = appearence;
+    } else {
+        [tabBar setBarTintColor:UIColor.whiteColor];
+    }
     [tabBar setTintColor:ThemeColor];
     [tabBar setUnselectedItemTintColor:ThemeDisabledColor];
 

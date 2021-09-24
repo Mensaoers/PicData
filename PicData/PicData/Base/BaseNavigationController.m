@@ -19,13 +19,26 @@
     //修改了这个外观对象，相当于修改了整个项目中的外观
     UINavigationBar *navigationBar = [UINavigationBar appearance];
     //设置导航栏背景颜色
-    [navigationBar setBarTintColor:UIColor.whiteColor];
+    if (@available(iOS 15.0, *)) {
+        UINavigationBarAppearance *appearence = [[UINavigationBarAppearance alloc] init];
+        UIFont *font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
+        NSDictionary *dic = @{NSFontAttributeName:font,
+                              NSForegroundColorAttributeName: ThemeColor};
+        appearence.titleTextAttributes =dic;
+        appearence.backgroundColor = UIColor.whiteColor;
+        navigationBar.standardAppearance = appearence;
+        navigationBar.scrollEdgeAppearance = appearence;
+    } else {
+        [navigationBar setBarTintColor:UIColor.whiteColor];
+        UIFont *font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
+        NSDictionary *dic = @{NSFontAttributeName:font,
+                              NSForegroundColorAttributeName: ThemeColor};
+        navigationBar.titleTextAttributes =dic;
+    }
+
     [navigationBar setTintColor:ThemeColor];
 
-    UIFont *font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
-    NSDictionary *dic = @{NSFontAttributeName:font,
-                          NSForegroundColorAttributeName: ThemeColor};
-    navigationBar.titleTextAttributes =dic;
+
 }
 
 +(void)load

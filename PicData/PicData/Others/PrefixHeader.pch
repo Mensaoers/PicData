@@ -46,6 +46,7 @@
     #import "DetailViewController.h"
     #import "ContentParserManager.h"
     #import "PicContentView.h"
+    #import "TKGestureLockManager.h"
 #endif
 
 #endif /* PrefixHeader_pch */

@@ -10,8 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
-
 @interface PicContentModel : PicBaseModel
 
 @property (nonatomic, strong) NSString *sourceTitle;

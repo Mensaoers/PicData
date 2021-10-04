@@ -68,6 +68,11 @@
 //    return true;
 //}
 
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    _showTitle = [_title stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+}
+
 - (BOOL)insertTable {
     Class cls = [self class];
     return [[JQFMDB shareDatabase] jq_insertTable:NSStringFromClass(cls) dicOrModel:self];
@@ -80,7 +85,7 @@
     return [[JQFMDB shareDatabase] jq_lookupTable:NSStringFromClass(cls) dicOrModel:cls whereFormat:where];
 }
 + (NSArray *)queryTableWithTitle:(NSString *)title {
-    return [self queryTableWhere:[NSString stringWithFormat:@"where title = \"%@\"", title]];
+    return [self queryTableWhere:[NSString stringWithFormat:@"where showTitle = \"%@\"", title]];
 }
 + (int)queryCountWhere:(NSString *)where {
     Class cls = [self class];

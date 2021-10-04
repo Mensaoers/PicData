@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TRSessionManager *sessionManager;
 
 singleton_interface(PDDownloadManager);
+/// 判断是否是文件夹
++ (BOOL)isDirectory:(NSString *)filePath;
 /// 重置当前下载相对地址
 - (BOOL)resetDownloadPath;
 /// 获取默认下载相对地址
@@ -59,6 +61,8 @@ singleton_interface(PDDownloadManager);
 
 /// 全部取消
 - (void)totalCancel;
+
+
 
 @end
 

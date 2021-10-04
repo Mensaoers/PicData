@@ -192,8 +192,9 @@ singleton_implementation(PDDownloadManager);
     if (contentModel == nil) {
         return targetPath;
     }
-    
-    NSString *contentPath = [targetPath stringByAppendingPathComponent:contentModel.title];
+
+    // 替换文件夹名称中的"/"为":", 可以创建带有斜线的文件夹, 创建完之后, 显示为预期名称
+    NSString *contentPath = [targetPath stringByAppendingPathComponent:contentModel.showTitle];
     if (![[NSFileManager defaultManager] fileExistsAtPath:contentPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:contentPath withIntermediateDirectories:YES attributes:nil error:&createDirError];

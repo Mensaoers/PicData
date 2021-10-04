@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 名称 */
 @property (nonatomic, strong) NSString *title;
+/** 显示名称 */
+@property (nonatomic, strong) NSString *showTitle;
 /** 编号 */
 @property (nonatomic, strong) NSString *identifier;
 /** 主服务 */

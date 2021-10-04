@@ -28,7 +28,7 @@
 
 - (PicContentModel *)contentModel {
     if (nil == _contentModel) {
-        NSArray *result = [PicContentModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];
+        NSArray *result = [PicContentTaskModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];
         if (result.count > 0) {
             _contentModel = result[0];
         }

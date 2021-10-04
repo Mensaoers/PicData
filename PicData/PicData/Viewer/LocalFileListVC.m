@@ -343,12 +343,18 @@
 
 /// 重新下载
 - (void)reDownloadContents {
-    PicContentModel *contentModel = [[PicContentModel queryTableWithTitle:self.targetFilePath.lastPathComponent] firstObject];
+    PicContentTaskModel *contentModel = [[PicContentTaskModel queryTableWithTitle:self.targetFilePath.lastPathComponent] firstObject];
     if (nil == contentModel) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到该套图的下载记录" afterDelay:1];
         return;
     }
     PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
     if (nil == sourceModel) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到数据源" afterDelay:1];
+        return;
+    }
+    if (![PicContentTaskModel deleteFromTableWithTitle:contentModel.title]) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"删除原下载记录失败" afterDelay:1];
         return;
     }
     MJWeakSelf

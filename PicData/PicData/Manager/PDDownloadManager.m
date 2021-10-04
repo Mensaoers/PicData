@@ -88,6 +88,12 @@ singleton_implementation(PDDownloadManager);
     [self.sessionManager totalCancel];
 }
 
++ (BOOL)isDirectory:(NSString *)filePath {
+    BOOL isDirectory = NO;
+    [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
+    return isDirectory;
+} 
+
 - (BOOL)resetDownloadPath {
     return [self updatesystemDownloadPath:[self defaultDownloadPath]];
 }

@@ -47,13 +47,9 @@
     [self.conImgView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"blank"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (nil == error) {
             CGSize imageSize = image.size;
-            CGFloat height = imageSize.height * weakSelf.conImgView.mj_w / imageSize.width + 9;
-//            NSLog(@"imageSize:%@, imageView.width: %f, height:%f", NSStringFromCGSize(imageSize), weakSelf.conImgView.mj_w, height);
-            [weakSelf.conImgView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.height.mas_equalTo(height);
-            }];
+            CGFloat height = imageSize.height * weakSelf.conImgView.mj_w / imageSize.width;
             if (weakSelf.updateCellHeightBlock) {
-                weakSelf.updateCellHeightBlock(weakSelf.indexpath, height);
+                weakSelf.updateCellHeightBlock(weakSelf.indexpath, height + 9);
             }
         }
     }];

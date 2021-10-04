@@ -425,9 +425,11 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     PicContentModel *model = self.detailModel.suggesArray[indexPath.item];
-    [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
-    self.contentModel = model;
-    [self loadNextDetailData];
+
+    DetailViewController *detailVC = [[DetailViewController alloc] init];
+    detailVC.sourceModel = self.sourceModel;
+    detailVC.contentModel = model;
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {

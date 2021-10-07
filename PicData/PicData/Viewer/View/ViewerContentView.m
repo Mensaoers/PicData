@@ -23,7 +23,7 @@ static CGFloat sideMargin = 5;
     return itemWidth - 2 * sideMargin;
 }
 + (CGFloat)itemHeight:(CGFloat)wholeWidth {
-    CGFloat itemHeight = [ViewerContentView itemWidth:wholeWidth] * ViewerContentImageScale + 40;
+    CGFloat itemHeight = [ViewerContentView itemWidth:wholeWidth] * ViewerContentImageScale + 70;
     return itemHeight;
 }
 + (CGSize)itemSize:(CGFloat)wholeWidth {

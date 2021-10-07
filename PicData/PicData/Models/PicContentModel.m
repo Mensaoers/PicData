@@ -39,7 +39,7 @@
     if (sourceTitle.length == 0) {
         return YES;
     }
-    return [self updateTableWithSourceTitle:sourceTitle Where:[NSString stringWithFormat:@"where title = \"%@\"", title]];
+    return [self updateTableWithSourceTitle:sourceTitle Where:[NSString stringWithFormat:@"where showTitle = \"%@\"", title]];
 }
 + (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle Where:(NSString *)where {
     if (sourceTitle.length == 0) {

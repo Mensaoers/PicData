@@ -377,6 +377,7 @@
 
             if ([fileManager fileExistsAtPath:[dirPath stringByAppendingPathComponent:fileNameAfter]]) {
                 NSLog(@"目标文件%@已存在", fileNameAfter);
+                [fileManager removeItemAtPath:filePath error:nil];
                 continue;
             }
 
@@ -593,7 +594,6 @@ static NSString *likeString = @"我的收藏";
         result = [[NSFileManager defaultManager] copyItemAtPath:folderPath toPath:toFolderPath error:&copyError];
     }
 
-    [PicContentTaskModel updateTableWithSourceTitle:likeString WhenTitle:folderName];
     if (completeHandler) {
         completeHandler(result, copyError);
     }

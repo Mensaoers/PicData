@@ -106,6 +106,8 @@
 
 - (void)registerNotice {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeOfDownloadPath:) name:NOTICECHECKDOWNLOADPATHKEY object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGestureUnlockFaild:) name:TKGestureLockNotice_unlockFailed object:nil];
 }
 
 - (void)receiveNoticeOfDownloadPath:(NSNotification *)notification {
@@ -116,6 +118,10 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"稍后" style:UIAlertActionStyleCancel handler:nil]];
     [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)receiveGestureUnlockFaild:(NSNotification *)notification {
+    abort();
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

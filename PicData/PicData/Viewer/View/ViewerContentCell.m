@@ -49,14 +49,14 @@
 
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.backgroundColor = UIColor.clearColor;
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         [bgView addSubview:imageView];
         self.imageView = imageView;
 
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(2);
-            make.left.mas_equalTo(2);
-            make.right.mas_equalTo(2);
+            make.top.mas_equalTo(0);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
             make.bottom.equalTo(titleLabel.mas_top).with.offset(-2);
         }];
 

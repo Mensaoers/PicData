@@ -42,8 +42,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [UIPasteboard generalPasteboard].string = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
-    [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
 }
 
 - (NSArray<SettingOperationModel *> *)operationModels {
@@ -125,6 +123,8 @@ static NSString *identifier = @"identifier";
 }
 
 - (void)setDownloadPath:(UIView *)sender {
+    [UIPasteboard generalPasteboard].string = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
+    [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
     SettingPathViewController *vc = [[SettingPathViewController alloc] init];
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
@@ -173,7 +173,7 @@ static NSString *identifier = @"identifier";
 
 - (void)tipsToReOpenApp {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"清理完成, 请重启app" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"重新打开app" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"退出app" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
         abort();
     }]];

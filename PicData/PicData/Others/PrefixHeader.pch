@@ -25,6 +25,7 @@
     #import <JQFMDB/JQFMDB.h>
     #import <YBImageBrowser/YBImageBrowser.h>
     #import <SSZipArchive/SSZipArchive.h>
+    #import <IQKeyboardManager/IQKeyboardManager.h>
 
     #import "NSObject+ChangeUnicode.h"
     #import "NSString+string.h"

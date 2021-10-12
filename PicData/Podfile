@@ -22,6 +22,7 @@ target 'PicData' do
   pod 'YBImageBrowser'
   pod 'SSZipArchive'
   pod 'Bugly'
+  pod 'IQKeyboardManager'
   # Pods for PicData
 
 end

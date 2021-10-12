@@ -57,19 +57,21 @@
 - (void)showGestureLockWindow {
     if ([self checkGettureLockNeeded]) {
         // 需要手势验证
-        [self.lockWindow dismissSelf];
+        if (nil == self.lockWindow) {
+            TKGestureLockWindow *lockWindow = [[TKGestureLockWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+            self.lockWindow = lockWindow;
+            TKGestureLockBackView *backView = [[TKGestureLockBackView alloc] initWithFrame:[UIScreen mainScreen].bounds WithUnLockType:TKGestureLockViewUnlockTypeValidate];
+            backView.delegate = self;
+            [self.lockWindow addSubview:backView];
+            self.backView = backView;
+        }
+//        [self.lockWindow dismissSelf];
         self.unLockType = TKGestureLockViewUnlockTypeValidate;
-
-        TKGestureLockWindow *lockWindow = [[TKGestureLockWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        self.lockWindow = lockWindow;
-        TKGestureLockBackView *backView = [[TKGestureLockBackView alloc] initWithFrame:[UIScreen mainScreen].bounds WithUnLockType:TKGestureLockViewUnlockTypeValidate];
-        backView.delegate = self;
-        [self.lockWindow addSubview:backView];
-        self.backView = backView;
         [self.lockWindow showOnfront];
 
     } else {
         // 不需要手势验证
+        self.lockWindow = nil;
         return;
     }
 }
@@ -78,6 +80,7 @@
 - (void)gestureLockBackView:(TKGestureLockBackView *)backView drawResult:(BOOL)result {
     if (self.unLockType == TKGestureLockViewUnlockTypeValidate) {
         [self.lockWindow dismissSelf];
+        self.lockWindow = nil;
         [self gestureLockResults:result];
     }
 }

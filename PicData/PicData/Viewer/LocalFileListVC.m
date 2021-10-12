@@ -371,7 +371,7 @@
     for (NSString *fileName in fileContents) {
 
         NSString *filePath = [dirPath stringByAppendingPathComponent:fileName];
-        if ([PDDownloadManager isDirectory:filePath]) {
+        if ([FileManager isDirectory:filePath]) {
             // 这是个文件夹
             [self renameAllPicturesOfDirectoryAtPath:filePath];
             continue;
@@ -528,7 +528,7 @@ static NSString *likeString = @"我的收藏";
         __block BOOL result = YES;
         __block NSError *copyError = nil;
 
-        if (![[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:likePath]) {
+        if (![FileManager checkFolderPathExistOrCreate:likePath]) {
             return;
         }
         if (weakSelf.navigationController.viewControllers.count == 2) {

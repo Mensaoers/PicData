@@ -24,8 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TRSessionManager *sessionManager;
 
 singleton_interface(PDDownloadManager);
-/// 判断是否是文件夹
-+ (BOOL)isDirectory:(NSString *)filePath;
+
 /// 重置当前下载相对地址
 - (BOOL)resetDownloadPath;
 /// 获取默认下载相对地址
@@ -36,8 +35,6 @@ singleton_interface(PDDownloadManager);
 - (nonnull NSString *)systemDownloadFullPath;
 /// 获取当前系统的文件夹名
 - (nonnull NSString *)systemDownloadFullDirectory;
-/// 根据目标路径, 拼接基于document目录的完整路径
-+ (NSString *)getDocumentPathWithTarget:(NSString *)targetPath;
 /// 数据库文件名
 @property (nonatomic, strong) NSString *databaseFileName;
 /// 数据库文件路径
@@ -50,7 +47,7 @@ singleton_interface(PDDownloadManager);
 + (BOOL)clearAllData:(BOOL)andFiles;
 
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need;
-- (BOOL)checkFilePathExist:(NSString *)path;
+
 /// 设置下载地址
 - (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath;
 

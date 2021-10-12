@@ -147,8 +147,8 @@
 }
 
 - (BOOL)checkPath {
-    NSString *fullPath = [PDDownloadManager getDocumentPathWithTarget:self.textView.text];
-    BOOL isExist = [[PDDownloadManager sharedPDDownloadManager] checkFilePathExist:fullPath];
+    NSString *fullPath = [FileManager getDocumentPathWithTarget:self.textView.text];
+    BOOL isExist = [FileManager checkFolderPathExistOrCreate:fullPath];
     [MBProgressHUD showInfoOnView:self.view WithStatus: isExist ? @"路径正确" : @"路径不存在"];
     return isExist;
 }

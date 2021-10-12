@@ -37,6 +37,7 @@
     #import "BaseNavigationController.h"
     #import "BaseTabBarController.h"
     #import "PicBaseModel.h"
+    #import "FileManager.h"
     #import "PDDownloadManager.h"
     #import "ContentParserManager.h"
     #import "PDRequest.h"

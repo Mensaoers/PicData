@@ -41,4 +41,9 @@
 
     return isExist;
 }
+
++ (BOOL)isFileExtensionPicture:(NSString *)fileExtension {
+    return [@[@"jpg", @"jpeg", @"png"] containsObject:fileExtension.lowercaseString];
+}
+
 @end

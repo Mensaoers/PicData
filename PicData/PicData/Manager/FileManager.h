@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 判断文件路径是否存在, 如果不存在, 则创建
 + (BOOL)checkFolderPathExistOrCreate:(NSString *)folderPath;
 
++ (BOOL)isFileExtensionPicture:(NSString *)fileExtension;
+
 @end
 
 NS_ASSUME_NONNULL_END

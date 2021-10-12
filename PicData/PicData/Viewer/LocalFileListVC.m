@@ -7,10 +7,10 @@
 //
 
 #import "LocalFileListVC.h"
-//#import "ViewerCell.h"
 #import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
 #import "ViewerContentView.h"
+#import "LGPdf.h"
 
 @interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 
@@ -166,17 +166,12 @@
 
         [self.fileNamesList removeAllObjects];
         for (NSString *fileName in fileContents) {
-            // fileName.pathExtension
-            // NSLog(@"%@", fileName.pathExtension);
-            NSString *pathExtension = fileName.pathExtension;
-            if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
-                ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
-                [self.fileNamesList addObject:fileModel];
-            } else {
 
+            NSString *filePath = [self.targetFilePath stringByAppendingPathComponent:fileName];
+            if ([FileManager isDirectory:filePath]) {
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:YES];
 
-                NSString *dirPath = [self.targetFilePath stringByAppendingPathComponent:fileName];
+                NSString *dirPath = filePath;
                 NSError *subError = nil;
                 NSArray *subFileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
 
@@ -193,6 +188,9 @@
                     fileModel.fileSize = folderSize > 0 ? folderSize : 0;
                 }
                 fileModel.fileCount = subFileContents.count;
+                [self.fileNamesList addObject:fileModel];
+            } else {
+                ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
                 [self.fileNamesList addObject:fileModel];
             }
         }
@@ -218,15 +216,176 @@
     }
 }
 
+- (void)shareAllFiles:(UIButton *)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"分享文件" preferredStyle:UIAlertControllerStyleAlert];
+
+    if (self.contentModel) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"复制链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            if (self.contentModel == nil) {
+                [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图链接"];
+                return;
+            }
+            NSString *url = [self.contentModel.HOST_URL stringByAppendingString:self.contentModel.href];
+            [UIPasteboard generalPasteboard].string = url;
+            [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
+        }]];
+
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self sharePDF:sender];
+        }]];
+    }
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self shareZip:sender];
+    }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+/// 长图
+- (void)sharePDF:(UIButton *)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"创建并分享PDF" message:@"此操作会将文件夹下所有图片按当前顺序生成PDF文件, 是否继续?" preferredStyle:UIAlertControllerStyleAlert];
+
+    NSString *targetName = [NSString stringWithFormat:@"%@.pdf", [self.targetFilePath lastPathComponent]];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = targetName;
+    }];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = @"密码选填";
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"创建PDF" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {\
+
+        NSString *fileName = alert.textFields[0].text;
+        if (fileName.length == 0 || [fileName stringByDeletingPathExtension].length == 0) {
+            fileName = targetName;
+        } else {
+            if (![fileName.pathExtension.lowercaseString isEqualToString:@"pdf"]) {
+                fileName = [fileName stringByAppendingPathExtension:@"pdf"];
+            }
+        }
+        [self generatePDF:fileName password:alert.textFields[1].text sourceView:sender];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+/// 生成长图
+- (void)generatePDF:(NSString *)fileName password:(NSString *)passsword sourceView:(UIButton *)sourceView {
+    PDBlockSelf
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+        LGPdf *pdf = [LGPdf createPDF];
+        CGFloat width = A4_L;
+        CGFloat height = 0;
+        CGFloat sepmargin = 0;
+
+        struct LGPageInfo size = {width, A4_S};
+        NSString *pdfPath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+        [pdf setFilePath:pdfPath pageSize:size];
+        [pdf readyToWrite:passsword];
+
+        for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
+            ViewerFileModel *tempModel = self.fileNamesList[index];
+            if ([FileManager isFileExtensionPicture:tempModel.fileName.pathExtension]) {
+
+                UIImage *image = [UIImage imageWithContentsOfFile:[self.targetFilePath stringByAppendingPathComponent:tempModel.fileName]];
+                CGSize imageSize = image.size;
+                if (imageSize.width < 10 || imageSize.height < 10) {
+                    continue;
+                }
+
+                LGPdfImage *pdfImage = [[LGPdfImage alloc] init];
+                [pdfImage setImage:image];
+
+                CGFloat imageHeight = width * imageSize.height / imageSize.width;
+                struct CGSize size = CGSizeMake(width, imageHeight);
+
+                pdfImage.location = CGPointMake(0, sepmargin);
+                [pdfImage setSize:size];
+
+                [pdf newPageWithBounds:CGRectMake(0, 0, width, imageHeight)];
+                [pdf addImage:pdfImage];
+
+                height += imageHeight + sepmargin;
+                height = MAX(A4_S, height);
+            }
+        }
+
+        [pdf closeToWrite];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"创建PDF成功" afterDelay:1];
+
+            ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
+            viewerVC.filePath = pdfPath;
+            viewerVC.backBlock = ^(NSString * _Nonnull filePath) {
+
+                PDBlockSelf
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"删除文件" message:@"是否需要删除该pdf文件以节省空间" preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"删掉吧" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+                    // 不分享了, 那得删了临时数据
+                    NSError *rmError = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:pdfPath error:&rmError];
+                    if (rmError) {
+                        NSLog(@"删除文件失败: %@", rmError);
+                    } else {
+                        [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除成功" afterDelay:1];
+                    }
+                }]];
+                [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+                [weakSelf presentViewController:alert animated:YES completion:nil];
+            };
+            [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
+        });
+    });
+}
+
+// zip
+- (void)shareZip:(UIButton *)sender {
+    PDBlockSelf
+    NSString *targetPathName = [NSString stringWithFormat:@"%@.zip", [self.targetFilePath lastPathComponent]];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享文件" message:@"请输入压缩包的名字, 默认为文件夹名称, 密码选填" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = targetPathName;
+    }];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.placeholder = @"密码选填";
+    }];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"去压缩" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        UITextField *zipNameTF = alert.textFields[0];
+        NSString *zipNameTFText = zipNameTF.text;
+        UITextField *pwdNameTF = alert.textFields[1];
+        NSString *pwdNameTFText = pwdNameTF.text;
+
+        /// 创建压缩包
+        [weakSelf createZipWithTargetPathName:targetPathName ZipNameTFText:zipNameTFText pwdNameTFText:pwdNameTFText sourceView:sender];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 /// 创建压缩包
 - (void)createZipWithTargetPathName:(NSString *)targetPathName ZipNameTFText:(NSString *)zipNameTFText pwdNameTFText:(NSString *)pwdNameTFText sourceView:(UIView *)sourceView {
 
     PDBlockSelf
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            // 压缩文件
+        // 压缩文件
         NSString *zippedFileName;
-        if (zipNameTFText.length == 0) {
+        if (zipNameTFText.length == 0 || [zipNameTFText stringByDeletingPathExtension].length == 0) {
             zippedFileName = targetPathName;
         } else {
             if ([zipNameTFText.pathExtension.lowercaseString isEqualToString:@"zip"]) {
@@ -234,9 +393,10 @@
                 zippedFileName = zipNameTFText;
             } else {
                 // 用户没写, 我补上
-                zippedFileName = [NSString stringWithFormat:@"%@.zip", zipNameTFText];
+                zippedFileName = [zipNameTFText stringByAppendingPathExtension:@"zip"];
             }
         }
+
         NSString *zippedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:zippedFileName];
         BOOL zipResult = [SSZipArchive createZipFileAtPath:zippedPath withContentsOfDirectory:weakSelf.targetFilePath keepParentDirectory:YES withPassword:pwdNameTFText.length > 0 ? pwdNameTFText : nil];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -267,56 +427,6 @@
         });
 
     });
-}
-
-- (void)shareAllFiles:(UIButton *)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"分享文件" preferredStyle:UIAlertControllerStyleAlert];
-
-    [alert addAction:[UIAlertAction actionWithTitle:@"复制链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-        NSArray *result = [PicContentTaskModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];
-        if (result.count > 0) {
-            PicContentTaskModel *model = result[0];
-            NSString *url = [model.HOST_URL stringByAppendingString:model.href];
-            [UIPasteboard generalPasteboard].string = url;
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
-        } else {
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图链接"];
-        }
-
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self shareZip:sender];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)shareZip:(UIButton *)sender {
-    PDBlockSelf
-    NSString *targetPathName = [NSString stringWithFormat:@"%@.zip", [self.targetFilePath lastPathComponent]];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享文件" message:@"请输入压缩包的名字, 默认为文件夹名称, 密码选填" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.placeholder = targetPathName;
-    }];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.placeholder = @"密码选填";
-    }];
-
-    [alert addAction:[UIAlertAction actionWithTitle:@"去压缩" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-        UITextField *zipNameTF = alert.textFields[0];
-        NSString *zipNameTFText = zipNameTF.text;
-        UITextField *pwdNameTF = alert.textFields[1];
-        NSString *pwdNameTFText = pwdNameTF.text;
-
-        /// 创建压缩包
-        [weakSelf createZipWithTargetPathName:targetPathName ZipNameTFText:zipNameTFText pwdNameTFText:pwdNameTFText sourceView:sender];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)arrangeItemClickAction:(UIBarButtonItem *)sender {
@@ -637,7 +747,7 @@ static NSString *likeString = @"我的收藏";
     NSInteger currentIndex = 0;
     for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
         ViewerFileModel *tempModel = self.fileNamesList[index];
-        if ([tempModel.fileName.pathExtension containsString:@"jpg"]) {
+        if ([FileManager isFileExtensionPicture:tempModel.fileName.pathExtension]) {
 
             if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
                 currentIndex = self.imgsList.count;

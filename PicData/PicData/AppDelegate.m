@@ -72,6 +72,9 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
+    IQKeyboardManager.sharedManager.shouldResignOnTouchOutside = YES;
+    IQKeyboardManager.sharedManager.enable = YES;
+
     // 设置主页
     [self setUpMainTab];
 

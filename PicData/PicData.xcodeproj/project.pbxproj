@@ -35,6 +35,7 @@
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
 		337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AE25982D9400A679BB /* ViewerContentCell.m */; };
+		33871E51271577FB00C1BBA1 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E50271577FB00C1BBA1 /* FileManager.m */; };
 		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
@@ -137,6 +138,8 @@
 		337DA9AA25982D7700A679BB /* ViewerContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentView.m; sourceTree = "<group>"; };
 		337DA9AD25982D9400A679BB /* ViewerContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentCell.h; sourceTree = "<group>"; };
 		337DA9AE25982D9400A679BB /* ViewerContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentCell.m; sourceTree = "<group>"; };
+		33871E4F271577FB00C1BBA1 /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		33871E50271577FB00C1BBA1 /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		33967B5026EDF44600B308B1 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		33967B5126EDF44600B308B1 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -283,15 +286,15 @@
 		332D012926FD845F00E3F387 /* GestureLock */ = {
 			isa = PBXGroup;
 			children = (
-				332D012A26FD845F00E3F387 /* TKGestureLockManager.m */,
-				332D012B26FD845F00E3F387 /* TKGestureLockView.m */,
 				332D012C26FD845F00E3F387 /* resources */,
+				332D013E26FD845F00E3F387 /* TKGestureLockManager.h */,
+				332D012A26FD845F00E3F387 /* TKGestureLockManager.m */,
+				332D013D26FD845F00E3F387 /* TKGestureLockView.h */,
+				332D012B26FD845F00E3F387 /* TKGestureLockView.m */,
+				332D014026FD845F00E3F387 /* TKGestureLockWindow.h */,
 				332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */,
 				332D013B26FD845F00E3F387 /* TKGestureLockBackView.h */,
-				332D013D26FD845F00E3F387 /* TKGestureLockView.h */,
-				332D013E26FD845F00E3F387 /* TKGestureLockManager.h */,
 				332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */,
-				332D014026FD845F00E3F387 /* TKGestureLockWindow.h */,
 			);
 			path = GestureLock;
 			sourceTree = "<group>";
@@ -658,6 +661,8 @@
 				9D3593E0244D3D38005ADF05 /* ContentParserManager.m */,
 				9D96DC9C25A376080045D123 /* AppTool.h */,
 				9D96DC9D25A376080045D123 /* AppTool.m */,
+				33871E4F271577FB00C1BBA1 /* FileManager.h */,
+				33871E50271577FB00C1BBA1 /* FileManager.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -858,6 +863,7 @@
 				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
+				33871E51271577FB00C1BBA1 /* FileManager.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,

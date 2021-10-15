@@ -45,6 +45,7 @@ static CGFloat sideMargin = 5;
     layout.sectionInset = UIEdgeInsetsMake(2 * sideMargin, sideMargin, 2 * sideMargin, sideMargin);
     layout.minimumLineSpacing = 2 * sideMargin;
     layout.minimumInteritemSpacing = 2 * sideMargin;
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     PicContentView *collectionView = [[PicContentView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     [collectionView registerClass:[PicContentCell class] forCellWithReuseIdentifier:@"PicContentCell"];
     collectionView.backgroundColor = [UIColor whiteColor];

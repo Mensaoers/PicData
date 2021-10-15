@@ -16,6 +16,8 @@
 @property (nonatomic, strong) PicContentView *collectionView;
 @property (nonatomic, strong) NSMutableArray *dataList;
 
+@property (nonatomic, strong) NSURL *nextPageURL;
+
 @end
 
 @implementation ContentViewController
@@ -55,7 +57,33 @@
     
     PDBlockSelf
     collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf loadContentData];
+
+        if (weakSelf.loadDataBlock) {
+
+            [weakSelf.dataList removeAllObjects];
+            [weakSelf.dataList addObjectsFromArray:weakSelf.loadDataBlock()];
+            [weakSelf.collectionView reloadData];
+            [weakSelf.collectionView.mj_header endRefreshing];
+            return;
+        }
+
+        [weakSelf loadContentData:[NSURL URLWithString:weakSelf.sourceModel.url] isReload:YES];
+    }];
+
+    collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        if (self.loadMoreDataBlock) {
+
+            self.loadMoreDataBlock(^(NSArray<PicContentModel *> * _Nonnull contentModels) {
+                [self.dataList addObjectsFromArray:contentModels];
+                [self.collectionView reloadData];
+                [self.collectionView.mj_footer endRefreshing];
+            });
+            return;
+        }
+
+        if (weakSelf.nextPageURL) {
+            [weakSelf loadContentData:self.nextPageURL isReload:NO];
+        }
     }];
 }
 
@@ -87,64 +115,68 @@
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
-- (void)loadContentData {
-
-    if (self.loadDataBlock) {
-
-        [self.dataList removeAllObjects];
-        [self.dataList addObjectsFromArray:self.loadDataBlock()];
-        [self.collectionView reloadData];
-        [self.collectionView.mj_header endRefreshing];
-        return;
-    }
+- (void)loadContentData:(NSURL *)url isReload:(BOOL)isReload {
 
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     
     PDBlockSelf
-    [PDRequest getWithURL:[NSURL URLWithString:self.sourceModel.url] isPhone:self.sourceModel.sourceType != 3 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:url isPhone:NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         PDBlockStrongSelf
         if (nil == error) {
             // 获取字符串
-            NSString *resultString;
-            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-            resultString = [[NSString alloc] initWithData:data encoding:enc];
+            NSString *resultString = [AppTool getStringWithGB_18030_2000Code:data];
 
             NSString *targetPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"htmlContent.txt"];
             [data writeToFile:targetPath atomically:YES];
 
 //            NSLog(@"获取%@数据成功:%@", self.typeModel.value, resultString);
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据成功"];
+                [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+                if (isReload) {
+                    [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据成功"];
+                }
                 // 解析数据
-                NSString *urlsString = [weakSelf parserContentListHtmlData:resultString];
-                
-                
+                NSString *urlsString = [weakSelf parserContent:url ListHtmlData:resultString isReload:isReload];
+
                 NSString *itemUrlsPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"urls.txt"];
                 [[urlsString dataUsingEncoding:NSUTF8StringEncoding] writeToFile:itemUrlsPath atomically:YES];
                 [weakSelf.collectionView reloadData];
                 [weakSelf.collectionView.mj_header endRefreshing];
+                [weakSelf.collectionView.mj_footer endRefreshing];
             });
         } else {
             NSLog(@"获取%@数据错误:%@", strongSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
-                [weakSelf parserContentListHtmlData:@""];
+                [weakSelf parserContent:url ListHtmlData:@"" isReload:isReload];
                 [weakSelf.collectionView reloadData];
                 [weakSelf.collectionView.mj_header endRefreshing];
+                [weakSelf.collectionView.mj_footer endRefreshing];
             });
         }
     }];
 }
 
-- (NSString *)parserContentListHtmlData:(NSString *)htmlString {
+- (NSString *)parserContent:(NSURL *)url ListHtmlData:(NSString *)htmlString isReload:(BOOL)isReload {
     
-    [self.dataList removeAllObjects];
+    if (isReload) {
+        [self.dataList removeAllObjects];
+    }
     if (htmlString.length > 0) {
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
         NSArray *results = [self parserContentListWithType:document];
         [self.dataList addObjectsFromArray:[results copy]];
+
+        OCGumboElement *nextE = document.QueryClass(@"next-page").firstObject;
+        if (nextE) {
+            OCGumboElement *aE = nextE.QueryElement(@"a").firstObject;
+            NSString *nextPage = aE.attr(@"href");
+            self.nextPageURL = [NSURL URLWithString:nextPage relativeToURL:url];
+        } else {
+            self.nextPageURL = nil;
+        }
     }
     
     NSMutableString *urlsS = [NSMutableString string];
@@ -156,50 +188,6 @@
 }
 
 - (NSArray *)parserContentListWithType:(OCGumboDocument *)document {
-//    OCQueryObject *itemResults = document.Query(@".ulPic");
-//    if (itemResults.count == 0) {
-//        return @[];
-//    }
-//    OCGumboElement *divElement = itemResults.firstObject;
-//    NSMutableArray *contentModels = [NSMutableArray array];
-//    for (OCGumboElement *element in divElement.childNodes) {
-//        OCQueryObject *aEs = element.Query(@"a");
-//        if (aEs.count == 0) {
-//            continue;
-//        }
-//
-//        PicContentModel *contentModel = [[PicContentModel alloc] init];
-//        contentModel.HOST_URL = self.sourceModel.HOST_URL;
-//        contentModel.sourceTitle = self.sourceModel.title;
-//        OCGumboElement *aE = aEs.firstObject;
-//        NSString *url = aE.attr(@"href");
-//        if (url.length > 0) {
-//            // url
-//            contentModel.href = url;
-//        }
-//
-//        OCQueryObject *imgEs = aE.Query(@"img");
-//        if (imgEs.count == 0) {
-//            continue;
-//        }
-//        OCGumboElement *imgE = imgEs.firstObject;
-//        NSString *imgSrc = imgE.attr(@"src");
-//        if (imgSrc.length > 0) {
-//            // imgSrc
-//            contentModel.thumbnailUrl = imgSrc;
-//        }
-//
-//        NSString *alt = imgE.attr(@"alt");
-//        if (alt.length > 0) {
-//            // alt
-//            contentModel.title = alt;
-//        }
-//
-//        [contentModel insertTable];
-//        [contentModels addObject:contentModel];
-//    }
-//
-//    return [contentModels copy];
 
     OCQueryObject *articleEs = document.QueryElement(@"article");
 

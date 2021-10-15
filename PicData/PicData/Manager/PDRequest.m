@@ -8,7 +8,13 @@
 
 #import "PDRequest.h"
 
+@interface PDRequest() <NSURLSessionDelegate>
+
+@end
+
 @implementation PDRequest
+
+singleton_implementation(PDRequest)
 
 + (void)getWithURL:(NSURL *)URL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     [PDRequest getWithURL:URL isPhone:YES completionHandler:completionHandler];
@@ -25,7 +31,9 @@
 + (void)getWithURL:(NSURL *)URL userAgent:(NSString *)userAgent completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:userAgent forHTTPHeaderField:@"User-agent"];
-    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:completionHandler];
+    NSURLSession *session = [NSURLSession sharedSession];
+    // [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:[PDRequest sharedPDRequest] delegateQueue:nil];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:completionHandler];
     [dataTask resume];
 }
 
@@ -75,6 +83,7 @@
     [mutableRequest setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [mutableRequest setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
     NSURLSession *session = [NSURLSession sharedSession];
+    // [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:[PDRequest sharedPDRequest] delegateQueue:nil];
 
     PDBlockSelf
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:mutableRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -118,4 +127,69 @@
         return;
     }
 }
+
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler {
+    NSLog(@"didReceiveChallenge ");
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        NSLog(@"server ---------");
+        //        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+        NSString *host = challenge.protectionSpace.host;
+        NSLog(@"%@", host);
+
+        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+
+
+        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+    }
+    else if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
+        {
+            //客户端证书认证
+            //TODO:设置客户端证书认证
+            // load cert
+            NSLog(@"client");
+            NSString *path = [[NSBundle mainBundle]pathForResource:@"client"ofType:@"p12"];
+            NSData *p12data = [NSData dataWithContentsOfFile:path];
+            CFDataRef inP12data = (__bridge CFDataRef)p12data;
+            SecIdentityRef myIdentity;
+            OSStatus status = [self extractIdentity:inP12data toIdentity:&myIdentity];
+            if (status != 0) {
+                return;
+            }
+            SecCertificateRef myCertificate;
+            SecIdentityCopyCertificate(myIdentity, &myCertificate);
+            const void *certs[] = { myCertificate };
+            CFArrayRef certsArray =CFArrayCreate(NULL, certs,1,NULL);
+            NSURLCredential *credential = [NSURLCredential credentialWithIdentity:myIdentity certificates:(__bridge NSArray*)certsArray persistence:NSURLCredentialPersistencePermanent];
+            //        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+            //         网上很多错误代码如上，正确的为：
+            completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+        }
+}
+
+- (OSStatus)extractIdentity:(CFDataRef)inP12Data toIdentity:(SecIdentityRef*)identity {
+    OSStatus securityError = errSecSuccess;
+    CFStringRef password = CFSTR("123456");
+    const void *keys[] = { kSecImportExportPassphrase };
+    const void *values[] = { password };
+    CFDictionaryRef options = CFDictionaryCreate(NULL, keys, values, 1, NULL, NULL);
+    CFArrayRef items = CFArrayCreate(NULL, 0, 0, NULL);
+    securityError = SecPKCS12Import(inP12Data, options, &items);
+    if (securityError == 0)
+        {
+            CFDictionaryRef ident = CFArrayGetValueAtIndex(items,0);
+            const void *tempIdentity = NULL;
+            tempIdentity = CFDictionaryGetValue(ident, kSecImportItemIdentity);
+            *identity = (SecIdentityRef)tempIdentity;
+        }
+    else
+        {
+            NSLog(@"clinet.p12 error!");
+        }
+
+    if (options) {
+        CFRelease(options);
+    }
+    return securityError;
+}
+
 @end

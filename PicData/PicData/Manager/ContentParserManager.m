@@ -11,8 +11,6 @@
 
 @interface ContentParserManager()
 
-@property (nonatomic, strong) dispatch_queue_t disToDownQueue;
-
 @property (nonatomic, assign) int maxConcurrentTasksLimit; // 默认为5
 @property (nonatomic, strong) NSOperationQueue *queue;
 
@@ -135,14 +133,11 @@ singleton_implementation(ContentParserManager)
             int count = 0;
             if (nil == error) {
                 // 获取字符串
-                NSString *content;
-                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-                content = [[NSString alloc] initWithData:data encoding:enc];
+                NSString *content = [AppTool getStringWithGB_18030_2000Code:data];
 
                 NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-                NSDictionary *result;
-                result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
                 nextUrl = result[@"nextUrl"];
                 if (nextUrl.length > 0) {
                     nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];

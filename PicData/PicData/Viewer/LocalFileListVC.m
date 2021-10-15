@@ -68,21 +68,23 @@
         [leftBarButtonItems addObject:backItem];
     }
     // mac端也允许整理按钮, 加警告框即可
-    UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithTitle:@"整理" style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
+    UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"ellipsis"] style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
     [leftBarButtonItems addObject:arrangeItem];
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     NSMutableArray *items = [NSMutableArray array];
     
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
-    shareButton.frame = CGRectMake(0, 0, 25, 25);
-    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
-    [items addObject:shareItem];
+    if (self.navigationController.viewControllers.count > 1) {
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+        [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
+        shareButton.frame = CGRectMake(0, 0, 25, 25);
+        UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
+        [items addObject:shareItem];
 
-    UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
-    [items addObject:deleteItem];
+        UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
+        [items addObject:deleteItem];
+    }
 
     if (self.navigationController.viewControllers.count >= 2) {
         if ([self.targetFilePath containsString:likeString]) {
@@ -146,6 +148,7 @@
     [super viewDidAppear:animated];
 
     [self refreshLoadData:NO];
+    [self loadNavigationItem];
 }
 
 - (void)refreshLoadData:(BOOL)needFileSize {
@@ -220,15 +223,21 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"分享文件" preferredStyle:UIAlertControllerStyleAlert];
 
     if (self.contentModel) {
-        [alert addAction:[UIAlertAction actionWithTitle:@"复制链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"分享链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
             if (self.contentModel == nil) {
                 [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图链接"];
                 return;
             }
-            NSString *url = [self.contentModel.HOST_URL stringByAppendingString:self.contentModel.href];
-            [UIPasteboard generalPasteboard].string = url;
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"已经复制到粘贴板"];
+
+            [AppTool shareFileWithURLs:@[[NSURL URLWithString:[self.contentModel.HOST_URL stringByAppendingString:self.contentModel.href]]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+                NSLog(@"调用分享的应用id :%@", activityType);
+                if (completed) {
+                    NSLog(@"分享成功!");
+                } else {
+                    NSLog(@"分享失败!");
+                }
+            }];
         }]];
 
 

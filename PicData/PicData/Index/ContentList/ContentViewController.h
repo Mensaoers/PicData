@@ -11,12 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef  NSArray <PicContentModel *>*_Nonnull(^LoadDataBlock)(void);
 @interface ContentViewController : BaseViewController
 
 @property (nonatomic, strong) PicSourceModel *sourceModel;
 - (instancetype)initWithSourceModel:(PicSourceModel *)sourceModel;
 
-@property (nonatomic, copy) NSArray <PicContentModel *>*(^loadDataBlock)();
+@property (nonatomic, copy) LoadDataBlock loadDataBlock;
+@property (nonatomic, copy) void(^loadMoreDataBlock)(void(^loadDataBlock)(NSArray <PicContentModel *>*));
 
 @end
 

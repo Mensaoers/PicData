@@ -69,8 +69,16 @@
         [leftBarButtonItems addObject:lastPageItem];
     }
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"下载" style:UIBarButtonItemStyleDone target:self action:@selector(downloadThisContent:)];
+
+    NSMutableArray *items = [NSMutableArray array];
+
+    UIBarButtonItem *downItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.down"] style:UIBarButtonItemStyleDone target:self action:@selector(downloadThisContent:)];
+    [items addObject:downItem];
+
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.up"] style:UIBarButtonItemStyleDone target:self action:@selector(shareThisContent:)];
+    [items addObject:shareItem];
+
+    self.navigationItem.rightBarButtonItems = items.copy;
 }
 
 - (void)backAction:(UIBarButtonItem *)sender {
@@ -141,13 +149,11 @@
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     PDBlockSelf
-    [PDRequest getWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]] isPhone:self.sourceModel.sourceType != 3 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]] isPhone:NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         if (nil == error) {
             // 获取字符串
-            NSString *resultString;
-            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-            resultString = [[NSString alloc] initWithData:data encoding:enc];
+            NSString *resultString = [AppTool getStringWithGB_18030_2000Code:data];
             dispatch_async(dispatch_get_main_queue(), ^{
 
                 // 解析数据
@@ -451,4 +457,18 @@
         }];
     }
 }
+
+- (void)shareThisContent:(UIButton *)sender {
+    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
+    NSURL *url = [NSURL URLWithString:self.contentModel.href relativeToURL:baseURL];
+    [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    }];
+}
+
 @end

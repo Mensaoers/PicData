@@ -35,7 +35,6 @@
 - (NSString *)addressUrl {
     if (nil == _addressUrl) {
         _addressUrl = @"https://v.zflfb.vip:9527/fb.html";
-//        _addressUrl = @"https://w12.qqv16.vip:5561/index.html";
     }
     return _addressUrl;
 }
@@ -43,8 +42,11 @@
 - (void)loadNavigationItem {
     self.navigationItem.title = @"地址发布页";
 
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"刷新地址" style:UIBarButtonItemStyleDone target:self action:@selector(loadCurrentAddresses)];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(loadCurrentAddresses)];
     self.navigationItem.leftBarButtonItem = leftItem;
+
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.up"] style:UIBarButtonItemStyleDone target:self action:@selector(shareUrl:)];
+    self.navigationItem.rightBarButtonItem = shareItem;
 }
 
 - (void)loadMainView {
@@ -132,10 +134,16 @@
     self.searchTF.text = @"";
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    [self.view endEditing:YES];
+}
+
 - (void)loadCurrentAddresses {
     MJWeakSelf
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"正在获取地址"];
-    [PDRequest getWithURL:[NSURL URLWithString:self.addressUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:self.addressUrl] isPhone:NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
@@ -174,29 +182,18 @@
         weakSelf.sourceModel.sourceType = 4;
         weakSelf.sourceModel.url = url;
         [weakSelf.sourceModel insertTable];
-//        [weakSelf loadIndexData:url];
     });
 
 }
 
-- (void)loadIndexData: (NSString *)address {
+- (void)paraseHtmlString_list:(NSString *)htmlString completeHandler:(void(^)(NSArray <PicContentModel *>* contentModels, NSString * _Nullable nextPage))completeHandler {
 
-    MJWeakSelf
-    [PDRequest getWithURL:[NSURL URLWithString:address] isPhone: NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (nil == error) {
-//            NSString *htmlString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSString *htmlString;
-            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-            htmlString = [[NSString alloc] initWithData:data encoding:enc];
-            // 解析html
-            [weakSelf paraseHtmlString_list:htmlString];
+    if (htmlString.length == 0) {
+        if (completeHandler) {
+            completeHandler(@[], nil);
         }
-    }];
-}
-
-- (NSArray <PicContentModel *>*)paraseHtmlString_list:(NSString *)htmlString {
-
-    if (htmlString.length == 0) { return @[]; }
+        return;
+    }
 
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
@@ -222,8 +219,16 @@
         [articleContents addObject:contentModel];
     }
 
-    NSLog(@"123");
-    return [articleContents copy];
+    OCGumboElement *nextE = document.QueryClass(@"next-page").firstObject;
+    NSString *nextPage = nil;
+    if (nextE) {
+        OCGumboElement *aE = nextE.QueryElement(@"a").firstObject;
+        nextPage = aE.attr(@"href");
+    }
+
+    if (completeHandler) {
+        completeHandler([articleContents copy], nextPage);
+    }
 }
 
 - (void)toViewDetails {
@@ -239,31 +244,73 @@
         [self toViewDetails];
         return;
     }
+
     MJWeakSelf
-    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-    NSString *url = [NSString stringWithFormat:@"https://so.azs2019.com/serch.php?keyword=%@", self.searchTF.text];
-    url = [url stringByAddingPercentEscapesUsingEncoding:enc];
+    [self searchRequestWithKeyString:[NSString stringWithFormat:@"serch.php?keyword=%@", self.searchTF.text] completeHandler:^(NSArray<PicContentModel *> *contentModels, NSString * _Nullable nextPage) {
+        __block NSString *nextPageT = nextPage;
+        ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:self.sourceModel];
+        contentVC.loadDataBlock = ^NSArray<PicContentModel *> * _Nonnull{
+            return contentModels;
+        };
+        contentVC.loadMoreDataBlock = ^(void (^ _Nonnull loadDataBlock)(NSArray<PicContentModel *> * _Nonnull)) {
+            [self searchRequestWithKeyString:nextPageT completeHandler:^(NSArray<PicContentModel *> *contentModels, NSString * _Nullable nextPage) {
+                nextPageT = nextPage;
+                loadDataBlock(contentModels);
+            }];
+        };
+        [weakSelf.navigationController pushViewController:contentVC animated:YES];
+    }];
+}
+
+- (void)searchRequestWithKeyString:(NSString *)valueString completeHandler:(void(^)(NSArray <PicContentModel *>* contentModels, NSString * _Nullable nextPage))completeHandler {
+    if (nil == valueString || valueString.length == 0) {
+        if (completeHandler) {
+            completeHandler(@[], nil);
+        }
+        return;
+    }
+    MJWeakSelf
+    valueString = [valueString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"搜索中"];
-    [PDRequest getWithURL:[NSURL URLWithString:url] isPhone: NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:valueString relativeToURL:[NSURL URLWithString:@"https://so.azs2019.com/"]] isPhone: NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
         });
         if (nil == error) {
-            //            NSString *htmlString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSString *htmlString;
 
-            htmlString = [[NSString alloc] initWithData:data encoding:enc];
+            NSString *htmlString = [AppTool getStringWithGB_18030_2000Code:data];
             // 解析html
-            NSArray *contentModels = [weakSelf paraseHtmlString_list:htmlString];
-
+            [weakSelf paraseHtmlString_list:htmlString completeHandler:^(NSArray<PicContentModel *> *contentModels, NSString * _Nullable nextPage) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (completeHandler) {
+                        completeHandler(contentModels, nextPage);
+                    }
+                });
+            }];
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:self.sourceModel];
-                contentVC.loadDataBlock = ^NSArray<PicContentModel *> * _Nonnull{
-                    return contentModels;
-                };
-                [weakSelf.navigationController pushViewController:contentVC animated:YES];
+                if (completeHandler) {
+                    completeHandler(@[], nil);
+                }
             });
+        }
+    }];
+}
+
+- (void)shareUrl:(UIButton *)sender {
+
+    if (self.sourceModel.url.length == 0) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"请先获取地址"];
+        return;
+    }
+
+    [AppTool shareFileWithURLs:@[[NSURL URLWithString:self.sourceModel.url]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
         }
     }];
 }

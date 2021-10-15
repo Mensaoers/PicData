@@ -105,8 +105,7 @@
 
         NSError *error = nil;
         NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
-        NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:enc error:&error];
+        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:[AppTool getNSStringEncoding_GB_18030_2000] error:&error];
 
         if (error) {
             NSLog(@"%@, 出现错误-1, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);

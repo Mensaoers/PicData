@@ -94,4 +94,13 @@ NSString *const HOST_URL_4c4crt = @"https://w12.qqv16.vip:5561/";
     }
 }
 
++ (NSStringEncoding)getNSStringEncoding_GB_18030_2000 {
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    return enc;
+}
+
++ (NSString *)getStringWithGB_18030_2000Code:(NSData *)data {
+    return [[NSString alloc] initWithData:data encoding:[self getNSStringEncoding_GB_18030_2000]];
+}
+
 @end

@@ -202,11 +202,11 @@ singleton_implementation(PDDownloadManager);
             @"Sec-Fetch-Mode" : @"no-cors",
             @"Sec-Fetch-Dest" : @"image"
         };
-        [[[[[self.sessionManager downloadWithUrl:url headers:headers fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
+        [[[[[self.sessionManager downloadWithUrl:url headers:headers fileName:nil] progressOnMainQueue:NO handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
             }
-        }] successOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
+        }] successOnMainQueue:NO handler:^(TRDownloadTask * _Nonnull task) {
             
             dispatch_async(self.disDownFinishQueue, ^{
                 NSError *copyError = nil;
@@ -229,11 +229,11 @@ singleton_implementation(PDDownloadManager);
 //                    [contentTaskModel updateTable];
                 }
             });
-        }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
+        }] failureOnMainQueue:NO handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
             }
-        }] validateFileWithCode:@"9e2a3650530b563da297c9246acaad5c" type:TRFileVerificationTypeMd5 onMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
+        }] validateFileWithCode:@"9e2a3650530b563da297c9246acaad5c" type:TRFileVerificationTypeMd5 onMainQueue:NO handler:^(TRDownloadTask * _Nonnull task) {
             
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);

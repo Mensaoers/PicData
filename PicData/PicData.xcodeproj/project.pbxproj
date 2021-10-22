@@ -31,6 +31,10 @@
 		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
 		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
+		335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; };
+		335338872723254C00D18EDE /* PicData_macPlugin_debug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; };
+		3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
@@ -65,7 +69,6 @@
 		9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */; };
 		9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4B0E35262307CE0062AD82 /* SettingPathViewController.m */; };
 		9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */; };
-		9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
@@ -107,6 +110,21 @@
 		A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		335338992723277D00D18EDE /* Embed PlugIns */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */,
+				3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */,
+			);
+			name = "Embed PlugIns";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
@@ -143,6 +161,8 @@
 		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
+		335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_release.bundle; sourceTree = "<group>"; };
+		335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_debug.bundle; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
 		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
@@ -212,8 +232,6 @@
 		9D4B0E35262307CE0062AD82 /* SettingPathViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingPathViewController.m; sourceTree = "<group>"; };
 		9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCGumboElement+query.m"; sourceTree = "<group>"; };
 		9D607E032622A9D000FE95B5 /* OCGumboElement+query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCGumboElement+query.h"; sourceTree = "<group>"; };
-		9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBrowserToolViewHandler.h; sourceTree = "<group>"; };
-		9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBrowserToolViewHandler.m; sourceTree = "<group>"; };
 		9D96DC9C25A376080045D123 /* AppTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppTool.h; sourceTree = "<group>"; };
 		9D96DC9D25A376080045D123 /* AppTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppTool.m; sourceTree = "<group>"; };
 		9D96DCA125A379540045D123 /* PicClassifyTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassifyTableView.h; sourceTree = "<group>"; };
@@ -554,8 +572,6 @@
 				9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */,
 				33178B92256A184700CB47F2 /* ViewerViewController.h */,
 				33178B93256A184700CB47F2 /* ViewerViewController.m */,
-				9D71083D256E857100300CE7 /* PicBrowserToolViewHandler.h */,
-				9D71083E256E857100300CE7 /* PicBrowserToolViewHandler.m */,
 			);
 			path = Viewer;
 			sourceTree = "<group>";
@@ -600,6 +616,8 @@
 		9DE95C8D244C3F3700E31735 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
+				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
 				9DE95C7E244C3E1100E31735 /* Assets.xcassets */,
 				9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */,
 				9DE95C83244C3E1100E31735 /* Info.plist */,
@@ -779,6 +797,7 @@
 				9DE95C6D244C3E0F00E31735 /* Resources */,
 				C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */,
 				330F778B25DD26A100CD38FD /* Bugly */,
+				335338992723277D00D18EDE /* Embed PlugIns */,
 			);
 			buildRules = (
 			);
@@ -841,11 +860,13 @@
 				332D014426FD845F00E3F387 /* gesture_normal@1.5x.png in Resources */,
 				332D014526FD845F00E3F387 /* gesture_indicator_normal@2x.png in Resources */,
 				332D014926FD845F00E3F387 /* gesture_indicator_selected@2x.png in Resources */,
+				335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */,
 				332D014C26FD845F00E3F387 /* gesture_normal.png in Resources */,
 				9DE95CC9244C3FDD00E31735 /* tag.in in Resources */,
 				331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */,
 				332D014E26FD845F00E3F387 /* gesture_selected.png in Resources */,
 				332D014B26FD845F00E3F387 /* gesture_selected@2x.png in Resources */,
+				335338872723254C00D18EDE /* PicData_macPlugin_debug.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,7 +969,6 @@
 				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
-				9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
@@ -1140,6 +1160,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/PicData/Others/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1148,11 +1169,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "PicData/Viewer/PicData-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				WARNING_CFLAGS = "";
 			};
 			name = Debug;
@@ -1174,6 +1195,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/PicData/Others/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1182,10 +1204,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "PicData/Viewer/PicData-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				WARNING_CFLAGS = "";
 			};
 			name = Release;

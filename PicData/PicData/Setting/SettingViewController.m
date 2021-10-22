@@ -113,6 +113,10 @@ static NSString *identifier = @"identifier";
     [self performSelfFuncWithString:self.operationModels[indexPath.row].func withObject:cell];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
+}
+
 - (void)checkNewVersion:(UIView *)sender {
 
     PDBlockSelf

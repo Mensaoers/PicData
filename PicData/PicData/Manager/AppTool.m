@@ -40,9 +40,16 @@ NSString *const HOST_URL_4c4crt = @"https://w12.qqv16.vip:5561/";
 
     if (urls.count == 1) {
 
-        NSString *filePath = urls.firstObject.path;
-
 #if TARGET_OS_MACCATALYST
+        NSString *url = urls.firstObject.absoluteString;
+
+        if ([url hasPrefix:@"https://"] || [url hasPrefix:@"http://"]) {
+            [UIPasteboard generalPasteboard].string = url;
+            [MBProgressHUD showInfoOnView:UIApplication.sharedApplication.keyWindow WithStatus:@"已经复制到粘贴板"];
+            return;
+        }
+
+        NSString *filePath = urls.firstObject.path;
         NSString *release = @"release";
 #ifdef DEBUG
         release = @"debug";

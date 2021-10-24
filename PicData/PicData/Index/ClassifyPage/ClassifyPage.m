@@ -54,7 +54,7 @@
 
 - (void)loadData_list {
     __weak typeof(self) weakSelf = self;
-    [PDRequest getWithURL:[NSURL URLWithString:HOST_URL_4c4crt] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:[AppTool sharedAppTool].HOST_URL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [weakSelf.tableView.mj_header endRefreshing];
         if (nil == error) {
             NSLog(@"获取分类列表成功");
@@ -64,7 +64,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取成功"];
                 // 解析数据
-                weakSelf.dataArray = [weakSelf dealWithHtml:htmlString HOST_URLString:HOST_URL_4c4crt];
+                weakSelf.dataArray = [weakSelf dealWithHtml:htmlString];
                 [weakSelf.tableView reloadDataWithSource:weakSelf.dataArray];
             });
             
@@ -79,11 +79,13 @@
 }
 
 /// 分类标签可能type都是2
-- (NSArray *)dealWithHtml:(NSString *)htmlString HOST_URLString:(NSString *)HOST_URLString {
+- (NSArray *)dealWithHtml:(NSString *)htmlString {
     if (nil == htmlString || htmlString.length == 0) {
         NSLog(@"标签页数据为空");
         return @[];
     }
+
+    NSString *HOST_URLString = [AppTool sharedAppTool].HOST_URL;
     
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
     

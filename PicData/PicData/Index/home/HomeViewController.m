@@ -179,6 +179,7 @@
         [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"已获取最新地址"];
         weakSelf.sourceModel.title = text;
         weakSelf.sourceModel.HOST_URL = host;
+        [AppTool sharedAppTool].HOST_URL = host;
         weakSelf.sourceModel.sourceType = 4;
         weakSelf.sourceModel.url = url;
         [weakSelf.sourceModel insertTable];

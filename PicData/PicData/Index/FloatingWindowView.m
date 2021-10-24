@@ -25,7 +25,7 @@
     static dispatch_once_t onceToken;
     static FloatingWindowView *floatingWindowView;
     dispatch_once(&onceToken, ^{
-        floatingWindowView = [[FloatingWindowView alloc] initWithFrame:CGRectMake(1, 100, 50, 50)];
+        floatingWindowView = [[FloatingWindowView alloc] initWithFrame:CGRectMake(1, 200, 50, 50)];
         floatingWindowView.userInteractionEnabled = YES;
         floatingWindowView.backgroundColor = [UIColor redColor];
         floatingWindowView.image = [UIImage imageNamed:@"calculate"];

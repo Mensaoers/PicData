@@ -40,13 +40,13 @@
         
         [thumbnailIV mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.mas_equalTo(0);
-            make.height.mas_equalTo(frame.size.width * 360.0 / 250.0);
+            make.bottom.mas_equalTo(-50);
         }];
 
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.numberOfLines = 3;
-        titleLabel.font = [UIFont systemFontOfSize:10];
+        titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.textColor = pdColor(63, 63, 63, 1);
         [bgView addSubview:titleLabel];
         self.titleLabel = titleLabel;

@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define PicContentCellSCALE 0.75
+
 @class PicContentCell;
 @protocol PicContentCellDelegate <NSObject>
 

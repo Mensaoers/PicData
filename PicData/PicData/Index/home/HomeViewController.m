@@ -186,51 +186,6 @@
 
 }
 
-- (void)paraseHtmlString_list:(NSString *)htmlString completeHandler:(void(^)(NSArray <PicContentModel *>* contentModels, NSString * _Nullable nextPage))completeHandler {
-
-    if (htmlString.length == 0) {
-        if (completeHandler) {
-            completeHandler(@[], nil);
-        }
-        return;
-    }
-
-    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-
-    OCQueryObject *articleEs = document.QueryElement(@"article");
-
-    NSMutableArray *articleContents = [NSMutableArray array];
-    for (OCGumboElement *articleE in articleEs) {
-
-        OCGumboElement *headerE = articleE.QueryElement(@"header").firstObject;
-        NSString *type = headerE.QueryElement(@"a").first().text();
-        OCGumboElement *h2E = headerE.QueryElement(@"h2").firstObject;
-        OCGumboElement *h2aE = h2E.QueryElement(@"a").firstObject;
-        NSString *title = h2aE.text();
-        NSString *href = h2aE.attr(@"href");
-        NSString *thumbnailUrl = articleE.QueryClass(@"thumb-span").first().QueryElement(@"img").first().attr(@"src");
-
-        PicContentModel *contentModel = [[PicContentModel alloc] init];
-        contentModel.href = href;
-        contentModel.sourceTitle = self.sourceModel.title;
-        contentModel.HOST_URL = self.sourceModel.HOST_URL;
-        contentModel.title = title;
-        contentModel.thumbnailUrl = thumbnailUrl;
-        [articleContents addObject:contentModel];
-    }
-
-    OCGumboElement *nextE = document.QueryClass(@"next-page").firstObject;
-    NSString *nextPage = nil;
-    if (nextE) {
-        OCGumboElement *aE = nextE.QueryElement(@"a").firstObject;
-        nextPage = aE.attr(@"href");
-    }
-
-    if (completeHandler) {
-        completeHandler([articleContents copy], nextPage);
-    }
-}
-
 - (void)toViewDetails {
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:self.sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
@@ -245,57 +200,12 @@
         return;
     }
 
-    MJWeakSelf
-    [self searchRequestWithKeyString:[NSString stringWithFormat:@"serch.php?keyword=%@", self.searchTF.text] completeHandler:^(NSArray<PicContentModel *> *contentModels, NSString * _Nullable nextPage) {
-        __block NSString *nextPageT = nextPage;
-        ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:self.sourceModel];
-        contentVC.loadDataBlock = ^NSArray<PicContentModel *> * _Nonnull{
-            return contentModels;
-        };
-        contentVC.loadMoreDataBlock = ^(void (^ _Nonnull loadDataBlock)(NSArray<PicContentModel *> * _Nonnull)) {
-            [self searchRequestWithKeyString:nextPageT completeHandler:^(NSArray<PicContentModel *> *contentModels, NSString * _Nullable nextPage) {
-                nextPageT = nextPage;
-                loadDataBlock(contentModels);
-            }];
-        };
-        [weakSelf.navigationController pushViewController:contentVC animated:YES];
-    }];
-}
-
-- (void)searchRequestWithKeyString:(NSString *)valueString completeHandler:(void(^)(NSArray <PicContentModel *>* contentModels, NSString * _Nullable nextPage))completeHandler {
-    if (nil == valueString || valueString.length == 0) {
-        if (completeHandler) {
-            completeHandler(@[], nil);
-        }
-        return;
-    }
-    MJWeakSelf
-    valueString = [valueString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
-    [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"搜索中"];
-    [PDRequest getWithURL:[NSURL URLWithString:valueString relativeToURL:[NSURL URLWithString:@"https://so.azs2019.com/"]] isPhone: NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
-        });
-        if (nil == error) {
-
-            NSString *htmlString = [AppTool getStringWithGB_18030_2000Code:data];
-            // 解析html
-            [weakSelf paraseHtmlString_list:htmlString completeHandler:^(NSArray<PicContentModel *> *contentModels, NSString * _Nullable nextPage) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (completeHandler) {
-                        completeHandler(contentModels, nextPage);
-                    }
-                });
-            }];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completeHandler) {
-                    completeHandler(@[], nil);
-                }
-            });
-        }
-    }];
+    PicSourceModel *sourceModel = self.sourceModel.copy;
+    sourceModel.HOST_URL = @"https://so.azs2019.com/";
+    NSString *valueString = [self.searchTF.text stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
+    sourceModel.url = [NSString stringWithFormat:@"https://so.azs2019.com/serch.php?keyword=%@", valueString];
+    ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
+    [self.navigationController pushViewController:contentVC animated:YES];
 }
 
 - (void)shareUrl:(UIButton *)sender {

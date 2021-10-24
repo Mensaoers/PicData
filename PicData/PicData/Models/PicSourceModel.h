@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, assign) int sourceType;
 
+- (id)copy;
+
 @end
 
 NS_ASSUME_NONNULL_END

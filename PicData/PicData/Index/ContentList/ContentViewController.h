@@ -17,9 +17,6 @@ typedef  NSArray <PicContentModel *>*_Nonnull(^LoadDataBlock)(void);
 @property (nonatomic, strong) PicSourceModel *sourceModel;
 - (instancetype)initWithSourceModel:(PicSourceModel *)sourceModel;
 
-@property (nonatomic, copy) LoadDataBlock loadDataBlock;
-@property (nonatomic, copy) void(^loadMoreDataBlock)(void(^loadDataBlock)(NSArray <PicContentModel *>*));
-
 @end
 
 NS_ASSUME_NONNULL_END

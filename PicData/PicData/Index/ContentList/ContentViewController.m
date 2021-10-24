@@ -58,31 +58,15 @@
     PDBlockSelf
     collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        if (weakSelf.loadDataBlock) {
-
-            [weakSelf.dataList removeAllObjects];
-            [weakSelf.dataList addObjectsFromArray:weakSelf.loadDataBlock()];
-            [weakSelf.collectionView reloadData];
-            [weakSelf.collectionView.mj_header endRefreshing];
-            return;
-        }
-
         [weakSelf loadContentData:[NSURL URLWithString:weakSelf.sourceModel.url] isReload:YES];
     }];
 
     collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        if (self.loadMoreDataBlock) {
-
-            self.loadMoreDataBlock(^(NSArray<PicContentModel *> * _Nonnull contentModels) {
-                [self.dataList addObjectsFromArray:contentModels];
-                [self.collectionView reloadData];
-                [self.collectionView.mj_footer endRefreshing];
-            });
-            return;
-        }
 
         if (weakSelf.nextPageURL) {
-            [weakSelf loadContentData:self.nextPageURL isReload:NO];
+            [weakSelf loadContentData:weakSelf.nextPageURL isReload:NO];
+        } else {
+            [weakSelf.collectionView.mj_footer endRefreshing];
         }
     }];
 }
@@ -94,29 +78,9 @@
     self.navigationItem.rightBarButtonItem = allDownItem;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.dataList.count;
-}
-
-- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PicContentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PicContentCell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor whiteColor];
-    cell.delegate = self;
-    cell.indexPath = indexPath;
-    cell.contentModel = self.dataList[indexPath.item];
-    return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    DetailViewController *detailVC = [[DetailViewController alloc] init];
-    detailVC.sourceModel = self.sourceModel;
-    detailVC.contentModel = self.dataList[indexPath.item];
-    [self.navigationController pushViewController:detailVC animated:YES];
-}
-
 - (void)loadContentData:(NSURL *)url isReload:(BOOL)isReload {
 
+    NSLog(@"列表URL: %@", url.absoluteString);
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     
     PDBlockSelf
@@ -166,14 +130,14 @@
         
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-        NSArray *results = [self parserContentListWithType:document];
+        NSArray *results = [self parserContentListWithDocument:document];
         [self.dataList addObjectsFromArray:[results copy]];
 
         OCGumboElement *nextE = document.QueryClass(@"next-page").firstObject;
         if (nextE) {
             OCGumboElement *aE = nextE.QueryElement(@"a").firstObject;
             NSString *nextPage = aE.attr(@"href");
-            self.nextPageURL = [NSURL URLWithString:nextPage relativeToURL:url];
+            self.nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]] relativeToURL:url];
         } else {
             self.nextPageURL = nil;
         }
@@ -187,7 +151,7 @@
     return urlsS;
 }
 
-- (NSArray *)parserContentListWithType:(OCGumboDocument *)document {
+- (NSArray *)parserContentListWithDocument:(OCGumboDocument *)document {
 
     OCQueryObject *articleEs = document.QueryElement(@"article");
 
@@ -220,6 +184,29 @@
             [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
         }];
     }
+}
+
+#pragma mark collectionView delegate
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.dataList.count;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    PicContentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PicContentCell" forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.delegate = self;
+    cell.indexPath = indexPath;
+    cell.contentModel = self.dataList[indexPath.item];
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    DetailViewController *detailVC = [[DetailViewController alloc] init];
+    detailVC.sourceModel = self.sourceModel;
+    detailVC.contentModel = self.dataList[indexPath.item];
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark PicContentCellDelegate

@@ -170,6 +170,10 @@
         [self.fileNamesList removeAllObjects];
         for (NSString *fileName in fileContents) {
 
+            if ([fileName isEqualToString:@".DS_Store"]) {
+                continue;
+            }
+
             NSString *filePath = [self.targetFilePath stringByAppendingPathComponent:fileName];
             if ([FileManager isDirectory:filePath]) {
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:YES];

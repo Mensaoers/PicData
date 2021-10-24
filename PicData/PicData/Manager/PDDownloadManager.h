@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Singleton.h"
 #import "PicSourceModel.h"
 #import "PicContentModel.h"
 #import "PicDownRecoreModel.h"

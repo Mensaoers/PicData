@@ -26,7 +26,7 @@
 @implementation AddNetTaskVC
 
 - (NSString *)host_url {
-    return HOST_URL_4c4crt;
+    return [AppTool sharedAppTool].HOST_URL;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

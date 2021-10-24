@@ -13,7 +13,7 @@ static BOOL canChangeOrientation = NO;
 
 @implementation AppTool
 
-NSString *const HOST_URL_4c4crt = @"https://w12.qqv16.vip:5561/";
+singleton_implementation(AppTool)
 
 /// bugly app_id
 + (NSString *)app_id_bugly {

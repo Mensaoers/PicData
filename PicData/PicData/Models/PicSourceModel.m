@@ -25,4 +25,9 @@
     return [PicSourceModel deleteFromTable_Where:[NSString stringWithFormat:@"where title = \"%@\"", self.title]];
 }
 
+- (id)copy {
+    PicSourceModel *sourceModel = [PicSourceModel mj_objectWithKeyValues:[self mj_keyValues]];
+    return sourceModel;
+}
+
 @end

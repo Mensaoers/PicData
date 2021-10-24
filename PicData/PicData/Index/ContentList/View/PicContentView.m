@@ -20,15 +20,17 @@ static CGFloat sideMargin = 5;
 
 + (CGFloat)itemWidth:(CGFloat)wholeWidth {
     // cell的排布, 想让cell的宽度逐渐增大, 大到一定程度, 加一个cell, 以此往复
-    // 最大宽度
-    CGFloat maxWidth = MIN(180, wholeWidth * 0.333);
+    CGFloat sugWidth = 150;
+#if TARGET_OS_MACCATALYST
+    sugWidth = 180;
+#endif
     // 这一行至少可以放几个
-    NSInteger count = floorf(wholeWidth / maxWidth);
+    NSInteger count = floorf(wholeWidth / sugWidth);
     CGFloat itemWidth = wholeWidth / count;
     return itemWidth - 2 * sideMargin;
 }
 + (CGFloat)itemHeight:(CGFloat)wholeWidth {
-    CGFloat itemHeight = [PicContentView itemWidth:wholeWidth] * 360.0 / 250.0 + 50;
+    CGFloat itemHeight = [PicContentView itemWidth:wholeWidth] * PicContentCellSCALE + 50;
     return itemHeight;
 }
 + (CGSize)itemSize:(CGFloat)wholeWidth {

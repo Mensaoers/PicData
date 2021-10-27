@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "PicSourceModel.h"
 #import "PicContentModel.h"
-#import "PicDownRecoreModel.h"
 #import "AppDelegate.h"
 
 #define DOWNLOADSPATHKEY @"DOWNLOADSPATHKEY"
@@ -39,9 +38,9 @@ singleton_interface(PDDownloadManager);
 /// 数据库文件路径
 @property (nonatomic, strong) NSString *databaseFilePath;
 /// 配置数据库
-+ (void)prepareDataBase;
++ (void)prepareDatabase;
 /// 删除数据库
-+ (BOOL)deleteDataBase;
++ (BOOL)deleteDatabase;
 
 + (BOOL)clearAllData:(BOOL)andFiles;
 

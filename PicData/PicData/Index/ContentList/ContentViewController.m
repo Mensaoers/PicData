@@ -172,6 +172,7 @@
         contentModel.HOST_URL = self.sourceModel.HOST_URL;
         contentModel.title = title;
         contentModel.thumbnailUrl = thumbnailUrl;
+        BOOL result = [contentModel insertTable];
         [articleContents addObject:contentModel];
     }
 

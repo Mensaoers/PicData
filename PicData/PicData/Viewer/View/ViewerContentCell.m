@@ -117,6 +117,6 @@
         self.sizeLabel.text = @"";
         self.sizeLabel.hidden = YES;
     }
-    self.titleLabel.text = fileModel.fileName;
+    self.titleLabel.text = [fileModel.fileName stringByReplacingOccurrencesOfString:@":" withString:@"/"];
 }
 @end

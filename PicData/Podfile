@@ -17,7 +17,7 @@ target 'PicData' do
   pod 'XHWebImageAutoSize'
   pod 'Tiercel'
   pod 'TiercelObjCBridge'
-  pod 'JQFMDB'
+  pod 'WCDB'
   pod 'SSZipArchive'
   pod 'IQKeyboardManager'
   # Pods for PicData

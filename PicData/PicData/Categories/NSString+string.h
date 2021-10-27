@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)fileSizeFormat:(long long)value;
 
++ (NSString *)getUUID;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -61,7 +61,7 @@
 }
 
 - (void)setupDataBase {
-    [PDDownloadManager prepareDataBase];
+    [PDDownloadManager prepareDatabase];
 }
 
 - (void)setupBugly {

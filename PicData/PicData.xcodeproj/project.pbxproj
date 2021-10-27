@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
-		3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.m */; };
+		3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.mm */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
 		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
 		332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 332C285624EBA5720083A5DC /* AddNetTaskVC.m */; };
@@ -30,6 +30,7 @@
 		332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */; };
 		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
 		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
+		3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3349D2622729A145006109F6 /* DatabaseManager.mm */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
@@ -54,7 +55,6 @@
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
 		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
-		33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
@@ -96,12 +96,12 @@
 		9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CB6244C3FDC00E31735 /* OCGumbo+Query.m */; };
 		9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CB7244C3FDC00E31735 /* OCGumbo.m */; };
 		9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */; };
-		9DE95CD7244C417900E31735 /* PicSourceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CD6244C417900E31735 /* PicSourceModel.m */; };
+		9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CD6244C417900E31735 /* PicSourceModel.mm */; };
 		9DE95CD9244C418700E31735 /* PicSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95CD8244C418700E31735 /* PicSource.json */; };
 		9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CDB244C43A400E31735 /* PicClassModel.m */; };
 		9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CDF244C468500E31735 /* ContentViewController.m */; };
 		9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CE3244C49C900E31735 /* PicContentCell.m */; };
-		9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CE7244C4E5700E31735 /* PicContentModel.m */; };
+		9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CE7244C4E5700E31735 /* PicContentModel.mm */; };
 		9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CED244C5FBC00E31735 /* UILabel+text.m */; };
 		9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CF9244CA25900E31735 /* PDDownloadManager.m */; };
 		A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */; };
@@ -112,7 +112,7 @@
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
 		3323205724ECB4A300FE5E33 /* PicBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBaseModel.h; sourceTree = "<group>"; };
-		3323205824ECB4A300FE5E33 /* PicBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicBaseModel.m; sourceTree = "<group>"; };
+		3323205824ECB4A300FE5E33 /* PicBaseModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicBaseModel.mm; sourceTree = "<group>"; };
 		3323206124ECE3D000FE5E33 /* PicRuleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleModel.m; sourceTree = "<group>"; };
 		3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleStepModel.h; sourceTree = "<group>"; };
 		3323206324ECE3D100FE5E33 /* PicRuleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicRuleModel.h; sourceTree = "<group>"; };
@@ -141,6 +141,12 @@
 		332D013E26FD845F00E3F387 /* TKGestureLockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockManager.h; sourceTree = "<group>"; };
 		332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockBackView.m; sourceTree = "<group>"; };
 		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
+		3349D25F27299D76006109F6 /* PicBaseModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicBaseModel+WCTTableCoding.h"; sourceTree = "<group>"; };
+		3349D2612729A145006109F6 /* DatabaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
+		3349D2622729A145006109F6 /* DatabaseManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DatabaseManager.mm; sourceTree = "<group>"; };
+		3349D2642729A163006109F6 /* DatabaseManager+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DatabaseManager+WCTTableCoding.h"; sourceTree = "<group>"; };
+		3349D2652729A404006109F6 /* PicSourceModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicSourceModel+WCTTableCoding.h"; sourceTree = "<group>"; };
+		3349D2662729A60F006109F6 /* PicContentModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicContentModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
@@ -189,8 +195,6 @@
 		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
 		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
 		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
-		33E46BE024ED2CA000586D8B /* PicDownRecoreModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicDownRecoreModel.h; sourceTree = "<group>"; };
-		33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicDownRecoreModel.m; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
 		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
 		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
@@ -282,7 +286,7 @@
 		9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+LZPShow.m"; sourceTree = "<group>"; };
 		9DE95CBE244C3FDC00E31735 /* MBProgressHUD+LZPShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LZPShow.h"; sourceTree = "<group>"; };
 		9DE95CD5244C417900E31735 /* PicSourceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicSourceModel.h; sourceTree = "<group>"; };
-		9DE95CD6244C417900E31735 /* PicSourceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicSourceModel.m; sourceTree = "<group>"; };
+		9DE95CD6244C417900E31735 /* PicSourceModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicSourceModel.mm; sourceTree = "<group>"; };
 		9DE95CD8244C418700E31735 /* PicSource.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicSource.json; sourceTree = "<group>"; };
 		9DE95CDA244C43A400E31735 /* PicClassModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassModel.h; sourceTree = "<group>"; };
 		9DE95CDB244C43A400E31735 /* PicClassModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicClassModel.m; sourceTree = "<group>"; };
@@ -291,7 +295,7 @@
 		9DE95CE2244C49C900E31735 /* PicContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentCell.h; sourceTree = "<group>"; };
 		9DE95CE3244C49C900E31735 /* PicContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentCell.m; sourceTree = "<group>"; };
 		9DE95CE6244C4E5700E31735 /* PicContentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentModel.h; sourceTree = "<group>"; };
-		9DE95CE7244C4E5700E31735 /* PicContentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentModel.m; sourceTree = "<group>"; };
+		9DE95CE7244C4E5700E31735 /* PicContentModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicContentModel.mm; sourceTree = "<group>"; };
 		9DE95CEC244C5FBC00E31735 /* UILabel+text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+text.h"; sourceTree = "<group>"; };
 		9DE95CED244C5FBC00E31735 /* UILabel+text.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+text.m"; sourceTree = "<group>"; };
 		9DE95CF8244CA25900E31735 /* PDDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDDownloadManager.h; sourceTree = "<group>"; };
@@ -698,21 +702,22 @@
 		9DE95CD4244C415F00E31735 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3349D25F27299D76006109F6 /* PicBaseModel+WCTTableCoding.h */,
 				3323205724ECB4A300FE5E33 /* PicBaseModel.h */,
-				3323205824ECB4A300FE5E33 /* PicBaseModel.m */,
+				3323205824ECB4A300FE5E33 /* PicBaseModel.mm */,
 				9DE95CDA244C43A400E31735 /* PicClassModel.h */,
 				9DE95CDB244C43A400E31735 /* PicClassModel.m */,
 				9DE95CD5244C417900E31735 /* PicSourceModel.h */,
-				9DE95CD6244C417900E31735 /* PicSourceModel.m */,
+				3349D2652729A404006109F6 /* PicSourceModel+WCTTableCoding.h */,
+				9DE95CD6244C417900E31735 /* PicSourceModel.mm */,
 				9DE95CE6244C4E5700E31735 /* PicContentModel.h */,
-				9DE95CE7244C4E5700E31735 /* PicContentModel.m */,
+				3349D2662729A60F006109F6 /* PicContentModel+WCTTableCoding.h */,
+				9DE95CE7244C4E5700E31735 /* PicContentModel.mm */,
 				3323206324ECE3D100FE5E33 /* PicRuleModel.h */,
 				3323206124ECE3D000FE5E33 /* PicRuleModel.m */,
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
 				9DE95CD8244C418700E31735 /* PicSource.json */,
-				33E46BE024ED2CA000586D8B /* PicDownRecoreModel.h */,
-				33E46BE124ED2CA000586D8B /* PicDownRecoreModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -754,6 +759,9 @@
 				9D96DC9D25A376080045D123 /* AppTool.m */,
 				33871E4F271577FB00C1BBA1 /* FileManager.h */,
 				33871E50271577FB00C1BBA1 /* FileManager.m */,
+				3349D2612729A145006109F6 /* DatabaseManager.h */,
+				3349D2642729A163006109F6 /* DatabaseManager+WCTTableCoding.h */,
+				3349D2622729A145006109F6 /* DatabaseManager.mm */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -935,7 +943,6 @@
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
 				33871E762715824200C1BBA1 /* LGPdfBaseElement.m in Sources */,
 				336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */,
-				33E46BE224ED2CA000586D8B /* PicDownRecoreModel.m in Sources */,
 				9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
@@ -945,7 +952,7 @@
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				33871E722715824200C1BBA1 /* LGImageController.m in Sources */,
-				9DE95CE8244C4E5700E31735 /* PicContentModel.m in Sources */,
+				9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
 				9D71083F256E857100300CE7 /* PicBrowserToolViewHandler.m in Sources */,
@@ -980,17 +987,18 @@
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
 				33871E772715824200C1BBA1 /* LGPdfPoint.m in Sources */,
 				9DE95CCC244C3FDD00E31735 /* tokenizer.c in Sources */,
-				9DE95CD7244C417900E31735 /* PicSourceModel.m in Sources */,
+				9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
 				9D96DC9E25A376080045D123 /* AppTool.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,
-				3323205924ECB4A300FE5E33 /* PicBaseModel.m in Sources */,
+				3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
 				33871E752715824200C1BBA1 /* LGPdfCellConfig.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
+				3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */,
 				9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */,
 				33871E732715824200C1BBA1 /* LGTextController.m in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,
@@ -1133,7 +1141,7 @@
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = EDCUTHX9T2;
 				EXCLUDED_ARCHS = "";
@@ -1144,7 +1152,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1167,7 +1175,7 @@
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = EDCUTHX9T2;
 				EXCLUDED_ARCHS = "";
@@ -1178,7 +1186,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -155,7 +155,7 @@
 
     // 每次页面加载出来的时候, 需要当前目录名字
     NSString *directory = [self.targetFilePath lastPathComponent];
-    self.contentLabel.text = [NSString stringWithFormat:@"%@", directory];
+    self.contentLabel.text = [[NSString stringWithFormat:@"%@", directory] stringByReplacingOccurrencesOfString:@":" withString:@"/"];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
 

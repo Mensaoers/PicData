@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 已下载多少张, 这个属性忽略, 不存数据库
 @property (nonatomic, assign) int downloadedCount;
 
+- (BOOL)updateTableWithHref:(NSString *)href;
+
 + (NSArray *)queryTableWithHref:(NSString *)href;
 
 + (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle WhenTitle:(NSString *)title;

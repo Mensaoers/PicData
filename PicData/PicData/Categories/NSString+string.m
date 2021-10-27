@@ -43,4 +43,16 @@
     return outNumber;
 }
 
++ (NSString *)getUUID {
+    NSString * result;
+    CFUUIDRef uuid;
+    CFStringRef uuidStr;
+    uuid = CFUUIDCreate(NULL);
+    uuidStr = CFUUIDCreateString(NULL, uuid);
+    result =[NSString stringWithFormat:@"%@", uuidStr];
+    CFRelease(uuidStr);
+    CFRelease(uuid);
+    return result;
+}
+
 @end

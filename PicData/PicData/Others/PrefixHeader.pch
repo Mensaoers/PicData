@@ -22,7 +22,6 @@
     #import <SDWebImage/UIImageView+WebCache.h>
     #import <MJRefresh/MJRefresh.h>
     #import <YYCategories/YYCategories.h>
-    #import <JQFMDB/JQFMDB.h>
     #import <YBImageBrowser/YBImageBrowser.h>
     #import <SSZipArchive/SSZipArchive.h>
     #import <IQKeyboardManager/IQKeyboardManager.h>
@@ -34,6 +33,7 @@
     #import "UINavigationController+push.h"
     #import "OCGumbo+Query.h"
 
+    #import "DatabaseManager.h"
     #import "AppTool.h"
     #import "BaseViewController.h"
     #import "BaseNavigationController.h"

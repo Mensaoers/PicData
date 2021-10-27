@@ -28,7 +28,7 @@
 
 /// 数据库文件名
 - (NSString *)databaseFileName {
-    return @"picdata.sqlite";
+    return @"picdata.db";
 }
 
 /// 数据库文件路径
@@ -36,12 +36,13 @@
     return [FileManager getDocumentPathWithTarget:self.databaseFileName];
 }
 
-+ (void)prepareDataBase {
-    [JQFMDB shareDatabase:[PDDownloadManager sharedPDDownloadManager].databaseFileName path:[FileManager getDocumentPathWithTarget:@""]];
++ (void)prepareDatabase {
+    [DatabaseManager prepareDatabase];
 }
 
-+ (BOOL)deleteDataBase {
-    [[JQFMDB shareDatabase] close];
++ (BOOL)deleteDatabase {
+    [DatabaseManager closeDatabase];
+
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:[PDDownloadManager sharedPDDownloadManager].databaseFilePath error:&error];
     if (error) {
@@ -55,9 +56,9 @@
     [PDDownloadManager.sharedPDDownloadManager.sessionManager totalCancel];
     [PDDownloadManager.sharedPDDownloadManager.sessionManager totalRemove];
 
-    if (![PDDownloadManager deleteDataBase]) {
-        return NO;
-    }
+//    if (![PDDownloadManager deleteDataBase]) {
+//        return NO;
+//    }
     if (andFiles) {
 
         if (![FileManager checkFolderPathExistOrCreate:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
@@ -159,7 +160,7 @@ singleton_implementation(PDDownloadManager);
         return path;
     }
     
-    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:sourceModel.title];
+    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:sourceModel.systemTitle];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:targetPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
@@ -171,7 +172,7 @@ singleton_implementation(PDDownloadManager);
     }
 
     // 替换文件夹名称中的"/"为":", 可以创建带有斜线的文件夹, 创建完之后, 显示为预期名称
-    NSString *contentPath = [targetPath stringByAppendingPathComponent:contentModel.showTitle];
+    NSString *contentPath = [targetPath stringByAppendingPathComponent:contentModel.systemTitle];
     if (![[NSFileManager defaultManager] fileExistsAtPath:contentPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:contentPath withIntermediateDirectories:YES attributes:nil error:&createDirError];

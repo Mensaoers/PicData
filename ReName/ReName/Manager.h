@@ -11,9 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Manager : NSObject
 
-+ (void)renameAllPicturesOfDirectoryAtPath:(NSString *)dirPath;
-
-+ (void)removeAllTxtFileOfDirectoryAtPath:(NSString *)dirPath;
+/// 重命名指定路径下的所有图片, 并且选择是否一同删除txt文档
++ (void)renameAllPicturesOfDirectoryAtPath:(NSString *)dirPath andTxtFileRemove:(BOOL)together;
 
 @end
 

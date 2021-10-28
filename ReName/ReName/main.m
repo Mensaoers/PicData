@@ -11,11 +11,9 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         // insert code here...
-        NSLog(@"Hello, World!");
-        // @"/Users/pengpeng/Desktop/0x"
+        NSLog(@"Hello, Coder!");
 
-        [Manager renameAllPicturesOfDirectoryAtPath:@"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File/rt"];
-        [Manager removeAllTxtFileOfDirectoryAtPath:@"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File/rt"];
+        [Manager renameAllPicturesOfDirectoryAtPath:@"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File/rt" andTxtFileRemove:YES];
     }
     return 0;
 

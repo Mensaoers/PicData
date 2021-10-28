@@ -51,6 +51,7 @@
         imageView.backgroundColor = UIColor.clearColor;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         [bgView addSubview:imageView];
+        imageView.layer.masksToBounds = YES;
         self.imageView = imageView;
 
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {

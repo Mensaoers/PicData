@@ -202,7 +202,6 @@
     }
 
     PicSourceModel *sourceModel = self.sourceModel.copy;
-    sourceModel.HOST_URL = @"https://so.azs2019.com/";
     NSString *valueString = [self.searchTF.text stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
     sourceModel.url = [NSString stringWithFormat:@"https://so.azs2019.com/serch.php?keyword=%@", valueString];
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];

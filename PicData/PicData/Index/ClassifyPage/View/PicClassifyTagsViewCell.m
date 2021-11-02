@@ -26,28 +26,32 @@ static NSInteger tagsC = 9527;
     _tagsFrame = tagsFrame;
     [self.contentView removeAllSubviews];
     for (NSInteger i=0; i<tagsFrame.tagsArray.count; i++) {
-        UIButton *tagsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [tagsBtn setTitle:tagsFrame.tagsArray[i] forState:UIControlStateNormal];
-        [tagsBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        tagsBtn.titleLabel.font = PDSYSTEMFONT_15;
-        tagsBtn.backgroundColor = [UIColor whiteColor];
-        tagsBtn.layer.borderWidth = 1;
-        tagsBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        tagsBtn.layer.cornerRadius = 4;
-        tagsBtn.layer.masksToBounds = YES;
-        [tagsBtn addTarget:self action:@selector(tagsButtonClickedAction:) forControlEvents:UIControlEventTouchUpInside];
-        tagsBtn.frame = CGRectFromString(tagsFrame.tagsFrames[i]);
-        tagsBtn.tag = tagsC + i;
-        [self.contentView addSubview:tagsBtn];
+        UILabel *label = [UILabel new];
+        label.textColor = [UIColor blackColor];
+        label.font = PDSYSTEMFONT_15;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor whiteColor];
+        label.tag = tagsC + i;
+        label.text = tagsFrame.tagsArray[i];
+        label.frame = CGRectFromString(tagsFrame.tagsFrames[i]);
+        label.userInteractionEnabled = YES;
+        label.layer.borderWidth = 1;
+        label.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        label.layer.cornerRadius = 4;
+        label.layer.masksToBounds = YES;
+        [self.contentView addSubview:label];
+
+        UITapGestureRecognizer *ges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+        [label addGestureRecognizer:ges];
     }
 }
 
-- (void)tagsButtonClickedAction:(UIButton *)sender {
-    NSInteger index = sender.tag - tagsC;
+- (void)tapAction:(UITapGestureRecognizer *)sender {
+
+    NSInteger index = sender.view.tag - tagsC;
     if (self.delegate && [self.delegate respondsToSelector:@selector(tagsViewCell:didSelectTags:indexPath:)]) {
         [self.delegate tagsViewCell:self didSelectTags:index indexPath:self.indexPath];
     }
-    
 }
 
 @end

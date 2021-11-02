@@ -1150,7 +1150,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = EDCUTHX9T2;
 				EXCLUDED_ARCHS = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";

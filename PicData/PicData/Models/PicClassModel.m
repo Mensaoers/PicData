@@ -25,7 +25,7 @@
 
 - (NSArray<NSString *> *)subTitleStrings {
     NSArray *titleStrings = [self.subTitles valueForKeyPath:@"title"];
-    NSArray *titleStrings1 = [self valueForKeyPath:@"subTitles.title"];
+    // NSArray *titleStrings = [self valueForKeyPath:@"subTitles.title"];
     return titleStrings;
 }
 

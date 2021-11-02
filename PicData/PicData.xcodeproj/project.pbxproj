@@ -62,7 +62,6 @@
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
-		9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
 		9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E4244D5FC7005ADF05 /* DetailViewController.m */; };
 		9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E7244D66C7005ADF05 /* DetailViewModel.m */; };
@@ -82,7 +81,6 @@
 		9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C7E244C3E1100E31735 /* Assets.xcassets */; };
 		9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */; };
 		9DE95C85244C3E1100E31735 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95C84244C3E1100E31735 /* main.m */; };
-		9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95C90244C3F6C00E31735 /* IndexViewController.m */; };
 		9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95C95244C3FDC00E31735 /* string_buffer.c */; };
 		9DE95CC2244C3FDD00E31735 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95C98244C3FDC00E31735 /* util.c */; };
 		9DE95CC3244C3FDD00E31735 /* char_ref.rl in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95C99244C3FDC00E31735 /* char_ref.rl */; };
@@ -222,8 +220,6 @@
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
 		9D0A4A4025FE54F700E505AC /* PicContentViewFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentViewFlowLayout.h; sourceTree = "<group>"; };
 		9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentViewFlowLayout.m; sourceTree = "<group>"; };
-		9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassifyPage.h; sourceTree = "<group>"; };
-		9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassifyPage.m; sourceTree = "<group>"; };
 		9D3593DF244D3D38005ADF05 /* ContentParserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentParserManager.h; sourceTree = "<group>"; };
 		9D3593E0244D3D38005ADF05 /* ContentParserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContentParserManager.m; sourceTree = "<group>"; };
 		9D3593E3244D5FC7005ADF05 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -263,8 +259,6 @@
 		9DE95C84244C3E1100E31735 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9DE95C8B244C3E4900E31735 /* PicData.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicData.entitlements; sourceTree = "<group>"; };
 		9DE95C8C244C3ED400E31735 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		9DE95C8F244C3F6C00E31735 /* IndexViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IndexViewController.h; sourceTree = "<group>"; };
-		9DE95C90244C3F6C00E31735 /* IndexViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IndexViewController.m; sourceTree = "<group>"; };
 		9DE95C92244C3F7F00E31735 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		9DE95C95244C3FDC00E31735 /* string_buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = string_buffer.c; sourceTree = "<group>"; };
 		9DE95C96244C3FDC00E31735 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
@@ -512,8 +506,6 @@
 			isa = PBXGroup;
 			children = (
 				9D96DCA025A379230045D123 /* View */,
-				9D0E52CB24C2B3CF00FA8D88 /* ClassifyPage.h */,
-				9D0E52CC24C2B3CF00FA8D88 /* ClassifyPage.m */,
 			);
 			path = ClassifyPage;
 			sourceTree = "<group>";
@@ -639,8 +631,6 @@
 				33B9EEC024DCA9EB00ABE3E2 /* TransView */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
-				9DE95C8F244C3F6C00E31735 /* IndexViewController.h */,
-				9DE95C90244C3F6C00E31735 /* IndexViewController.m */,
 				335719B324DD358C00303E83 /* FloatingWindowView.h */,
 				335719B224DD358B00303E83 /* FloatingWindowView.m */,
 			);
@@ -950,7 +940,6 @@
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
 				33871E7A2715824200C1BBA1 /* LGPdfImage.m in Sources */,
 				33871E712715824200C1BBA1 /* LGTableController.m in Sources */,
-				9D0E52CD24C2B3CF00FA8D88 /* ClassifyPage.m in Sources */,
 				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
 				9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
@@ -1019,7 +1008,6 @@
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
 				3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */,
-				9DE95C91244C3F6C00E31735 /* IndexViewController.m in Sources */,
 				33871E732715824200C1BBA1 /* LGTextController.m in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,
 			);
@@ -1162,7 +1150,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = EDCUTHX9T2;
 				EXCLUDED_ARCHS = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";

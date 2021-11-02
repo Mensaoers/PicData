@@ -147,10 +147,11 @@
 - (void)tagsViewCell:(PicClassifyTagsViewCell *)tagsViewCell didSelectTags:(NSInteger)tag indexPath:(NSIndexPath *)indexPath {
     if (self.classifyStyle == PicClassifyTableViewStyleTags) {
         if (self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(tableView:didSelectActionAtIndexPath:withClassModel:)]) {
-        NSIndexPath *selIndex = [NSIndexPath indexPathForRow:tag inSection:indexPath.section];
-        PicClassModel *classModel = self.dataList[selIndex.section];
+            NSIndexPath *selIndex = [NSIndexPath indexPathForRow:tag inSection:indexPath.section];
+            PicClassModel *classModel = self.dataList[selIndex.section];
             [self.actionDelegate tableView:self didSelectActionAtIndexPath:selIndex withClassModel:classModel];
         }
     }
 }
+
 @end

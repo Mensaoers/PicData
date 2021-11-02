@@ -137,7 +137,12 @@
         if (nextE) {
             OCGumboElement *aE = nextE.QueryElement(@"a").firstObject;
             NSString *nextPage = aE.attr(@"href");
-            self.nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]] relativeToURL:url];
+
+            if ([url.absoluteString containsString:@"serch.php"]) {
+                // 搜索的nextPage不会编码, 需要我们手动编码
+                nextPage = [nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+            }
+            self.nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]];
         } else {
             self.nextPageURL = nil;
         }
@@ -159,7 +164,7 @@
     for (OCGumboElement *articleE in articleEs) {
 
         OCGumboElement *headerE = articleE.QueryElement(@"header").firstObject;
-        NSString *type = headerE.QueryElement(@"a").first().text();
+        // NSString *type = headerE.QueryElement(@"a").first().text();
         OCGumboElement *h2E = headerE.QueryElement(@"h2").firstObject;
         OCGumboElement *h2aE = h2E.QueryElement(@"a").firstObject;
         NSString *title = h2aE.text();
@@ -172,7 +177,7 @@
         contentModel.HOST_URL = self.sourceModel.HOST_URL;
         contentModel.title = title;
         contentModel.thumbnailUrl = thumbnailUrl;
-        BOOL result = [contentModel insertTable];
+        [contentModel insertTable];
         [articleContents addObject:contentModel];
     }
 

@@ -337,6 +337,7 @@
         }
             break;
         default:
+            tCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
             break;
     }
     

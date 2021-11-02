@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "IndexViewController.h"
 #import "HomeViewController.h"
 #import "SettingViewController.h"
 #import "LocalFileListVC.h"

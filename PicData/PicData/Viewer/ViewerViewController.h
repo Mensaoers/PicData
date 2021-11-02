@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, strong) NSString *filePath;
 
-@property (nonatomic, copy) void(^backBlock)(NSString *filePath);
+@property (nonatomic, copy) void(^ __nullable backBlock)(NSString *filePath);
 
 @end
 

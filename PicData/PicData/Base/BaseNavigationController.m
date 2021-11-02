@@ -64,4 +64,12 @@
     return viewController;
 }
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (self.viewControllers.count > 1) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 @end

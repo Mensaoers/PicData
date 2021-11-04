@@ -11,7 +11,7 @@
 #import "PicClassifyTableView.h"
 #import "FloatingWindowView.h"
 
-@interface HomeViewController () <PicClassifyTableViewActionDelegate>
+@interface HomeViewController () <UITableViewDelegate, UITableViewDataSource, PicClassifyTableViewActionDelegate>
 
 /// 地址
 @property (nonatomic, strong) NSString *addressUrl;
@@ -26,8 +26,10 @@
 
 @property (nonatomic, strong) UITextField *searchTF;
 @property (nonatomic, strong) UIButton *searchBtn;
-@property (nonatomic, strong) PicClassifyTableView *tableView;
-@property (nonatomic, strong) NSMutableArray *dataList;
+@property (nonatomic, strong) PicClassifyTableView *classifytableView;
+
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray <PicSourceModel *> *dataList;
 
 @end
 
@@ -40,11 +42,24 @@
     return _dataList;
 }
 
+@synthesize sourceModel = _sourceModel;
 - (PicSourceModel *)sourceModel {
     if (nil == _sourceModel) {
         _sourceModel = [[PicSourceModel alloc] init];
     }
     return _sourceModel;
+}
+
+- (void)setSourceModel:(PicSourceModel *)sourceModel {
+    _sourceModel = sourceModel;
+
+    if (sourceModel) {
+        self.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", sourceModel.title, sourceModel.url];
+        [AppTool sharedAppTool].HOST_URL = sourceModel.HOST_URL;
+
+        self.tagsAddressUrl = [sourceModel.HOST_URL stringByAppendingPathComponent:@"tags.php"];
+        [self loadAllTags];
+    }
 }
 
 - (NSString *)addressUrl {
@@ -83,33 +98,18 @@
 
 - (void)rightNavigationItemClickAction:(UIBarButtonItem *)sender {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    if (self.tableView.classifyStyle == PicClassifyTableViewStyleDefault) {
+    if (self.classifytableView.classifyStyle == PicClassifyTableViewStyleDefault) {
         [self loadRightNavigationItem:NO];
-        self.tableView.classifyStyle = PicClassifyTableViewStyleTags;
-    } else if (self.tableView.classifyStyle == PicClassifyTableViewStyleTags) {
+        self.classifytableView.classifyStyle = PicClassifyTableViewStyleTags;
+    } else if (self.classifytableView.classifyStyle == PicClassifyTableViewStyleTags) {
         [self loadRightNavigationItem:YES];
-        self.tableView.classifyStyle = PicClassifyTableViewStyleDefault;
+        self.classifytableView.classifyStyle = PicClassifyTableViewStyleDefault;
     }
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 - (void)loadMainView {
     [super loadMainView];
-    UILabel *addressLabel = [[UILabel alloc] init];
-    addressLabel.numberOfLines = 0;
-    addressLabel.textColor = [UIColor darkTextColor];
-    [self.view addSubview:addressLabel];
-    self.addressLabel = addressLabel;
-
-    [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(12);
-        make.top.mas_equalTo(12);
-        make.right.mas_equalTo(-12);
-    }];
-
-    addressLabel.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toViewDetails)];
-    [addressLabel addGestureRecognizer:tap];
 
     UITextField *searchTF = [[UITextField alloc] init];
     searchTF.font = [UIFont systemFontOfSize:17];
@@ -121,8 +121,8 @@
     self.searchTF = searchTF;
 
     [searchTF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(addressLabel);
-        make.top.equalTo(addressLabel.mas_bottom).with.offset(12);
+        make.left.mas_equalTo(16);
+        make.top.mas_equalTo(12);
         make.height.mas_equalTo(35);
     }];
 
@@ -135,23 +135,33 @@
     [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(searchTF.mas_right).with.offset(8);
         make.centerY.height.equalTo(searchTF);
-        make.right.equalTo(addressLabel);
+        make.right.mas_equalTo(0);
         make.width.mas_equalTo(70);
     }];
 
-    PicClassifyTableView *tableView = [[PicClassifyTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    [self loadRightNavigationItem:tableView.classifyStyle == PicClassifyTableViewStyleDefault];
-    tableView.actionDelegate = self;
-    tableView.backgroundColor = UIColor.clearColor;
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.scrollEnabled = NO;
     [self.view addSubview:tableView];
-
     self.tableView = tableView;
 
-    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    PicClassifyTableView *classifytableView = [[PicClassifyTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self loadRightNavigationItem:classifytableView.classifyStyle == PicClassifyTableViewStyleDefault];
+    classifytableView.actionDelegate = self;
+    classifytableView.backgroundColor = UIColor.clearColor;
+    [self.view addSubview:classifytableView];
+
+    self.classifytableView = classifytableView;
+
+    [classifytableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(searchTF.mas_bottom).with.offset(5);
         make.left.right.mas_equalTo(0);
         make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-5);
     }];
+
+    classifytableView.tableHeaderView = self.tableView;
 
     [self setupFloating];
 }
@@ -230,29 +240,38 @@
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
     OCGumboElement *methodDivE = document.QueryClass(@"method").firstObject;
-    OCGumboElement *aE = document.QueryClass(@"panel").firstObject;
-    if (methodDivE == nil || aE == nil) {
+    OCGumboElement *mE = document.QueryClass(@"m").firstObject;
+    if (methodDivE == nil || mE == nil) {
         return;
     }
-    NSString *text = methodDivE.QueryElement(@"span").first().text();
-    NSString *url = aE.attr(@"href");
-    NSString *host = aE.text();
 
-    MJWeakSelf
+    NSString *title = methodDivE.QueryElement(@"span").first().text();
+
+    OCQueryObject *aEs = mE.QueryElement(@"a");
+
+    [self.dataList removeAllObjects];
+    for (OCGumboElement *aE in aEs) {
+        NSString *url = aE.attr(@"href");
+        NSString *host = aE.text();
+
+        PicSourceModel *sourceModel = [PicSourceModel new];
+        sourceModel.title = title;
+        sourceModel.sourceType = 4;
+        sourceModel.HOST_URL = host;
+        sourceModel.url = url;
+        [sourceModel insertTable];
+        [self.dataList addObject:sourceModel];
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
-        weakSelf.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", text, url];
-        [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"已获取最新地址"];
-        weakSelf.sourceModel.title = text;
-        weakSelf.sourceModel.HOST_URL = host;
-        [AppTool sharedAppTool].HOST_URL = host;
-        weakSelf.sourceModel.sourceType = 4;
-        weakSelf.sourceModel.url = url;
-        [weakSelf.sourceModel insertTable];
 
-        weakSelf.tagsAddressUrl = [host stringByAppendingPathComponent:@"tags.php"];
-        [weakSelf loadAllTags];
+        [self.tableView reloadData];
+        self.tableView.frame = CGRectMake(0, 0, self.classifytableView.mj_w, 50 * self.dataList.count);
+        self.classifytableView.tableHeaderView = self.tableView;
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"已获取最新地址"];
+
+        self.sourceModel = self.dataList.firstObject;
     });
-
 }
 
 #pragma mark request tags
@@ -310,7 +329,7 @@
 
     MJWeakSelf
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.tableView reloadDataWithSource:classModels];
+        [weakSelf.classifytableView reloadDataWithSource:classModels];
     });
 }
 
@@ -360,5 +379,36 @@
     ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
     [self.navigationController pushViewController:contentVC animated:YES];
 }
+
+#pragma mark UITableView delegate, dataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.dataList.count;
+}
+
+static NSString *cellIdentifier = @"cellIdentifier";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (nil == cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    cell.textLabel.text = self.dataList[indexPath.row].url;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    self.sourceModel = self.dataList[indexPath.row];
+    [self toViewDetails];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
+}
+
 
 @end

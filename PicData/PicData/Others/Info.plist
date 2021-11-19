@@ -25,6 +25,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Show file list</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>我给你保存两张图, 不用谢</string>
 	<key>UIFileSharingEnabled</key>

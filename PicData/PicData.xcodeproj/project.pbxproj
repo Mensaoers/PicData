@@ -1151,7 +1151,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = EDCUTHX9T2;
+				DEVELOPMENT_TEAM = E7W6597ZYH;
 				EXCLUDED_ARCHS = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/PicData/Others/Info.plist";
@@ -1162,7 +1162,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
+				PRODUCT_BUNDLE_IDENTIFIER = per.garenge.picdata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = YES;
@@ -1186,7 +1186,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = EDCUTHX9T2;
+				DEVELOPMENT_TEAM = E7W6597ZYH;
 				EXCLUDED_ARCHS = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Others/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/PicData/Others/Info.plist";
@@ -1197,7 +1197,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmss.skydrive.lzp;
+				PRODUCT_BUNDLE_IDENTIFIER = per.garenge.picdata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = YES;

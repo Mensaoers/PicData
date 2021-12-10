@@ -22,7 +22,7 @@
     #import <SDWebImage/UIImageView+WebCache.h>
     #import <MJRefresh/MJRefresh.h>
     #import <YYCategories/YYCategories.h>
-//    #import <YBImageBrowser/YBImageBrowser.h>
+    #import <YBImageBrowser/YBImageBrowser.h>
     #import <SSZipArchive/SSZipArchive.h>
     #import <IQKeyboardManager/IQKeyboardManager.h>
 

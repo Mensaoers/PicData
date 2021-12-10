@@ -17,6 +17,8 @@ target 'PicData' do
   pod 'XHWebImageAutoSize'
   pod 'Tiercel'
   pod 'TiercelObjCBridge'
+  pod 'YYImage', :git => 'https://github.com/QiuYeHong90/YYImage.git'
+  pod 'YBImageBrowser'
   pod 'WCDB'
   pod 'SSZipArchive'
   pod 'IQKeyboardManager'

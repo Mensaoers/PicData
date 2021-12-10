@@ -8,10 +8,11 @@
 
 #import "LocalFileListVC.h"
 #import "ViewerViewController.h"
+#import "PicBrowserToolViewHandler.h"
 #import "ViewerContentView.h"
 #import "LGPdf.h"
 
-@interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 
 @property (nonatomic, strong) ViewerContentView *contentView;
 @property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
@@ -252,7 +253,6 @@
                     NSLog(@"分享失败!");
                 }
             }];
-
         }]];
 
 
@@ -762,7 +762,7 @@ static NSString *likeString = @"我的收藏";
         [self.navigationController pushViewController:localListVC animated:YES];
     } else {
 
-        if ([fileModel.fileName.pathExtension containsString:@"jpg"]) {
+        if ([FileManager isFileExtensionPicture:fileModel.fileName.pathExtension]) {
             [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
         } else if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
             ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
@@ -774,9 +774,43 @@ static NSString *likeString = @"我的收藏";
 
 - (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath contentView:(UICollectionView * _Nonnull)contentView {
     [self.imgsList removeAllObjects];
-    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]]] sourceView:self.view completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+//    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]]] sourceView:self.view completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+//
+//    }];
+    NSInteger currentIndex = 0;
+    for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
+        ViewerFileModel *tempModel = self.fileNamesList[index];
+        if ([FileManager isFileExtensionPicture:tempModel.fileName.pathExtension]) {
 
-    }];
+            if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
+                currentIndex = self.imgsList.count;
+            }
+
+            YBIBImageData *data = [YBIBImageData new];
+            data.imagePath = [self.targetFilePath stringByAppendingPathComponent:tempModel.fileName];
+            ViewerContentCell *contentCell = (ViewerContentCell *)[contentView cellForItemAtIndexPath:indexPath];
+            data.projectiveView = contentCell.imageView;
+            [self.imgsList addObject:data];
+        }
+    }
+
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.delegate = self;
+    browser.dataSourceArray = self.imgsList;
+    browser.currentPage = currentIndex;
+    // 只有一个保存操作的时候，可以直接右上角显示保存按钮
+    PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
+    browser.toolViewHandlers = @[handler];
+    // toolViewHandlers; // topView.operationType = YBIBTopViewOperationTypeSave;
+    [browser show];
+}
+
+#pragma mark YBImageBrowserDataSource
+- (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
+    [self.contentView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    YBIBImageData *data_ = (YBIBImageData *)data;// (YBIBImageData <YBIBDataProtocol>*)data;
+    ViewerContentCell *contentCell = (ViewerContentCell *)[self.contentView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
+    data_.projectiveView = contentCell.imageView;
 }
 
 @end

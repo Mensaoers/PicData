@@ -171,7 +171,7 @@
 
     [FloatingWindowView shareInstance].ClickAction = ^{
 
-        BaseTabBarController *tabBarVC = (BaseTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        BaseTabBarController *tabBarVC = (BaseTabBarController *)[AppTool getAppKeyWindow].rootViewController;
         [tabBarVC setSelectedIndex:0];
         BaseNavigationController *indexNavi = (BaseNavigationController *)tabBarVC.selectedViewController;
 

@@ -106,7 +106,7 @@
         self.sizeLabel.text = fileModel.fileSize > 0 ? [NSString fileSizeFormat:fileModel.fileSize] : @"";
         self.sizeLabel.hidden = NO;
     } else {
-        if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
+        if ([FileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
             self.imageView.image = [UIImage imageNamed:@"file_type_v_txt"];
         } else {
             [self.imageView sd_setImageWithURL:[NSURL fileURLWithPath:[self.targetPath stringByAppendingPathComponent:fileModel.fileName]] placeholderImage:[UIImage imageNamed:@"file_type_v_image"]];

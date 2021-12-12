@@ -30,7 +30,7 @@
         floatingWindowView.backgroundColor = [UIColor redColor];
         floatingWindowView.image = [UIImage imageNamed:@"calculate"];
         floatingWindowView.layer.cornerRadius = 25;
-        floatingWindowView.areaActFrame = [UIApplication sharedApplication].keyWindow.bounds;
+        floatingWindowView.areaActFrame = [AppTool getAppKeyWindow].bounds;
     });
     return floatingWindowView;
 }
@@ -49,7 +49,7 @@
 - (void)isHidden:(BOOL)is {
     self.hidden = is;
     if (!is) {
-        [[UIApplication sharedApplication].keyWindow addSubview:[FloatingWindowView shareInstance]];
+        [[AppTool getAppKeyWindow] addSubview:[FloatingWindowView shareInstance]];
     }
 }
 

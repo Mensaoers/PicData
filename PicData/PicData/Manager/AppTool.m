@@ -94,6 +94,18 @@ singleton_implementation(AppTool)
     }
 }
 
++ (UIWindow *)getAppKeyWindow {
+    UIWindow *foundWindow = nil;
+    NSArray *windows = [[UIApplication sharedApplication] windows];
+    for (UIWindow *window in windows) {
+        if (window.isKeyWindow) {
+            foundWindow = window;
+            break;
+        }
+    }
+    return foundWindow;
+}
+
 + (NSStringEncoding)getNSStringEncoding_GB_18030_2000 {
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     return enc;

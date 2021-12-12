@@ -290,7 +290,7 @@
 /// 生成长图
 - (void)generatePDF:(NSString *)fileName password:(NSString *)passsword sourceView:(UIButton *)sourceView {
     PDBlockSelf
-    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[AppTool getAppKeyWindow] animated:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
         LGPdf *pdf = [LGPdf createPDF];
@@ -305,7 +305,7 @@
 
         for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
             ViewerFileModel *tempModel = self.fileNamesList[index];
-            if ([FileManager isFileExtensionPicture:tempModel.fileName.pathExtension]) {
+            if ([FileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
 
                 UIImage *image = [UIImage imageWithContentsOfFile:[self.targetFilePath stringByAppendingPathComponent:tempModel.fileName]];
                 CGSize imageSize = image.size;
@@ -334,7 +334,7 @@
 
         dispatch_async(dispatch_get_main_queue(), ^{
 
-            [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [MBProgressHUD hideHUDForView:[AppTool getAppKeyWindow] animated:YES];
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"创建PDF成功" afterDelay:1];
 
             ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
@@ -394,7 +394,7 @@
 - (void)createZipWithTargetPathName:(NSString *)targetPathName ZipNameTFText:(NSString *)zipNameTFText pwdNameTFText:(NSString *)pwdNameTFText sourceView:(UIView *)sourceView {
 
     PDBlockSelf
-    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    [MBProgressHUD showHUDAddedTo:[AppTool getAppKeyWindow] animated:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // 压缩文件
         NSString *zippedFileName;
@@ -415,7 +415,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (zipResult) {
                 // 压缩成功
-                [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+                [MBProgressHUD hideHUDForView:[AppTool getAppKeyWindow] animated:YES];
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"压缩成功" afterDelay:1];
 
                 /// 压缩之后弹出分享框
@@ -434,7 +434,7 @@
                     }
                 }];
             } else {
-                [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+                [MBProgressHUD hideHUDForView:[AppTool getAppKeyWindow] animated:YES];
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"压缩失败" afterDelay:1];
             }
         });
@@ -548,7 +548,7 @@
 
         BOOL isRoot = [weakSelf.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
 
-        [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:[AppTool getAppKeyWindow] animated:YES];
 
         NSFileManager *fileManager = [NSFileManager defaultManager];
         for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
@@ -563,14 +563,14 @@
                 NSString *pathExtension = fileName.pathExtension;
                 if (isRoot) {
                     // 根目录整理, 移除没有文件夹的子项目
-                    if ([pathExtension containsString:@"txt"] || [pathExtension containsString:@"jpg"]) {
+                    if ([FileManager isFileTypeDocAndPic:pathExtension]) {
 
                     } else {
                         isEmptyF = NO;
                     }
                 } else {
                     // 图库整理, 移除没有图片的子项目
-                    if ([pathExtension containsString:@"jpg"]) {
+                    if ([FileManager isFileTypePicture:pathExtension]) {
                         isEmptyF = NO;
                     }
                 }
@@ -583,7 +583,7 @@
         }
         [weakSelf refreshLoadData:YES];
 
-        [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        [MBProgressHUD hideHUDForView:[AppTool getAppKeyWindow] animated:YES];
         [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"整理完成" afterDelay:1];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
@@ -745,9 +745,9 @@ static NSString *likeString = @"我的收藏";
         [self.navigationController pushViewController:localListVC animated:YES];
     } else {
 
-        if ([fileModel.fileName.pathExtension containsString:@"jpg"]) {
+        if ([FileManager isFileTypePicture:fileModel.fileName.pathExtension]) {
             [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
-        } else if ([fileModel.fileName.pathExtension containsString:@"txt"]) {
+        } else if ([FileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
             ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
             viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
             [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
@@ -760,7 +760,7 @@ static NSString *likeString = @"我的收藏";
     NSInteger currentIndex = 0;
     for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
         ViewerFileModel *tempModel = self.fileNamesList[index];
-        if ([FileManager isFileExtensionPicture:tempModel.fileName.pathExtension]) {
+        if ([FileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
 
             if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
                 currentIndex = self.imgsList.count;

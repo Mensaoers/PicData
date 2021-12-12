@@ -28,6 +28,8 @@ singleton_interface(AppTool)
 /// 分享app中的文件,区分是iOS端或者mac端
 + (void)shareFileWithURLs:(NSArray <NSURL *>*)urls sourceView:(UIView *)sourceView completionWithItemsHandler:(UIActivityViewControllerCompletionWithItemsHandler)completionWithItemsHandler;
 
++ (UIWindow *)getAppKeyWindow;
+
 /// 获取中文编码
 + (NSStringEncoding)getNSStringEncoding_GB_18030_2000;
 /// data转字符串 中文编码

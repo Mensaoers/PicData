@@ -42,8 +42,16 @@
     return isExist;
 }
 
-+ (BOOL)isFileExtensionPicture:(NSString *)fileExtension {
++ (BOOL)isFileTypePicture:(NSString *)fileExtension {
     return [@[@"jpg", @"jpeg", @"png"] containsObject:fileExtension.lowercaseString];
+}
+
++ (BOOL)isFileTypeDocument:(NSString *)fileExtension {
+    return [@[@"txt", @"md", @"html", @"doc"] containsObject:fileExtension.lowercaseString];
+}
+
++ (BOOL)isFileTypeDocAndPic:(NSString *)fileExtension {
+    return [FileManager isFileTypePicture:fileExtension] || [FileManager isFileTypeDocument:fileExtension];
 }
 
 @end

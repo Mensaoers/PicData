@@ -142,6 +142,10 @@
 }
 
 - (void)loadNextDetailData {
+    if (self.detailModel.nextUrl.length == 0) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"到底了"];
+        return;
+    }
     self.detailModel.currentUrl = self.detailModel.nextUrl;
     [self loadDetailData];
     [self loadNavigationItem];
@@ -189,6 +193,7 @@
 
 - (void)parserDetailListHtmlDataType:(NSString *)htmlString {
     self.detailModel.suggesTitle = @"推荐";
+    self.detailModel.nextUrl = @"";
     if (htmlString.length > 0) {
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];

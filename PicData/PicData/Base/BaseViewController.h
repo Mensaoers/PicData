@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 执行自定义方法
 - (void)performSelfFuncWithString:(NSString *)funcString withObject:(nullable id)object;
 
+/// 设置浮窗
+- (void)setupFloating;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -41,12 +41,8 @@
     return _dataList;
 }
 
-@synthesize sourceModel = _sourceModel;
-- (PicSourceModel *)sourceModel {
-    if (nil == _sourceModel) {
-        _sourceModel = [[PicSourceModel alloc] init];
-    }
-    return _sourceModel;
+- (NSString *)host_url {
+    return [AppTool sharedAppTool].HOST_URL;
 }
 
 - (void)setSourceModel:(PicSourceModel *)sourceModel {

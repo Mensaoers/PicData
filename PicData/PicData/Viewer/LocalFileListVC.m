@@ -75,17 +75,15 @@
 
     NSMutableArray *items = [NSMutableArray array];
     
-    if (self.navigationController.viewControllers.count > 1) {
-        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-        [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
-        shareButton.frame = CGRectMake(0, 0, 25, 25);
-        UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
-        [items addObject:shareItem];
-
-        UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
-        [items addObject:deleteItem];
-    }
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(shareAllFiles:) forControlEvents:UIControlEventTouchUpInside];
+    shareButton.frame = CGRectMake(0, 0, 25, 25);
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareButton];
+    [items addObject:shareItem];
+    
+    UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
+    [items addObject:deleteItem];
 
     if (self.navigationController.viewControllers.count >= 2) {
         if ([self.targetFilePath containsString:likeString]) {

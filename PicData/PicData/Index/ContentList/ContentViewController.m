@@ -133,17 +133,22 @@
         NSArray *results = [self parserContentListWithDocument:document];
         [self.dataList addObjectsFromArray:[results copy]];
 
-        OCGumboElement *nextE = document.QueryClass(@"next-page").firstObject;
+        OCGumboElement *nextE = document.QueryClass(@"page").firstObject;
+        BOOL find = NO;
         if (nextE) {
-            OCGumboElement *aE = nextE.QueryElement(@"a").firstObject;
-            NSString *nextPage = aE.attr(@"href");
+            OCQueryObject *aEs = nextE.QueryElement(@"a");
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() isEqualToString:@"下一页"]) {
+                    find = YES;
+                    NSString *nextPage = aE.attr(@"href");
 
-            if ([url.absoluteString containsString:@"serch.php"]) {
-                // 搜索的nextPage不会编码, 需要我们手动编码
-                nextPage = [nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+                    self.nextPageURL = [NSURL URLWithString:[self.sourceModel.url stringByAppendingPathComponent:nextPage]];
+                    break;
+                }
             }
-            self.nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]];
-        } else {
+        }
+
+        if (!find) {
             self.nextPageURL = nil;
         }
     }
@@ -158,18 +163,18 @@
 
 - (NSArray *)parserContentListWithDocument:(OCGumboDocument *)document {
 
-    OCQueryObject *articleEs = document.QueryElement(@"article");
+    OCGumboElement *listDiv = document.QueryClass(@"m-list").firstObject;
+    OCQueryObject *articleEs = listDiv.QueryElement(@"li");
 
     NSMutableArray *articleContents = [NSMutableArray array];
     for (OCGumboElement *articleE in articleEs) {
 
-        OCGumboElement *headerE = articleE.QueryElement(@"header").firstObject;
-        // NSString *type = headerE.QueryElement(@"a").first().text();
-        OCGumboElement *h2E = headerE.QueryElement(@"h2").firstObject;
-        OCGumboElement *h2aE = h2E.QueryElement(@"a").firstObject;
-        NSString *title = h2aE.text();
-        NSString *href = h2aE.attr(@"href");
-        NSString *thumbnailUrl = articleE.QueryClass(@"thumb-span").first().QueryElement(@"img").first().attr(@"src");
+        OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+        NSString *title = aE.attr(@"title");
+        NSString *href = aE.attr(@"href");
+
+        OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+        NSString *thumbnailUrl = imgE.attr(@"src");
 
         PicContentModel *contentModel = [[PicContentModel alloc] init];
         contentModel.href = href;

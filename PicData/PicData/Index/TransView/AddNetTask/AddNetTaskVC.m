@@ -128,13 +128,16 @@
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-        OCGumboElement *titleE = document.Query(@".article-title").firstObject;
-        if (titleE.text().length > 0) {
-            title = [titleE.text() stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        OCQueryObject *metaEs = document.QueryElement(@"meta");
+        for (OCGumboElement *metaE in metaEs) {
+            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
+                title = metaE.attr(@"content");
+                break;
+            }
         }
     }
 
-    return title;
+    return title ?: @"";
 }
 
 - (void)sureToAdd:(UIBarButtonItem *)sender {

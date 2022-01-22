@@ -495,8 +495,18 @@
         // 如果这个文件是含有"-"的图片, 我们就来改一下文件名
         if ([targetPathExtension containsObject:fileName.pathExtension.lowercaseString] && [fileName containsString:@"-"]) {
 
-            NSRange range = [fileName rangeOfString:@"-"];
-            NSString *fileNameAfter = [fileName substringFromIndex:range.location + range.length];
+            // 1. 获取类型
+            NSString *pathExtension = fileName.pathExtension;
+            NSString *fileNameWithoutP = fileName.stringByDeletingPathExtension;
+            if (fileNameWithoutP.length == 0) { continue; }
+
+            NSString *regex = @"(?<=-).*?(?=-)";
+            NSError *error;
+            NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+            // 对str字符串进行匹配
+            NSString *fileNameWithoutPAfter = [fileNameWithoutP substringWithRange:[regular firstMatchInString:fileNameWithoutP options:0 range:NSMakeRange(0, fileNameWithoutP.length)].range];
+
+            NSString *fileNameAfter = [fileNameWithoutPAfter stringByAppendingPathExtension:pathExtension];
 
             if ([fileManager fileExistsAtPath:[dirPath stringByAppendingPathComponent:fileNameAfter]]) {
                 NSLog(@"目标文件%@已存在", fileNameAfter);

@@ -182,25 +182,27 @@ singleton_implementation(ContentParserManager)
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
         NSMutableArray *urls = [NSMutableArray array];
-
-        OCGumboElement *contentE = document.Query(@".article-content").firstObject;
-        if (nil != contentE) {
-            OCQueryObject *es = contentE.Query(@"img");
-            for (OCGumboElement *e in es) {
-                NSString *src = e.attr(@"src");
-                if (src.length > 0) {
-                    [urls addObject:src];
-                }
+        
+        OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
+        OCQueryObject *es = contentE.Query(@"img");
+        for (OCGumboElement *e in es) {
+            NSString *src = e.attr(@"src");
+            if (src.length > 0) {
+                [urls addObject:src];
             }
         }
 
-        OCGumboElement *next = document.Query(@".next-page").firstObject;
-        if (nil != next) {
-            OCGumboElement *aE = next.Query(@"a").firstObject;
-            if (nil != aE) {
-                NSString *href = aE.attr(@"href");
-                if (href.length > 0 && [href.lastPathComponent containsString:@"_"]) {
-                    url = href;
+        OCGumboElement *nextE = document.QueryClass(@"page").firstObject;
+        BOOL find = NO;
+        if (nextE) {
+            OCQueryObject *aEs = nextE.QueryElement(@"a");
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() isEqualToString:@"下一页"]) {
+                    find = YES;
+                    NSString *nextPage = aE.attr(@"href");
+
+                    url = nextPage;
+                    break;
                 }
             }
         }
@@ -213,6 +215,7 @@ singleton_implementation(ContentParserManager)
 
     if (url.length == 0) {
         NSLog(@"获取到的下一个url是空的");
+        url = @"";
     }
 
     return @{@"nextUrl" : url, @"urls" : [urlsString copy], @"count": @(count)};

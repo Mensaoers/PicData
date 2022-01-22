@@ -30,7 +30,7 @@
 }
 
 - (NSString *)host_url {
-    return @"https://www.ku137.net";
+    return [AppTool sharedAppTool].HOST_URL;
 }
 - (NSString *)tagsAddressUrl {
     return [self.host_url stringByAppendingPathComponent:@"/b/tag/"];

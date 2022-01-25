@@ -41,7 +41,6 @@
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
 		337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AE25982D9400A679BB /* ViewerContentCell.m */; };
-		33871E51271577FB00C1BBA1 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E50271577FB00C1BBA1 /* FileManager.m */; };
 		33871E702715824200C1BBA1 /* LGLineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E542715824200C1BBA1 /* LGLineController.m */; };
 		33871E712715824200C1BBA1 /* LGTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E552715824200C1BBA1 /* LGTableController.m */; };
 		33871E722715824200C1BBA1 /* LGImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E562715824200C1BBA1 /* LGImageController.m */; };
@@ -179,8 +178,6 @@
 		337DA9AA25982D7700A679BB /* ViewerContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentView.m; sourceTree = "<group>"; };
 		337DA9AD25982D9400A679BB /* ViewerContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentCell.h; sourceTree = "<group>"; };
 		337DA9AE25982D9400A679BB /* ViewerContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentCell.m; sourceTree = "<group>"; };
-		33871E4F271577FB00C1BBA1 /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
-		33871E50271577FB00C1BBA1 /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		33871E542715824200C1BBA1 /* LGLineController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLineController.m; sourceTree = "<group>"; };
 		33871E552715824200C1BBA1 /* LGTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableController.m; sourceTree = "<group>"; };
 		33871E562715824200C1BBA1 /* LGImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGImageController.m; sourceTree = "<group>"; };
@@ -773,8 +770,6 @@
 				9D3593E0244D3D38005ADF05 /* ContentParserManager.m */,
 				9D96DC9C25A376080045D123 /* AppTool.h */,
 				9D96DC9D25A376080045D123 /* AppTool.m */,
-				33871E4F271577FB00C1BBA1 /* FileManager.h */,
-				33871E50271577FB00C1BBA1 /* FileManager.m */,
 				3349D2612729A145006109F6 /* DatabaseManager.h */,
 				3349D2642729A163006109F6 /* DatabaseManager+WCTTableCoding.h */,
 				3349D2622729A145006109F6 /* DatabaseManager.mm */,
@@ -987,7 +982,6 @@
 				33871E702715824200C1BBA1 /* LGLineController.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
-				33871E51271577FB00C1BBA1 /* FileManager.m in Sources */,
 				33871E782715824200C1BBA1 /* LGPdfText.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,

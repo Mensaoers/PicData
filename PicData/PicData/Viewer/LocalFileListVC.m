@@ -259,6 +259,18 @@
         }]];
     }
 
+    [alert addAction:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        /// 压缩之后弹出分享框
+        [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:self.targetFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+            if (completed) {
+                NSLog(@"分享成功!");
+            } else {
+                NSLog(@"分享失败!");
+            }
+        }];
+    }]];
+    
     [alert addAction:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self shareZip:sender];
     }]];

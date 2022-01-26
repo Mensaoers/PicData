@@ -10,7 +10,6 @@
 #import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
 #import "ViewerContentView.h"
-#import "LGPdf.h"
 
 @interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 

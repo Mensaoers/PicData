@@ -41,19 +41,6 @@
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
 		337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AE25982D9400A679BB /* ViewerContentCell.m */; };
-		33871E702715824200C1BBA1 /* LGLineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E542715824200C1BBA1 /* LGLineController.m */; };
-		33871E712715824200C1BBA1 /* LGTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E552715824200C1BBA1 /* LGTableController.m */; };
-		33871E722715824200C1BBA1 /* LGImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E562715824200C1BBA1 /* LGImageController.m */; };
-		33871E732715824200C1BBA1 /* LGTextController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E572715824200C1BBA1 /* LGTextController.m */; };
-		33871E742715824200C1BBA1 /* LGPdfCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E5E2715824200C1BBA1 /* LGPdfCell.m */; };
-		33871E752715824200C1BBA1 /* LGPdfCellConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E612715824200C1BBA1 /* LGPdfCellConfig.m */; };
-		33871E762715824200C1BBA1 /* LGPdfBaseElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E622715824200C1BBA1 /* LGPdfBaseElement.m */; };
-		33871E772715824200C1BBA1 /* LGPdfPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E632715824200C1BBA1 /* LGPdfPoint.m */; };
-		33871E782715824200C1BBA1 /* LGPdfText.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E642715824200C1BBA1 /* LGPdfText.m */; };
-		33871E792715824200C1BBA1 /* LGPdfLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E662715824200C1BBA1 /* LGPdfLine.m */; };
-		33871E7A2715824200C1BBA1 /* LGPdfImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E682715824200C1BBA1 /* LGPdfImage.m */; };
-		33871E7B2715824200C1BBA1 /* LGPdfTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E6B2715824200C1BBA1 /* LGPdfTable.m */; };
-		33871E7C2715824200C1BBA1 /* LGPdf.m in Sources */ = {isa = PBXBuildFile; fileRef = 33871E6F2715824200C1BBA1 /* LGPdf.m */; };
 		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
@@ -178,33 +165,6 @@
 		337DA9AA25982D7700A679BB /* ViewerContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentView.m; sourceTree = "<group>"; };
 		337DA9AD25982D9400A679BB /* ViewerContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentCell.h; sourceTree = "<group>"; };
 		337DA9AE25982D9400A679BB /* ViewerContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentCell.m; sourceTree = "<group>"; };
-		33871E542715824200C1BBA1 /* LGLineController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLineController.m; sourceTree = "<group>"; };
-		33871E552715824200C1BBA1 /* LGTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableController.m; sourceTree = "<group>"; };
-		33871E562715824200C1BBA1 /* LGImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGImageController.m; sourceTree = "<group>"; };
-		33871E572715824200C1BBA1 /* LGTextController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTextController.m; sourceTree = "<group>"; };
-		33871E582715824200C1BBA1 /* LGLineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLineController.h; sourceTree = "<group>"; };
-		33871E592715824200C1BBA1 /* LGImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGImageController.h; sourceTree = "<group>"; };
-		33871E5A2715824200C1BBA1 /* LGTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableController.h; sourceTree = "<group>"; };
-		33871E5B2715824200C1BBA1 /* LGTextController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTextController.h; sourceTree = "<group>"; };
-		33871E5C2715824200C1BBA1 /* LGPdf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdf.h; sourceTree = "<group>"; };
-		33871E5E2715824200C1BBA1 /* LGPdfCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfCell.m; sourceTree = "<group>"; };
-		33871E5F2715824200C1BBA1 /* LGPdfLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfLine.h; sourceTree = "<group>"; };
-		33871E602715824200C1BBA1 /* LGPdfImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfImage.h; sourceTree = "<group>"; };
-		33871E612715824200C1BBA1 /* LGPdfCellConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfCellConfig.m; sourceTree = "<group>"; };
-		33871E622715824200C1BBA1 /* LGPdfBaseElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfBaseElement.m; sourceTree = "<group>"; };
-		33871E632715824200C1BBA1 /* LGPdfPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfPoint.m; sourceTree = "<group>"; };
-		33871E642715824200C1BBA1 /* LGPdfText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfText.m; sourceTree = "<group>"; };
-		33871E652715824200C1BBA1 /* LGPdfTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfTable.h; sourceTree = "<group>"; };
-		33871E662715824200C1BBA1 /* LGPdfLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfLine.m; sourceTree = "<group>"; };
-		33871E672715824200C1BBA1 /* LGPdfCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfCell.h; sourceTree = "<group>"; };
-		33871E682715824200C1BBA1 /* LGPdfImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfImage.m; sourceTree = "<group>"; };
-		33871E692715824200C1BBA1 /* LGPdfBaseElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfBaseElement.h; sourceTree = "<group>"; };
-		33871E6A2715824200C1BBA1 /* LGPdfCellConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfCellConfig.h; sourceTree = "<group>"; };
-		33871E6B2715824200C1BBA1 /* LGPdfTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdfTable.m; sourceTree = "<group>"; };
-		33871E6C2715824200C1BBA1 /* LGPdfText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfText.h; sourceTree = "<group>"; };
-		33871E6D2715824200C1BBA1 /* LGPdfPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfPoint.h; sourceTree = "<group>"; };
-		33871E6E2715824200C1BBA1 /* LGPdfPageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPdfPageInfo.h; sourceTree = "<group>"; };
-		33871E6F2715824200C1BBA1 /* LGPdf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPdf.m; sourceTree = "<group>"; };
 		33967B5026EDF44600B308B1 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		33967B5126EDF44600B308B1 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -381,61 +341,10 @@
 		333ECEF725F71DFB00762219 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				33871E522715824200C1BBA1 /* LGPdf */,
 				332D012926FD845F00E3F387 /* GestureLock */,
 				9DE95C93244C3FDC00E31735 /* OCGumbo */,
 			);
 			path = ThirdParty;
-			sourceTree = "<group>";
-		};
-		33871E522715824200C1BBA1 /* LGPdf */ = {
-			isa = PBXGroup;
-			children = (
-				33871E6E2715824200C1BBA1 /* LGPdfPageInfo.h */,
-				33871E5C2715824200C1BBA1 /* LGPdf.h */,
-				33871E6F2715824200C1BBA1 /* LGPdf.m */,
-				33871E532715824200C1BBA1 /* LGController */,
-				33871E5D2715824200C1BBA1 /* LGPdfElement */,
-			);
-			path = LGPdf;
-			sourceTree = "<group>";
-		};
-		33871E532715824200C1BBA1 /* LGController */ = {
-			isa = PBXGroup;
-			children = (
-				33871E542715824200C1BBA1 /* LGLineController.m */,
-				33871E552715824200C1BBA1 /* LGTableController.m */,
-				33871E562715824200C1BBA1 /* LGImageController.m */,
-				33871E572715824200C1BBA1 /* LGTextController.m */,
-				33871E582715824200C1BBA1 /* LGLineController.h */,
-				33871E592715824200C1BBA1 /* LGImageController.h */,
-				33871E5A2715824200C1BBA1 /* LGTableController.h */,
-				33871E5B2715824200C1BBA1 /* LGTextController.h */,
-			);
-			path = LGController;
-			sourceTree = "<group>";
-		};
-		33871E5D2715824200C1BBA1 /* LGPdfElement */ = {
-			isa = PBXGroup;
-			children = (
-				33871E5E2715824200C1BBA1 /* LGPdfCell.m */,
-				33871E5F2715824200C1BBA1 /* LGPdfLine.h */,
-				33871E602715824200C1BBA1 /* LGPdfImage.h */,
-				33871E612715824200C1BBA1 /* LGPdfCellConfig.m */,
-				33871E622715824200C1BBA1 /* LGPdfBaseElement.m */,
-				33871E632715824200C1BBA1 /* LGPdfPoint.m */,
-				33871E642715824200C1BBA1 /* LGPdfText.m */,
-				33871E652715824200C1BBA1 /* LGPdfTable.h */,
-				33871E662715824200C1BBA1 /* LGPdfLine.m */,
-				33871E672715824200C1BBA1 /* LGPdfCell.h */,
-				33871E682715824200C1BBA1 /* LGPdfImage.m */,
-				33871E692715824200C1BBA1 /* LGPdfBaseElement.h */,
-				33871E6A2715824200C1BBA1 /* LGPdfCellConfig.h */,
-				33871E6B2715824200C1BBA1 /* LGPdfTable.m */,
-				33871E6C2715824200C1BBA1 /* LGPdfText.h */,
-				33871E6D2715824200C1BBA1 /* LGPdfPoint.h */,
-			);
-			path = LGPdfElement;
 			sourceTree = "<group>";
 		};
 		33967B5326EE001500B308B1 /* home */ = {
@@ -942,20 +851,15 @@
 				9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */,
 				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
-				33871E7A2715824200C1BBA1 /* LGPdfImage.m in Sources */,
-				33871E712715824200C1BBA1 /* LGTableController.m in Sources */,
 				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
 				9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
 				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,
-				33871E7B2715824200C1BBA1 /* LGPdfTable.m in Sources */,
-				33871E742715824200C1BBA1 /* LGPdfCell.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
 				332D014126FD845F00E3F387 /* TKGestureLockManager.m in Sources */,
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
-				33871E762715824200C1BBA1 /* LGPdfBaseElement.m in Sources */,
 				336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */,
 				9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
@@ -965,7 +869,6 @@
 				332D014226FD845F00E3F387 /* TKGestureLockView.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
-				33871E722715824200C1BBA1 /* LGImageController.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
@@ -974,19 +877,15 @@
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
-				33871E792715824200C1BBA1 /* LGPdfLine.m in Sources */,
 				9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
 				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
-				33871E702715824200C1BBA1 /* LGLineController.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
-				33871E782715824200C1BBA1 /* LGPdfText.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
-				33871E7C2715824200C1BBA1 /* LGPdf.m in Sources */,
 				332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */,
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
 				33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */,
@@ -997,7 +896,6 @@
 				3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */,
 				335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */,
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
-				33871E772715824200C1BBA1 /* LGPdfPoint.m in Sources */,
 				9DE95CCC244C3FDD00E31735 /* tokenizer.c in Sources */,
 				9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
@@ -1007,12 +905,10 @@
 				3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
-				33871E752715824200C1BBA1 /* LGPdfCellConfig.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
 				3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */,
-				33871E732715824200C1BBA1 /* LGTextController.m in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

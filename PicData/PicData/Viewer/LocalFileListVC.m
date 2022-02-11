@@ -494,8 +494,48 @@
 
         [weakSelf arrangeAllFiles];
     }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"清空所有文本文档" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [MBProgressHUD showHUDAddedTo:weakSelf.view animated:YES];
+        [weakSelf deleteAllTextFiles:self.targetFilePath];
+        [weakSelf refreshLoadData:NO];
+        [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+        [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"清空文本完成" afterDelay:1];
+    }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+/// 清空所有文本文档
+- (void)deleteAllTextFiles:(NSString *)dirPath {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // 列举所有文件
+    NSError *subError = nil;
+    NSArray *targetPathExtension = @[@"txt"];
+    NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
+    if (subError) {
+        return;
+    }
+    for (NSString *fileName in fileContents) {
+
+        NSString *filePath = [dirPath stringByAppendingPathComponent:fileName];
+        if ([FileManager isDirectory:filePath]) {
+            // 这是个文件夹
+            [self deleteAllTextFiles:filePath];
+            continue;
+        }
+
+        // 如果这个文件是含有"-"的图片, 我们就来改一下文件名
+        if ([targetPathExtension containsObject:fileName.pathExtension.lowercaseString]) {
+
+            NSLog(@"找到一个文本文档: %@", filePath);
+            NSError *rmError = nil;
+            [fileManager removeItemAtPath:filePath error:&rmError];
+            if (rmError) {
+                NSLog(@"删除文档失败: %@, error: %@", filePath, rmError.description);
+            }
+        }
+    }
 }
 
 /// 一键重命名各个图片

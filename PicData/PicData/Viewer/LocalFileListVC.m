@@ -194,7 +194,11 @@
                     fileModel.fileSize = folderSize > 0 ? folderSize : 0;
                 }
                 fileModel.fileCount = subFileContents.count;
-                [self.fileNamesList addObject:fileModel];
+                if (self.fileNamesList.count > 0 && fileModel.fileCount < 2) {
+                    [self.fileNamesList insertObject:fileModel atIndex:0];
+                } else {
+                    [self.fileNamesList addObject:fileModel];
+                }
             } else {
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
                 [self.fileNamesList addObject:fileModel];

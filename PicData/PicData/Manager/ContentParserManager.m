@@ -144,7 +144,9 @@ singleton_implementation(ContentParserManager)
                 }
                 NSError *writeError = nil;
                 count = [result[@"count"] intValue];
-                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding]];
+                [targetHandle seekToEndOfFile];
+                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", result[@"urls"]] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
+//                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
                 if (writeError) {
                     NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
                 }
@@ -189,6 +191,7 @@ singleton_implementation(ContentParserManager)
             NSString *src = e.attr(@"src");
             if (src.length > 0) {
                 [urls addObject:src];
+                [urlsString appendFormat:@"%@\n", src];
             }
         }
 

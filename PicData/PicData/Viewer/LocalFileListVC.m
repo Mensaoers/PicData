@@ -71,6 +71,10 @@
     // mac端也允许整理按钮, 加警告框即可
     UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"ellipsis"] style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
     [leftBarButtonItems addObject:arrangeItem];
+
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
+    [leftBarButtonItems addObject:refreshItem];
+
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     NSMutableArray *items = [NSMutableArray array];
@@ -507,6 +511,12 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)refreshItemClickAction:(UIBarButtonItem *)sender {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self refreshLoadData:NO];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 /// 清空所有文本文档

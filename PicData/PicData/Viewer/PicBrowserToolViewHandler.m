@@ -78,7 +78,17 @@
         return;
     }
     NSURL *fileURL = [NSURL fileURLWithPath:data.imagePath];
-    
+
+#if TARGET_OS_MACCATALYST
+
+    [AppTool shareFileWithURLs:@[fileURL] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+    }];
+
+    return;
+
+#endif
+
     /** 划重点
      *  imageBrowser是加载在keyWindow上的, 遮挡住控制器keyWindow.rootViewController
      *  控制器弹出新的界面都没有imageBrowser的界面高, 都会被遮挡
@@ -137,7 +147,11 @@
         
         UIButton *shareToOtherBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         shareToOtherBtn.frame = CGRectMake(0, 0, size.height, size.height);
+#if TARGET_OS_MACCATALYST
+        [shareToOtherBtn setImage:[UIImage imageNamed:@"show"] forState:UIControlStateNormal];
+#else
         [shareToOtherBtn setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+#endif
         shareToOtherBtn.backgroundColor = UIColor.clearColor;
         [shareToOtherBtn addTarget:self action:@selector(sharePicToOtherAction:) forControlEvents:UIControlEventTouchUpInside];
         [_operationView addSubview:shareToOtherBtn];

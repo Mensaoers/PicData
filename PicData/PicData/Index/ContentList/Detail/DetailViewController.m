@@ -68,6 +68,10 @@
         UIBarButtonItem *lastPageItem = [[UIBarButtonItem alloc] initWithTitle:@"上一页" style:UIBarButtonItemStyleDone target:self action:@selector(loadLastPageDetailData)];
         [leftBarButtonItems addObject:lastPageItem];
     }
+
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
+    [leftBarButtonItems addObject:refreshItem];
+
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     NSMutableArray *items = [NSMutableArray array];
@@ -131,6 +135,10 @@
     tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf loadDetailData];
     }];
+}
+
+- (void)refreshItemClickAction:(UIBarButtonItem *)sender {
+    [self.tableView.mj_header beginRefreshing];
 }
 
 - (void)loadLastPageDetailData {

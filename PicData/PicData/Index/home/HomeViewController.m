@@ -42,6 +42,9 @@
 
 - (void)loadRightNavigationItem:(BOOL)isList {
 
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
+    self.navigationItem.leftBarButtonItem = refreshItem;
+
     UIBarButtonItem *rightItem;
     if (isList) {
         rightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list_tags"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(rightNavigationItemClickAction:)];
@@ -93,6 +96,12 @@
     [super viewDidLoad];
 
     [self loadAllTags];
+}
+
+- (void)refreshItemClickAction:(UIBarButtonItem *)sender {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self loadAllTags];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 #pragma mark - request

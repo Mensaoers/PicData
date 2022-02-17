@@ -210,7 +210,7 @@
 
 - (void)parserDetailListHtmlDataType:(NSString *)htmlString {
     self.detailModel.suggesTitle = @"推荐";
-    self.detailModel.nextUrl = @"";
+    self.detailModel.nextUrl = self.detailModel.currentUrl;
     if (htmlString.length > 0) {
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];

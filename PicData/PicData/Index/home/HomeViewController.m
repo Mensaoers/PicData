@@ -18,6 +18,8 @@
 @property (nonatomic, strong) NSString *tagsAddressUrl;
 @property (nonatomic, strong) NSString *host_url;
 
+@property (nonatomic, strong) NSMutableArray <PicClassModel *> *classModels;
+
 @end
 
 @implementation HomeViewController
@@ -27,6 +29,28 @@
         _dataList = @[];
     }
     return _dataList;
+}
+
+- (NSMutableArray<PicClassModel *> *)classModels {
+    if (nil == _classModels) {
+        _classModels = [NSMutableArray array];
+
+        // 添加默认页面
+
+        PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
+            PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+            sourceModel.sourceType = 4;
+            sourceModel.url = [self.host_url stringByAppendingPathComponent:@"/b/1/"];
+            sourceModel.title = @"首页";
+            sourceModel.HOST_URL = self.host_url;
+            [sourceModel insertTable];
+            return sourceModel;
+        };
+
+        PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:@"4" subTitles:@[getIndexModel()]];
+        [_classModels addObject:indexModel];
+    }
+    return _classModels;
 }
 
 - (NSString *)host_url {
@@ -68,7 +92,6 @@
 }
 
 - (void)loadMainView {
-    [super loadMainView];
 
     [super loadMainView];
     PicClassifyTableView *tableView = [[PicClassifyTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -110,7 +133,11 @@
 
 - (void)loadAllTags {
 
+    self.classModels = nil;
+
     if (self.tagsAddressUrl.length == 0) {
+        [self.tableView reloadDataWithSource:self.classModels];
+        [self.tableView.mj_header endRefreshing];
         return;
     }
     MJWeakSelf
@@ -138,23 +165,6 @@
 
     OCQueryObject *tagsListEs = document.QueryClass(@"jigou");
 
-    NSMutableArray *classModels = [NSMutableArray array];
-
-    // 添加默认页面
-
-    PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
-        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-        sourceModel.sourceType = 4;
-        sourceModel.url = [self.host_url stringByAppendingPathComponent:@"/b/1/"];
-        sourceModel.title = @"首页";
-        sourceModel.HOST_URL = self.host_url;
-        [sourceModel insertTable];
-        return sourceModel;
-    };
-
-    PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:@"4" subTitles:@[getIndexModel()]];
-    [classModels addObject:indexModel];
-
     for (OCGumboElement *tagsListE in tagsListEs) {
 
         OCQueryObject *aEs = tagsListE.QueryElement(@"a");
@@ -175,12 +185,12 @@
         }
 
         PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:@"4" subTitles:subTitles];
-        [classModels addObject:classModel];
+        [self.classModels addObject:classModel];
     }
 
     MJWeakSelf
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.tableView reloadDataWithSource:classModels];
+        [weakSelf.tableView reloadDataWithSource:self.classModels];
     });
 }
 

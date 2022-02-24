@@ -195,7 +195,7 @@ singleton_implementation(ContentParserManager)
             }
         }
 
-        OCGumboElement *nextE = document.QueryClass(@"page").firstObject;
+        OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
         BOOL find = NO;
         if (nextE) {
             OCQueryObject *aEs = nextE.QueryElement(@"a");

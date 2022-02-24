@@ -16,7 +16,7 @@ static BOOL canChangeOrientation = NO;
 singleton_implementation(AppTool)
 
 - (NSString *)HOST_URL {
-    return @"https://www.ku137.net";
+    return @"https://www.tu963.cc";
 }
 
 /// bugly app_id

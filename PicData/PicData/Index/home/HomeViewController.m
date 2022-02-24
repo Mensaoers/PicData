@@ -39,15 +39,15 @@
 
         PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
             PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-            sourceModel.sourceType = 4;
-            sourceModel.url = [self.host_url stringByAppendingPathComponent:@"/b/1/"];
+            sourceModel.sourceType = 5;
+            sourceModel.url = [self.host_url stringByAppendingPathComponent:@"/y/2/index.html"];
             sourceModel.title = @"首页";
             sourceModel.HOST_URL = self.host_url;
             [sourceModel insertTable];
             return sourceModel;
         };
 
-        PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:@"4" subTitles:@[getIndexModel()]];
+        PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:@"5" subTitles:@[getIndexModel()]];
         [_classModels addObject:indexModel];
     }
     return _classModels;
@@ -57,7 +57,7 @@
     return [AppTool sharedAppTool].HOST_URL;
 }
 - (NSString *)tagsAddressUrl {
-    return [self.host_url stringByAppendingPathComponent:@"/b/tag/"];
+    return [self.host_url stringByAppendingPathComponent:@"/y/2/index.html"];
 }
 
 - (void)loadNavigationItem {
@@ -163,7 +163,7 @@
 
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-    OCQueryObject *tagsListEs = document.QueryClass(@"jigou");
+    OCQueryObject *tagsListEs = document.QueryClass(@"TagTop_Gs_r");
 
     for (OCGumboElement *tagsListE in tagsListEs) {
 
@@ -175,8 +175,8 @@
             NSString *subTitle = aE.text();
 
             PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-            sourceModel.sourceType = 4;
-            sourceModel.url = [self.host_url stringByAppendingPathComponent:href];
+            sourceModel.sourceType = 5;
+            sourceModel.url = href;// [self.host_url stringByAppendingPathComponent:href];
             sourceModel.title = subTitle;
             sourceModel.HOST_URL = self.host_url;
             [sourceModel insertTable];
@@ -184,7 +184,7 @@
             [subTitles addObject:sourceModel];
         }
 
-        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:@"4" subTitles:subTitles];
+        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:@"5" subTitles:subTitles];
         [self.classModels addObject:classModel];
     }
 

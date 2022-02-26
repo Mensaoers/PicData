@@ -43,11 +43,12 @@ singleton_implementation(ContentParserManager)
     if (results.count == 0) {
         // 没有查到, 说明没有添加过
         PicContentTaskModel *taskModel = [PicContentTaskModel taskModelWithContentModel:contentModel];
+        NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
 
         // 这里判断过, 那么就没必要重写这个insert方法
         [taskModel insertTable];
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": contentModel}];
-        [ContentParserManager parserWithSourceModel:sourceModel ContentTaskModel:taskModel];
+        [ContentParserManager prepareToDoNextTask];
         operationTips(YES, @"任务已添加");
     } else {
         operationTips(YES, @"任务已存在");
@@ -55,20 +56,46 @@ singleton_implementation(ContentParserManager)
 }
 
 /// 从数据库某条数据创建任务
-+ (void)tryToAddTaskWithContentTaskModel:(PicContentTaskModel *)contentModel operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
-    if (sourceModel != nil) {
-        [self parserWithSourceModel:sourceModel ContentTaskModel:contentModel];
-    }
-}
+//+ (void)tryToAddTaskWithContentTaskModel:(PicContentTaskModel *)contentModel operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
+//    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
+//    if (sourceModel != nil) {
+//        [self parserWithSourceModel:sourceModel ContentTaskModel:contentModel];
+//    }
+//}
 
 /// app启动的时候, 将所有1的任务取出来开始进行
 + (void)prepareForAppLaunch {
     [PicContentTaskModel resetHalfWorkingTasks];
     [self prepareToDoNextTask];
+
+    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeCompleteATask:) name:NOTICECHECOMPLETEDOWNATASK object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeFailedATask:) name:NOTICECHEFAILEDDOWNATASK object:nil];
 }
+
+- (void)receiveNoticeCompleteATask:(NSNotification *)notification {
+    [ContentParserManager prepareToDoNextTask:YES];
+}
+
+- (void)receiveNoticeFailedATask:(NSNotification *)notification {
+    [ContentParserManager prepareToDoNextTask:YES];
+}
+
 /// 查询接下来要开始的任务
 + (void)prepareToDoNextTask {
+    [self prepareToDoNextTask:NO];
+}
+
+/// 查询接下来要开始的任务(强制添加)
++ (void)prepareToDoNextTask:(BOOL)force {
+
+    if (!force) {
+        // 为了防止剩余任务无限执行(解析网页比下载图片快得多, 时间一长会有大量任务堆积)
+        NSInteger ingCount = [PicContentTaskModel queryCountForTaskInStatus12];
+        if (ingCount > 2) {
+            return;
+        }
+    }
+
     NSArray *results = [PicContentTaskModel queryNextTask];
     if (results.count > 0) {
         PicContentTaskModel *nextTaskModel = results.firstObject;
@@ -85,6 +112,7 @@ singleton_implementation(ContentParserManager)
 
     NSOperationQueue *queue = [ContentParserManager sharedContentParserManager].queue;
 
+    // 防止任务数过多导致的压力
     if (queue.maxConcurrentOperationCount > queue.operationCount) {
 
         NSString *filePath = [targetPath stringByAppendingPathComponent:@"urlList.txt"];
@@ -100,13 +128,14 @@ singleton_implementation(ContentParserManager)
         [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
 
         contentTaskModel.status = 1;
-        [contentTaskModel updateTable];
+        [contentTaskModel updateTableWithStatus];
 
         [queue addOperationWithBlock:^{
 
             //创建信号量并设置计数默认为0
             dispatch_semaphore_t sema = dispatch_semaphore_create(0);
             NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
+            // 网页请求获取一组套图, 创建下载任务
             [ContentParserManager dealWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:^{
 
                 dispatch_semaphore_signal(sema);
@@ -116,7 +145,6 @@ singleton_implementation(ContentParserManager)
             //若计数为0则一直等待
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
         }];
-        [ContentParserManager prepareToDoNextTask];
     }
 }
 
@@ -147,6 +175,7 @@ singleton_implementation(ContentParserManager)
                 [targetHandle seekToEndOfFile];
                 [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", result[@"urls"]] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
 //                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 if (writeError) {
                     NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
                 }
@@ -154,7 +183,6 @@ singleton_implementation(ContentParserManager)
                 NSLog(@"第%d页, %@, 出现错误-1, %@", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
             }
 
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
             if (![nextUrl containsString:@".html"]) {
                 [targetHandle closeFile];
                 NSLog(@"完成");

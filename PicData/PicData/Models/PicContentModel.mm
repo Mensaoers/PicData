@@ -25,10 +25,10 @@ WCDB_PRIMARY(PicContentModel, href)
 WCDB_INDEX(PicContentModel, "_index", href)
 
 - (BOOL)updateTable {
-    return [self updateTableWithHref:self.href];
+    return [self updateTableWhenHref:self.href];
 }
 
-- (BOOL)updateTableWithHref:(NSString *)href {
+- (BOOL)updateTableWhenHref:(NSString *)href {
     return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:[self.class AllProperties] withObject:self where:self.class.href == self.href];
 }
 
@@ -73,6 +73,19 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
 /// 获取下一个任务
 + (NSArray *)queryNextTask {
     return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == 0 orderBy:self.href.order(WCTOrderedAscending) limit:1];
+}
+/// 获取所有task status为0的任务数
++ (NSInteger)queryCountForTaskStatus:(int)status {
+    return [[[DatabaseManager getDatabase] getOneValueOnResult:self.AnyProperty.count() fromTable:[self tableName] where:self.status == status] integerValue];
+}
+
+/// 获取所有task status为给定值的任务数
++ (NSInteger)queryCountForTaskInStatus12 {
+    return [[[DatabaseManager getDatabase] getOneValueOnResult:self.AnyProperty.count() fromTable:[self tableName] where:self.status == 1 || self.status == 2] integerValue];
+}
+
+- (BOOL)updateTableWithStatus {
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:self.class.status withObject:self where:self.class.href == self.href];
 }
 
 /// 初始化所有任务

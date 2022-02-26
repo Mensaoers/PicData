@@ -222,15 +222,18 @@ singleton_implementation(PDDownloadManager);
                         if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
                             contentTaskModel.status = 3;
                             [contentTaskModel updateTable];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECOMPLETEDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
                         }
                     }
 //                    [contentTaskModel updateTable];
                 }
+//                [self.sessionManager removeWithUrl:url];
             });
         }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             if (task.error) {
                 NSLog(@"task.error:%@", task.error);
             }
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEFAILEDDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
         }] validateFileWithCode:@"9e2a3650530b563da297c9246acaad5c" type:TRFileVerificationTypeMd5 onMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
             
             if (task.error) {

@@ -379,7 +379,8 @@
         if (height && [height floatValue] > 0) {
             return [height floatValue];
         }
-        return UITableViewAutomaticDimension;
+        // 默认高度200, 不然触发频繁请求, 会导致服务器卡死
+        return 200;//UITableViewAutomaticDimension;
     } else {
         if (self.detailModel.suggesArray.count > 0) {
             NSInteger count = self.detailModel.suggesArray.count;

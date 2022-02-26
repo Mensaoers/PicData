@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 已下载多少张, 这个属性忽略, 不存数据库
 @property (nonatomic, assign) int downloadedCount;
 
-- (BOOL)updateTableWithHref:(NSString *)href;
+- (BOOL)updateTableWhenHref:(NSString *)href;
 
 + (NSArray *)queryTableWithHref:(NSString *)href;
 
@@ -39,6 +39,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 获取下一个没有开始的任务
 + (NSArray *)queryNextTask;
+/// 获取所有task status为给定值的任务数
++ (NSInteger)queryCountForTaskStatus:(int)status;
+/// 获取所有task status为给定值的任务数
++ (NSInteger)queryCountForTaskInStatus12;
+
+- (BOOL)updateTableWithStatus;
 
 /// 初始化所有任务
 + (BOOL)resetHalfWorkingTasks;

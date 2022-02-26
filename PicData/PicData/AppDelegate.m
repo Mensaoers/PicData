@@ -55,8 +55,10 @@
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
     NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
 
-    [self.sessionManager totalCancel];
-    [ContentParserManager prepareForAppLaunch];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.sessionManager totalCancel];
+        [ContentParserManager prepareForAppLaunch];
+    });
 }
 
 - (void)setupDataBase {

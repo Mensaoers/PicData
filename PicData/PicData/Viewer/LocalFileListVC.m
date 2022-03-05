@@ -586,6 +586,9 @@
             NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
             // 对str字符串进行匹配
             NSString *fileNameWithoutPAfter = [fileNameWithoutP substringWithRange:[regular firstMatchInString:fileNameWithoutP options:0 range:NSMakeRange(0, fileNameWithoutP.length)].range];
+            if (fileNameWithoutPAfter.length == 0) {
+                continue;
+            }
 
             NSString *fileNameAfter = [fileNameWithoutPAfter stringByAppendingPathExtension:pathExtension];
 

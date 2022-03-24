@@ -216,13 +216,13 @@
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
         NSMutableArray *urls = [NSMutableArray array];
 
-        OCQueryObject *metaEs = document.QueryElement(@"meta");
-        for (OCGumboElement *metaE in metaEs) {
-            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
-                [self updateContentTitle:metaE.attr(@"content")];
-                break;
-            }
-        }
+//        OCQueryObject *metaEs = document.QueryElement(@"meta");
+//        for (OCGumboElement *metaE in metaEs) {
+//            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
+//                [self updateContentTitle:metaE.attr(@"content")];
+//                break;
+//            }
+//        }
 
         OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
         OCQueryObject *es = contentE.Query(@"img");
@@ -233,7 +233,7 @@
             }
         }
 
-        OCGumboElement *nextE = document.QueryClass(@"page").firstObject;
+        OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
         BOOL find = NO;
         if (nextE) {
             OCQueryObject *aEs = nextE.QueryElement(@"a");
@@ -255,7 +255,7 @@
         self.detailModel.contentImgsUrl = [urls copy];
 
         // 推荐
-        OCGumboElement *listDiv = document.QueryClass(@"m-list").firstObject;
+        OCGumboElement *listDiv = document.QueryClass(@"articleV4PicList").firstObject;
         OCQueryObject *articleEs = listDiv.QueryElement(@"li");
 
         NSMutableArray *suggesM = [NSMutableArray array];

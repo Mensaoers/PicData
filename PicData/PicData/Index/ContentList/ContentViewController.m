@@ -143,7 +143,7 @@
         NSArray *results = [self parserContentListWithDocument:document];
         [self.dataList addObjectsFromArray:[results copy]];
 
-        OCGumboElement *nextE = document.QueryClass(@"page").firstObject;
+        OCGumboElement *nextE = document.QueryClass(@"TagPage").firstObject;
         BOOL find = NO;
         if (nextE) {
             OCQueryObject *aEs = nextE.QueryElement(@"a");
@@ -152,7 +152,7 @@
                     find = YES;
                     NSString *nextPage = aE.attr(@"href");
 
-                    self.nextPageURL = [NSURL URLWithString:[self.sourceModel.url stringByAppendingPathComponent:nextPage]];
+                    self.nextPageURL = [NSURL URLWithString:[self.sourceModel.url stringByReplacingOccurrencesOfString:self.sourceModel.url.lastPathComponent withString:nextPage]];
                     break;
                 }
             }
@@ -173,7 +173,7 @@
 
 - (NSArray *)parserContentListWithDocument:(OCGumboDocument *)document {
 
-    OCGumboElement *listDiv = document.QueryClass(@"m-list").firstObject;
+    OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
     OCQueryObject *articleEs = listDiv.QueryElement(@"li");
 
     NSMutableArray *articleContents = [NSMutableArray array];

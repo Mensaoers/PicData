@@ -52,7 +52,7 @@ singleton_interface(PDDownloadManager);
 /// 根据模型获取下载地址
 - (NSString *)getDirPathWithSource:(nullable PicSourceModel *)sourceModel contentModel:(nullable PicContentModel *)contentModel;
 /// 创建下载任务
-- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls;
+- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls suggestNames:(nullable NSArray <NSString *> *)suggestNames;
 
 /// 全部取消
 - (void)totalCancel;

@@ -181,7 +181,7 @@ singleton_implementation(PDDownloadManager);
     return contentPath;
 }
 
-- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls {
+- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls suggestNames:(nullable NSArray<NSString *> *)suggestNames {
 
     if (![self checksystemDownloadFullPathExistNeedNotice:YES]) {
         return;
@@ -192,6 +192,12 @@ singleton_implementation(PDDownloadManager);
         NSString *url = urls[index];
         
         NSString *fileName = url.lastPathComponent;
+
+        NSString *suggestName = [suggestNames objectOrNilAtIndex:index];
+        if (suggestName.length > 0) {
+            fileName = suggestName;
+        }
+
         NSLog(@"文件%@开始下载", fileName);
         
         PDBlockSelf
@@ -208,7 +214,7 @@ singleton_implementation(PDDownloadManager);
             
             dispatch_async(self.disDownFinishQueue, ^{
                 NSError *copyError = nil;
-                NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:url.lastPathComponent];
+                NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:fileName];
                 [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
                 if (nil == copyError) {
                     NSLog(@"文件%@下载完成", fileName);

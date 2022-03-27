@@ -165,7 +165,7 @@ singleton_implementation(ContentParserManager)
 
                 NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel];
+                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel picCount:picCount];
                 nextUrl = result[@"nextUrl"];
                 if (nextUrl.length > 0) {
                     nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
@@ -204,7 +204,7 @@ singleton_implementation(ContentParserManager)
 }
 
 /// 处理html标签, 创建下载图片任务开始下载
-+ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel {
++ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount {
     NSString *url = @"";
     NSMutableString *urlsString = [NSMutableString string];
     int count = 0;
@@ -212,13 +212,17 @@ singleton_implementation(ContentParserManager)
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
         NSMutableArray *urls = [NSMutableArray array];
+        NSMutableArray *suggestNames = [NSMutableArray array];
         
         OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
         OCQueryObject *es = contentE.Query(@"img");
+        NSInteger index = 1;
         for (OCGumboElement *e in es) {
             NSString *src = e.attr(@"src");
             if (src.length > 0) {
                 [urls addObject:src];
+                [suggestNames addObject:[NSString stringWithFormat:@"%ld.jpg", picCount + index]];
+                index ++;
                 [urlsString appendFormat:@"%@\n", src];
             }
         }
@@ -240,7 +244,7 @@ singleton_implementation(ContentParserManager)
 
         count += urls.count;
         // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
-        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[urls copy]];
+        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[urls copy] suggestNames:suggestNames];
 
     }
 

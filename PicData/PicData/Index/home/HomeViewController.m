@@ -10,7 +10,7 @@
 #import "ContentViewController.h"
 #import "PicClassifyTableView.h"
 
-@interface HomeViewController () <UITableViewDelegate, UITableViewDataSource, PicClassifyTableViewActionDelegate>
+@interface HomeViewController () <PicClassifyTableViewActionDelegate>
 
 @property (nonatomic, strong) PicClassifyTableView *tableView;
 @property (nonatomic, strong) NSArray *dataList;
@@ -66,8 +66,10 @@
 
 - (void)loadRightNavigationItem:(BOOL)isList {
 
+#if TARGET_OS_MACCATALYST
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
     self.navigationItem.leftBarButtonItem = refreshItem;
+#endif
 
     UIBarButtonItem *rightItem;
     if (isList) {

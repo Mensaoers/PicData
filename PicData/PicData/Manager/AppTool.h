@@ -28,6 +28,13 @@ singleton_interface(AppTool)
 /// 分享app中的文件,区分是iOS端或者mac端
 + (void)shareFileWithURLs:(NSArray <NSURL *>*)urls sourceView:(UIView *)sourceView completionWithItemsHandler:(UIActivityViewControllerCompletionWithItemsHandler)completionWithItemsHandler;
 
+/// 初始化监控
++ (void)setupPerformanceMonitor;
+/// 反选监控状态 开/关
++ (void)inversePerformanceMonitorStatus;
+
+@property (nonatomic, assign, readonly) BOOL isPerformanceMonitor;
+
 + (UIWindow *)getAppKeyWindow;
 
 /// 获取中文编码

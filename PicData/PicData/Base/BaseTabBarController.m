@@ -23,10 +23,7 @@
         UITabBarAppearance *appearence = [[UITabBarAppearance alloc] init];
         appearence.backgroundColor = [UIColor whiteColor];
         tabBar.standardAppearance = appearence;
-
-//#if !TARGET_OS_MACCATALYST
         tabBar.scrollEdgeAppearance = appearence;
-//#endif
     } else {
         [tabBar setBarTintColor:UIColor.whiteColor];
     }

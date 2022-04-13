@@ -69,12 +69,22 @@
 //    [Bugly startWithAppId:[AppTool app_id_bugly]];
 }
 
+- (void)setupIQKeyboardManager {
+    IQKeyboardManager.sharedManager.shouldResignOnTouchOutside = YES;
+    IQKeyboardManager.sharedManager.enable = YES;
+}
+
+- (void)setupGDPerformanceMonitor {
+    [AppTool setupPerformanceMonitor];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
-    IQKeyboardManager.sharedManager.shouldResignOnTouchOutside = YES;
-    IQKeyboardManager.sharedManager.enable = YES;
+    [self setupIQKeyboardManager];
+
+    [self setupGDPerformanceMonitor];
 
     // 设置主页
     [self setUpMainTab];

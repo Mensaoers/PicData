@@ -22,9 +22,9 @@ static CGFloat sideMargin = 5;
     // cell的排布, 想让cell的宽度逐渐增大, 大到一定程度, 加一个cell, 以此往复
     CGFloat sugWidth = 150;
 
-    if (wholeWidth < 400) {
-        sugWidth = 100; // 3
-    } else if (wholeWidth < 650) {
+    if (wholeWidth < 420) {
+        sugWidth = 110; // 3
+    } else if (wholeWidth < 680) {
         sugWidth = 150; // 4
     } else if (wholeWidth < 1000) {
         sugWidth = 180; // 5
@@ -68,9 +68,13 @@ static CGFloat sideMargin = 5;
 - (void)layoutSubviews {
     [super layoutSubviews];
 
+#if TARGET_OS_MACCATALYST
+
     // mac端拖拽之后, 界面重新适配
     PicContentViewFlowLayout *layout = (PicContentViewFlowLayout *)self.collectionViewLayout;
     layout.itemSize = [PicContentView itemSize:self.mj_w - 4 * sideMargin];
+
+#endif
 }
 
 @end

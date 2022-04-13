@@ -34,7 +34,11 @@
 
 @interface SettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, strong) UITableView *tableView;
+
 @property (nonatomic, strong) NSArray <SettingOperationModel *>* operationModels;
+
+@property (nonatomic, strong) SettingOperationModel *monitorModel;
 
 @end
 
@@ -44,9 +48,14 @@
     [super viewWillAppear:animated];
 }
 
+- (NSString *)getMonitorStatusString {
+    return AppTool.sharedAppTool.isPerformanceMonitor ? @"开" : @"关";
+}
+
 - (NSArray<SettingOperationModel *> *)operationModels {
     if (nil == _operationModels) {
         [[PDDownloadManager sharedPDDownloadManager] checksystemDownloadFullPathExistNeedNotice:NO];
+        self.monitorModel = [SettingOperationModel ModelWithName:@"切换监控开关" value:[self getMonitorStatusString] func:@"checkMonitor:"];
         _operationModels = @[
             [SettingOperationModel ModelWithName:@"下载路径" value:[[PDDownloadManager sharedPDDownloadManager] systemDownloadPath] func:@"setDownloadPath:"],
             [SettingOperationModel ModelWithName:@"导出数据库" value:@"" func:@"shareDatabase:"],
@@ -56,8 +65,10 @@
             #if !TARGET_OS_MACCATALYST
             // version
             [SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"],
+            [SettingOperationModel ModelWithName:@"显示手势锁屏" value:@"" func:@"showGesture:"],
             #endif
             [SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"],
+            self.monitorModel
         ];
         NSLog(@"%@", [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]);
     }
@@ -73,6 +84,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     [self.view addSubview:tableView];
+    self.tableView = tableView;
 
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.mas_equalTo(0);
@@ -173,6 +185,22 @@ static NSString *identifier = @"identifier";
 
     }]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showGesture:(UIView *)sender {
+    [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
+    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+}
+
+- (void)checkMonitor:(UIView *)sender {
+    [AppTool inversePerformanceMonitorStatus];
+
+    self.monitorModel.value = [self getMonitorStatusString];
+
+    if ([self.operationModels containsObject:self.monitorModel]) {
+        NSInteger index = [self.operationModels indexOfObject:self.monitorModel];
+        [self.tableView reloadRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)tipsToReOpenApp {

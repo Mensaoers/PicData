@@ -73,7 +73,7 @@
     [self.view addSubview:preview.view];
 
     [preview.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+        make.edges.mas_equalTo(UIEdgeInsetsMake(10, 10, 10, 10));
     }];
 
     self.preview = preview;

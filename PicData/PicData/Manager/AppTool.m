@@ -105,6 +105,36 @@ singleton_implementation(AppTool)
     }
 }
 
++ (void)setupPerformanceMonitor {
+    [[GDPerformanceMonitor sharedInstance] startMonitoring];
+
+    [[GDPerformanceMonitor sharedInstance] setAppVersionHidden:YES];
+    [[GDPerformanceMonitor sharedInstance] setDeviceVersionHidden:YES];
+
+    [[GDPerformanceMonitor sharedInstance] configureWithConfiguration:^(UILabel *textLabel) {
+        textLabel.font = [UIFont systemFontOfSize:15];
+        [textLabel setBackgroundColor:[UIColor blackColor]];
+        [textLabel setTextColor:[UIColor whiteColor]];
+        [textLabel.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    }];
+
+    AppTool.sharedAppTool.isPerformanceMonitor = YES;
+}
+
+- (void)setIsPerformanceMonitor:(BOOL)isPerformanceMonitor {
+    _isPerformanceMonitor = isPerformanceMonitor;
+
+    if (isPerformanceMonitor) {
+        [[GDPerformanceMonitor sharedInstance] startMonitoring];
+    } else {
+        [[GDPerformanceMonitor sharedInstance] hideMonitoring];
+    }
+}
+
++ (void)inversePerformanceMonitorStatus {
+    AppTool.sharedAppTool.isPerformanceMonitor = !AppTool.sharedAppTool.isPerformanceMonitor;
+}
+
 + (UIWindow *)getAppKeyWindow {
     UIWindow *foundWindow = nil;
     NSArray *windows = [[UIApplication sharedApplication] windows];

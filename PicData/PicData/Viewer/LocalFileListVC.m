@@ -51,7 +51,6 @@
 
 - (NSString *)systemDownloadFullPath {
     return [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
-//    return @"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File/rt";
 }
 - (NSString *)targetFilePath {
     if (nil == _targetFilePath) {
@@ -71,8 +70,12 @@
     UIBarButtonItem *arrangeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"ellipsis"] style:UIBarButtonItemStyleDone target:self action:@selector(arrangeItemClickAction:)];
     [leftBarButtonItems addObject:arrangeItem];
 
+#if TARGET_OS_MACCATALYST
+
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
     [leftBarButtonItems addObject:refreshItem];
+
+#endif
 
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
@@ -230,7 +233,6 @@
 }
 
 - (void)shareAllFiles:(UIButton *)sender {
-
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"分享文件" preferredStyle:UIAlertControllerStyleAlert];
 
 #if TARGET_OS_MACCATALYST
@@ -286,6 +288,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+#pragma mark pdf
 /// 长图
 - (void)sharePDF:(UIButton *)sender {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"创建并分享PDF" message:@"此操作会将文件夹下所有图片按当前顺序生成PDF文件, 是否继续?" preferredStyle:UIAlertControllerStyleAlert];
@@ -364,12 +367,13 @@
                 [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
                 [weakSelf presentViewController:alert animated:YES completion:nil];
             };
-            [MJWeakSelf.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
+            [weakSelf.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
 #endif
         });
     });
 }
 
+#pragma mark zip
 // zip
 - (void)shareZip:(UIButton *)sender {
     PDBlockSelf
@@ -824,9 +828,6 @@ static NSString *likeString = @"我的收藏";
 
 - (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath contentView:(UICollectionView * _Nonnull)contentView {
     [self.imgsList removeAllObjects];
-//    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]]] sourceView:self.view completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-//
-//    }];
     NSInteger currentIndex = 0;
     for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
         ViewerFileModel *tempModel = self.fileNamesList[index];

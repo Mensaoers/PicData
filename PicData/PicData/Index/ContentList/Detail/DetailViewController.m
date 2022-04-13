@@ -69,8 +69,12 @@
         [leftBarButtonItems addObject:lastPageItem];
     }
 
+#if TARGET_OS_MACCATALYST
+
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
     [leftBarButtonItems addObject:refreshItem];
+
+#endif
 
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 

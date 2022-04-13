@@ -74,6 +74,8 @@
 - (void)loadNavigationItem {
     self.navigationItem.title = self.sourceModel.title;
 
+#if TARGET_OS_MACCATALYST
+
     NSMutableArray *leftBarButtonItems = [NSMutableArray array];
     if (self.navigationController.viewControllers.count >= 2) {
         UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
@@ -83,6 +85,8 @@
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
     [leftBarButtonItems addObject:refreshItem];
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
+
+#endif
 
     UIBarButtonItem *allDownItem = [[UIBarButtonItem alloc] initWithTitle:@"全部下载" style:UIBarButtonItemStyleDone target:self action:@selector(downloadAllContents:)];
     self.navigationItem.rightBarButtonItem = allDownItem;

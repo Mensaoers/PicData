@@ -321,44 +321,18 @@
     [MBProgressHUD showHUDAddedTo:[AppTool getAppKeyWindow] animated:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-        LGPdf *pdf = [LGPdf createPDF];
-        CGFloat width = A4_L;
-        CGFloat height = 0;
-        CGFloat sepmargin = 0;
-
-        struct LGPageInfo size = {width, A4_S};
+        // 临时文件
         NSString *pdfPath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
-        [pdf setFilePath:pdfPath pageSize:size];
-        [pdf readyToWrite:passsword];
 
-        for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
-            ViewerFileModel *tempModel = self.fileNamesList[index];
+        [LGPdf createPdfWithImageCount:weakSelf.fileNamesList.count width:A4_L sepmargin:0 pdfPath:pdfPath password:passsword minWidth:10 enmuHandler:^UIImage * _Nullable(NSInteger index) {
+            ViewerFileModel *tempModel = weakSelf.fileNamesList[index];
             if ([FileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
-
-                UIImage *image = [UIImage imageWithContentsOfFile:[self.targetFilePath stringByAppendingPathComponent:tempModel.fileName]];
-                CGSize imageSize = image.size;
-                if (imageSize.width < 10 || imageSize.height < 10) {
-                    continue;
-                }
-
-                LGPdfImage *pdfImage = [[LGPdfImage alloc] init];
-                [pdfImage setImage:image];
-
-                CGFloat imageHeight = width * imageSize.height / imageSize.width;
-                struct CGSize size = CGSizeMake(width, imageHeight);
-
-                pdfImage.location = CGPointMake(0, sepmargin);
-                [pdfImage setSize:size];
-
-                [pdf newPageWithBounds:CGRectMake(0, 0, width, imageHeight)];
-                [pdf addImage:pdfImage];
-
-                height += imageHeight + sepmargin;
-                height = MAX(A4_S, height);
+                UIImage *image = [UIImage imageWithContentsOfFile:[weakSelf.targetFilePath stringByAppendingPathComponent:tempModel.fileName]];
+                return image;
+            } else {
+                return nil;
             }
-        }
-
-        [pdf closeToWrite];
+        }];
 
         dispatch_async(dispatch_get_main_queue(), ^{
 
@@ -390,7 +364,7 @@
                 [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
                 [weakSelf presentViewController:alert animated:YES completion:nil];
             };
-            [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
+            [MJWeakSelf.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
 #endif
         });
     });

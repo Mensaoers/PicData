@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -60,6 +60,7 @@
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
 		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
+		33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
@@ -216,6 +217,7 @@
 		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
 		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
 		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
+		33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
 		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
 		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */,
+				33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +785,7 @@
 		E272491668D574E526B80971 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */,
 				AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */,
 			);
 			name = Frameworks;

@@ -3,8 +3,8 @@
 ## 介绍
 1. 网页图片批量下载(简单的爬取图片网站[*暂时只支持一个网站*]的图片, 资源内置)-[教程-icc_tips
 -iOS解析html标签内容-OCGumbo](https://www.jianshu.com/p/ce5f9ae4dfa8)
-2. 支持图片预览功能, 因三方库(YBImageBrowser, Bugly等)限制, 拆分两个分支master(只支持iOS端), master_mac(mac分支主要跑mac端)(后期日志以master分支为主)
-3. 支持分享(单个文件/压缩)(可以跟小伙伴分享了/手动狗头)
+2. <del>支持图片预览功能, 因三方库(YBImageBrowser, Bugly等)限制, 拆分两个分支master(只支持iOS端), master_mac(mac分支主要跑mac端)(后期日志以master分支为主)</del>现已合并两分支, 后期统一为master分支
+3. 支持分享(单个文件/文件夹/套图压缩/创建PDF)(可以跟小伙伴分享了/手动狗头)
 4. 断点续传(重启app之后, 继续上次未完成的任务)
 5. 支持文件共享, 连上mac之后可以导出文件夹
 
@@ -14,7 +14,7 @@
 ### 本地下载目录配置(移动端意义不大, Mac端可以考虑修改)
 
 1. 点击切换到设置标签进行下载目录的设置, 默认是app的`Documents/PicDownloads`目录
-2. <del>可以设置mac上的地址, 比如`/Users/***/Downloads/PicDownloads`</del>全部改成app内部地址, 相对路径
+2. <del>可以设置mac上的地址, 比如`/Users/***/Downloads/PicDownloads`</del>全部改成app内部地址, 相对路径(已支持Mac catalyst, mac端也可以下载)
 3. 可以在`PDDownloadManager.m`的`- (NSString *)defaultDownloadPath`方法中内置一个默认地址
 4. 设置之后, 下载的图片即可保存到这个地址, 按照分类和标题创建文件夹
 
@@ -79,6 +79,11 @@
 # 如有任何问题, 建议联系开发者本人
 
 ## 更新日志(也有可能忘了写日志, 将就看看)
+```
+2022年04月13日20:18:53
+1. 适配Mac catalyst, 合并分支
+2. 提取PicDataSDK
+```
 ```
 2021年10月28日13:42:09
 替换数据库为WCDB, 使app更健壮

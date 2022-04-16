@@ -96,7 +96,7 @@
 				Base,
 			);
 			mainGroup = 33E241D025F9C14300CEED3B;
-			productRefGroup = 33E241DA25F9C14300CEED3B /* Products */;
+			productRefGroup = 33E241D025F9C14300CEED3B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -259,8 +259,10 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
 				INFOPLIST_FILE = PicData_macPlugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "per.garenge.picDataMacPlugin.PicData-macPlugin";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

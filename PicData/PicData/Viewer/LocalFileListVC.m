@@ -20,6 +20,9 @@
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, strong) PicContentModel *contentModel;
 
+@property (nonatomic, weak) YBImageBrowser *browser;
+
+@property (nonatomic, assign) NSInteger lastViewIndex;
 
 @end
 
@@ -216,6 +219,8 @@
         NSLog(@"%@", subError);
     }
     [self.contentView.mj_header endRefreshing];
+
+    self.lastViewIndex = 0;
 }
 
 - (long long)getFileSize:(NSString *)path {
@@ -808,6 +813,8 @@ static NSString *likeString = @"我的收藏";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 
+    self.lastViewIndex = indexPath.row;
+
     ViewerFileModel *fileModel = self.fileNamesList[indexPath.row];
 
     if (fileModel.isFolder) {
@@ -854,10 +861,107 @@ static NSString *likeString = @"我的收藏";
     browser.toolViewHandlers = @[handler];
     // toolViewHandlers; // topView.operationType = YBIBTopViewOperationTypeSave;
     [browser show];
+    self.browser = browser;
 }
+
+#if TARGET_OS_MACCATALYST
+
+- (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
+    /**
+          // These are pre-defined constants for use with the input property of UIKeyCommand objects.
+
+          UIKIT_EXTERN NSString *const UIKeyInputUpArrow        API_AVAILABLE(ios(7.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputDownArrow      API_AVAILABLE(ios(7.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputLeftArrow      API_AVAILABLE(ios(7.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputRightArrow      API_AVAILABLE(ios(7.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputEscape          API_AVAILABLE(ios(7.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputPageUp          API_AVAILABLE(ios(8.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputPageDown        API_AVAILABLE(ios(8.0));
+
+          UIKIT_EXTERN NSString *const UIKeyInputHome            API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputEnd            API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF1              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF1              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF2              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF3              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF4              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF5              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF6              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF7              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF8              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF9              API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF10            API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF11            API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+
+          UIKIT_EXTERN NSString *const UIKeyInputF12            API_AVAILABLE(ios(13.4), tvos(13.4)) API_UNAVAILABLE(watchos);
+     */
+
+    BOOL didHandleEvent=NO;
+    for(UIPress*press in presses) {
+        if(@available(macCatalyst 13.4, *)) {
+            UIKey *key = press.key;
+            //键值
+            //匹配键值
+            if (key.keyCode == UIKeyboardHIDUsageKeyboardReturnOrEnter) { // enter
+                didHandleEvent = YES;
+                if (self.contentModel != nil) {
+                    if (self.browser.superview == nil && self.fileNamesList.count > 0 && self.fileNamesList.count > self.lastViewIndex) {
+                        ViewerFileModel *fileModel = self.fileNamesList[self.lastViewIndex];
+                        [self viewPicFile:fileModel indexPath:[NSIndexPath indexPathForItem:self.lastViewIndex inSection:0] contentView:self.contentView];
+                    }
+                }
+            }
+            if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputEscape]) {//esc
+                didHandleEvent = YES;
+                [self.browser hide];
+            }
+            if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputLeftArrow]) {//左箭头
+                didHandleEvent = YES;
+                self.browser.currentPage = MAX(self.browser.currentPage - 1, 0);
+            }
+            if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputRightArrow]) {//右箭头
+                didHandleEvent = YES;
+                self.browser.currentPage = MIN(self.browser.currentPage + 1, self.imgsList.count);
+            }
+            if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputUpArrow]) { // 上箭头
+                [self.browser hide];
+            }
+            if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputDownArrow]) { // 上箭头
+                [self.browser hide];
+            }
+        }else{
+            // Fallback on earlier versions
+        }
+    }
+    if(!didHandleEvent) {//没取到匹配值,调用父类
+        [super pressesBegan:presses withEvent:event];
+    }
+}
+
+#endif
 
 #pragma mark YBImageBrowserDataSource
 - (void)yb_imageBrowser:(YBImageBrowser *)imageBrowser pageChanged:(NSInteger)page data:(id<YBIBDataProtocol>)data {
+    self.lastViewIndex = page;
     [self.contentView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     YBIBImageData *data_ = (YBIBImageData *)data;// (YBIBImageData <YBIBDataProtocol>*)data;
     ViewerContentCell *contentCell = (ViewerContentCell *)[self.contentView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];

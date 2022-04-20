@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)copy;
 
++ (NSArray *)queryTableWithUrl:(NSString *)url;
+
 @end
 
 NS_ASSUME_NONNULL_END

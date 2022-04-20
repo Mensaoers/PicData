@@ -219,69 +219,136 @@
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
         NSMutableArray *urls = [NSMutableArray array];
+        NSMutableArray *suggesM = [NSMutableArray array];
 
-//        OCQueryObject *metaEs = document.QueryElement(@"meta");
-//        for (OCGumboElement *metaE in metaEs) {
-//            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
-//                [self updateContentTitle:metaE.attr(@"content")];
-//                break;
-//            }
-//        }
+        switch (self.sourceModel.sourceType) {
+            case 1: {
+//                OCQueryObject *metaEs = document.QueryElement(@"meta");
+//                for (OCGumboElement *metaE in metaEs) {
+//                    if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
+//                        [self updateContentTitle:metaE.attr(@"content")];
+//                        break;
+//                    }
+//                }
 
-        OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
-        OCQueryObject *es = contentE.Query(@"img");
-        for (OCGumboElement *e in es) {
-            NSString *src = e.attr(@"src");
-            if (src.length > 0) {
-                [urls addObject:src];
-            }
-        }
+                OCGumboElement *contentE = document.QueryClass(@"contents").firstObject;
+                OCQueryObject *es = contentE.Query(@"img");
+                for (OCGumboElement *e in es) {
+                    NSString *src = e.attr(@"src");
+                    if (src.length > 0) {
+                        [urls addObject:src];
+                    }
+                }
 
-        OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
-        BOOL find = NO;
-        if (nextE) {
-            OCQueryObject *aEs = nextE.QueryElement(@"a");
-            for (OCGumboElement *aE in aEs) {
-                if ([aE.text() isEqualToString:@"下一页"]) {
-                    find = YES;
-                    NSString *nextPage = aE.attr(@"href");
+                OCGumboElement *nextE = document.QueryClass(@"pageart").firstObject;
+                BOOL find = NO;
+                if (nextE) {
+                    OCQueryObject *aEs = nextE.QueryElement(@"a");
+                    for (OCGumboElement *aE in aEs) {
+                        if ([aE.text() isEqualToString:@"下一页"]) {
+                            find = YES;
+                            NSString *nextPage = aE.attr(@"href");
 
-                    self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
-                    break;
+                            self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
+                            break;
+                        }
+                    }
+                }
+
+                if (!find) {
+                    self.detailModel.nextUrl = @"";
+                }
+
+                // 推荐
+                OCGumboElement *listDiv = document.QueryClass(@"w980").firstObject;
+                OCQueryObject *articleEs = listDiv.QueryClass(@"post");
+
+
+                for (OCGumboElement *articleE in articleEs) {
+
+                    OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                    NSString *title = aE.attr(@"title");
+                    NSString *href = aE.attr(@"href");
+
+                    OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+                    NSString *thumbnailUrl = imgE.attr(@"src");
+
+                    PicContentModel *contentModel = [[PicContentModel alloc] init];
+                    contentModel.href = href;
+                    contentModel.sourceHref = self.sourceModel.url;
+                    contentModel.HOST_URL = self.sourceModel.HOST_URL;
+                    contentModel.title = title;
+                    contentModel.thumbnailUrl = thumbnailUrl;
+                    [contentModel insertTable];
+                    [suggesM addObject:contentModel];
                 }
             }
-        }
+                break;
+            case 2: {
+                //        OCQueryObject *metaEs = document.QueryElement(@"meta");
+                //        for (OCGumboElement *metaE in metaEs) {
+                //            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
+                //                [self updateContentTitle:metaE.attr(@"content")];
+                //                break;
+                //            }
+                //        }
 
-        if (!find) {
-            self.detailModel.nextUrl = @"";
+                OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
+                OCQueryObject *es = contentE.Query(@"img");
+                for (OCGumboElement *e in es) {
+                    NSString *src = e.attr(@"src");
+                    if (src.length > 0) {
+                        [urls addObject:src];
+                    }
+                }
+
+                OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
+                BOOL find = NO;
+                if (nextE) {
+                    OCQueryObject *aEs = nextE.QueryElement(@"a");
+                    for (OCGumboElement *aE in aEs) {
+                        if ([aE.text() isEqualToString:@"下一页"]) {
+                            find = YES;
+                            NSString *nextPage = aE.attr(@"href");
+
+                            self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
+                            break;
+                        }
+                    }
+                }
+
+                if (!find) {
+                    self.detailModel.nextUrl = @"";
+                }
+
+                // 推荐
+                OCGumboElement *listDiv = document.QueryClass(@"articleV4PicList").firstObject;
+                OCQueryObject *articleEs = listDiv.QueryElement(@"li");
+
+                for (OCGumboElement *articleE in articleEs) {
+
+                    OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                    NSString *title = aE.attr(@"title");
+                    NSString *href = aE.attr(@"href");
+
+                    OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+                    NSString *thumbnailUrl = imgE.attr(@"src");
+
+                    PicContentModel *contentModel = [[PicContentModel alloc] init];
+                    contentModel.href = href;
+                    contentModel.sourceHref = self.sourceModel.url;
+                    contentModel.HOST_URL = self.sourceModel.HOST_URL;
+                    contentModel.title = title;
+                    contentModel.thumbnailUrl = thumbnailUrl;
+                    [contentModel insertTable];
+                    [suggesM addObject:contentModel];
+                }
+            }
+            default:
+                break;
         }
 
         self.detailModel.contentImgsUrl = [urls copy];
-
-        // 推荐
-        OCGumboElement *listDiv = document.QueryClass(@"articleV4PicList").firstObject;
-        OCQueryObject *articleEs = listDiv.QueryElement(@"li");
-
-        NSMutableArray *suggesM = [NSMutableArray array];
-        for (OCGumboElement *articleE in articleEs) {
-
-            OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
-            NSString *title = aE.attr(@"title");
-            NSString *href = aE.attr(@"href");
-
-            OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
-            NSString *thumbnailUrl = imgE.attr(@"src");
-
-            PicContentModel *contentModel = [[PicContentModel alloc] init];
-            contentModel.href = href;
-            contentModel.sourceTitle = self.sourceModel.title;
-            contentModel.HOST_URL = self.sourceModel.HOST_URL;
-            contentModel.title = title;
-            contentModel.thumbnailUrl = thumbnailUrl;
-            [contentModel insertTable];
-            [suggesM addObject:contentModel];
-        }
-
         self.detailModel.suggesArray = [suggesM copy];
     }
 }

@@ -99,7 +99,7 @@ singleton_implementation(ContentParserManager)
     NSArray *results = [PicContentTaskModel queryNextTask];
     if (results.count > 0) {
         PicContentTaskModel *nextTaskModel = results.firstObject;
-        PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:nextTaskModel.sourceTitle] firstObject];
+        PicSourceModel *sourceModel = [[PicSourceModel queryTableWithUrl:nextTaskModel.sourceHref] firstObject];
         if (sourceModel != nil) {
             [self parserWithSourceModel:sourceModel ContentTaskModel:nextTaskModel];
         }
@@ -214,7 +214,20 @@ singleton_implementation(ContentParserManager)
         NSMutableArray *urls = [NSMutableArray array];
         NSMutableArray *suggestNames = [NSMutableArray array];
         
-        OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
+        OCGumboElement *contentE;
+
+        switch (sourceModel.sourceType) {
+            case 1:{
+                contentE = document.QueryClass(@"contents").firstObject;
+            }
+                break;
+            case 2: {
+                contentE = document.QueryClass(@"content").firstObject;
+            }
+            default:
+                break;
+        }
+
         OCQueryObject *es = contentE.Query(@"img");
         NSInteger index = 1;
         for (OCGumboElement *e in es) {
@@ -227,7 +240,20 @@ singleton_implementation(ContentParserManager)
             }
         }
 
-        OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
+        OCGumboElement *nextE;
+
+        switch (sourceModel.sourceType) {
+            case 1:{
+                nextE = document.QueryClass(@"pageart").firstObject;
+            }
+                break;
+            case 2: {
+                nextE = document.QueryClass(@"page-tag").firstObject;
+            }
+            default:
+                break;
+        }
+
         BOOL find = NO;
         if (nextE) {
             OCQueryObject *aEs = nextE.QueryElement(@"a");

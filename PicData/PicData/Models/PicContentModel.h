@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PicContentModel : PicBaseModel
 
-@property (nonatomic, strong) NSString *sourceTitle;
+@property (nonatomic, strong) NSString *sourceHref;
 @property (nonatomic, strong) NSString *thumbnailUrl;
 @property (nonatomic, strong) NSString *href;
 

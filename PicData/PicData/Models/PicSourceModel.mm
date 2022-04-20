@@ -17,13 +17,17 @@ WCDB_SYNTHESIZE(PicSourceModel, HOST_URL)
 WCDB_SYNTHESIZE(PicSourceModel, url)
 WCDB_SYNTHESIZE(PicSourceModel, sourceType)
 
-WCDB_PRIMARY(PicSourceModel, title)
+WCDB_PRIMARY(PicSourceModel, url)
 
-WCDB_INDEX(PicSourceModel, "_index", title)
+WCDB_INDEX(PicSourceModel, "_index", url)
 
 - (id)copy {
     PicSourceModel *sourceModel = [PicSourceModel mj_objectWithKeyValues:[self mj_keyValues]];
     return sourceModel;
+}
+
++ (NSArray *)queryTableWithUrl:(NSString *)url {
+    return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.url == url];
 }
 
 @end

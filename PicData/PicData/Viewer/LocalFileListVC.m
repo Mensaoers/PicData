@@ -601,7 +601,7 @@
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到该套图的下载记录" afterDelay:1];
         return;
     }
-    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
+    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithUrl:contentModel.sourceHref] firstObject];
     if (nil == sourceModel) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到数据源" afterDelay:1];
         return;

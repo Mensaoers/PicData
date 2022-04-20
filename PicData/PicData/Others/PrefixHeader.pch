@@ -26,6 +26,7 @@
     #import <SSZipArchive/SSZipArchive.h>
     #import <IQKeyboardManager/IQKeyboardManager.h>
     #import <PicDataSDK/PicDataSDK.h>
+    #import "UIViewController+CWLateralSlide.h"
 
     #import "Singleton.h"
     #import "NSObject+ChangeUnicode.h"
@@ -36,6 +37,7 @@
 
     #import "DatabaseManager.h"
     #import "AppTool.h"
+    #import "HostManager.h"
     #import "BaseViewController.h"
     #import "BaseNavigationController.h"
     #import "BaseTabBarController.h"

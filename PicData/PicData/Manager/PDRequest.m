@@ -31,7 +31,10 @@ singleton_implementation(PDRequest)
 + (void)getWithURL:(NSURL *)URL userAgent:(NSString *)userAgent completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:userAgent forHTTPHeaderField:@"User-agent"];
-    NSURLSession *session = [NSURLSession sharedSession];
+
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    config.timeoutIntervalForRequest = 10;
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     // [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:[PDRequest sharedPDRequest] delegateQueue:nil];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:completionHandler];
     [dataTask resume];

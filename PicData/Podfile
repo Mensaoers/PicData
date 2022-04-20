@@ -22,6 +22,7 @@ target 'PicData' do
   pod 'WCDB'
   pod 'SSZipArchive'
   pod 'IQKeyboardManager'
+  pod 'CWLateralSlide', '~> 1.6.3'
   # Pods for PicData
 
 end

@@ -677,7 +677,7 @@
                 // 还要把数据库数据更新
             if (weakSelf.navigationController.viewControllers.count == 2) {
                 // 进到列表中, 只需要更新这个类别下面所有的数据就好了
-                [PicContentTaskModel deleteFromTableWithSourceTitle:[weakSelf.targetFilePath lastPathComponent]];
+                [PicContentTaskModel deleteFromTableWithSourceHref:self.contentModel.sourceHref];
             } else {
                 // 更新contentModel就好了
                 if (self.contentModel) {

@@ -36,11 +36,11 @@ WCDB_INDEX(PicContentModel, "_index", href)
     return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.href == href];
 }
 
-+ (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle WhenTitle:(NSString *)title {
-    if (sourceTitle.length == 0) {
++ (BOOL)updateTableWithSourceHref:(NSString *)sourceHref WhenTitle:(NSString *)title {
+    if (sourceHref.length == 0) {
         return YES;
     }
-    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.sourceTitle withValue:sourceTitle where:self.title == title];
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.sourceHref withValue:sourceHref where:self.title == title];
 }
 
 @end
@@ -94,8 +94,8 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.status withValue:@0 where:self.downloadedCount >= 0 && self.status != 3];
 }
 
-+ (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle {
-    return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.sourceTitle == sourceTitle];
++ (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref {
+    return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.sourceHref == sourceHref];
 }
 
 + (BOOL)deleteFromTableWithTitle:(NSString *)title {

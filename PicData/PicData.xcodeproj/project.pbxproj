@@ -50,6 +50,7 @@
 		33E6404E2810108900E763B6 /* PicNetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404D2810108900E763B6 /* PicNetModel.m */; };
 		33E640522810118300E763B6 /* HostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E640512810118300E763B6 /* HostManager.m */; };
 		33E640542810138800E763B6 /* PicNet.json in Resources */ = {isa = PBXBuildFile; fileRef = 33E640532810122700E763B6 /* PicNet.json */; };
+		33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */; };
 		33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
@@ -185,6 +186,8 @@
 		33E640502810118300E763B6 /* HostManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HostManager.h; sourceTree = "<group>"; };
 		33E640512810118300E763B6 /* HostManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HostManager.m; sourceTree = "<group>"; };
 		33E640532810122700E763B6 /* PicNet.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicNet.json; sourceTree = "<group>"; };
+		33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPDownloadTaskOperation.h; sourceTree = "<group>"; };
+		33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPDownloadTaskOperation.m; sourceTree = "<group>"; };
 		33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
 		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
@@ -424,6 +427,15 @@
 				33E6404D2810108900E763B6 /* PicNetModel.m */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		33E6405528103DCD00E763B6 /* DownloadOperation */ = {
+			isa = PBXGroup;
+			children = (
+				33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */,
+				33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */,
+			);
+			path = DownloadOperation;
 			sourceTree = "<group>";
 		};
 		33F0CD4624ED6BF30051D74E /* View */ = {
@@ -703,6 +715,7 @@
 		9DE95CF6244CA23000E31735 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				33E6405528103DCD00E763B6 /* DownloadOperation */,
 				9DE95CF8244CA25900E31735 /* PDDownloadManager.h */,
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
 				335124E024D6E2C9004489CA /* PDRequest.h */,
@@ -897,6 +910,7 @@
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
 				336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */,
 				9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */,
+				33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */,
 				33E640522810118300E763B6 /* HostManager.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,

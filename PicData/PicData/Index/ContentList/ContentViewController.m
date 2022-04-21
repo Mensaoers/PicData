@@ -58,7 +58,7 @@
     PDBlockSelf
     collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        [weakSelf loadContentData:[NSURL URLWithString:weakSelf.sourceModel.url] isReload:YES];
+        [weakSelf loadContentData:[NSURL URLWithString:[weakSelf.sourceModel.url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] isReload:YES];
     }];
 
     collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{

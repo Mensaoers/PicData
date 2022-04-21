@@ -23,7 +23,7 @@
 - (NSOperationQueue *)downloadQueue {
     if (nil == _downloadQueue) {
         _downloadQueue = [[NSOperationQueue alloc] init];
-        _downloadQueue.maxConcurrentOperationCount = 8;
+        _downloadQueue.maxConcurrentOperationCount = 5;
     }
     return _downloadQueue;
 }

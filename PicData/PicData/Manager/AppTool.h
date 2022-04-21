@@ -41,6 +41,8 @@ singleton_interface(AppTool)
 + (NSStringEncoding)getNSStringEncoding_GB_18030_2000;
 /// data转字符串 中文编码
 + (NSString *)getStringWithGB_18030_2000Code:(NSData *)data;
++ (NSString *)getStringWithUTF8Code:(NSData *)data;
++ (NSString *)getStringWithData:(NSData *)data dataEncoding:(NSStringEncoding)dataEncoding;
 
 @end
 

@@ -184,7 +184,7 @@
             [weakSelf.tableView.mj_header endRefreshing];
         });
         if (nil == error) {
-            NSString *htmlString = [AppTool getStringWithGB_18030_2000Code:data];
+            NSString *htmlString = [ContentParserManager getHtmlStringWithData:data sourceType:hostModel.sourceType];
 
             // 解析html
             [weakSelf paraseHtmlString_tags:htmlString];
@@ -260,6 +260,11 @@
                 [self.classModels addObject:classModel];
             }
         }
+            break;
+        case 3: {
+
+        }
+            break;
         default:
             break;
     }

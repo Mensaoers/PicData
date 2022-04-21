@@ -153,14 +153,16 @@ singleton_implementation(ContentParserManager)
             int count = 0;
             if (nil == error) {
                 // 获取字符串
-                NSString *content = [AppTool getStringWithGB_18030_2000Code:data];
+                NSString *content = [self getHtmlStringWithData:data sourceType:sourceModel.sourceType];
 
                 NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
                 NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel picCount:picCount];
                 nextUrl = result[@"nextUrl"];
                 if (nextUrl.length > 0) {
-                    nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
+                    if (sourceModel.sourceType != 3) {
+                        nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
+                    }
                 }
                 NSError *writeError = nil;
                 count = [result[@"count"] intValue];
@@ -216,6 +218,11 @@ singleton_implementation(ContentParserManager)
             case 2: {
                 contentE = document.QueryClass(@"content").firstObject;
             }
+                break;
+            case 3: {
+                contentE = document.QueryClass(@"contentme").firstObject;
+            }
+                break;
             default:
                 break;
         }
@@ -242,6 +249,11 @@ singleton_implementation(ContentParserManager)
             case 2: {
                 nextE = document.QueryClass(@"page-tag").firstObject;
             }
+                break;
+            case 3: {
+                nextE = document.QueryClass(@"pag").firstObject;
+            }
+                break;
             default:
                 break;
         }
@@ -249,8 +261,22 @@ singleton_implementation(ContentParserManager)
         BOOL find = NO;
         if (nextE) {
             OCQueryObject *aEs = nextE.QueryElement(@"a");
+
+            NSString *nextPageTitle = @"下一页";
+            switch (sourceModel.sourceType) {
+                case 1:
+                case 2:
+                    nextPageTitle = @"下一页";
+                    break;
+                case 3:
+                    nextPageTitle = @"Next >";
+                    break;
+                default:
+                    break;
+            }
+
             for (OCGumboElement *aE in aEs) {
-                if ([aE.text() isEqualToString:@"下一页"]) {
+                if ([aE.text() isEqualToString:nextPageTitle]) {
                     find = YES;
                     NSString *nextPage = aE.attr(@"href");
 
@@ -274,4 +300,17 @@ singleton_implementation(ContentParserManager)
     return @{@"nextUrl" : url, @"urls" : [urlsString copy], @"count": @(count)};
 }
 
++ (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType {
+    switch (sourceType) {
+        case 1:
+        case 2:
+            return [AppTool getStringWithGB_18030_2000Code:data];
+            break;
+        case 3:
+            return [AppTool getStringWithUTF8Code:data];
+        default:
+            break;
+    }
+    return @"";
+}
 @end

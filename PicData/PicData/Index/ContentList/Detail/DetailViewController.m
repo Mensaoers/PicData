@@ -178,7 +178,7 @@
 
         if (nil == error) {
             // 获取字符串
-            NSString *resultString = [AppTool getStringWithGB_18030_2000Code:data];
+            NSString *resultString = [ContentParserManager getHtmlStringWithData:data sourceType:weakSelf.sourceModel.sourceType];
             dispatch_async(dispatch_get_main_queue(), ^{
 
                 // 解析数据
@@ -344,6 +344,70 @@
                     [suggesM addObject:contentModel];
                 }
             }
+                break;
+            case 3: {
+
+                //        OCQueryObject *metaEs = document.QueryElement(@"meta");
+                //        for (OCGumboElement *metaE in metaEs) {
+                //            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
+                //                [self updateContentTitle:metaE.attr(@"content")];
+                //                break;
+                //            }
+                //        }
+
+                OCGumboElement *contentE = document.QueryClass(@"contentme").firstObject;
+                OCQueryObject *es = contentE.Query(@"img");
+                for (OCGumboElement *e in es) {
+                    NSString *src = e.attr(@"src");
+                    if (src.length > 0) {
+                        [urls addObject:src];
+                    }
+                }
+
+                OCGumboElement *nextE = document.QueryClass(@"pag").firstObject;
+                BOOL find = NO;
+                if (nextE) {
+                    OCQueryObject *aEs = nextE.QueryElement(@"a");
+                    for (OCGumboElement *aE in aEs) {
+                        if ([aE.text() isEqualToString:@"Next >"]) {
+                            find = YES;
+                            NSString *nextPage = aE.attr(@"href");
+
+                            self.detailModel.nextUrl = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]].absoluteString;
+                            break;
+                        }
+                    }
+                }
+
+                if (!find) {
+                    self.detailModel.nextUrl = @"";
+                }
+
+                // 推荐
+                OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
+                OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
+
+                NSMutableArray *suggesM = [NSMutableArray array];
+                for (OCGumboElement *articleE in articleEs) {
+
+                    OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                    NSString *title = aE.attr(@"title");
+                    NSString *href = aE.attr(@"href");
+
+                    OCGumboElement *imgE = aE.QueryClass(@"xld").firstObject;
+                    NSString *thumbnailUrl = imgE.attr(@"src");
+
+                    PicContentModel *contentModel = [[PicContentModel alloc] init];
+                    contentModel.href = href;
+                    contentModel.sourceHref = self.sourceModel.url;
+                    contentModel.HOST_URL = self.sourceModel.HOST_URL;
+                    contentModel.title = title;
+                    contentModel.thumbnailUrl = thumbnailUrl;
+                    [contentModel insertTable];
+                    [suggesM addObject:contentModel];
+                }
+            }
+                break;
             default:
                 break;
         }

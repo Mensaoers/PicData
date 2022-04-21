@@ -102,7 +102,7 @@
         PDBlockStrongSelf
         if (nil == error) {
             // 获取字符串
-            NSString *resultString = [AppTool getStringWithGB_18030_2000Code:data];
+            NSString *resultString = [ContentParserManager getHtmlStringWithData:data sourceType:weakSelf.sourceModel.sourceType];
 
             NSString *targetPath = [[[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:weakSelf.sourceModel contentModel:nil] stringByAppendingPathComponent:@"htmlContent.txt"];
             [data writeToFile:targetPath atomically:YES];
@@ -181,6 +181,23 @@
                     }
                 }
             }
+                break;
+            case 3: {
+                OCGumboElement *nextE = document.QueryClass(@"pag").firstObject;
+                if (nextE) {
+                    OCQueryObject *aEs = nextE.QueryElement(@"a");
+                    for (OCGumboElement *aE in aEs) {
+                        if ([aE.text() isEqualToString:@"Next »"]) {
+                            find = YES;
+                            NSString *nextPage = aE.attr(@"href");
+
+                            self.nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]];
+                            break;
+                        }
+                    }
+                }
+            }
+                break;
             default:
                 break;
         }
@@ -249,6 +266,31 @@
                 [articleContents addObject:contentModel];
             }
         }
+            break;
+        case 3: {
+            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                NSString *title = aE.attr(@"title");
+                NSString *href = aE.attr(@"href");
+
+                OCGumboElement *imgE = aE.QueryClass(@"xld").firstObject;
+                NSString *thumbnailUrl = imgE.attr(@"src");
+
+                PicContentModel *contentModel = [[PicContentModel alloc] init];
+                contentModel.href = href;
+                contentModel.sourceHref = self.sourceModel.url;
+                contentModel.HOST_URL = self.sourceModel.HOST_URL;
+                contentModel.title = title;
+                contentModel.thumbnailUrl = thumbnailUrl;
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
         default:
             break;
     }

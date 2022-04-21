@@ -40,6 +40,8 @@ singleton_interface(ContentParserManager)
 /// 查询接下来要开始的任务(强制添加)
 + (void)prepareToDoNextTask:(BOOL)force;
 
++ (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType;
+
 @end
 
 NS_ASSUME_NONNULL_END

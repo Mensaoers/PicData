@@ -91,7 +91,6 @@
 		9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CB7244C3FDC00E31735 /* OCGumbo.m */; };
 		9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */; };
 		9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CD6244C417900E31735 /* PicSourceModel.mm */; };
-		9DE95CD9244C418700E31735 /* PicSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95CD8244C418700E31735 /* PicSource.json */; };
 		9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CDB244C43A400E31735 /* PicClassModel.m */; };
 		9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CDF244C468500E31735 /* ContentViewController.m */; };
 		9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CE3244C49C900E31735 /* PicContentCell.m */; };
@@ -275,7 +274,6 @@
 		9DE95CBE244C3FDC00E31735 /* MBProgressHUD+LZPShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LZPShow.h"; sourceTree = "<group>"; };
 		9DE95CD5244C417900E31735 /* PicSourceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicSourceModel.h; sourceTree = "<group>"; };
 		9DE95CD6244C417900E31735 /* PicSourceModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicSourceModel.mm; sourceTree = "<group>"; };
-		9DE95CD8244C418700E31735 /* PicSource.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicSource.json; sourceTree = "<group>"; };
 		9DE95CDA244C43A400E31735 /* PicClassModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassModel.h; sourceTree = "<group>"; };
 		9DE95CDB244C43A400E31735 /* PicClassModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicClassModel.m; sourceTree = "<group>"; };
 		9DE95CDE244C468500E31735 /* ContentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
@@ -682,7 +680,6 @@
 				3323206124ECE3D000FE5E33 /* PicRuleModel.m */,
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
-				9DE95CD8244C418700E31735 /* PicSource.json */,
 				33E640532810122700E763B6 /* PicNet.json */,
 			);
 			path = Models;
@@ -812,7 +809,6 @@
 				9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */,
 				332D014326FD845F00E3F387 /* gesture_headIcon@2x.png in Resources */,
 				332D014A26FD845F00E3F387 /* gesture_normal@2x.png in Resources */,
-				9DE95CD9244C418700E31735 /* PicSource.json in Resources */,
 				332D014826FD845F00E3F387 /* gesture_normal@3x.png in Resources */,
 				9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */,
 				332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */,

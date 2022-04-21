@@ -84,7 +84,8 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
 /// 初始化所有任务
 + (BOOL)resetHalfWorkingTasks {
     [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.status withValue:@3 where:self.downloadedCount > 0 && self.downloadedCount == self.totalCount];
-    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.status withValue:@0 where:self.downloadedCount >= 0 && self.status != 3];
+    // 更新多列数据
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperties:{self.status, self.downloadedCount} withRow:@[@0, @0] where:self.downloadedCount >= 0 && self.status != 3];
 }
 
 + (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref {

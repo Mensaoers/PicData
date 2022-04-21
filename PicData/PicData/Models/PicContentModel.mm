@@ -36,13 +36,6 @@ WCDB_INDEX(PicContentModel, "_index", href)
     return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.href == href];
 }
 
-+ (BOOL)updateTableWithSourceHref:(NSString *)sourceHref WhenTitle:(NSString *)title {
-    if (sourceHref.length == 0) {
-        return YES;
-    }
-    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.sourceHref withValue:sourceHref where:self.title == title];
-}
-
 @end
 
 @implementation PicContentTaskModel

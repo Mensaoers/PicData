@@ -25,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray *)queryTableWithHref:(NSString *)href;
 
-+ (BOOL)updateTableWithSourceHref:(NSString *)sourceHref WhenTitle:(NSString *)title;
 @end
 
 /// 已添加下载的任务

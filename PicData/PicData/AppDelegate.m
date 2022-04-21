@@ -50,13 +50,7 @@
 }
 
 - (void)setupDownloadManager {
-    TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
-    configuraion.allowsCellularAccess = YES;
-    self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
-    NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.sessionManager totalCancel];
         [ContentParserManager prepareForAppLaunch];
     });
 }

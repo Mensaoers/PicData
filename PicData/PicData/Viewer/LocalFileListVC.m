@@ -214,6 +214,7 @@
             }
         }
 
+        self.navigationItem.title = [NSString stringWithFormat:@"%ld", self.fileNamesList.count];
         [self.contentView reloadData];
     } else {
         NSLog(@"%@", subError);

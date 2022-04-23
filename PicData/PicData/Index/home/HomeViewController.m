@@ -133,6 +133,25 @@
     [self loadAllTags];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+#if TARGET_OS_MACCATALYST
+
+    // 方法重置, 在mac端拖动界面大小之后, 刷新tag列表, 重新布局
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshDataList) object:nil];
+    [self performSelector:@selector(refreshDataList) afterDelay:0.2];
+
+#endif
+
+}
+
+- (void)refreshDataList {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadDataWithSource:self.classModels];
+    });
+}
+
 - (void)refreshItemClickAction:(UIBarButtonItem *)sender {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self loadAllTags];

@@ -9,7 +9,6 @@
 #import "LocalFileListVC.h"
 #import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
-#import "ViewerContentView.h"
 
 @interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 

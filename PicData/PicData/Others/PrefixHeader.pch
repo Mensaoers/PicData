@@ -30,7 +30,6 @@
 
     #import "Singleton.h"
     #import "NSObject+ChangeUnicode.h"
-    #import "NSString+string.h"
     #import "UILabel+text.h"
     #import "UINavigationController+push.h"
     #import "OCGumbo+Query.h"

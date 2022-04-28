@@ -16,7 +16,7 @@ static BOOL canChangeOrientation = NO;
 singleton_implementation(AppTool)
 
 - (NSString *)HOST_URL {
-    return @"https://www.tu963.cc";
+    return [HostManager sharedHostManager].currentHostModel.HOST_URL;
 }
 
 /// bugly app_id
@@ -153,7 +153,13 @@ singleton_implementation(AppTool)
 }
 
 + (NSString *)getStringWithGB_18030_2000Code:(NSData *)data {
-    return [[NSString alloc] initWithData:data encoding:[self getNSStringEncoding_GB_18030_2000]];
+    return [self getStringWithData:data dataEncoding:[self getNSStringEncoding_GB_18030_2000]];
+}
++ (NSString *)getStringWithUTF8Code:(NSData *)data {
+    return [self getStringWithData:data dataEncoding:NSUTF8StringEncoding];
+}
++ (NSString *)getStringWithData:(NSData *)data dataEncoding:(NSStringEncoding)dataEncoding {
+    return [[NSString alloc] initWithData:data encoding:dataEncoding];
 }
 
 @end

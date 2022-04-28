@@ -10,6 +10,7 @@
 #import "HomeViewController.h"
 #import "SettingViewController.h"
 #import "LocalFileListVC.h"
+#import "TasksViewController.h"
 
 @interface AppDelegate ()
 
@@ -35,6 +36,13 @@
     viewerNavi.tabBarItem.image = [[UIImage imageNamed:@"folder_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     viewerNavi.tabBarItem.title = @"浏览";
 
+    // 下载
+    TasksViewController *tasksVC = [[TasksViewController alloc] init];
+    BaseNavigationController *tasksNavi = [[BaseNavigationController alloc] initWithRootViewController:tasksVC];
+    tasksNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"downloaded"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    tasksNavi.tabBarItem.image = [[UIImage imageNamed:@"download_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    tasksNavi.tabBarItem.title = @"下载";
+
     // 设置
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     BaseNavigationController *settingNavi = [[BaseNavigationController alloc] initWithRootViewController:settingVC];
@@ -42,7 +50,7 @@
     settingNavi.tabBarItem.image = [[UIImage imageNamed:@"set_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     settingNavi.tabBarItem.title = @"设置";
 
-    tabbarVC.viewControllers = @[indexNavi, viewerNavi, settingNavi];
+    tabbarVC.viewControllers = @[indexNavi, viewerNavi, tasksNavi, settingNavi];
 
 
     [self.window setRootViewController:tabbarVC];
@@ -50,13 +58,7 @@
 }
 
 - (void)setupDownloadManager {
-    TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
-    configuraion.allowsCellularAccess = YES;
-    self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
-    NSLog(@"%@", [PDDownloadManager sharedPDDownloadManager].sessionManager);
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.sessionManager totalCancel];
         [ContentParserManager prepareForAppLaunch];
     });
 }

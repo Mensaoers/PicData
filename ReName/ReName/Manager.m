@@ -9,6 +9,51 @@
 
 @implementation Manager
 
++ (void)removeTargetFilesAtPath:(NSString *)dirPath ContainsKeyword:(NSString *)keyword {
+
+    if (keyword.length == 0) { return; }
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    NSLog(@"当前正在遍历文件夹: %@", dirPath);
+
+    // 获取所有子文件数组
+    NSError *subError = nil;
+    NSArray *fileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
+    if (subError) {
+
+        NSLog(@"获取路径下所有文件失败: %@, error: %@", dirPath, subError);
+        return;
+    }
+
+    for (NSString *fileName in fileContents) {
+
+        NSString *filePath = [dirPath stringByAppendingPathComponent:fileName];
+
+        if ([self isDirectory:filePath]) {
+            // 这是个文件夹
+            NSLog(@"当前文件: %@是一个文件夹", filePath);
+            [self removeTargetFilesAtPath:filePath ContainsKeyword:keyword];
+            continue;
+        }
+
+        NSLog(@"当前判断文件: %@", filePath);
+
+        if ([fileName containsString:keyword]) {
+            NSLog(@"需要删除: %@", filePath);
+
+            NSError *rmError = nil;
+            [fileManager removeItemAtPath:filePath error:&rmError];
+            if (rmError) {
+                NSLog(@"删除失败, error: %@", rmError);
+                continue;
+            } else {
+                NSLog(@"删除成功");
+            }
+        }
+    }
+}
+
 /// 一键重命名各个图片
 + (void)renameAllPicturesOfDirectoryAtPath:(NSString *)dirPath andTxtFileRemove:(BOOL)together {
 

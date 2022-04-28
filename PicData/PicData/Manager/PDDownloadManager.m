@@ -7,23 +7,37 @@
     //
 
 #import "PDDownloadManager.h"
+#import "PPDownloadTaskOperation.h"
 
 @interface PDDownloadManager()
 
-@property (nonatomic, strong) dispatch_queue_t disDownFinishQueue;
+/// 用不到 作废
+@property (nonatomic, strong) dispatch_queue_t didDownFinishQueue API_DEPRECATED("因为下载之后临时文件超时自动删除, 所以下载完成必须立马拷贝, 不能放到异步里面再拷贝, 故而作废", ios(2.0, 3.0));
+
+@property (nonatomic, strong) NSOperationQueue *downloadQueue;
 
 @end
 
 @implementation PDDownloadManager
 
-- (dispatch_queue_t)disDownFinishQueue {
-    if (nil == _disDownFinishQueue) {
+- (NSOperationQueue *)downloadQueue {
+    if (nil == _downloadQueue) {
+        _downloadQueue = [[NSOperationQueue alloc] init];
+        _downloadQueue.maxConcurrentOperationCount = 5;
+    }
+    return _downloadQueue;
+}
+
+/// 用不到, 作废
+- (dispatch_queue_t)didDownFinishQueue {
+    if (nil == _didDownFinishQueue) {
+        // 异步队列
         dispatch_queue_t diapatchQueue = dispatch_queue_create("com.test.queue.downFinished", DISPATCH_QUEUE_CONCURRENT);
         // DISPATCH_QUEUE_SERIAL
         // DISPATCH_QUEUE_CONCURRENT
-        _disDownFinishQueue = diapatchQueue;
+        _didDownFinishQueue = diapatchQueue;
     }
-    return _disDownFinishQueue;
+    return _didDownFinishQueue;
 }
 
 /// 数据库文件名
@@ -206,46 +220,52 @@ singleton_implementation(PDDownloadManager);
         NSDictionary *headers = @{
             @"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"
         };
-        [[[[[self.sessionManager downloadWithUrl:url headers:headers fileName:nil] progressOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            if (task.error) {
-                NSLog(@"task.error:%@", task.error);
-            }
-        }] successOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            
-            dispatch_async(self.disDownFinishQueue, ^{
-                NSError *copyError = nil;
-                NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:fileName];
-                [[NSFileManager defaultManager] copyItemAtPath:task.filePath toPath:targetPath error:&copyError];
-                if (nil == copyError) {
-                    NSLog(@"文件%@下载完成", fileName);
-                    contentTaskModel.downloadedCount += 1;
 
-                    // 我们是开始遍历的时候就开始下载了
-                    if (contentTaskModel.status == 1) {
+        void(^downloadSuccessBlock)(void) = ^{
+            NSLog(@"文件%@下载完成", fileName);
+            contentTaskModel.downloadedCount += 1;
 
-                    } else if (contentTaskModel.status == 2) {
-                        // 遍历完成
-                        if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
-                            contentTaskModel.status = 3;
-                            [contentTaskModel updateTable];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECOMPLETEDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
-                        }
-                    }
-//                    [contentTaskModel updateTable];
+            // 我们是开始遍历的时候就开始下载了
+            if (contentTaskModel.status == 1) {
+
+            } else if (contentTaskModel.status == 2) {
+                // 遍历完成
+                if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
+                    contentTaskModel.status = 3;
+                    [contentTaskModel updateTable];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECOMPLETEDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 }
-//                [self.sessionManager removeWithUrl:url];
-            });
-        }] failureOnMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            if (task.error) {
-                NSLog(@"task.error:%@", task.error);
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEFAILEDDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
-        }] validateFileWithCode:@"9e2a3650530b563da297c9246acaad5c" type:TRFileVerificationTypeMd5 onMainQueue:YES handler:^(TRDownloadTask * _Nonnull task) {
-            
-            if (task.error) {
-                NSLog(@"task.error:%@", task.error);
+        };
+
+        NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:fileName];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:targetPath]) {
+            NSLog(@"文件:%@ 已存在, 跳过下载", targetPath);
+            downloadSuccessBlock();
+            continue;
+        }
+
+        PPDownloadTaskOperation *operation = [PPDownloadTaskOperation operationWithUrl:url headers:headers downloadFinishedBlock:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+            if (nil == error) {
+
+                if ([[NSFileManager defaultManager] fileExistsAtPath:targetPath]) {
+                    NSLog(@"文件:%@ 已存在, 下载完成", targetPath);
+                    downloadSuccessBlock();
+                    return;
+                } else {
+                    NSError *copyError = nil;
+                    [[NSFileManager defaultManager] copyItemAtPath:location.path toPath:targetPath error:&copyError];
+                    if (nil == copyError) {
+                        downloadSuccessBlock();
+                    }
+                }
+            } else {
+                NSLog(@"task.error:%@", error);
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEFAILEDDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
             }
         }];
+        [self.downloadQueue addOperation:operation];
     }
 }
 

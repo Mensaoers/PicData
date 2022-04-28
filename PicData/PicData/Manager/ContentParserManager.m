@@ -55,14 +55,6 @@ singleton_implementation(ContentParserManager)
     }
 }
 
-/// 从数据库某条数据创建任务
-//+ (void)tryToAddTaskWithContentTaskModel:(PicContentTaskModel *)contentModel operationTips:(void (^)(BOOL, NSString * _Nonnull))operationTips {
-//    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
-//    if (sourceModel != nil) {
-//        [self parserWithSourceModel:sourceModel ContentTaskModel:contentModel];
-//    }
-//}
-
 /// app启动的时候, 将所有1的任务取出来开始进行
 + (void)prepareForAppLaunch {
     [PicContentTaskModel resetHalfWorkingTasks];
@@ -99,7 +91,7 @@ singleton_implementation(ContentParserManager)
     NSArray *results = [PicContentTaskModel queryNextTask];
     if (results.count > 0) {
         PicContentTaskModel *nextTaskModel = results.firstObject;
-        PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:nextTaskModel.sourceTitle] firstObject];
+        PicSourceModel *sourceModel = [[PicSourceModel queryTableWithUrl:nextTaskModel.sourceHref] firstObject];
         if (sourceModel != nil) {
             [self parserWithSourceModel:sourceModel ContentTaskModel:nextTaskModel];
         }
@@ -161,14 +153,16 @@ singleton_implementation(ContentParserManager)
             int count = 0;
             if (nil == error) {
                 // 获取字符串
-                NSString *content = [AppTool getStringWithGB_18030_2000Code:data];
+                NSString *content = [self getHtmlStringWithData:data sourceType:sourceModel.sourceType];
 
                 NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
                 NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel picCount:picCount];
                 nextUrl = result[@"nextUrl"];
                 if (nextUrl.length > 0) {
-                    nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
+                    if (sourceModel.sourceType != 3) {
+                        nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
+                    }
                 }
                 NSError *writeError = nil;
                 count = [result[@"count"] intValue];
@@ -214,7 +208,25 @@ singleton_implementation(ContentParserManager)
         NSMutableArray *urls = [NSMutableArray array];
         NSMutableArray *suggestNames = [NSMutableArray array];
         
-        OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
+        OCGumboElement *contentE;
+
+        switch (sourceModel.sourceType) {
+            case 1:{
+                contentE = document.QueryClass(@"contents").firstObject;
+            }
+                break;
+            case 2: {
+                contentE = document.QueryClass(@"content").firstObject;
+            }
+                break;
+            case 3: {
+                contentE = document.QueryClass(@"contentme").firstObject;
+            }
+                break;
+            default:
+                break;
+        }
+
         OCQueryObject *es = contentE.Query(@"img");
         NSInteger index = 1;
         for (OCGumboElement *e in es) {
@@ -227,12 +239,44 @@ singleton_implementation(ContentParserManager)
             }
         }
 
-        OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
+        OCGumboElement *nextE;
+
+        switch (sourceModel.sourceType) {
+            case 1:{
+                nextE = document.QueryClass(@"pageart").firstObject;
+            }
+                break;
+            case 2: {
+                nextE = document.QueryClass(@"page-tag").firstObject;
+            }
+                break;
+            case 3: {
+                nextE = document.QueryClass(@"pag").firstObject;
+            }
+                break;
+            default:
+                break;
+        }
+
         BOOL find = NO;
         if (nextE) {
             OCQueryObject *aEs = nextE.QueryElement(@"a");
+
+            NSString *nextPageTitle = @"下一页";
+            switch (sourceModel.sourceType) {
+                case 1:
+                case 2:
+                    nextPageTitle = @"下一页";
+                    break;
+                case 3:
+                    nextPageTitle = @"Next >";
+                    break;
+                default:
+                    break;
+            }
+
             for (OCGumboElement *aE in aEs) {
-                if ([aE.text() isEqualToString:@"下一页"]) {
+                if ([aE.text() isEqualToString:nextPageTitle]) {
                     find = YES;
                     NSString *nextPage = aE.attr(@"href");
 
@@ -256,4 +300,17 @@ singleton_implementation(ContentParserManager)
     return @{@"nextUrl" : url, @"urls" : [urlsString copy], @"count": @(count)};
 }
 
++ (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType {
+    switch (sourceType) {
+        case 1:
+        case 2:
+            return [AppTool getStringWithGB_18030_2000Code:data];
+            break;
+        case 3:
+            return [AppTool getStringWithUTF8Code:data];
+        default:
+            break;
+    }
+    return @"";
+}
 @end

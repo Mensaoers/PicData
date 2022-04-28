@@ -14,7 +14,7 @@ WCDB_IMPLEMENTATION(PicContentModel)
 WCDB_SYNTHESIZE(PicContentModel, title)
 WCDB_SYNTHESIZE(PicContentModel, systemTitle)
 WCDB_SYNTHESIZE(PicContentModel, HOST_URL)
-WCDB_SYNTHESIZE(PicContentModel, sourceTitle)
+WCDB_SYNTHESIZE(PicContentModel, sourceHref)
 WCDB_SYNTHESIZE(PicContentModel, thumbnailUrl)
 WCDB_SYNTHESIZE(PicContentModel, href)
 WCDB_SYNTHESIZE(PicContentModel, totalCount)
@@ -36,13 +36,6 @@ WCDB_INDEX(PicContentModel, "_index", href)
     return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.href == href];
 }
 
-+ (BOOL)updateTableWithSourceTitle:(NSString *)sourceTitle WhenTitle:(NSString *)title {
-    if (sourceTitle.length == 0) {
-        return YES;
-    }
-    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.sourceTitle withValue:sourceTitle where:self.title == title];
-}
-
 @end
 
 @implementation PicContentTaskModel
@@ -51,7 +44,7 @@ WCDB_IMPLEMENTATION(PicContentTaskModel)
 WCDB_SYNTHESIZE(PicContentTaskModel, title)
 WCDB_SYNTHESIZE(PicContentTaskModel, systemTitle)
 WCDB_SYNTHESIZE(PicContentTaskModel, HOST_URL)
-WCDB_SYNTHESIZE(PicContentTaskModel, sourceTitle)
+WCDB_SYNTHESIZE(PicContentTaskModel, sourceHref)
 WCDB_SYNTHESIZE(PicContentTaskModel, thumbnailUrl)
 WCDB_SYNTHESIZE(PicContentTaskModel, href)
 WCDB_SYNTHESIZE(PicContentTaskModel, totalCount)
@@ -91,11 +84,12 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
 /// 初始化所有任务
 + (BOOL)resetHalfWorkingTasks {
     [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.status withValue:@3 where:self.downloadedCount > 0 && self.downloadedCount == self.totalCount];
-    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.status withValue:@0 where:self.downloadedCount >= 0 && self.status != 3];
+    // 更新多列数据
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperties:{self.status, self.downloadedCount} withRow:@[@0, @0] where:self.downloadedCount >= 0 && self.status != 3];
 }
 
-+ (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle {
-    return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.sourceTitle == sourceTitle];
++ (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref {
+    return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.sourceHref == sourceHref];
 }
 
 + (BOOL)deleteFromTableWithTitle:(NSString *)title {

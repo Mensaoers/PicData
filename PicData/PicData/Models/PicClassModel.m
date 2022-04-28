@@ -10,7 +10,7 @@
 
 @implementation PicClassModel
 
-+ (instancetype)modelWithHOST_URL:(NSString *)HOST_URL Title:(NSString *)title sourceType:(NSString *)sourceType subTitles:(nullable NSArray<PicSourceModel *> *)subTitles {
++ (instancetype)modelWithHOST_URL:(NSString *)HOST_URL Title:(NSString *)title sourceType:(int)sourceType subTitles:(NSArray<PicSourceModel *> *)subTitles {
     PicClassModel *classModel = [[PicClassModel alloc] init];
     classModel.title = title;
     classModel.HOST_URL = HOST_URL;

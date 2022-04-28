@@ -14,8 +14,10 @@ int main(int argc, const char * argv[]) {
         NSLog(@"Hello, Coder!");
 
 //        [Manager renameAllPicturesOfDirectoryAtPath:@"/Volumes/LZP_HDD/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File/rt" andTxtFileRemove:YES];
-        [Manager renameAllPicturesOfDirectoryAtPath:@"/Volumes/T7/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)" andTxtFileRemove:YES];
+//        [Manager renameAllPicturesOfDirectoryAtPath:@"/Volumes/T7/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)" andTxtFileRemove:YES];
+        [Manager removeTargetFilesAtPath:@"/Volumes/T7/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)" ContainsKeyword:@"txt"];
     }
     return 0;
 
 }
+

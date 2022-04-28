@@ -39,13 +39,16 @@
 		3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
-		337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AA25982D7700A679BB /* ViewerContentView.m */; };
-		337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 337DA9AE25982D9400A679BB /* ViewerContentCell.m */; };
 		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
-		33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC12554495100C33FD0 /* ViewerFileModel.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
+		33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B8DB8E27D9DA960044BE44 /* TasksViewController.m */; };
+		33E6404B2810104F00E763B6 /* NetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404A2810104F00E763B6 /* NetListViewController.m */; };
+		33E6404E2810108900E763B6 /* PicNetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404D2810108900E763B6 /* PicNetModel.m */; };
+		33E640522810118300E763B6 /* HostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E640512810118300E763B6 /* HostManager.m */; };
+		33E640542810138800E763B6 /* PicNet.json in Resources */ = {isa = PBXBuildFile; fileRef = 33E640532810122700E763B6 /* PicNet.json */; };
+		33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */; };
 		33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */; };
 		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
@@ -60,7 +63,6 @@
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
 		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
-		9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D9956C125F4B1BB00370811 /* NSString+string.m */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
@@ -86,7 +88,6 @@
 		9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CB7244C3FDC00E31735 /* OCGumbo.m */; };
 		9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */; };
 		9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CD6244C417900E31735 /* PicSourceModel.mm */; };
-		9DE95CD9244C418700E31735 /* PicSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DE95CD8244C418700E31735 /* PicSource.json */; };
 		9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CDB244C43A400E31735 /* PicClassModel.m */; };
 		9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CDF244C468500E31735 /* ContentViewController.m */; };
 		9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CE3244C49C900E31735 /* PicContentCell.m */; };
@@ -161,19 +162,24 @@
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
 		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
 		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
-		337DA9A925982D7700A679BB /* ViewerContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentView.h; sourceTree = "<group>"; };
-		337DA9AA25982D7700A679BB /* ViewerContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentView.m; sourceTree = "<group>"; };
-		337DA9AD25982D9400A679BB /* ViewerContentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentCell.h; sourceTree = "<group>"; };
-		337DA9AE25982D9400A679BB /* ViewerContentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentCell.m; sourceTree = "<group>"; };
 		33967B5026EDF44600B308B1 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		33967B5126EDF44600B308B1 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		33AB92B324C3F5AA00E97E42 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		33B43FB62554436C00C33FD0 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
-		33B43FC02554495100C33FD0 /* ViewerFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerFileModel.h; sourceTree = "<group>"; };
-		33B43FC12554495100C33FD0 /* ViewerFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileModel.m; sourceTree = "<group>"; };
 		33B43FC5255455B600C33FD0 /* UINavigationController+push.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+push.h"; sourceTree = "<group>"; };
 		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
+		33B8DB8D27D9DA960044BE44 /* TasksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksViewController.h; sourceTree = "<group>"; };
+		33B8DB8E27D9DA960044BE44 /* TasksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksViewController.m; sourceTree = "<group>"; };
+		33E640492810104F00E763B6 /* NetListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetListViewController.h; sourceTree = "<group>"; };
+		33E6404A2810104F00E763B6 /* NetListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetListViewController.m; sourceTree = "<group>"; };
+		33E6404C2810108900E763B6 /* PicNetModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicNetModel.h; sourceTree = "<group>"; };
+		33E6404D2810108900E763B6 /* PicNetModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicNetModel.m; sourceTree = "<group>"; };
+		33E640502810118300E763B6 /* HostManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HostManager.h; sourceTree = "<group>"; };
+		33E640512810118300E763B6 /* HostManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HostManager.m; sourceTree = "<group>"; };
+		33E640532810122700E763B6 /* PicNet.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicNet.json; sourceTree = "<group>"; };
+		33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPDownloadTaskOperation.h; sourceTree = "<group>"; };
+		33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPDownloadTaskOperation.m; sourceTree = "<group>"; };
 		33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
 		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
 		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
@@ -202,8 +208,6 @@
 		9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTagsFrame.m; sourceTree = "<group>"; };
 		9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsViewCell.h; sourceTree = "<group>"; };
 		9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsFrame.h; sourceTree = "<group>"; };
-		9D9956C025F4B1BB00370811 /* NSString+string.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+string.h"; sourceTree = "<group>"; };
-		9D9956C125F4B1BB00370811 /* NSString+string.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+string.m"; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -261,7 +265,6 @@
 		9DE95CBE244C3FDC00E31735 /* MBProgressHUD+LZPShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+LZPShow.h"; sourceTree = "<group>"; };
 		9DE95CD5244C417900E31735 /* PicSourceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicSourceModel.h; sourceTree = "<group>"; };
 		9DE95CD6244C417900E31735 /* PicSourceModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicSourceModel.mm; sourceTree = "<group>"; };
-		9DE95CD8244C418700E31735 /* PicSource.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicSource.json; sourceTree = "<group>"; };
 		9DE95CDA244C43A400E31735 /* PicClassModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassModel.h; sourceTree = "<group>"; };
 		9DE95CDB244C43A400E31735 /* PicClassModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicClassModel.m; sourceTree = "<group>"; };
 		9DE95CDE244C468500E31735 /* ContentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
@@ -367,24 +370,13 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
-		33B43FB9255448E700C33FD0 /* View */ = {
+		33B8DB8C27D9DA7A0044BE44 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
-				337DA9A925982D7700A679BB /* ViewerContentView.h */,
-				337DA9AA25982D7700A679BB /* ViewerContentView.m */,
-				337DA9AD25982D9400A679BB /* ViewerContentCell.h */,
-				337DA9AE25982D9400A679BB /* ViewerContentCell.m */,
+				33B8DB8D27D9DA960044BE44 /* TasksViewController.h */,
+				33B8DB8E27D9DA960044BE44 /* TasksViewController.m */,
 			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		33B43FBF2554493F00C33FD0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				33B43FC02554495100C33FD0 /* ViewerFileModel.h */,
-				33B43FC12554495100C33FD0 /* ViewerFileModel.m */,
-			);
-			path = Model;
+			path = Tasks;
 			sourceTree = "<group>";
 		};
 		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
@@ -394,6 +386,34 @@
 				332C285424EBA5570083A5DC /* AddNetTask */,
 			);
 			path = TransView;
+			sourceTree = "<group>";
+		};
+		33E640482810103000E763B6 /* netList */ = {
+			isa = PBXGroup;
+			children = (
+				33E6404F2810108E00E763B6 /* model */,
+				33E640492810104F00E763B6 /* NetListViewController.h */,
+				33E6404A2810104F00E763B6 /* NetListViewController.m */,
+			);
+			path = netList;
+			sourceTree = "<group>";
+		};
+		33E6404F2810108E00E763B6 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				33E6404C2810108900E763B6 /* PicNetModel.h */,
+				33E6404D2810108900E763B6 /* PicNetModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		33E6405528103DCD00E763B6 /* DownloadOperation */ = {
+			isa = PBXGroup;
+			children = (
+				33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */,
+				33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */,
+			);
+			path = DownloadOperation;
 			sourceTree = "<group>";
 		};
 		33F0CD4624ED6BF30051D74E /* View */ = {
@@ -474,8 +494,6 @@
 		9DC94CA82552F7C2008ACAF8 /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
-				33B43FBF2554493F00C33FD0 /* Model */,
-				33B43FB9255448E700C33FD0 /* View */,
 				9DC94CA92552F7E0008ACAF8 /* LocalFileListVC.h */,
 				9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */,
 				33178B92256A184700CB47F2 /* ViewerViewController.h */,
@@ -507,6 +525,7 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
+				33B8DB8C27D9DA7A0044BE44 /* Tasks */,
 				9DC94C9A2552ECBB008ACAF8 /* Base */,
 				9DE95CF6244CA23000E31735 /* Manager */,
 				333ECEF725F71DFB00762219 /* ThirdParty */,
@@ -541,6 +560,7 @@
 		9DE95C8E244C3F5500E31735 /* Index */ = {
 			isa = PBXGroup;
 			children = (
+				33E640482810103000E763B6 /* netList */,
 				33967B5326EE001500B308B1 /* home */,
 				33B9EEC024DCA9EB00ABE3E2 /* TransView */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
@@ -615,8 +635,6 @@
 				9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */,
 				9DE95CEC244C5FBC00E31735 /* UILabel+text.h */,
 				9DE95CED244C5FBC00E31735 /* UILabel+text.m */,
-				9D9956C025F4B1BB00370811 /* NSString+string.h */,
-				9D9956C125F4B1BB00370811 /* NSString+string.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -639,7 +657,7 @@
 				3323206124ECE3D000FE5E33 /* PicRuleModel.m */,
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
-				9DE95CD8244C418700E31735 /* PicSource.json */,
+				33E640532810122700E763B6 /* PicNet.json */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -671,6 +689,7 @@
 		9DE95CF6244CA23000E31735 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				33E6405528103DCD00E763B6 /* DownloadOperation */,
 				9DE95CF8244CA25900E31735 /* PDDownloadManager.h */,
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
 				335124E024D6E2C9004489CA /* PDRequest.h */,
@@ -679,6 +698,8 @@
 				9D3593E0244D3D38005ADF05 /* ContentParserManager.m */,
 				9D96DC9C25A376080045D123 /* AppTool.h */,
 				9D96DC9D25A376080045D123 /* AppTool.m */,
+				33E640502810118300E763B6 /* HostManager.h */,
+				33E640512810118300E763B6 /* HostManager.m */,
 				3349D2612729A145006109F6 /* DatabaseManager.h */,
 				3349D2642729A163006109F6 /* DatabaseManager+WCTTableCoding.h */,
 				3349D2622729A145006109F6 /* DatabaseManager.mm */,
@@ -757,6 +778,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33E640542810138800E763B6 /* PicNet.json in Resources */,
 				9DE95CC3244C3FDD00E31735 /* char_ref.rl in Resources */,
 				332D014D26FD845F00E3F387 /* gesture_normal@0.5x.png in Resources */,
 				332D014626FD845F00E3F387 /* gesture_selected@1.5x.png in Resources */,
@@ -764,7 +786,6 @@
 				9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */,
 				332D014326FD845F00E3F387 /* gesture_headIcon@2x.png in Resources */,
 				332D014A26FD845F00E3F387 /* gesture_normal@2x.png in Resources */,
-				9DE95CD9244C418700E31735 /* PicSource.json in Resources */,
 				332D014826FD845F00E3F387 /* gesture_normal@3x.png in Resources */,
 				9DE95C7F244C3E1100E31735 /* Assets.xcassets in Resources */,
 				332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */,
@@ -862,9 +883,12 @@
 				9DE95CCD244C3FDD00E31735 /* string_piece.c in Sources */,
 				336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */,
 				9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */,
+				33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */,
+				33E640522810118300E763B6 /* HostManager.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
+				33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */,
 				9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */,
 				332D014226FD845F00E3F387 /* TKGestureLockView.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
@@ -876,8 +900,8 @@
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
+				33E6404E2810108900E763B6 /* PicNetModel.m in Sources */,
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
-				9D9956C225F4B1BB00370811 /* NSString+string.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
 				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
@@ -888,11 +912,9 @@
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
 				332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */,
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
-				33B43FC22554495100C33FD0 /* ViewerFileModel.m in Sources */,
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
-				337DA9AF25982D9400A679BB /* ViewerContentCell.m in Sources */,
 				9DE95CC6244C3FDD00E31735 /* char_ref.c in Sources */,
-				337DA9AB25982D7700A679BB /* ViewerContentView.m in Sources */,
+				33E6404B2810104F00E763B6 /* NetListViewController.m in Sources */,
 				3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */,
 				335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */,
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
@@ -1049,7 +1071,7 @@
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				ENABLE_BITCODE = NO;
@@ -1062,7 +1084,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",
@@ -1155,7 +1177,7 @@
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				ENABLE_BITCODE = NO;
@@ -1168,7 +1190,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",

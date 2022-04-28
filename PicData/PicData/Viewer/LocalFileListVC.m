@@ -9,7 +9,6 @@
 #import "LocalFileListVC.h"
 #import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
-#import "ViewerContentView.h"
 
 @interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 
@@ -138,8 +137,8 @@
 
     [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom);
-        make.left.mas_equalTo(5);
-        make.right.mas_equalTo(-5);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
         make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(0);
     }];
 
@@ -214,6 +213,7 @@
             }
         }
 
+        self.navigationItem.title = [NSString stringWithFormat:@"%ld", self.fileNamesList.count];
         [self.contentView reloadData];
     } else {
         NSLog(@"%@", subError);
@@ -601,7 +601,7 @@
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到该套图的下载记录" afterDelay:1];
         return;
     }
-    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithTitle:contentModel.sourceTitle] firstObject];
+    PicSourceModel *sourceModel = [[PicSourceModel queryTableWithUrl:contentModel.sourceHref] firstObject];
     if (nil == sourceModel) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到数据源" afterDelay:1];
         return;
@@ -677,7 +677,7 @@
                 // 还要把数据库数据更新
             if (weakSelf.navigationController.viewControllers.count == 2) {
                 // 进到列表中, 只需要更新这个类别下面所有的数据就好了
-                [PicContentTaskModel deleteFromTableWithSourceTitle:[weakSelf.targetFilePath lastPathComponent]];
+                [PicContentTaskModel deleteFromTableWithSourceHref:self.contentModel.sourceHref];
             } else {
                 // 更新contentModel就好了
                 if (self.contentModel) {

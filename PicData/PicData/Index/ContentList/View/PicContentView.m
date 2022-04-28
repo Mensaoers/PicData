@@ -20,24 +20,31 @@ static CGFloat sideMargin = 5;
 
 + (CGFloat)itemWidth:(CGFloat)wholeWidth {
     // cell的排布, 想让cell的宽度逐渐增大, 大到一定程度, 加一个cell, 以此往复
+
+    // 这一行至少可以放几个
+    NSInteger suggestCount = 3;
     CGFloat sugWidth = 150;
 
     if (wholeWidth < 420) {
         sugWidth = 110; // 3
-    } else if (wholeWidth < 680) {
-        sugWidth = 150; // 4
-    } else if (wholeWidth < 1000) {
-        sugWidth = 180; // 5
+        suggestCount = 3;
     } else {
-        sugWidth = 220;
-    }
 
 #if TARGET_OS_MACCATALYST
-    sugWidth = 180;
+        sugWidth = 180;
+#else
+        if (wholeWidth < 680) {
+            sugWidth = 135; // 4
+        } else if (wholeWidth < 1000) {
+            sugWidth = 160; // 5
+        } else {
+            sugWidth = 200;
+        }
 #endif
-    // 这一行至少可以放几个
-    NSInteger count = floorf(wholeWidth / sugWidth);
-    CGFloat itemWidth = (wholeWidth - (count - 1) * 2 * sideMargin) / count;
+
+        suggestCount = floorf(wholeWidth / sugWidth);
+    }
+    CGFloat itemWidth = (wholeWidth - (suggestCount - 1) * 2 * sideMargin) / suggestCount - 1;
     return itemWidth;
 }
 + (CGFloat)itemHeight:(CGFloat)wholeWidth {

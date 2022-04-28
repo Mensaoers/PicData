@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "ContentViewController.h"
 #import "PicClassifyTableView.h"
+#import "NetListViewController.h"
 
 @interface HomeViewController () <PicClassifyTableViewActionDelegate>
 
@@ -34,30 +35,15 @@
 - (NSMutableArray<PicClassModel *> *)classModels {
     if (nil == _classModels) {
         _classModels = [NSMutableArray array];
-
-        // 添加默认页面
-
-        PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
-            PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-            sourceModel.sourceType = 5;
-            sourceModel.url = [self.host_url stringByAppendingPathComponent:@"/y/2/index.html"];
-            sourceModel.title = @"首页";
-            sourceModel.HOST_URL = self.host_url;
-            [sourceModel insertTable];
-            return sourceModel;
-        };
-
-        PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:@"5" subTitles:@[getIndexModel()]];
-        [_classModels addObject:indexModel];
     }
     return _classModels;
 }
 
 - (NSString *)host_url {
-    return [AppTool sharedAppTool].HOST_URL;
+    return [HostManager.sharedHostManager.currentHostModel HOST_URL];
 }
 - (NSString *)tagsAddressUrl {
-    return [self.host_url stringByAppendingPathComponent:@"/y/2/index.html"];
+    return [HostManager.sharedHostManager.currentHostModel tagsUrl];
 }
 
 - (void)loadNavigationItem {
@@ -66,10 +52,16 @@
 
 - (void)loadRightNavigationItem:(BOOL)isList {
 
+    NSMutableArray *leftBarButtonItems = [NSMutableArray array];
+
+    UIBarButtonItem *checkItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"network"] style:UIBarButtonItemStyleDone target:self action:@selector(selectNetHost:)];
+    [leftBarButtonItems addObject:checkItem];
+
 #if TARGET_OS_MACCATALYST
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"] style:UIBarButtonItemStyleDone target:self action:@selector(refreshItemClickAction:)];
-    self.navigationItem.leftBarButtonItem = refreshItem;
+    [leftBarButtonItems addObject:refreshItem];
 #endif
+    self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
     UIBarButtonItem *rightItem;
     if (isList) {
@@ -79,6 +71,24 @@
     }
 
     self.navigationItem.rightBarButtonItems = @[rightItem];
+
+    MJWeakSelf
+    [self cw_registerShowIntractiveWithEdgeGesture:NO transitionDirectionAutoBlock:^(CWDrawerTransitionDirection direction) {
+        if (direction == CWDrawerTransitionFromLeft) {
+            [weakSelf selectNetHost:nil];
+        }
+    }];
+}
+
+- (void)selectNetHost:(UIBarButtonItem *)sender {
+    NetListViewController *hostVC = [NetListViewController new];
+    PDBlockSelf
+    hostVC.refreshBlock = ^{
+        [weakSelf loadAllTags];
+    };
+    CGFloat distance = MIN(self.view.mj_w * 0.75, 400);
+    CWLateralSlideConfiguration *configuration = [CWLateralSlideConfiguration configurationWithDistance:distance maskAlpha:0.4 scaleY:1.0 direction:CWDrawerTransitionFromLeft backImage:nil];
+    [self cw_showDrawerViewController:hostVC animationType:CWDrawerAnimationTypeDefault configuration:configuration];
 }
 
 - (void)rightNavigationItemClickAction:(UIBarButtonItem *)sender {
@@ -123,6 +133,25 @@
     [self loadAllTags];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+#if TARGET_OS_MACCATALYST
+
+    // 方法重置, 在mac端拖动界面大小之后, 刷新tag列表, 重新布局
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshDataList) object:nil];
+    [self performSelector:@selector(refreshDataList) afterDelay:0.2];
+
+#endif
+
+}
+
+- (void)refreshDataList {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadDataWithSource:self.classModels];
+    });
+}
+
 - (void)refreshItemClickAction:(UIBarButtonItem *)sender {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self loadAllTags];
@@ -136,6 +165,29 @@
 - (void)loadAllTags {
 
     self.classModels = nil;
+
+    // 添加默认页面
+    PicNetModel *hostModel = HostManager.sharedHostManager.currentHostModel;
+    PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
+        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+        sourceModel.sourceType = hostModel.sourceType;
+        sourceModel.url = hostModel.url;
+
+        NSString *mark = hostModel.mark;
+        if (nil == mark || mark.length == 0) {
+            mark = [NSString stringWithFormat:@"%d", hostModel.sourceType];
+        }
+
+        sourceModel.title = [NSString stringWithFormat:@"%@首页", mark];
+        sourceModel.HOST_URL = self.host_url;
+        [sourceModel insertTable];
+        return sourceModel;
+    };
+
+    PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:hostModel.sourceType subTitles:@[getIndexModel()]];
+    [self.classModels addObject:indexModel];
+
+    [self.tableView reloadDataWithSource:self.classModels];
 
     if (self.tagsAddressUrl.length == 0) {
         [self.tableView reloadDataWithSource:self.classModels];
@@ -151,10 +203,15 @@
             [weakSelf.tableView.mj_header endRefreshing];
         });
         if (nil == error) {
-            NSString *htmlString = [AppTool getStringWithGB_18030_2000Code:data];
+            NSString *htmlString = [ContentParserManager getHtmlStringWithData:data sourceType:hostModel.sourceType];
 
             // 解析html
             [weakSelf paraseHtmlString_tags:htmlString];
+        } else {
+            MJWeakSelf
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadDataWithSource:self.classModels];
+            });
         }
     }];
 }
@@ -165,29 +222,70 @@
 
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-    OCQueryObject *tagsListEs = document.QueryClass(@"TagTop_Gs_r");
+    PicNetModel *hostModel = HostManager.sharedHostManager.currentHostModel;
 
-    for (OCGumboElement *tagsListE in tagsListEs) {
+    switch (hostModel.sourceType) {
+        case 1: {
 
-        OCQueryObject *aEs = tagsListE.QueryElement(@"a");
+            OCQueryObject *tagsListEs = document.QueryClass(@"jigou");
 
-        NSMutableArray *subTitles = [NSMutableArray array];
-        for (OCGumboElement *aE in aEs) {
-            NSString *href = aE.attr(@"href");
-            NSString *subTitle = aE.text();
+            for (OCGumboElement *tagsListE in tagsListEs) {
 
-            PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-            sourceModel.sourceType = 5;
-            sourceModel.url = href;// [self.host_url stringByAppendingPathComponent:href];
-            sourceModel.title = subTitle;
-            sourceModel.HOST_URL = self.host_url;
-            [sourceModel insertTable];
+                OCQueryObject *aEs = tagsListE.QueryElement(@"a");
 
-            [subTitles addObject:sourceModel];
+                NSMutableArray *subTitles = [NSMutableArray array];
+                for (OCGumboElement *aE in aEs) {
+                    NSString *href = aE.attr(@"href");
+                    NSString *subTitle = aE.text();
+
+                    PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+                    sourceModel.sourceType = hostModel.sourceType;
+                    sourceModel.url = [self.host_url stringByAppendingPathComponent:href];
+                    sourceModel.title = subTitle;
+                    sourceModel.HOST_URL = self.host_url;
+                    [sourceModel insertTable];
+
+                    [subTitles addObject:sourceModel];
+                }
+
+                PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:hostModel.sourceType subTitles:subTitles];
+                [self.classModels addObject:classModel];
+            }
         }
+            break;
+        case 2: {
+            OCQueryObject *tagsListEs = document.QueryClass(@"TagTop_Gs_r");
 
-        PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:@"5" subTitles:subTitles];
-        [self.classModels addObject:classModel];
+            for (OCGumboElement *tagsListE in tagsListEs) {
+
+                OCQueryObject *aEs = tagsListE.QueryElement(@"a");
+
+                NSMutableArray *subTitles = [NSMutableArray array];
+                for (OCGumboElement *aE in aEs) {
+                    NSString *href = aE.attr(@"href");
+                    NSString *subTitle = aE.text();
+
+                    PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+                    sourceModel.sourceType = hostModel.sourceType;
+                    sourceModel.url = href;// [self.host_url stringByAppendingPathComponent:href];
+                    sourceModel.title = subTitle;
+                    sourceModel.HOST_URL = self.host_url;
+                    [sourceModel insertTable];
+
+                    [subTitles addObject:sourceModel];
+                }
+
+                PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:hostModel.sourceType subTitles:subTitles];
+                [self.classModels addObject:classModel];
+            }
+        }
+            break;
+        case 3: {
+
+        }
+            break;
+        default:
+            break;
     }
 
     MJWeakSelf

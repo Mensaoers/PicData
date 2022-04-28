@@ -92,6 +92,8 @@
     self.navigationItem.rightBarButtonItem = allDownItem;
 }
 
+#pragma mark - Data
+
 - (void)loadContentData:(NSURL *)url isReload:(BOOL)isReload {
 
     NSLog(@"列表URL: %@", url.absoluteString);
@@ -298,6 +300,8 @@
     return [articleContents copy];
 }
 
+#pragma mark - Action
+
 - (void)backAction:(UIBarButtonItem *)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -314,7 +318,7 @@
     }
 }
 
-#pragma mark collectionView delegate
+#pragma mark - collectionView delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.dataList.count;
@@ -337,7 +341,7 @@
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
-#pragma mark PicContentCellDelegate
+#pragma mark - PicContentCellDelegate
 
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {
     [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {

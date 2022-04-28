@@ -128,7 +128,7 @@ singleton_implementation(ContentParserManager)
             dispatch_semaphore_t sema = dispatch_semaphore_create(0);
             NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
             // 网页请求获取一组套图, 创建下载任务
-            [ContentParserManager dealWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:^{
+            [ContentParserManager requestHtmlStringWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:^{
 
                 dispatch_semaphore_signal(sema);
                 // 我们需要做一个操作, 是让他继续下一个任务
@@ -141,7 +141,7 @@ singleton_implementation(ContentParserManager)
 }
 
 /// 处理页面源码, 提取页面数据
-+ (void)dealWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel taskCompleteHandler:(void(^)(void))taskCompleteHandler {
++ (void)requestHtmlStringWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel taskCompleteHandler:(void(^)(void))taskCompleteHandler {
     // 错误-1, 网络部分错误
     // 错误-2, 写入部分错误
     if ([url containsString:@".html"]) {
@@ -191,7 +191,7 @@ singleton_implementation(ContentParserManager)
 
                 PPIsBlockExecute(taskCompleteHandler)
             } else {
-                [ContentParserManager dealWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:taskCompleteHandler];
+                [ContentParserManager requestHtmlStringWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:taskCompleteHandler];
             }
         }];
     }

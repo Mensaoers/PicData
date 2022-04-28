@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PicNetModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 singleton_interface(AppTool)
 
 @property (nonatomic, strong) NSString *HOST_URL;
+
+@property (nonatomic, strong, nonnull) PicNetModel *currentHostModel;
+
+@property (nonatomic, strong, readonly) NSArray <PicNetModel *> *hostModels;
 
 /// bugly app_id
 + (NSString *)app_id_bugly;

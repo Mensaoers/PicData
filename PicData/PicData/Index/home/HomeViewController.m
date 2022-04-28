@@ -40,10 +40,10 @@
 }
 
 - (NSString *)host_url {
-    return [HostManager.sharedHostManager.currentHostModel HOST_URL];
+    return [[AppTool sharedAppTool].currentHostModel HOST_URL];
 }
 - (NSString *)tagsAddressUrl {
-    return [HostManager.sharedHostManager.currentHostModel tagsUrl];
+    return [[AppTool sharedAppTool].currentHostModel tagsUrl];
 }
 
 - (void)loadNavigationItem {
@@ -167,7 +167,7 @@
     self.classModels = nil;
 
     // 添加默认页面
-    PicNetModel *hostModel = HostManager.sharedHostManager.currentHostModel;
+    PicNetModel *hostModel = [AppTool sharedAppTool].currentHostModel;
     PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
         PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
         sourceModel.sourceType = hostModel.sourceType;
@@ -222,7 +222,7 @@
 
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
-    PicNetModel *hostModel = HostManager.sharedHostManager.currentHostModel;
+    PicNetModel *hostModel = [AppTool sharedAppTool].currentHostModel;
 
     switch (hostModel.sourceType) {
         case 1: {

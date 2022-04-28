@@ -24,21 +24,21 @@
 @synthesize selectedModel = _selectedModel;
 - (PicNetModel *)selectedModel {
     if (nil == _selectedModel) {
-        _selectedModel = [HostManager sharedHostManager].currentHostModel;
+        _selectedModel = [AppTool sharedAppTool].currentHostModel;
     }
     return _selectedModel;
 }
 
 - (void)setSelectedModel:(PicNetModel *)selectedModel {
     _selectedModel = selectedModel;
-    [HostManager sharedHostManager].currentHostModel = selectedModel;
+    [AppTool sharedAppTool].currentHostModel = selectedModel;
 
     PPIsBlockExecute(self.refreshBlock);
 }
 
 - (NSArray<PicNetModel *> *)dataList {
     if (nil == _dataList) {
-        _dataList = [NSArray arrayWithArray:[HostManager sharedHostManager].hostModels];
+        _dataList = [NSArray arrayWithArray:[AppTool sharedAppTool].hostModels];
     }
     return _dataList;
 }

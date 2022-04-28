@@ -61,7 +61,7 @@
 
     // 根据url获取当前的host
     PicNetModel *targetHostModel;
-    for (PicNetModel *hostModel in [[HostManager sharedHostManager] hostModels]) {
+    for (PicNetModel *hostModel in [AppTool sharedAppTool].hostModels) {
         NSString *url_H = [NSURL URLWithString:url].host.lowercaseString;
         NSString *host_H = [NSURL URLWithString:hostModel.HOST_URL].host.lowercaseString;
         if ([url_H isEqualToString:host_H]) {

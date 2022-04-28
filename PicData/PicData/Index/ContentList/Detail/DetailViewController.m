@@ -26,6 +26,8 @@
 
 @implementation DetailViewController
 
+#pragma mark - property
+
 - (NSMutableDictionary *)heightDic {
     if (nil == _heightDic) {
         _heightDic = [NSMutableDictionary dictionary];
@@ -53,6 +55,8 @@
     self.detailModel.detailTitle = contentModel.title;
     self.detailModel.currentUrl = contentModel.href;
 }
+
+#pragma mark - view
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -87,19 +91,6 @@
     [items addObject:shareItem];
 
     self.navigationItem.rightBarButtonItems = items.copy;
-}
-
-- (void)backAction:(UIBarButtonItem *)sender {
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)updateContentTitle:(NSString *)contentTitle {
-    if (contentTitle.length > 0) {
-        self.contentModel.title = contentTitle;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.contentLabel.text = contentTitle;
-        });
-    }
 }
 
 - (void)loadMainView {
@@ -141,9 +132,33 @@
     }];
 }
 
-- (void)refreshItemClickAction:(UIBarButtonItem *)sender {
-    [self.tableView.mj_header beginRefreshing];
+- (void)refreshMainView {
+    self.contentLabel.text = self.detailModel.detailTitle;
+    [self.tableView reloadData];
+    if (self.detailModel.contentImgsUrl.count > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+
+    [self.tableView.mj_header endRefreshing];
 }
+
+- (void)updateContentTitle:(NSString *)contentTitle {
+    if (contentTitle.length > 0) {
+        self.contentModel.title = contentTitle;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.contentLabel.text = contentTitle;
+        });
+    }
+}
+
+- (void)detailContentCell:(DetailViewContentCell *)contentCell refreshedAfterImgLoaded:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[DetailViewContentCell class]]) {
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    }
+}
+
+#pragma mark - data
 
 - (void)loadLastPageDetailData {
     NSDictionary *lastInfo = self.historyInfos.lastObject;
@@ -171,6 +186,7 @@
     [self loadDetailData];
     [self loadNavigationItem];
 }
+
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     PDBlockSelf
@@ -190,26 +206,11 @@
             NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
 
-                [weakSelf parserDetailListHtmlData:@""];
                 [weakSelf refreshMainView];
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
             });
         }
     }];
-}
-
-- (void)refreshMainView {
-    self.contentLabel.text = self.detailModel.detailTitle;
-    [self.tableView reloadData];
-    if (self.detailModel.contentImgsUrl.count > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
-
-    [self.tableView.mj_header endRefreshing];
-}
-
-- (void)parserDetailListHtmlData:(NSString *)htmlString {
-
 }
 
 - (void)parserDetailListHtmlDataType:(NSString *)htmlString {
@@ -221,43 +222,103 @@
         NSMutableArray *urls = [NSMutableArray array];
         NSMutableArray *suggesM = [NSMutableArray array];
 
+        OCGumboElement *contentE;
+
+        switch (self.sourceModel.sourceType) {
+            case 1:{
+                contentE = document.QueryClass(@"contents").firstObject;
+            }
+                break;
+            case 2: {
+                contentE = document.QueryClass(@"content").firstObject;
+            }
+                break;
+            case 3: {
+                contentE = document.QueryClass(@"contentme").firstObject;
+            }
+                break;
+            default:
+                break;
+        }
+
+        OCQueryObject *es = contentE.Query(@"img");
+        for (OCGumboElement *e in es) {
+            NSString *src = e.attr(@"src");
+            if (src.length > 0) {
+                [urls addObject:src];
+            }
+        }
+
+        OCGumboElement *nextE;
+
+        switch (self.sourceModel.sourceType) {
+            case 1:{
+                nextE = document.QueryClass(@"pageart").firstObject;
+            }
+                break;
+            case 2: {
+                nextE = document.QueryClass(@"page-tag").firstObject;
+            }
+                break;
+            case 3: {
+                nextE = document.QueryClass(@"pag").firstObject;
+            }
+                break;
+            default:
+                break;
+        }
+
+        NSString *nextPage = @"";
+        BOOL find = NO;
+        if (nextE) {
+            OCQueryObject *aEs = nextE.QueryElement(@"a");
+
+            NSString *nextPageTitle = @"下一页";
+            switch (self.sourceModel.sourceType) {
+                case 1:
+                case 2:
+                    nextPageTitle = @"下一页";
+                    break;
+                case 3:
+                    nextPageTitle = @"Next >";
+                    break;
+                default:
+                    break;
+            }
+
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() isEqualToString:nextPageTitle]) {
+                    find = YES;
+                    nextPage = aE.attr(@"href");
+                    break;
+                }
+            }
+        }
+
+        if (nextPage.length > 0) {
+            switch (self.sourceModel.sourceType) {
+                case 1: {
+                    self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
+                }
+                    break;
+                case 2: {
+                    self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
+                }
+                    break;
+                case 3: {
+                    self.detailModel.nextUrl = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]].absoluteString;
+                }
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            self.detailModel.nextUrl = @"";
+        }
+
+
         switch (self.sourceModel.sourceType) {
             case 1: {
-//                OCQueryObject *metaEs = document.QueryElement(@"meta");
-//                for (OCGumboElement *metaE in metaEs) {
-//                    if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
-//                        [self updateContentTitle:metaE.attr(@"content")];
-//                        break;
-//                    }
-//                }
-
-                OCGumboElement *contentE = document.QueryClass(@"contents").firstObject;
-                OCQueryObject *es = contentE.Query(@"img");
-                for (OCGumboElement *e in es) {
-                    NSString *src = e.attr(@"src");
-                    if (src.length > 0) {
-                        [urls addObject:src];
-                    }
-                }
-
-                OCGumboElement *nextE = document.QueryClass(@"pageart").firstObject;
-                BOOL find = NO;
-                if (nextE) {
-                    OCQueryObject *aEs = nextE.QueryElement(@"a");
-                    for (OCGumboElement *aE in aEs) {
-                        if ([aE.text() isEqualToString:@"下一页"]) {
-                            find = YES;
-                            NSString *nextPage = aE.attr(@"href");
-
-                            self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
-                            break;
-                        }
-                    }
-                }
-
-                if (!find) {
-                    self.detailModel.nextUrl = @"";
-                }
 
                 // 推荐
                 OCGumboElement *listDiv = document.QueryClass(@"w980").firstObject;
@@ -285,41 +346,6 @@
             }
                 break;
             case 2: {
-                //        OCQueryObject *metaEs = document.QueryElement(@"meta");
-                //        for (OCGumboElement *metaE in metaEs) {
-                //            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
-                //                [self updateContentTitle:metaE.attr(@"content")];
-                //                break;
-                //            }
-                //        }
-
-                OCGumboElement *contentE = document.QueryClass(@"content").firstObject;
-                OCQueryObject *es = contentE.Query(@"img");
-                for (OCGumboElement *e in es) {
-                    NSString *src = e.attr(@"src");
-                    if (src.length > 0) {
-                        [urls addObject:src];
-                    }
-                }
-
-                OCGumboElement *nextE = document.QueryClass(@"page-tag").firstObject;
-                BOOL find = NO;
-                if (nextE) {
-                    OCQueryObject *aEs = nextE.QueryElement(@"a");
-                    for (OCGumboElement *aE in aEs) {
-                        if ([aE.text() isEqualToString:@"下一页"]) {
-                            find = YES;
-                            NSString *nextPage = aE.attr(@"href");
-
-                            self.detailModel.nextUrl = [self.detailModel.nextUrl stringByReplacingOccurrencesOfString:self.detailModel.nextUrl.lastPathComponent withString:nextPage];
-                            break;
-                        }
-                    }
-                }
-
-                if (!find) {
-                    self.detailModel.nextUrl = @"";
-                }
 
                 // 推荐
                 OCGumboElement *listDiv = document.QueryClass(@"articleV4PicList").firstObject;
@@ -346,42 +372,6 @@
             }
                 break;
             case 3: {
-
-                //        OCQueryObject *metaEs = document.QueryElement(@"meta");
-                //        for (OCGumboElement *metaE in metaEs) {
-                //            if ([metaE.attr(@"name") isEqualToString:@"keywords"]) {
-                //                [self updateContentTitle:metaE.attr(@"content")];
-                //                break;
-                //            }
-                //        }
-
-                OCGumboElement *contentE = document.QueryClass(@"contentme").firstObject;
-                OCQueryObject *es = contentE.Query(@"img");
-                for (OCGumboElement *e in es) {
-                    NSString *src = e.attr(@"src");
-                    if (src.length > 0) {
-                        [urls addObject:src];
-                    }
-                }
-
-                OCGumboElement *nextE = document.QueryClass(@"pag").firstObject;
-                BOOL find = NO;
-                if (nextE) {
-                    OCQueryObject *aEs = nextE.QueryElement(@"a");
-                    for (OCGumboElement *aE in aEs) {
-                        if ([aE.text() isEqualToString:@"Next >"]) {
-                            find = YES;
-                            NSString *nextPage = aE.attr(@"href");
-
-                            self.detailModel.nextUrl = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]].absoluteString;
-                            break;
-                        }
-                    }
-                }
-
-                if (!find) {
-                    self.detailModel.nextUrl = @"";
-                }
 
                 // 推荐
                 OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
@@ -417,6 +407,45 @@
     }
 }
 
+#pragma mark - Action
+
+- (void)refreshItemClickAction:(UIBarButtonItem *)sender {
+    [self.tableView.mj_header beginRefreshing];
+}
+
+- (void)backAction:(UIBarButtonItem *)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)downloadThisContent:(UIBarButtonItem *)sender {
+    [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:self.contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+    }];
+}
+
+- (void)downloadAllContents:(UIButton *)sender {
+    for (PicContentModel *contentModel in self.detailModel.suggesArray) {
+        [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
+            [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+        }];
+    }
+}
+
+- (void)shareThisContent:(UIButton *)sender {
+    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
+    NSURL *url = [NSURL URLWithString:self.contentModel.href relativeToURL:baseURL];
+    [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    }];
+}
+
+#pragma mark - delegate
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
@@ -429,17 +458,10 @@
     }
 }
 
-- (void)detailContentCell:(DetailViewContentCell *)contentCell refreshedAfterImgLoaded:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[DetailViewContentCell class]]) {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-    }
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     UITableViewCell *tCell;
-    
+
     switch (indexPath.section) {
         case 0: {
             DetailViewContentCell *cell = (DetailViewContentCell *)[tableView dequeueReusableCellWithIdentifier:@"DetailViewContentCell"];
@@ -473,7 +495,7 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"collect"];
             if (nil == cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"collect"];
-                
+
                 PicContentView *collectionView = [PicContentView collectionView:self.tableView.mj_w];
                 collectionView.delegate = self;
                 collectionView.dataSource = self;
@@ -485,10 +507,10 @@
                     make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
                 }];
             }
-            
+
             UICollectionView *collectionView = [cell.contentView viewWithTag:9527];
             [collectionView reloadData];
-            
+
             tCell = cell;
         }
             break;
@@ -496,7 +518,7 @@
             tCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
             break;
     }
-    
+
     return tCell;
 }
 
@@ -533,12 +555,12 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
+
     UIView *bgView = [[UIView alloc] init];
     bgView.backgroundColor = UIColor.whiteColor;
     CGRect frame = CGRectMake(0, 0, tableView.mj_w, 40);
     bgView.frame = frame;
-    
+
     frame.origin.x = 8;
     frame.size.width -= 16;
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
@@ -599,33 +621,6 @@
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {
     [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
-    }];
-}
-
-- (void)downloadThisContent:(UIBarButtonItem *)sender {
-    [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:self.contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
-        [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
-    }];
-}
-
-- (void)downloadAllContents:(UIButton *)sender {
-    for (PicContentModel *contentModel in self.detailModel.suggesArray) {
-        [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
-            [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
-        }];
-    }
-}
-
-- (void)shareThisContent:(UIButton *)sender {
-    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
-    NSURL *url = [NSURL URLWithString:self.contentModel.href relativeToURL:baseURL];
-    [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-        NSLog(@"调用分享的应用id :%@", activityType);
-        if (completed) {
-            NSLog(@"分享成功!");
-        } else {
-            NSLog(@"分享失败!");
-        }
     }];
 }
 

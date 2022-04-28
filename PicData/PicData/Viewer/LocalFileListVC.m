@@ -137,8 +137,8 @@
 
     [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom);
-        make.left.mas_equalTo(5);
-        make.right.mas_equalTo(-5);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
         make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(0);
     }];
 

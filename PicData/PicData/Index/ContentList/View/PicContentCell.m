@@ -46,6 +46,7 @@
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.numberOfLines = 3;
+        titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.textColor = pdColor(63, 63, 63, 1);
         [bgView addSubview:titleLabel];

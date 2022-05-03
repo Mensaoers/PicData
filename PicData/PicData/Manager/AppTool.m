@@ -110,7 +110,7 @@ singleton_implementation(AppTool)
 
         if ([url hasPrefix:@"https://"] || [url hasPrefix:@"http://"]) {
             [UIPasteboard generalPasteboard].string = url;
-            [MBProgressHUD showInfoOnView:UIApplication.sharedApplication.keyWindow WithStatus:@"已经复制到粘贴板"];
+            [MBProgressHUD showInfoOnView:[AppTool getAppKeyWindow] WithStatus:@"已经复制到粘贴板"];
             return;
         }
 
@@ -136,7 +136,7 @@ singleton_implementation(AppTool)
 #endif
     }
 
-    UIViewController *topRootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+    UIViewController *topRootViewController = [AppTool getAppKeyWindow].rootViewController;
 
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:urls applicationActivities:nil];
     if (completionWithItemsHandler) {

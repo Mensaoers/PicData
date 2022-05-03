@@ -44,6 +44,7 @@ singleton_implementation(ContentParserManager)
         // 没有查到, 说明没有添加过
         PicContentTaskModel *taskModel = [PicContentTaskModel taskModelWithContentModel:contentModel];
         NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+        NSLog(@"taskModel filepath: %@", targetPath);
 
         // 这里判断过, 那么就没必要重写这个insert方法
         [taskModel insertTable];

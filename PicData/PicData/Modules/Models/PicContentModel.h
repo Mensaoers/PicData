@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSArray *)queryNextTask;
 /// 获取所有task status为给定值的任务数
 + (NSInteger)queryCountForTaskStatus:(int)status;
+/// 获取所有tasks status为给定值的任务
++ (NSArray <PicContentTaskModel *>*)queryTasksForStatus:(int)status;
 /// 获取所有task status为给定值的任务数
 + (NSInteger)queryCountForTaskInStatus12;
 

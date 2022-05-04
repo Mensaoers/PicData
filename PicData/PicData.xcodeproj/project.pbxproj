@@ -358,6 +358,7 @@
 		33B8DB8C27D9DA7A0044BE44 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				33E1ABE22822BD0F00AA92CB /* View */,
 				33B8DB8D27D9DA960044BE44 /* TasksViewController.h */,
 				33B8DB8E27D9DA960044BE44 /* TasksViewController.m */,
 			);
@@ -427,6 +428,13 @@
 				335719B224DD358B00303E83 /* FloatingWindowView.m */,
 			);
 			path = FloatingWindow;
+			sourceTree = "<group>";
+		};
+		33E1ABE22822BD0F00AA92CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		33E640482810103000E763B6 /* netList */ = {

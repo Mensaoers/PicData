@@ -72,6 +72,11 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[[DatabaseManager getDatabase] getOneValueOnResult:self.AnyProperty.count() fromTable:[self tableName] where:self.status == status] integerValue];
 }
 
+/// 获取所有tasks status为给定值的任务
++ (NSArray <PicContentTaskModel *>*)queryTasksForStatus:(int)status {
+    return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == status];
+}
+
 /// 获取所有task status为给定值的任务数
 + (NSInteger)queryCountForTaskInStatus12 {
     return [[[DatabaseManager getDatabase] getOneValueOnResult:self.AnyProperty.count() fromTable:[self tableName] where:self.status == 1 || self.status == 2] integerValue];

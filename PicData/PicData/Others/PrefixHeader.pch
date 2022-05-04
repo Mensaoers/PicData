@@ -36,7 +36,6 @@
 
     #import "DatabaseManager.h"
     #import "AppTool.h"
-    #import "HostManager.h"
     #import "BaseViewController.h"
     #import "BaseNavigationController.h"
     #import "BaseTabBarController.h"

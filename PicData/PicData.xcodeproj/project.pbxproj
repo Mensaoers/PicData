@@ -49,7 +49,6 @@
 		33E640542810138800E763B6 /* PicNet.json in Resources */ = {isa = PBXBuildFile; fileRef = 33E640532810122700E763B6 /* PicNet.json */; };
 		33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */; };
 		33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */; };
-		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
@@ -178,8 +177,6 @@
 		33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPDownloadTaskOperation.h; sourceTree = "<group>"; };
 		33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPDownloadTaskOperation.m; sourceTree = "<group>"; };
 		33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
-		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
-		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
 		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
 		33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ChangeUnicode.m"; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
@@ -347,15 +344,6 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
-		33967B5326EE001500B308B1 /* home */ = {
-			isa = PBXGroup;
-			children = (
-				33967B5026EDF44600B308B1 /* HomeViewController.h */,
-				33967B5126EDF44600B308B1 /* HomeViewController.m */,
-			);
-			path = home;
-			sourceTree = "<group>";
-		};
 		33AB92B124C3F58900E97E42 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -374,15 +362,6 @@
 				33B8DB8E27D9DA960044BE44 /* TasksViewController.m */,
 			);
 			path = Tasks;
-			sourceTree = "<group>";
-		};
-		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
-			isa = PBXGroup;
-			children = (
-				33F0CD4624ED6BF30051D74E /* View */,
-				332C285424EBA5570083A5DC /* AddNetTask */,
-			);
-			path = TransView;
 			sourceTree = "<group>";
 		};
 		33DC2D4D281AC8A900C7A513 /* Download */ = {
@@ -414,6 +393,42 @@
 			path = Parser;
 			sourceTree = "<group>";
 		};
+		33E1ABDF2822BA6900AA92CB /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				9DC94C9A2552ECBB008ACAF8 /* Base */,
+				9DE95CDD244C465C00E31735 /* ContentList */,
+				332C285424EBA5570083A5DC /* AddNetTask */,
+				33B8DB8C27D9DA7A0044BE44 /* Tasks */,
+				33E640482810103000E763B6 /* netList */,
+				9DE95CD4244C415F00E31735 /* Models */,
+				9DC94CA82552F7C2008ACAF8 /* Viewer */,
+				33AB92B124C3F58900E97E42 /* Setting */,
+				9DE95C8E244C3F5500E31735 /* Index */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		33E1ABE02822BA9F00AA92CB /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
+				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
+				333ECEF725F71DFB00762219 /* ThirdParty */,
+				9DE95CB8244C3FDC00E31735 /* Categories */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		33E1ABE12822BBFF00AA92CB /* FloatingWindow */ = {
+			isa = PBXGroup;
+			children = (
+				335719B324DD358C00303E83 /* FloatingWindowView.h */,
+				335719B224DD358B00303E83 /* FloatingWindowView.m */,
+			);
+			path = FloatingWindow;
+			sourceTree = "<group>";
+		};
 		33E640482810103000E763B6 /* netList */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,15 +457,6 @@
 			path = DownloadOperation;
 			sourceTree = "<group>";
 		};
-		33F0CD4624ED6BF30051D74E /* View */ = {
-			isa = PBXGroup;
-			children = (
-				33F0CD4724ED6C120051D74E /* TransViewCell.h */,
-				33F0CD4824ED6C120051D74E /* TransViewCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		8EAEFB2266B35620CEA3AC34 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,7 +469,12 @@
 		9D0E52CA24C2B35300FA8D88 /* ClassifyPage */ = {
 			isa = PBXGroup;
 			children = (
-				9D96DCA025A379230045D123 /* View */,
+				9D96DCA125A379540045D123 /* PicClassifyTableView.h */,
+				9D96DCA225A379540045D123 /* PicClassifyTableView.m */,
+				9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */,
+				9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */,
+				9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */,
+				9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */,
 			);
 			path = ClassifyPage;
 			sourceTree = "<group>";
@@ -485,19 +496,6 @@
 			children = (
 				9D3593ED244D6D32005ADF05 /* DetailViewContentCell.h */,
 				9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		9D96DCA025A379230045D123 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				9D96DCA125A379540045D123 /* PicClassifyTableView.h */,
-				9D96DCA225A379540045D123 /* PicClassifyTableView.m */,
-				9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */,
-				9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */,
-				9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */,
-				9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -551,19 +549,13 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
-				33B8DB8C27D9DA7A0044BE44 /* Tasks */,
-				9DC94C9A2552ECBB008ACAF8 /* Base */,
+				33E1ABE02822BA9F00AA92CB /* Utils */,
+				33E1ABDF2822BA6900AA92CB /* Modules */,
 				9DE95CF6244CA23000E31735 /* Manager */,
-				333ECEF725F71DFB00762219 /* ThirdParty */,
-				9DE95CB8244C3FDC00E31735 /* Categories */,
-				9DE95C8E244C3F5500E31735 /* Index */,
-				33AB92B124C3F58900E97E42 /* Setting */,
-				9DC94CA82552F7C2008ACAF8 /* Viewer */,
-				9DE95CD4244C415F00E31735 /* Models */,
-				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
+				9DE95C8D244C3F3700E31735 /* Others */,
 				9DE95C72244C3E0F00E31735 /* AppDelegate.h */,
 				9DE95C73244C3E0F00E31735 /* AppDelegate.m */,
-				9DE95C8D244C3F3700E31735 /* Others */,
+				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
 			);
 			path = PicData;
 			sourceTree = "<group>";
@@ -571,8 +563,6 @@
 		9DE95C8D244C3F3700E31735 /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
-				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
 				9DE95C7E244C3E1100E31735 /* Assets.xcassets */,
 				9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */,
 				9DE95C83244C3E1100E31735 /* Info.plist */,
@@ -586,13 +576,10 @@
 		9DE95C8E244C3F5500E31735 /* Index */ = {
 			isa = PBXGroup;
 			children = (
-				33E640482810103000E763B6 /* netList */,
-				33967B5326EE001500B308B1 /* home */,
-				33B9EEC024DCA9EB00ABE3E2 /* TransView */,
+				33967B5026EDF44600B308B1 /* HomeViewController.h */,
+				33967B5126EDF44600B308B1 /* HomeViewController.m */,
+				33E1ABE12822BBFF00AA92CB /* FloatingWindow */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
-				9DE95CDD244C465C00E31735 /* ContentList */,
-				335719B324DD358C00303E83 /* FloatingWindowView.h */,
-				335719B224DD358B00303E83 /* FloatingWindowView.m */,
 			);
 			path = Index;
 			sourceTree = "<group>";
@@ -889,7 +876,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */,
-				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
 				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
 				9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */,

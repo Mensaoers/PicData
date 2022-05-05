@@ -233,7 +233,7 @@ singleton_implementation(PDDownloadManager);
                 if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
                     contentTaskModel.status = 3;
                     [contentTaskModel updateTable];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECOMPLETEDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteDownTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 }
             }
         };
@@ -262,7 +262,7 @@ singleton_implementation(PDDownloadManager);
                 }
             } else {
                 NSLog(@"task.error:%@", error);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEFAILEDDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
             }
         }];
         [self.downloadQueue addOperation:operation];

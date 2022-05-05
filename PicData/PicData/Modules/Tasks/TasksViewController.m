@@ -8,9 +8,21 @@
 
 #import "TasksViewController.h"
 
+@interface PicProgressHeaderLabel : UILabel
+
+@property (nonatomic, assign) NSInteger index;
+
+@end
+
+@implementation PicProgressHeaderLabel
+
+@end
+
 @interface PicProgressModel : NSObject
 
 @property (nonatomic, strong) NSString *title;
+
+@property (nonatomic, assign) BOOL expand;
 
 @property (nonatomic, strong) NSMutableArray <PicContentTaskModel *>*taskModels;
 
@@ -38,7 +50,8 @@
 - (instancetype)initWithTitle:(NSString *)title {
     if (self = [super init]) {
         self.title = title;
-        }
+        self.expand = YES;
+    }
     return self;
 }
 
@@ -94,20 +107,17 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-//    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeCompleteATask:) name:NOTICECHECOMPLETEDOWNATASK object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
-//    [NSNotificationCenter.defaultCenter removeObserver:self name:NOTICECHECOMPLETEDOWNATASK object:nil];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteATask:) name:NOTICECHECOMPLETEDOWNATASK object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteDownTask:) name:NotificationNameCompleteDownTask object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteScaneTask:) name:NotificationNameCompleteScaneTask object:nil];
 }
 
 - (void)loadNavigationItem {
@@ -127,6 +137,12 @@
     tableView.dataSource = self;
     [self.view addSubview:tableView];
     self.tableView = tableView;
+
+    if (@available(iOS 15.0, *)) {
+        self.tableView.sectionHeaderTopPadding = 10;
+    } else {
+        // Fallback on earlier versions
+    }
 
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
@@ -164,8 +180,38 @@
     [self.tableView.mj_header beginRefreshing];
 }
 
+- (void)updateHeaderLabel:(PicProgressHeaderLabel *)contentLabel progressModel:(PicProgressModel *)progressModel {
+    contentLabel.text = [NSString stringWithFormat:@"%@%@", progressModel.expand ? @"▼" : @"►", progressModel.description];
+}
+
+- (void)tapHeaderGestureAction:(UITapGestureRecognizer *)gesture {
+    if ([gesture.view isKindOfClass:[PicProgressHeaderLabel class]]) {
+        PicProgressHeaderLabel *contentLabel = (PicProgressHeaderLabel *)gesture.view;
+
+        NSInteger section = contentLabel.index;
+        PicProgressModel *progressModel = self.progressModels[section];
+
+        progressModel.expand = !progressModel.expand;
+
+        [self updateHeaderLabel:contentLabel progressModel:progressModel];
+
+        if (progressModel.taskModels.count == 0) {
+            return;
+        }
+
+        [self.tableView beginUpdates];
+        [self.tableView reloadSection:section withRowAnimation:progressModel.expand ? UITableViewRowAnimationRight : UITableViewRowAnimationLeft];
+        [self.tableView endUpdates];
+    }
+}
+
 #pragma mark - notification
-- (void)receiveNoticeCompleteATask:(NSNotification *)notification {
+
+- (void)receiveNoticeCompleteDownTask:(NSNotification *)notification {
+    [self loadDataList];
+}
+
+- (void)receiveNoticeCompleteScaneTask:(NSNotification *)notification {
     [self loadDataList];
 }
 
@@ -176,7 +222,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.progressModels[section].taskModels.count;
+
+    PicProgressModel *progressModel = self.progressModels[section];
+    if (progressModel.expand) {
+        return progressModel.taskModels.count;
+    } else {
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -196,16 +248,47 @@
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return self.progressModels[section].description;
+static CGFloat headerHeight = 35;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return headerHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 15;
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    ((UITableViewHeaderFooterView *)view).backgroundView.backgroundColor = [UIColor clearColor];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *headerIdentifier = @"HeaderFooterIdentifier";
+
+    UITableViewHeaderFooterView *headerFooter = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerIdentifier];
+    if (nil == headerFooter) {
+        headerFooter = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerIdentifier];
+        headerFooter.contentView.backgroundColor = pdColor(205, 218, 223, 1);
+    }
+
+    PicProgressHeaderLabel *contentLabel = [headerFooter viewWithTag:9527];
+    if (nil == contentLabel) {
+        contentLabel = [[PicProgressHeaderLabel alloc] initWithFrame:CGRectMake(10, 0, self.tableView.mj_w, headerHeight)];
+        contentLabel.font = [UIFont systemFontOfSize:15];
+        contentLabel.textColor = [UIColor grayColor];
+        contentLabel.userInteractionEnabled = YES;
+        contentLabel.tag = 9527;
+        [headerFooter.contentView addSubview:contentLabel];
+
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHeaderGestureAction:)];
+        [contentLabel addGestureRecognizer:tapGesture];
+    }
+    contentLabel.index = section;
+
+    PicProgressModel *progressModel = self.progressModels[section];
+
+    [self updateHeaderLabel:contentLabel progressModel:progressModel];
+
+    return headerFooter;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 20;
+    return 10;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

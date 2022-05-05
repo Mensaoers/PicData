@@ -48,7 +48,7 @@ singleton_implementation(ContentParserManager)
 
         // 这里判断过, 那么就没必要重写这个insert方法
         [taskModel insertTable];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWTASK object:nil userInfo:@{@"contentModel": contentModel}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameAddNewTask object:nil userInfo:@{@"contentModel": contentModel}];
         [ContentParserManager prepareToDoNextTask];
         operationTips(YES, @"任务已添加");
     } else {
@@ -61,8 +61,8 @@ singleton_implementation(ContentParserManager)
     [PicContentTaskModel resetHalfWorkingTasks];
     [self prepareToDoNextTask];
 
-    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeCompleteATask:) name:NOTICECHECOMPLETEDOWNATASK object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeFailedATask:) name:NOTICECHEFAILEDDOWNATASK object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeCompleteATask:) name:NotificationNameCompleteDownTask object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeFailedATask:) name:NotificationNameFailedDownTask object:nil];
 }
 
 - (void)receiveNoticeCompleteATask:(NSNotification *)notification {
@@ -170,7 +170,7 @@ singleton_implementation(ContentParserManager)
                 [targetHandle seekToEndOfFile];
                 [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", result[@"urls"]] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
 //                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEADDNEWDETAILTASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTaskNewPage object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 if (writeError) {
                     NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
                 }
@@ -184,6 +184,7 @@ singleton_implementation(ContentParserManager)
                 // 获取到最后一页一直到这一行, 都是同步运行, 所以下载肯定会晚于遍历结束
                 contentTaskModel.totalCount = picCount + count;
                 contentTaskModel.status = 2;
+                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 // 遍历完成
                 if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
                     contentTaskModel.status = 3;

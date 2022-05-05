@@ -61,6 +61,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ContentParserManager prepareForAppLaunch];
     });
+
+    // TODO: APP后台下载的问题, 目前移除了下载SDK, 后台下载已经不现实了
 }
 
 - (void)setupDataBase {

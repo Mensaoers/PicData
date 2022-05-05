@@ -114,7 +114,16 @@
     [tableView.mj_header beginRefreshing];
 }
 
+/** 刷新数据
+ *  刷新时机:
+ *  1. 回到本页面
+ *  2. 下拉刷新
+ *  3. 右侧导航按钮点击刷新
+ *  4(5). 某套图状态变更, 1->2(扫描完成), 2->3(下载完成)
+ */
 - (void)loadDataList {
+
+// TODO: 下载过程中, 发出通知, 下载了多少页, 可以在本页面显示下载进度(downloaded / totalCount)
 
     MJWeakSelf
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -188,7 +197,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    // TODO: 任务列表UI美化, cell设计
     NSString *cellIdentifier = @"TasksTCell";
     TasksTCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 

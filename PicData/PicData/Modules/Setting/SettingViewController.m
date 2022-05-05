@@ -209,6 +209,8 @@ static NSString *identifier = @"identifier";
 
         abort();
     }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"以后再说" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
     [self presentViewController:alert animated:YES completion:nil];
 }
 

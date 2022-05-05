@@ -19,8 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PDDownloadManager : NSObject
 
-@property (nonatomic, strong) TRSessionManager *sessionManager;
-
 singleton_interface(PDDownloadManager);
 
 /// 重置当前下载相对地址

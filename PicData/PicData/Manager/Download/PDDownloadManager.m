@@ -67,12 +67,9 @@
 }
 
 + (BOOL)clearAllData:(BOOL)andFiles {
-    [PDDownloadManager.sharedPDDownloadManager.sessionManager totalCancel];
-    [PDDownloadManager.sharedPDDownloadManager.sessionManager totalRemove];
 
-//    if (![PDDownloadManager deleteDataBase]) {
-//        return NO;
-//    }
+    [PicContentTaskModel deleteFromTable_All];
+
     if (andFiles) {
 
         if (![FileManager checkFolderPathExistOrCreate:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
@@ -91,16 +88,8 @@
 
 singleton_implementation(PDDownloadManager);
 
-- (TRSessionManager *)sessionManager {
-    if (nil == _sessionManager) {
-        TRSessionManager.logLevel = TRLogLevelSimple;
-        _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
-    }
-    return _sessionManager;
-}
-
 - (void)totalCancel {
-    [self.sessionManager totalCancel];
+    [self.downloadQueue cancelAllOperations];
 }
 
 - (BOOL)resetDownloadPath {

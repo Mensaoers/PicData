@@ -156,12 +156,6 @@
     [[TKGestureLockManager sharedInstance] showGestureLockWindow];
 }
 
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
-    if (identifier == self.sessionManager.identifier) {
-        self.sessionManager.completionHandler = completionHandler;
-    }
-}
-
 /// 屏幕旋转相关
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     if ([AppTool getCanChangeOrientation]) {

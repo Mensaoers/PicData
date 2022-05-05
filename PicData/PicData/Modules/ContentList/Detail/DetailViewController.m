@@ -337,6 +337,7 @@
                     PicContentModel *contentModel = [[PicContentModel alloc] init];
                     contentModel.href = href;
                     contentModel.sourceHref = self.sourceModel.url;
+                    contentModel.sourceTitle = self.sourceModel.title;
                     contentModel.HOST_URL = self.sourceModel.HOST_URL;
                     contentModel.title = title;
                     contentModel.thumbnailUrl = thumbnailUrl;
@@ -363,6 +364,7 @@
                     PicContentModel *contentModel = [[PicContentModel alloc] init];
                     contentModel.href = href;
                     contentModel.sourceHref = self.sourceModel.url;
+                    contentModel.sourceTitle = self.sourceModel.title;
                     contentModel.HOST_URL = self.sourceModel.HOST_URL;
                     contentModel.title = title;
                     contentModel.thumbnailUrl = thumbnailUrl;
@@ -390,6 +392,7 @@
                     PicContentModel *contentModel = [[PicContentModel alloc] init];
                     contentModel.href = href;
                     contentModel.sourceHref = self.sourceModel.url;
+                    contentModel.sourceTitle = self.sourceModel.title;
                     contentModel.HOST_URL = self.sourceModel.HOST_URL;
                     contentModel.title = title;
                     contentModel.thumbnailUrl = thumbnailUrl;

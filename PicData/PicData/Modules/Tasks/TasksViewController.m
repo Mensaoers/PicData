@@ -7,6 +7,8 @@
 //
 
 #import "TasksViewController.h"
+#import "PicProgressModel.h"
+#import "TasksTCell.h"
 
 @interface PicProgressHeaderLabel : UILabel
 
@@ -17,50 +19,6 @@
 @implementation PicProgressHeaderLabel
 
 @end
-
-@interface PicProgressModel : NSObject
-
-@property (nonatomic, strong) NSString *title;
-
-@property (nonatomic, assign) BOOL expand;
-
-@property (nonatomic, strong) NSMutableArray <PicContentTaskModel *>*taskModels;
-
-- (instancetype)initWithTitle:(NSString *)title;
-
-+ (instancetype)ModelWithTitle:(NSString *)title;
-
-@end
-
-@implementation PicProgressModel
-
-// TODO: 本地文件列表应该是对应任务列表 需要思考一下
-
-- (NSMutableArray *)taskModels {
-    if (nil == _taskModels) {
-        _taskModels = [NSMutableArray array];
-    }
-    return _taskModels;
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"%@%ld条", self.title, self.taskModels.count];
-}
-
-- (instancetype)initWithTitle:(NSString *)title {
-    if (self = [super init]) {
-        self.title = title;
-        self.expand = YES;
-    }
-    return self;
-}
-
-+ (instancetype)ModelWithTitle:(NSString *)title {
-    return [[PicProgressModel alloc] initWithTitle:title];
-}
-
-@end
-
 
 @interface TasksViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -159,8 +117,7 @@
 - (void)loadDataList {
 
     MJWeakSelf
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
+    dispatch_async(dispatch_get_main_queue(), ^{
         NSInteger count = self.progressModels.count;
         for (NSInteger index = 0; index < count; index ++) {
             PicProgressModel *model = [self.progressModels objectAtIndex:index];
@@ -168,10 +125,8 @@
             [model.taskModels addObjectsFromArray:[PicContentTaskModel queryTasksForStatus:(int)index]];
         }
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadData];
-            [weakSelf.tableView.mj_header endRefreshing];
-        });
+        [weakSelf.tableView reloadData];
+        [weakSelf.tableView.mj_header endRefreshing];
     });
 }
 
@@ -234,18 +189,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     // TODO: 任务列表UI美化, cell设计
-    NSString *cellIdentifier = @"UITableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    NSString *cellIdentifier = @"TasksTCell";
+    TasksTCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
     if (nil == cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[TasksTCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
 
     PicContentTaskModel *taskModel = self.progressModels[indexPath.section].taskModels[indexPath.row];
 
-    cell.textLabel.text = taskModel.title;
+    cell.taskModel = taskModel;
 
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 80;
 }
 
 static CGFloat headerHeight = 35;

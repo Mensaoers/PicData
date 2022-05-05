@@ -31,6 +31,8 @@
 		332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */; };
 		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
 		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
+		3346BE8928240F5C00527864 /* TasksTCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8828240F5C00527864 /* TasksTCell.m */; };
+		3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8B28240FF700527864 /* PicProgressModel.m */; };
 		3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3349D2622729A145006109F6 /* DatabaseManager.mm */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; };
@@ -146,6 +148,10 @@
 		332D013E26FD845F00E3F387 /* TKGestureLockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockManager.h; sourceTree = "<group>"; };
 		332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockBackView.m; sourceTree = "<group>"; };
 		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
+		3346BE8728240F5C00527864 /* TasksTCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksTCell.h; sourceTree = "<group>"; };
+		3346BE8828240F5C00527864 /* TasksTCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksTCell.m; sourceTree = "<group>"; };
+		3346BE8A28240FF700527864 /* PicProgressModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicProgressModel.h; sourceTree = "<group>"; };
+		3346BE8B28240FF700527864 /* PicProgressModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicProgressModel.m; sourceTree = "<group>"; };
 		3349D25F27299D76006109F6 /* PicBaseModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicBaseModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		3349D2612729A145006109F6 /* DatabaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
 		3349D2622729A145006109F6 /* DatabaseManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DatabaseManager.mm; sourceTree = "<group>"; };
@@ -344,6 +350,15 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
+		3346BE8D28240FFA00527864 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3346BE8A28240FF700527864 /* PicProgressModel.h */,
+				3346BE8B28240FF700527864 /* PicProgressModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		33AB92B124C3F58900E97E42 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +373,7 @@
 		33B8DB8C27D9DA7A0044BE44 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				3346BE8D28240FFA00527864 /* Model */,
 				33E1ABE22822BD0F00AA92CB /* View */,
 				33B8DB8D27D9DA960044BE44 /* TasksViewController.h */,
 				33B8DB8E27D9DA960044BE44 /* TasksViewController.m */,
@@ -433,6 +449,8 @@
 		33E1ABE22822BD0F00AA92CB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3346BE8728240F5C00527864 /* TasksTCell.h */,
+				3346BE8828240F5C00527864 /* TasksTCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -898,6 +916,7 @@
 				9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */,
 				33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
+				3346BE8928240F5C00527864 /* TasksTCell.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
 				33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */,
@@ -910,6 +929,7 @@
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
+				3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
 				33E6404E2810108900E763B6 /* PicNetModel.m in Sources */,

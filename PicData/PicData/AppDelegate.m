@@ -86,6 +86,13 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
+    self.window.windowScene.sizeRestrictions.minimumSize = CGSizeMake(400, 600);
+    self.window.windowScene.sizeRestrictions.maximumSize = CGSizeMake(800, 600);
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.window.windowScene.sizeRestrictions.maximumSize = CGSizeMake(9999, 9999);
+    });
+
     [self setupIQKeyboardManager];
 
     [self setupGDPerformanceMonitor];

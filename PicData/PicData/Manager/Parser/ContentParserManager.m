@@ -122,6 +122,7 @@ singleton_implementation(ContentParserManager)
 
         contentTaskModel.status = 1;
         [contentTaskModel updateTableWithStatus];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameStartScaneTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
 
         [queue addOperationWithBlock:^{
 

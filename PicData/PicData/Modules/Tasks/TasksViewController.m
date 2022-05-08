@@ -24,8 +24,6 @@
 
 @property (nonatomic, strong) UILabel *infoLabel;
 
-@property (nonatomic, assign) BOOL canRefresh;
-
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray <PicProgressModel *>*progressModels;
@@ -49,18 +47,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    if (!self.canRefresh) {
-        return;
-    }
-
-    self.canRefresh = NO;
-    MJWeakSelf
-    // 2秒之内不重复刷新
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        weakSelf.canRefresh = YES;
-    });
-
-    [weakSelf loadDataList];
+    [self reCallLoadDataList:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -74,8 +61,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteDownTask:) name:NotificationNameCompleteDownTask object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeStartScaneTask:) name:NotificationNameStartScaneTask object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteScaneTask:) name:NotificationNameCompleteScaneTask object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteDownTask:) name:NotificationNameCompleteDownTask object:nil];
 }
 
 - (void)loadNavigationItem {
@@ -87,8 +75,6 @@
 
 - (void)loadMainView {
     [super loadMainView];
-
-    self.canRefresh = YES;
 
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     tableView.delegate = self;
@@ -108,7 +94,7 @@
 
     PDBlockSelf
     tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf loadDataList];
+        [weakSelf reCallLoadDataList:0.1];
     }];
 
     [tableView.mj_header beginRefreshing];
@@ -136,6 +122,14 @@
 
         [weakSelf.tableView reloadData];
         [weakSelf.tableView.mj_header endRefreshing];
+    });
+}
+
+- (void)reCallLoadDataList:(NSInteger)afterDelay {
+    // 子线程中延迟操作往往不起作用, 无效(在子线程中,默认是没有定时器的)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadDataList) object:nil];
+        [self performSelector:@selector(loadDataList) afterDelay:afterDelay];
     });
 }
 
@@ -171,12 +165,16 @@
 
 #pragma mark - notification
 
+- (void)receiveNoticeStartScaneTask:(NSNotification *)notification {
+    [self reCallLoadDataList:1];
+}
+
 - (void)receiveNoticeCompleteDownTask:(NSNotification *)notification {
-    [self loadDataList];
+    [self reCallLoadDataList:1];
 }
 
 - (void)receiveNoticeCompleteScaneTask:(NSNotification *)notification {
-    [self loadDataList];
+    [self reCallLoadDataList:1];
 }
 
 #pragma mark - delegate

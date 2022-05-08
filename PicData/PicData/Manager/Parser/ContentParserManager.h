@@ -18,10 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 #define NotificationNameCompleteScaneTaskNewPage @"NotificationNameCompleteScaneTaskNewPage"
 /// 新增某个套图
 #define NotificationNameAddNewTask @"NotificationNameAddNewTask"
-/// 某个套图下载完成
-#define NotificationNameCompleteDownTask @"NotificationNameCompleteDownTask"
+/// 某个套图开始扫描
+#define NotificationNameStartScaneTask @"NotificationNameStartScaneTask"
 /// 某个套图扫描完成
 #define NotificationNameCompleteScaneTask @"NotificationNameCompleteScaneTask"
+/// 某个套图下载完成
+#define NotificationNameCompleteDownTask @"NotificationNameCompleteDownTask"
 /// 某个套图下载失败
 #define NotificationNameFailedDownTask @"NotificationNameFailedDownTask"
 

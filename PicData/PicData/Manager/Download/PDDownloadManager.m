@@ -243,9 +243,9 @@ singleton_implementation(PDDownloadManager);
                     downloadSuccessBlock();
                     return;
                 } else {
-                    NSError *copyError = nil;
-                    [[NSFileManager defaultManager] copyItemAtPath:location.path toPath:targetPath error:&copyError];
-                    if (nil == copyError) {
+                    NSError *moveError = nil;
+                    [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:targetPath] error:&moveError];
+                    if (nil == moveError) {
                         downloadSuccessBlock();
                     }
                 }

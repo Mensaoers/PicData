@@ -7,8 +7,9 @@
 //
 
 #import "TasksViewController.h"
+#import "TasksContentView.h"
 #import "PicProgressModel.h"
-#import "TasksTCell.h"
+#import "TasksCollectionCell.h"
 
 @interface PicProgressHeaderLabel : UILabel
 
@@ -20,17 +21,20 @@
 
 @end
 
-@interface TasksViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface TasksViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) UILabel *infoLabel;
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) TasksContentView *collectionView;
 
 @property (nonatomic, strong) NSMutableArray <PicProgressModel *>*progressModels;
 
 @end
 
 @implementation TasksViewController
+
+static NSString *cellIdentifier = @"cellIdentifier";
+static NSString *headerdentifier = @"headerdentifier";
 
 - (NSMutableArray *)progressModels {
     if (nil == _progressModels) {
@@ -76,28 +80,26 @@
 - (void)loadMainView {
     [super loadMainView];
 
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    [self.view addSubview:tableView];
-    self.tableView = tableView;
 
-    if (@available(iOS 15.0, *)) {
-        self.tableView.sectionHeaderTopPadding = 10;
-    } else {
-        // Fallback on earlier versions
-    }
 
-    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    TasksContentView *collectionView = [TasksContentView collectionView:self.view.mj_w];
+    collectionView.delegate = self;
+    collectionView.dataSource = self;
+    [collectionView registerClass:[TasksCollectionCell class] forCellWithReuseIdentifier:cellIdentifier];
+    [collectionView registerClass:[CollectionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerdentifier];
+    [self.view addSubview:collectionView];
+    self.collectionView = collectionView;
+
+    [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
 
     PDBlockSelf
-    tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf reCallLoadDataList:0.1];
     }];
 
-    [tableView.mj_header beginRefreshing];
+    [collectionView.mj_header beginRefreshing];
 }
 
 /** 刷新数据
@@ -120,8 +122,8 @@
             [model.taskModels addObjectsFromArray:[PicContentTaskModel queryTasksForStatus:(int)index]];
         }
 
-        [weakSelf.tableView reloadData];
-        [weakSelf.tableView.mj_header endRefreshing];
+        [weakSelf.collectionView reloadData];
+        [weakSelf.collectionView.mj_header endRefreshing];
     });
 }
 
@@ -135,11 +137,11 @@
 
 - (void)arrangeItemClickAction:(UIBarButtonItem *)sender {
 
-    [self.tableView.mj_header beginRefreshing];
+    [self.collectionView.mj_header beginRefreshing];
 }
 
 - (void)updateHeaderLabel:(PicProgressHeaderLabel *)contentLabel progressModel:(PicProgressModel *)progressModel {
-    contentLabel.text = [NSString stringWithFormat:@"%@%@", progressModel.expand ? @"▼" : @"►", progressModel.description];
+    contentLabel.text = [NSString stringWithFormat:@"  %@%@", progressModel.expand ? @"▼" : @"►", progressModel.description];
 }
 
 - (void)tapHeaderGestureAction:(UITapGestureRecognizer *)gesture {
@@ -157,9 +159,7 @@
             return;
         }
 
-        [self.tableView beginUpdates];
-        [self.tableView reloadSection:section withRowAnimation:progressModel.expand ? UITableViewRowAnimationRight : UITableViewRowAnimationLeft];
-        [self.tableView endUpdates];
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
     }
 }
 
@@ -179,12 +179,11 @@
 
 #pragma mark - delegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return self.progressModels.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     PicProgressModel *progressModel = self.progressModels[section];
     if (progressModel.expand) {
         return progressModel.taskModels.count;
@@ -193,71 +192,50 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    NSString *cellIdentifier = @"TasksTCell";
-    TasksTCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
-    if (nil == cell) {
-        cell = [[TasksTCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    TasksCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
 
     PicContentTaskModel *taskModel = self.progressModels[indexPath.section].taskModels[indexPath.row];
-
     cell.taskModel = taskModel;
 
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 80;
-}
-
 static CGFloat headerHeight = 35;
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return headerHeight;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(self.collectionView.mj_w, headerHeight);
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    ((UITableViewHeaderFooterView *)view).backgroundView.backgroundColor = [UIColor clearColor];
-}
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        CollectionHeaderView *headerView = (CollectionHeaderView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:headerdentifier forIndexPath:indexPath];
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSString *headerIdentifier = @"HeaderFooterIdentifier";
+        PicProgressHeaderLabel *contentLabel = [headerView viewWithTag:9527];
+        if (nil == contentLabel) {
+            contentLabel = [[PicProgressHeaderLabel alloc] initWithFrame:CGRectMake(0, 0, self.collectionView.mj_w, headerHeight)];
+            contentLabel.font = [UIFont systemFontOfSize:15];
+            contentLabel.textColor = [UIColor grayColor];
+            contentLabel.backgroundColor = pdColor(205, 218, 223, 1);
+            contentLabel.userInteractionEnabled = YES;
+            contentLabel.tag = 9527;
+            [headerView addSubview:contentLabel];
 
-    UITableViewHeaderFooterView *headerFooter = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerIdentifier];
-    if (nil == headerFooter) {
-        headerFooter = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerIdentifier];
-        headerFooter.contentView.backgroundColor = pdColor(205, 218, 223, 1);
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHeaderGestureAction:)];
+            [contentLabel addGestureRecognizer:tapGesture];
+        }
+        contentLabel.index = indexPath.section;
+
+        PicProgressModel *progressModel = self.progressModels[indexPath.section];
+
+        [self updateHeaderLabel:contentLabel progressModel:progressModel];
+
+        return headerView;
     }
-
-    PicProgressHeaderLabel *contentLabel = [headerFooter viewWithTag:9527];
-    if (nil == contentLabel) {
-        contentLabel = [[PicProgressHeaderLabel alloc] initWithFrame:CGRectMake(10, 0, self.tableView.mj_w, headerHeight)];
-        contentLabel.font = [UIFont systemFontOfSize:15];
-        contentLabel.textColor = [UIColor grayColor];
-        contentLabel.userInteractionEnabled = YES;
-        contentLabel.tag = 9527;
-        [headerFooter.contentView addSubview:contentLabel];
-
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHeaderGestureAction:)];
-        [contentLabel addGestureRecognizer:tapGesture];
-    }
-    contentLabel.index = section;
-
-    PicProgressModel *progressModel = self.progressModels[section];
-
-    [self updateHeaderLabel:contentLabel progressModel:progressModel];
-
-    return headerFooter;
+    return  nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 10;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 
     PicContentTaskModel *taskModel = self.progressModels[indexPath.section].taskModels[indexPath.row];
     if (taskModel.status == 3) {

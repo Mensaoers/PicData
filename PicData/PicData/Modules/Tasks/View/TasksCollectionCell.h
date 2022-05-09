@@ -1,5 +1,5 @@
 //
-//  TasksTCell.h
+//  TasksCollectionCell.h
 //  PicData
 //
 //  Created by 鹏鹏 on 2022/5/5.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TasksTCell : UITableViewCell
+@interface TasksCollectionCell : UICollectionViewCell
 
 @property (nonatomic, strong) PicContentTaskModel *taskModel;
 

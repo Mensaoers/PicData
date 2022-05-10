@@ -478,14 +478,18 @@
         [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
         [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"重命名完成" afterDelay:1];
     }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"仅刷新文件夹大小" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
-        [weakSelf refreshLoadData:YES];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"清空无图文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    if (nil == self.contentModel) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"仅刷新文件夹大小" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
-        [weakSelf arrangeAllFiles];
-    }]];
+            [weakSelf refreshLoadData:YES];
+        }]];
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"清空无图文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            [weakSelf arrangeAllFiles];
+        }]];
+    }
     [alert addAction:[UIAlertAction actionWithTitle:@"清空所有文本文档" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [MBProgressHUD showHUDAddedTo:weakSelf.view animated:YES];
         [weakSelf deleteAllTextFiles:self.targetFilePath];
@@ -745,12 +749,18 @@ static NSString *likeString = @"我的收藏";
         if (result) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+
             }]];
             [alert addAction:[UIAlertAction actionWithTitle:@"删除原目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 NSError *rmError = nil;
                 [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                if (rmError) {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", rmError] preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [weakSelf.navigationController popViewControllerAnimated:YES];
+                    }]];
+                    [weakSelf presentViewController:alert animated:YES completion:nil];
+                }
             }]];
             [weakSelf presentViewController:alert animated:YES completion:nil];
         } else {

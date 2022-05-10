@@ -10,6 +10,7 @@
 #import "TasksContentView.h"
 #import "PicProgressModel.h"
 #import "TasksCollectionCell.h"
+#import "LocalFileListVC.h"
 
 @interface PicProgressHeaderLabel : UILabel
 
@@ -236,11 +237,19 @@ static CGFloat headerHeight = 35;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-
+    
     PicContentTaskModel *taskModel = self.progressModels[indexPath.section].taskModels[indexPath.row];
-    if (taskModel.status == 3) {
-        // TODO: 点击跳转到本地预览
+    // 点击跳转到本地预览
+    PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+    if (nil == sourceModel) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
+        return;
     }
+    
+    LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
+    fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+    [self.navigationController pushViewController:fileListVC animated:YES];
+
 }
 
 @end

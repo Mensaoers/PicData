@@ -19,7 +19,6 @@ WCDB_SYNTHESIZE(PicContentModel, sourceTitle)
 WCDB_SYNTHESIZE(PicContentModel, thumbnailUrl)
 WCDB_SYNTHESIZE(PicContentModel, href)
 WCDB_SYNTHESIZE(PicContentModel, totalCount)
-WCDB_SYNTHESIZE(PicContentModel, downloadedCount)
 
 WCDB_PRIMARY(PicContentModel, href)
 

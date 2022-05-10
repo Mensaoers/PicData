@@ -221,10 +221,12 @@ singleton_implementation(PDDownloadManager);
                 // 遍历完成
                 if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
                     contentTaskModel.status = 3;
-                    [contentTaskModel updateTable];
                     [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteDownTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 }
             }
+
+            [contentTaskModel updateTable];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
         };
 
         NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:fileName];
@@ -247,11 +249,14 @@ singleton_implementation(PDDownloadManager);
                     [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:targetPath] error:&moveError];
                     if (nil == moveError) {
                         downloadSuccessBlock();
+                    } else {
+                        NSLog(@"task. move error:%@", moveError);
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
                     }
                 }
             } else {
                 NSLog(@"task.error:%@", error);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
             }
         }];
         [self.downloadQueue addOperation:operation];

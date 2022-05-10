@@ -53,7 +53,8 @@ static CGFloat sideMargin = 5;
     return itemWidth;
 }
 + (CGFloat)itemHeight:(CGFloat)wholeWidth {
-    CGFloat itemHeight = [TasksContentView itemWidth:wholeWidth] * (617.0 / 411) + 60;
+    // (617.0 / 411)
+    CGFloat itemHeight = [TasksContentView itemWidth:wholeWidth] * 1.3 + 60;
     return itemHeight;
 }
 + (CGSize)itemSize:(CGFloat)wholeWidth {

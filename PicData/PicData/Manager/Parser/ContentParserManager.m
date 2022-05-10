@@ -291,6 +291,7 @@ singleton_implementation(ContentParserManager)
 
         count += urls.count;
         // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
+        // TODO: 这边需要思考下, 是否需要串行队列添加任务
         [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[urls copy] suggestNames:suggestNames];
 
     }

@@ -27,6 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 某个套图下载失败
 #define NotificationNameFailedDownTask @"NotificationNameFailedDownTask"
 
+/// 某个套图某张图下载成功
+#define NotificationNameCompleteDownPicture @"NotificationNameCompleteDownPicture"
+/// 某个套图某张图下载失败
+#define NotificationNameFailedDownPicture @"NotificationNameFailedDownPicture"
+
 @interface ContentParserManager : NSObject
 
 singleton_interface(ContentParserManager)

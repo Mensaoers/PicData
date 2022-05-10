@@ -19,8 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 该任务下一共有多少图片
 @property (nonatomic, assign) int totalCount;
-/// 已下载多少张, 这个属性忽略, 不存数据库
-@property (nonatomic, assign) int downloadedCount;
 
 - (BOOL)updateTableWhenHref:(NSString *)href;
 
@@ -34,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 利用已有的contentModel初始化一个子类对象
 + (instancetype)taskModelWithContentModel:(PicContentModel *)contentModel;
 
+/// 已下载多少张, 这个属性在重启任务时会重置
+@property (nonatomic, assign) int downloadedCount;
 /// 表示该任务是否已经开始进行(不表示全部下载完成) 0尚未开始, 1开始遍历, 2完成遍历, 3下载完成
 @property (nonatomic, assign) int status;
 

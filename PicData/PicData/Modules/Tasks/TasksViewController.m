@@ -69,6 +69,9 @@ static NSString *headerdentifier = @"headerdentifier";
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeStartScaneTask:) name:NotificationNameStartScaneTask object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteScaneTask:) name:NotificationNameCompleteScaneTask object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteDownTask:) name:NotificationNameCompleteDownTask object:nil];
+
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteDownPicture:) name:NotificationNameCompleteDownPicture object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeFailedDownPicture:) name:NotificationNameFailedDownPicture object:nil];
 }
 
 - (void)loadNavigationItem {
@@ -80,8 +83,6 @@ static NSString *headerdentifier = @"headerdentifier";
 
 - (void)loadMainView {
     [super loadMainView];
-
-
 
     TasksContentView *collectionView = [TasksContentView collectionView:self.view.mj_w];
     collectionView.delegate = self;
@@ -176,6 +177,33 @@ static NSString *headerdentifier = @"headerdentifier";
 
 - (void)receiveNoticeCompleteScaneTask:(NSNotification *)notification {
     [self reCallLoadDataList:1];
+}
+
+- (void)receiveNoticeCompleteDownPicture:(NSNotification *)notification {
+    PicContentTaskModel *taskModel = notification.userInfo[@"contentModel"];
+
+    PicProgressModel *progressModel = [self.progressModels objectOrNilAtIndex:taskModel.status];
+    if (progressModel) {
+        NSInteger count = progressModel.taskModels.count;
+
+        // 根据任务找到对应的cell, 刷新进度
+        for (NSInteger index = 0; index < count; index ++) {
+            PicContentTaskModel *taskModelT = progressModel.taskModels[index];
+            if ([taskModelT.href isEqualToString:taskModel.href]) {
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    TasksCollectionCell *cell = (TasksCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:taskModel.status]];
+                    [cell updateProgress:taskModel];
+                    taskModelT.downloadedCount = taskModel.downloadedCount;
+                });
+                break;
+            }
+        }
+    }
+}
+
+- (void)receiveNoticeFailedDownPicture:(NSNotification *)notification {
+
 }
 
 #pragma mark - delegate

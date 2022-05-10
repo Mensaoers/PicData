@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
+		33231B7B282AB924006340A7 /* PPStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33231B7A282AB924006340A7 /* PPStatusView.m */; };
 		3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.mm */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
 		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
@@ -117,6 +118,8 @@
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
+		33231B79282AB924006340A7 /* PPStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPStatusView.h; sourceTree = "<group>"; };
+		33231B7A282AB924006340A7 /* PPStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPStatusView.m; sourceTree = "<group>"; };
 		3323205724ECB4A300FE5E33 /* PicBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBaseModel.h; sourceTree = "<group>"; };
 		3323205824ECB4A300FE5E33 /* PicBaseModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicBaseModel.mm; sourceTree = "<group>"; };
 		3323206124ECE3D000FE5E33 /* PicRuleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleModel.m; sourceTree = "<group>"; };
@@ -452,6 +455,8 @@
 		33E1ABE22822BD0F00AA92CB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				33231B79282AB924006340A7 /* PPStatusView.h */,
+				33231B7A282AB924006340A7 /* PPStatusView.m */,
 				3346BE8728240F5C00527864 /* TasksCollectionCell.h */,
 				3346BE8828240F5C00527864 /* TasksCollectionCell.m */,
 				33E33D6E282816C000BCDCD5 /* TasksContentView.h */,
@@ -946,6 +951,7 @@
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
+				33231B7B282AB924006340A7 /* PPStatusView.m in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
 				33E33D70282816C000BCDCD5 /* TasksContentView.m in Sources */,
 				332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */,

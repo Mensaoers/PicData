@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) PicContentTaskModel *taskModel;
 
+- (void)updateProgress:(PicContentTaskModel *)taskModel;
+
 @end
 
 NS_ASSUME_NONNULL_END

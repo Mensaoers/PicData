@@ -66,7 +66,7 @@
 - (void)loadNavigationItem {
 
     NSMutableArray *leftBarButtonItems = [NSMutableArray array];
-    if (self.navigationController.viewControllers.count >= 2) {
+    if (self.navigationController.viewControllers.count > 1) {
         UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
         [leftBarButtonItems addObject:backItem];
     }
@@ -465,7 +465,7 @@
 
     PDBlockSelf
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"整理文件夹" message:@"该操作可能会删除本地文件(夹), 重要文件请再三确认" preferredStyle:UIAlertControllerStyleAlert];
-    if (self.navigationController.viewControllers.count > 2) {
+    if (self.contentModel) {
         [alert addAction:[UIAlertAction actionWithTitle:@"重新下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
             [weakSelf reDownloadContents];
@@ -598,7 +598,7 @@
 
 /// 重新下载
 - (void)reDownloadContents {
-    PicContentTaskModel *contentModel = [[PicContentTaskModel queryTableWithTitle:self.targetFilePath.lastPathComponent] firstObject];
+    PicContentModel *contentModel = self.contentModel;
     if (nil == contentModel) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到该套图的下载记录" afterDelay:1];
         return;
@@ -677,14 +677,12 @@
         if (weakSelf.navigationController.viewControllers.count > 1) {
 
                 // 还要把数据库数据更新
-            if (weakSelf.navigationController.viewControllers.count == 2) {
+            if (nil == self.contentModel) {
                 // 进到列表中, 只需要更新这个类别下面所有的数据就好了
-                [PicContentTaskModel deleteFromTableWithSourceHref:self.contentModel.sourceHref];
+                [PicContentTaskModel deleteFromTableWithSourceTitle:self.targetFilePath.lastPathComponent];
             } else {
                 // 更新contentModel就好了
-                if (self.contentModel) {
-                    [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.title];
-                }
+                [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.title];
             }
 
             // [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
@@ -724,7 +722,7 @@ static NSString *likeString = @"我的收藏";
         if (![FileManager checkFolderPathExistOrCreate:likePath]) {
             return;
         }
-        if (weakSelf.navigationController.viewControllers.count == 2) {
+        if (nil == weakSelf.contentModel) {
             /// 多图集页面
             for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
                 if (!fileModel.isFolder) {
@@ -738,7 +736,7 @@ static NSString *likeString = @"我的收藏";
             }
         } else {
             /// 子页面
-            [weakSelf likeOneFolderWithName:weakSelf.targetFilePath.lastPathComponent folderPath:self.targetFilePath withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
+            [weakSelf likeOneFolderWithName:weakSelf.contentModel.title folderPath:self.targetFilePath withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
                 result = result_l;
                 copyError = copyError_l;
             }];

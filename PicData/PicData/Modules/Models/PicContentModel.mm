@@ -95,6 +95,10 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperties:{self.status, self.downloadedCount} withRow:@[@0, @0] where:self.downloadedCount >= 0 && self.status != 3];
 }
 
++ (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle {
+    return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.sourceTitle == sourceTitle];
+}
+
 + (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref {
     return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.sourceHref == sourceHref];
 }

@@ -111,6 +111,7 @@
 
 //            NSLog(@"获取%@数据成功:%@", self.typeModel.value, resultString);
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (nil == weakSelf) { return; }
                 [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
                 if (isReload) {
                     [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据成功"];

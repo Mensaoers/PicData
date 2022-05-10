@@ -52,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)resetHalfWorkingTasks;
 
 /// 删除已添加任务, 根据父级title
++ (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle;
+/// 删除已添加任务, 根据父级href
 + (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref;
 /// 取消已添加任务, 根据title
 + (BOOL)deleteFromTableWithTitle:(NSString *)title;

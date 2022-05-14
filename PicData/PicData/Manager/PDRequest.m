@@ -53,29 +53,20 @@ singleton_implementation(PDRequest)
         NSString *titleAlert = @"版本提醒";
         NSString *downloadTitle = @"安装";
 
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleAlert message:messageAlert preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:downloadTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
+        UIViewController *presentingViewController = UIApplication.sharedApplication.windows.firstObject.rootViewController;
+        [presentingViewController showAlertWithTitle:titleAlert message:messageAlert confirmTitle:downloadTitle confirmHandler:^(UIAlertAction * _Nonnull action) {
             BOOL isDebugged = AmIBeingDebugged();
             if (isDebugged) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"调试模式下不支持直接安装app" preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil]];
-                [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
+
+                [presentingViewController showAlertWithTitle:nil message:@"调试模式下不支持直接安装app" confirmTitle:@"好的" confirmHandler:nil];
             } else {
                 [UIApplication.sharedApplication openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
             }
 
-            if (completehandler) {
-                completehandler();
-            }
-        }]];
-
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            if (completehandler) {
-                completehandler();
-            }
-        }]];
-        [UIApplication.sharedApplication.windows.firstObject.rootViewController presentViewController:alert animated:YES completion:nil];
+            PPIsBlockExecute(completehandler);
+        } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
+            PPIsBlockExecute(completehandler);
+        }];
     }
 }
 

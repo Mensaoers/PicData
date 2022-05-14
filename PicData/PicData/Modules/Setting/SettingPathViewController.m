@@ -19,11 +19,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"最好在开始下载任务之前设置路径, 避免不必要的错误" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+    [self showAlertWithTitle:@"提醒" message:@"最好在开始下载任务之前设置路径, 避免不必要的错误" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction * _Nonnull action) {
         [self loadMainView];
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    }];
 }
 
 - (void)loadNavigationItem {
@@ -179,15 +178,12 @@
             return;
         }
 
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定修改下载路径吗, 最好在开始下载任务之前设置路径, 避免不必要的错误" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"确定设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self showAlertWithTitle:@"提醒" message:@"确定修改下载路径吗, 最好在开始下载任务之前设置路径, 避免不必要的错误" confirmTitle:@"确定设置" confirmHandler:^(UIAlertAction * _Nonnull action) {
             [weakSelf.view endEditing:YES];
             [[PDDownloadManager sharedPDDownloadManager] updatesystemDownloadPath:weakSelf.textView.text];
             weakSelf.fullPathLabel.text = [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"设置地址成功"];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
+        } cancelTitle:@"取消" cancelHandler:nil];
     } else {
         [self resetPath];
     }

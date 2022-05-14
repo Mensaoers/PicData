@@ -159,32 +159,25 @@ static NSString *identifier = @"identifier";
 }
 
 - (void)resetCache:(UIView *)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"是否确认清除全部缓存" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确认清除(包括文件)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
-        if ([PDDownloadManager clearAllData:YES]) {
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理完成"];
-            [self tipsToReOpenApp];
+    MJWeakSelf
+    void(^clearBlock)(BOOL clear) = ^(BOOL clear){
+        if ([PDDownloadManager clearAllData:clear]) {
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"清理完成"];
+            [weakSelf tipsToReOpenApp];
         } else {
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理失败"];
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"清理失败"];
         }
-    }]];
+    };
 
-    [alert addAction:[UIAlertAction actionWithTitle:@"确认清除(不包括文件)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-        if ([PDDownloadManager clearAllData:NO]) {
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理完成"];
-            [self tipsToReOpenApp];
-        } else {
-            [MBProgressHUD showInfoOnView:self.view WithStatus:@"清理失败"];
-        }
-
-    }]];
-
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    UIAlertAction *clearWithFile = [UIAlertAction actionWithTitle:@"确认清除(包括文件)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        clearBlock(YES);
+    }];
+    UIAlertAction *clearWithoutFile = [UIAlertAction actionWithTitle:@"确认清除(不包括文件)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        clearBlock(NO);
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil];
+    [self showAlertWithTitle:@"提醒" message:@"是否确认清除全部缓存" actions:@[clearWithFile, clearWithoutFile, cancelAction]];
 }
 
 - (void)showGesture:(UIView *)sender {
@@ -204,14 +197,9 @@ static NSString *identifier = @"identifier";
 }
 
 - (void)tipsToReOpenApp {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"清理完成, 请重启app" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"退出app" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
+    [self showAlertWithTitle:@"提醒" message:@"清理完成, 请重启app" confirmTitle:@"退出app" confirmHandler:^(UIAlertAction * _Nonnull action) {
         abort();
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"以后再说" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    } cancelTitle:@"以后再说" cancelHandler:nil];
 }
 
 @end

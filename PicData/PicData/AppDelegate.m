@@ -140,13 +140,10 @@
 }
 
 - (void)receiveNoticeOfDownloadPath:(NSNotification *)notification {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"下载路径设置有误, 请确认地址" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
+    [self.window.rootViewController showAlertWithTitle:@"提醒" message:@"下载路径设置有误, 请确认地址" confirmTitle:@"去设置" confirmHandler:^(UIAlertAction * _Nonnull action) {
         [self.window.rootViewController.navigationController pushViewController:[SettingViewController new] animated:YES];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"稍后" style:UIAlertActionStyleCancel handler:nil]];
-    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    } cancelTitle:@"稍后" cancelHandler:nil];
 }
 
 - (void)receiveGestureUnlockFaild:(NSNotification *)notification {

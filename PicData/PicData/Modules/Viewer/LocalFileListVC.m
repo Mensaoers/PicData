@@ -240,11 +240,10 @@
 }
 
 - (void)shareAllFiles:(UIButton *)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"分享文件" preferredStyle:UIAlertControllerStyleAlert];
-
+    NSMutableArray *actions = [NSMutableArray array];
 #if TARGET_OS_MACCATALYST
 
-    [alert addAction:[UIAlertAction actionWithTitle:@"在本地显示" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [actions addObject:[UIAlertAction actionWithTitle:@"在本地显示" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:self.targetFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
 
         }];
@@ -252,7 +251,7 @@
 #endif
 
     if (self.contentModel) {
-        [alert addAction:[UIAlertAction actionWithTitle:@"分享链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"分享链接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
             if (self.contentModel == nil) {
                 [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图链接"];
@@ -270,12 +269,12 @@
         }]];
 
 
-        [alert addAction:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self sharePDF:sender];
         }]];
     }
 
-    [alert addAction:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [actions addObject:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         /// 压缩之后弹出分享框
         [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:self.targetFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
 
@@ -286,13 +285,13 @@
             }
         }];
     }]];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+    [actions addObject:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self shareZip:sender];
     }]];
 
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self showAlertWithTitle:nil message:@"分享文件" actions:actions];
 }
 
 #pragma mark pdf
@@ -353,15 +352,14 @@
             [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:pdfPath]] sourceView:sourceView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
 
             }];
+
 #else
             ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
             viewerVC.filePath = pdfPath;
             viewerVC.backBlock = ^(NSString * _Nonnull filePath) {
 
                 PDBlockSelf
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"删除文件" message:@"是否需要删除该pdf文件以节省空间" preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"删掉吧" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
+                [weakSelf showAlertWithTitle:@"删除文件" message:@"是否需要删除该pdf文件以节省空间" confirmTitle:@"删掉吧" confirmHandler:^(UIAlertAction * _Nonnull action) {
                     // 不分享了, 那得删了临时数据
                     NSError *rmError = nil;
                     [[NSFileManager defaultManager] removeItemAtPath:pdfPath error:&rmError];
@@ -370,9 +368,7 @@
                     } else {
                         [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除成功" afterDelay:1];
                     }
-                }]];
-                [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-                [weakSelf presentViewController:alert animated:YES completion:nil];
+                } cancelTitle:@"取消" cancelHandler:nil];
             };
             [weakSelf.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
 #endif
@@ -464,14 +460,13 @@
 - (void)arrangeItemClickAction:(UIBarButtonItem *)sender {
 
     PDBlockSelf
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"整理文件夹" message:@"该操作可能会删除本地文件(夹), 重要文件请再三确认" preferredStyle:UIAlertControllerStyleAlert];
+    NSMutableArray *actions = [NSMutableArray array];
     if (self.contentModel) {
-        [alert addAction:[UIAlertAction actionWithTitle:@"重新下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
+        [actions addObject:[UIAlertAction actionWithTitle:@"重新下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakSelf reDownloadContents];
         }]];
     }
-    [alert addAction:[UIAlertAction actionWithTitle:@"一键重命名" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [actions addObject:[UIAlertAction actionWithTitle:@"一键重命名" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [MBProgressHUD showHUDAddedTo:weakSelf.view animated:YES];
         [weakSelf renameAllPicturesOfDirectoryAtPath:self.targetFilePath];
         [weakSelf refreshLoadData:NO];
@@ -480,25 +475,25 @@
     }]];
 
     if (nil == self.contentModel) {
-        [alert addAction:[UIAlertAction actionWithTitle:@"仅刷新文件夹大小" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"仅刷新文件夹大小" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
             [weakSelf refreshLoadData:YES];
         }]];
 
-        [alert addAction:[UIAlertAction actionWithTitle:@"清空无图文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"清空无图文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
             [weakSelf arrangeAllFiles];
         }]];
     }
-    [alert addAction:[UIAlertAction actionWithTitle:@"清空所有文本文档" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [actions addObject:[UIAlertAction actionWithTitle:@"清空所有文本文档" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [MBProgressHUD showHUDAddedTo:weakSelf.view animated:YES];
         [weakSelf deleteAllTextFiles:self.targetFilePath];
         [weakSelf refreshLoadData:NO];
         [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
         [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"清空文本完成" afterDelay:1];
     }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self showAlertWithTitle:@"整理文件夹" message:@"该操作可能会删除本地文件(夹), 重要文件请再三确认" actions:actions];
 }
 
 - (void)refreshItemClickAction:(UIBarButtonItem *)sender {
@@ -625,9 +620,7 @@
 - (void)arrangeAllFiles {
 
     PDBlockSelf
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"清空无图文件夹" message:@"该操作会删除该目录下空文件夹, 且不可恢复, 确定要整理吗?" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确认删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
+    [self showAlertWithTitle:@"清空无图文件夹" message:@"该操作会删除该目录下空文件夹, 且不可恢复, 确定要整理吗?" confirmTitle:@"确认删除" confirmHandler:^(UIAlertAction * _Nonnull action) {
         BOOL isRoot = [weakSelf.targetFilePath isEqualToString:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
 
         [MBProgressHUD showHUDAddedTo:[AppTool getAppKeyWindow] animated:YES];
@@ -667,20 +660,17 @@
 
         [MBProgressHUD hideHUDForView:[AppTool getAppKeyWindow] animated:YES];
         [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"整理完成" afterDelay:1];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    } cancelTitle:@"取消" cancelHandler:nil];
 }
 
 - (void)clearAllFiles {
     PDBlockSelf
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定清空所有文件吗?(该目录也将一并清除), 该过程不可逆" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [self showAlertWithTitle:@"提醒" message:@"确定清空所有文件吗?(该目录也将一并清除), 该过程不可逆" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
         [MBProgressHUD showHUDAddedTo:weakSelf.view WithStatus:@"正在删除"];
         NSError *rmError = nil;
         if (weakSelf.navigationController.viewControllers.count > 1) {
 
-                // 还要把数据库数据更新
+            // 还要把数据库数据更新
             if (nil == self.contentModel) {
                 // 进到列表中, 只需要更新这个类别下面所有的数据就好了
                 [PicContentTaskModel deleteFromTableWithSourceTitle:self.targetFilePath.lastPathComponent];
@@ -706,16 +696,14 @@
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
             [weakSelf.contentView.mj_header beginRefreshing];
         }
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    } cancelTitle:@"取消" cancelHandler:nil];
 }
 
 static NSString *likeString = @"我的收藏";
 - (void)likeAllFiles {
     PDBlockSelf
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"确定移动该文件夹至收藏夹吗?" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+    [self showAlertWithTitle:@"提醒" message:@"确定移动该文件夹至收藏夹吗?" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
         // 构造收藏文件夹
         NSString *systemPath = [self systemDownloadFullPath];
         NSString *likePath = [systemPath stringByAppendingPathComponent:likeString];
@@ -747,30 +735,22 @@ static NSString *likeString = @"我的收藏";
         }
 
         if (result) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
-            }]];
-            [alert addAction:[UIAlertAction actionWithTitle:@"删除原目录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf showAlertWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] confirmTitle:@"删除原目录" confirmHandler:^(UIAlertAction * _Nonnull action) {
                 NSError *rmError = nil;
                 [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
                 if (rmError) {
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", rmError] preferredStyle:UIAlertControllerStyleAlert];
-                    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+                    [weakSelf showAlertWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", rmError] confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
                         [weakSelf.navigationController popViewControllerAnimated:YES];
-                    }]];
-                    [weakSelf presentViewController:alert animated:YES completion:nil];
+                    }];
                 }
-            }]];
-            [weakSelf presentViewController:alert animated:YES completion:nil];
+            } cancelTitle:@"返回" cancelHandler:nil];
+
         } else {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", copyError] preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-            [weakSelf presentViewController:alert animated:YES completion:nil];
+            [weakSelf showAlertWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", copyError] confirmTitle:@"确定" confirmHandler:nil];
         }
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    } cancelTitle:@"取消" cancelHandler:nil];
 }
 
 /// 专门处理一套图对的收藏逻辑

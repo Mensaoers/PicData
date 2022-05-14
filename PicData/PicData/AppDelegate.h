@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TiercelObjCBridge/TiercelObjCBridge-Swift.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

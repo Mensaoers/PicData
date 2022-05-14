@@ -10,6 +10,7 @@
 #import "DetailViewModel.h"
 #import "DetailViewContentCell.h"
 #import "PicContentCell.h"
+#import "LocalFileListVC.h"
 
 @interface DetailViewController ()<UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PicContentCellDelegate>
 
@@ -435,16 +436,42 @@
 }
 
 - (void)shareThisContent:(UIButton *)sender {
-    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
-    NSURL *url = [NSURL URLWithString:self.contentModel.href relativeToURL:baseURL];
-    [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-        NSLog(@"调用分享的应用id :%@", activityType);
-        if (completed) {
-            NSLog(@"分享成功!");
-        } else {
-            NSLog(@"分享失败!");
-        }
-    }];
+    PDBlockSelf
+    NSMutableArray *actions = [NSMutableArray array];
+    [actions addObject:[UIAlertAction actionWithTitle:@"复制地址" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *baseURL = [NSURL URLWithString:weakSelf.sourceModel.HOST_URL];
+        NSURL *url = [NSURL URLWithString:weakSelf.contentModel.href relativeToURL:baseURL];
+        [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            NSLog(@"调用分享的应用id :%@", activityType);
+            if (completed) {
+                NSLog(@"分享成功!");
+            } else {
+                NSLog(@"分享失败!");
+            }
+        }];
+    }]];
+
+    PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithHref:self.contentModel.href] firstObject];
+    if (taskModel) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"查看文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            // 点击跳转到本地预览
+            PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+            if (nil == sourceModel) {
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
+                return;
+            }
+
+            LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
+            fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+            [weakSelf.navigationController pushViewController:fileListVC animated:YES];
+        }]];
+    }
+
+    [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+
+    [self showAlertWithTitle:nil message:@"分享" actions:actions];
+
 }
 
 #pragma mark - delegate

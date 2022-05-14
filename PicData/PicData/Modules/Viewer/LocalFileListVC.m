@@ -184,7 +184,7 @@
             }
 
             NSString *filePath = [self.targetFilePath stringByAppendingPathComponent:fileName];
-            if ([FileManager isDirectory:filePath]) {
+            if ([PPFileManager isDirectory:filePath]) {
                 ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:YES];
 
                 NSString *dirPath = filePath;
@@ -336,7 +336,7 @@
 
         [LGPdf createPdfWithImageCount:weakSelf.fileNamesList.count width:A4_L sepmargin:0 pdfPath:pdfPath password:passsword minWidth:10 enmuHandler:^UIImage * _Nullable(NSInteger index) {
             ViewerFileModel *tempModel = weakSelf.fileNamesList[index];
-            if ([FileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
+            if ([PPFileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
                 UIImage *image = [UIImage imageWithContentsOfFile:[weakSelf.targetFilePath stringByAppendingPathComponent:tempModel.fileName]];
                 return image;
             } else {
@@ -521,7 +521,7 @@
     for (NSString *fileName in fileContents) {
 
         NSString *filePath = [dirPath stringByAppendingPathComponent:fileName];
-        if ([FileManager isDirectory:filePath]) {
+        if ([PPFileManager isDirectory:filePath]) {
             // 这是个文件夹
             [self deleteAllTextFiles:filePath];
             continue;
@@ -555,7 +555,7 @@
     for (NSString *fileName in fileContents) {
 
         NSString *filePath = [dirPath stringByAppendingPathComponent:fileName];
-        if ([FileManager isDirectory:filePath]) {
+        if ([PPFileManager isDirectory:filePath]) {
             // 这是个文件夹
             [self renameAllPicturesOfDirectoryAtPath:filePath];
             continue;
@@ -645,14 +645,14 @@
                 NSString *pathExtension = fileName.pathExtension;
                 if (isRoot) {
                     // 根目录整理, 移除没有文件夹的子项目
-                    if ([FileManager isFileTypeDocAndPic:pathExtension]) {
+                    if ([PPFileManager isFileTypeDocAndPic:pathExtension]) {
 
                     } else {
                         isEmptyF = NO;
                     }
                 } else {
                     // 图库整理, 移除没有图片的子项目
-                    if ([FileManager isFileTypePicture:pathExtension]) {
+                    if ([PPFileManager isFileTypePicture:pathExtension]) {
                         isEmptyF = NO;
                     }
                 }
@@ -723,7 +723,7 @@ static NSString *likeString = @"我的收藏";
         __block BOOL result = YES;
         __block NSError *copyError = nil;
 
-        if (![FileManager checkFolderPathExistOrCreate:likePath]) {
+        if (![PPFileManager checkFolderPathExistOrCreate:likePath]) {
             return;
         }
         if (nil == weakSelf.contentModel) {
@@ -833,9 +833,9 @@ static NSString *likeString = @"我的收藏";
         [self.navigationController pushViewController:localListVC animated:YES];
     } else {
 
-        if ([FileManager isFileTypePicture:fileModel.fileName.pathExtension]) {
+        if ([PPFileManager isFileTypePicture:fileModel.fileName.pathExtension]) {
             [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
-        } else if ([FileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
+        } else if ([PPFileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
             ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
             viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
             [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
@@ -848,7 +848,7 @@ static NSString *likeString = @"我的收藏";
     NSInteger currentIndex = 0;
     for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
         ViewerFileModel *tempModel = self.fileNamesList[index];
-        if ([FileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
+        if ([PPFileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
 
             if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
                 currentIndex = self.imgsList.count;

@@ -47,7 +47,7 @@
 
 /// 数据库文件路径
 - (NSString *)databaseFilePath {
-    return [FileManager getDocumentPathWithTarget:self.databaseFileName];
+    return [PPFileManager getDocumentPathWithTarget:self.databaseFileName];
 }
 
 + (void)prepareDatabase {
@@ -72,7 +72,7 @@
 
     if (andFiles) {
 
-        if (![FileManager checkFolderPathExistOrCreate:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
+        if (![PPFileManager checkFolderPathExistOrCreate:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
             return NO;
         }
 
@@ -116,7 +116,7 @@ singleton_implementation(PDDownloadManager);
 
     NSString *downloadPath = [self systemDownloadPath];
 
-    NSString *fullPath = [FileManager getDocumentPathWithTarget:downloadPath];
+    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
     return fullPath;
 }
 
@@ -126,7 +126,7 @@ singleton_implementation(PDDownloadManager);
 
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need {
 
-    BOOL isExist = [FileManager checkFolderPathExistOrCreate:[self systemDownloadFullPath]];
+    BOOL isExist = [PPFileManager checkFolderPathExistOrCreate:[self systemDownloadFullPath]];
     if (!isExist && need) {
             // 不存在
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECKDOWNLOADPATHKEY object:nil];
@@ -137,7 +137,7 @@ singleton_implementation(PDDownloadManager);
     /// 设置下载地址
 - (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath {
 
-    NSString *fullPath = [FileManager getDocumentPathWithTarget:downloadPath];
+    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
     BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     if (!result) {
         return NO;

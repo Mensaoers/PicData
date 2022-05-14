@@ -124,6 +124,15 @@ singleton_implementation(PDDownloadManager);
     return [[self systemDownloadFullPath] lastPathComponent];
 }
 
+static NSString *favoriteFolderName = @"我的收藏";
+- (NSString *)systemFavoriteFolderPath {
+    return [[self systemDownloadFullPath] stringByAppendingPathComponent:favoriteFolderName];
+}
+
+- (NSString *)systemFavoriteFolderName {
+    return favoriteFolderName;
+}
+
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need {
 
     BOOL isExist = [PPFileManager checkFolderPathExistOrCreate:[self systemDownloadFullPath]];
@@ -162,8 +171,8 @@ singleton_implementation(PDDownloadManager);
         }
         return path;
     }
-    
-    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:sourceModel.systemTitle];
+
+    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:contentModel.isFavor ? [self systemFavoriteFolderName] : sourceModel.systemTitle];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:targetPath isDirectory:&isDir]) {
         NSError *createDirError = nil;

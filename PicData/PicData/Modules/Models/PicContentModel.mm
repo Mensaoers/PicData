@@ -14,11 +14,12 @@ WCDB_IMPLEMENTATION(PicContentModel)
 WCDB_SYNTHESIZE(PicContentModel, title)
 WCDB_SYNTHESIZE(PicContentModel, systemTitle)
 WCDB_SYNTHESIZE(PicContentModel, HOST_URL)
+
 WCDB_SYNTHESIZE(PicContentModel, sourceHref)
 WCDB_SYNTHESIZE(PicContentModel, sourceTitle)
 WCDB_SYNTHESIZE(PicContentModel, thumbnailUrl)
 WCDB_SYNTHESIZE(PicContentModel, href)
-WCDB_SYNTHESIZE(PicContentModel, totalCount)
+WCDB_SYNTHESIZE(PicContentModel, isFavor)
 
 WCDB_PRIMARY(PicContentModel, href)
 
@@ -41,13 +42,17 @@ WCDB_INDEX(PicContentModel, "_index", href)
 @implementation PicContentTaskModel
 
 WCDB_IMPLEMENTATION(PicContentTaskModel)
+
 WCDB_SYNTHESIZE(PicContentTaskModel, title)
 WCDB_SYNTHESIZE(PicContentTaskModel, systemTitle)
 WCDB_SYNTHESIZE(PicContentTaskModel, HOST_URL)
+
 WCDB_SYNTHESIZE(PicContentTaskModel, sourceHref)
 WCDB_SYNTHESIZE(PicContentTaskModel, sourceTitle)
 WCDB_SYNTHESIZE(PicContentTaskModel, thumbnailUrl)
 WCDB_SYNTHESIZE(PicContentTaskModel, href)
+WCDB_SYNTHESIZE(PicContentTaskModel, isFavor)
+
 WCDB_SYNTHESIZE(PicContentTaskModel, totalCount)
 WCDB_SYNTHESIZE(PicContentTaskModel, downloadedCount)
 WCDB_SYNTHESIZE(PicContentTaskModel, status)

@@ -17,8 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *thumbnailUrl;
 @property (nonatomic, strong) NSString *href;
 
-/// 该任务下一共有多少图片
-@property (nonatomic, assign) int totalCount;
+@property (nonatomic, assign) BOOL isFavor;
 
 - (BOOL)updateTableWhenHref:(NSString *)href;
 
@@ -35,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 已下载多少张, 这个属性在重启任务时会重置
 @property (nonatomic, assign) int downloadedCount;
 /// 表示该任务是否已经开始进行(不表示全部下载完成) 0尚未开始, 1开始遍历, 2完成遍历, 3下载完成
+/// 该任务下一共有多少图片
+@property (nonatomic, assign) int totalCount;
 @property (nonatomic, assign) int status;
 
 /// 获取下一个没有开始的任务

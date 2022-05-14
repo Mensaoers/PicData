@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *imgsList;
 
 @property (nonatomic, strong) UILabel *contentLabel;
-@property (nonatomic, strong) PicContentModel *contentModel;
+@property (nonatomic, strong) PicContentTaskModel *contentModel;
 
 @property (nonatomic, weak) YBImageBrowser *browser;
 
@@ -29,7 +29,7 @@
 
 // TODO: 不能根据导航层数判断按钮显示, 后期需要在其他地方弹出本地文件界面
 
-- (PicContentModel *)contentModel {
+- (PicContentTaskModel *)contentModel {
     if (nil == _contentModel) {
         NSArray *result = [PicContentTaskModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];
         if (result.count > 0) {
@@ -53,6 +53,12 @@
     return _imgsList;
 }
 
+- (NSString *)favoriteFolderName {
+    return [[PDDownloadManager sharedPDDownloadManager] systemFavoriteFolderName];
+}
+- (NSString *)systemFavoriteFolderPath {
+    return [[PDDownloadManager sharedPDDownloadManager] systemFavoriteFolderPath];
+}
 - (NSString *)systemDownloadFullPath {
     return [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath];
 }
@@ -96,7 +102,7 @@
     [items addObject:deleteItem];
 
     if (self.navigationController.viewControllers.count >= 2) {
-        if ([self.targetFilePath containsString:likeString]) {
+        if ([self.targetFilePath containsString:[self favoriteFolderName]]) {
             // 我已经是收藏文件夹了
         } else {
             UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
@@ -699,17 +705,20 @@
     } cancelTitle:@"取消" cancelHandler:nil];
 }
 
-static NSString *likeString = @"我的收藏";
 - (void)likeAllFiles {
     PDBlockSelf
 
     [self showAlertWithTitle:@"提醒" message:@"确定移动该文件夹至收藏夹吗?" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
         // 构造收藏文件夹
         NSString *systemPath = [self systemDownloadFullPath];
-        NSString *likePath = [systemPath stringByAppendingPathComponent:likeString];
+        NSString *likePath = [self systemFavoriteFolderPath];
 
         __block BOOL result = YES;
         __block NSError *copyError = nil;
+        BOOL haveUnComplete = NO;
+
+        // 专门保存需要删除的文件夹
+        NSMutableArray *completeLikeFullPaths = [NSMutableArray array];
 
         if (![PPFileManager checkFolderPathExistOrCreate:likePath]) {
             return;
@@ -721,30 +730,83 @@ static NSString *likeString = @"我的收藏";
                     continue;
                 }
                 // 多套图就循环处理收藏
-                [weakSelf likeOneFolderWithName:fileModel.fileName folderPath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName] withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
-                    result = result_l;
-                    copyError = copyError_l;
+                PicContentTaskModel *taskModel = [PicContentTaskModel queryTableWithTitle:fileModel.fileName].firstObject;
+                if (taskModel.status != 3) {
+                    haveUnComplete = YES;
+                    continue;
+                }
+                [weakSelf likeOneFolderWithName:fileModel.fileName folderPath:[weakSelf.targetFilePath stringByAppendingPathComponent:fileModel.fileName] withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
+                    if (result_l) {
+                        taskModel.isFavor = YES;
+                        [taskModel updateTable];
+                        [completeLikeFullPaths addObject:[weakSelf.targetFilePath stringByAppendingPathComponent:fileModel.fileName]];
+                    }
+                    if (result) {
+                        result = result_l;
+                    }
+                    if (nil == copyError) {
+                        copyError = copyError_l;
+                    }
                 }];
+            }
+
+            if (!haveUnComplete && result) {
+                // 没有未完成的并且所有收藏的都OK, 表示全部收藏完毕
+                [completeLikeFullPaths removeAllObjects];
+                [completeLikeFullPaths addObject:self.targetFilePath];
+            }
+
+            if (completeLikeFullPaths.count == 0) {
+                [weakSelf showAlertWithTitle:nil message:@"任务尚未结束, 跳过收藏" confirmTitle:@"知道了" confirmHandler:nil];
+                return;
             }
         } else {
             /// 子页面
-            [weakSelf likeOneFolderWithName:weakSelf.contentModel.title folderPath:self.targetFilePath withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
-                result = result_l;
-                copyError = copyError_l;
-            }];
+            PicContentTaskModel *taskModel = [PicContentTaskModel queryTableWithTitle:weakSelf.contentModel.title].firstObject;
+            if (taskModel.status != 3) {
+                [weakSelf showAlertWithTitle:nil message:@"任务尚未结束, 跳过收藏" confirmTitle:@"知道了" confirmHandler:nil];
+                return;
+            } else {
+                [weakSelf likeOneFolderWithName:weakSelf.contentModel.title folderPath:self.targetFilePath withLikePath:likePath completeHandler:^(BOOL result_l, NSError *copyError_l) {
+                    if (result_l) {
+                        weakSelf.contentModel.isFavor = YES;
+                        [weakSelf.contentModel updateTable];
+                        [completeLikeFullPaths addObject:weakSelf.targetFilePath];
+                    }
+                    if (result) {
+                        result = result_l;
+                    }
+                    if (nil == copyError) {
+                        copyError = copyError_l;
+                    }
+                }];
+            }
         }
 
         if (result) {
 
-            [weakSelf showAlertWithTitle:nil message:[NSString stringWithFormat:@"收藏成功, 文件已移至\"根目录/%@\"目录下", likeString] confirmTitle:@"删除原目录" confirmHandler:^(UIAlertAction * _Nonnull action) {
-                NSError *rmError = nil;
-                [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
-                if (rmError) {
+            [weakSelf showAlertWithTitle:@"收藏结束" message:[NSString stringWithFormat:@"收藏成功的文件已移至\"根目录/%@\"目录下, 下载中的任务已跳过收藏, 是否需要删除原目录", [weakSelf favoriteFolderName]] confirmTitle:@"删除" confirmHandler:^(UIAlertAction * _Nonnull action) {
 
-                    [weakSelf showAlertWithTitle:nil message:[NSString stringWithFormat:@"收藏失败, %@", rmError] confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
-                        [weakSelf.navigationController popViewControllerAnimated:YES];
-                    }];
+                for (NSString *filePath in completeLikeFullPaths) {
+                    NSError *rmError = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:filePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
+                    if (rmError) {
+                        NSLog(@"删除原文件失败: %@", rmError);
+                    }
                 }
+
+                NSMutableArray *actions = [NSMutableArray array];
+                if (nil == weakSelf.contentModel) {
+                    [actions addObject:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [weakSelf refreshLoadData:NO];
+                    }]];
+                } else {
+                    [actions addObject:[UIAlertAction actionWithTitle:@"返回上一层" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [weakSelf.navigationController popViewControllerAnimated:YES];
+                    }]];
+                }
+                [weakSelf showAlertWithTitle:nil message:@"已删除" actions:actions];
+
             } cancelTitle:@"返回" cancelHandler:nil];
 
         } else {

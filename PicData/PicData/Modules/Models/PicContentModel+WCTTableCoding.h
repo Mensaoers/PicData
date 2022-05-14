@@ -14,11 +14,12 @@
 WCDB_PROPERTY(title)
 WCDB_PROPERTY(systemTitle)
 WCDB_PROPERTY(HOST_URL)
+
 WCDB_PROPERTY(sourceHref)
+WCDB_PROPERTY(sourceTitle)
 WCDB_PROPERTY(thumbnailUrl)
 WCDB_PROPERTY(href)
-WCDB_PROPERTY(totalCount)
-WCDB_PROPERTY(downloadedCount)
+WCDB_PROPERTY(isFavor)
 
 @end
 
@@ -27,9 +28,13 @@ WCDB_PROPERTY(downloadedCount)
 WCDB_PROPERTY(title)
 WCDB_PROPERTY(systemTitle)
 WCDB_PROPERTY(HOST_URL)
+
 WCDB_PROPERTY(sourceHref)
+WCDB_PROPERTY(sourceTitle)
 WCDB_PROPERTY(thumbnailUrl)
 WCDB_PROPERTY(href)
+WCDB_PROPERTY(isFavor)
+
 WCDB_PROPERTY(totalCount)
 WCDB_PROPERTY(downloadedCount)
 WCDB_PROPERTY(status)

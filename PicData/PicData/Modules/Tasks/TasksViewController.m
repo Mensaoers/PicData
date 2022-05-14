@@ -249,6 +249,10 @@ static CGFloat headerHeight = 35;
             contentLabel.tag = 9527;
             [headerView addSubview:contentLabel];
 
+            [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.mas_equalTo(UIEdgeInsetsZero);
+            }];
+
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHeaderGestureAction:)];
             [contentLabel addGestureRecognizer:tapGesture];
         }

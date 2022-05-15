@@ -716,6 +716,7 @@
         __block BOOL result = YES;
         __block NSError *copyError = nil;
         BOOL haveUnComplete = NO;
+        BOOL needBack = NO;
 
         // 专门保存需要删除的文件夹
         NSMutableArray *completeLikeFullPaths = [NSMutableArray array];
@@ -754,6 +755,7 @@
                 // 没有未完成的并且所有收藏的都OK, 表示全部收藏完毕
                 [completeLikeFullPaths removeAllObjects];
                 [completeLikeFullPaths addObject:self.targetFilePath];
+                needBack = YES;
             }
 
             if (completeLikeFullPaths.count == 0) {
@@ -781,6 +783,8 @@
                     }
                 }];
             }
+
+            needBack = result == YES;
         }
 
         if (result) {
@@ -796,13 +800,13 @@
                 }
 
                 NSMutableArray *actions = [NSMutableArray array];
-                if (nil == weakSelf.contentModel) {
-                    [actions addObject:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [weakSelf refreshLoadData:NO];
-                    }]];
-                } else {
+                if (needBack) {
                     [actions addObject:[UIAlertAction actionWithTitle:@"返回上一层" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                         [weakSelf.navigationController popViewControllerAnimated:YES];
+                    }]];
+                } else {
+                    [actions addObject:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [weakSelf refreshLoadData:NO];
                     }]];
                 }
                 [weakSelf showAlertWithTitle:nil message:@"已删除" actions:actions];

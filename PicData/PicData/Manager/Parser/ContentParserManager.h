@@ -15,13 +15,22 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// 某个套图新增任务(新增一页)
-#define NOTICECHEADDNEWDETAILTASK @"NOTICECHEADDNEWDETAILTASK"
+#define NotificationNameCompleteScaneTaskNewPage @"NotificationNameCompleteScaneTaskNewPage"
 /// 新增某个套图
-#define NOTICECHEADDNEWTASK @"NOTICECHEADDNEWTASK"
+#define NotificationNameAddNewTask @"NotificationNameAddNewTask"
+/// 某个套图开始扫描
+#define NotificationNameStartScaneTask @"NotificationNameStartScaneTask"
+/// 某个套图扫描完成
+#define NotificationNameCompleteScaneTask @"NotificationNameCompleteScaneTask"
 /// 某个套图下载完成
-#define NOTICECHECOMPLETEDOWNATASK @"NOTICECHECOMPLETEDOWNATASK"
+#define NotificationNameCompleteDownTask @"NotificationNameCompleteDownTask"
 /// 某个套图下载失败
-#define NOTICECHEFAILEDDOWNATASK @"NOTICECHEFAILEDDOWNATASK"
+#define NotificationNameFailedDownTask @"NotificationNameFailedDownTask"
+
+/// 某个套图某张图下载成功
+#define NotificationNameCompleteDownPicture @"NotificationNameCompleteDownPicture"
+/// 某个套图某张图下载失败
+#define NotificationNameFailedDownPicture @"NotificationNameFailedDownPicture"
 
 @interface ContentParserManager : NSObject
 

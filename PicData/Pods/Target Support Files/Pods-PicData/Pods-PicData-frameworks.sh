@@ -176,7 +176,6 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CWLateralSlide/CWLateralSlide.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
@@ -186,18 +185,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLiteRepairKit/sqliterk.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Tiercel/Tiercel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TiercelObjCBridge/TiercelObjCBridge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/WCDB/WCDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/WCDBOptimizedSQLCipher/sqlcipher.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/XHWebImageAutoSize/XHWebImageAutoSize.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YBImageBrowser/YBImageBrowser.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YYCategories/YYCategories.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CWLateralSlide/CWLateralSlide.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
@@ -207,15 +201,11 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLiteRepairKit/sqliterk.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Tiercel/Tiercel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TiercelObjCBridge/TiercelObjCBridge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/WCDB/WCDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/WCDBOptimizedSQLCipher/sqlcipher.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/XHWebImageAutoSize/XHWebImageAutoSize.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YBImageBrowser/YBImageBrowser.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YYCategories/YYCategories.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

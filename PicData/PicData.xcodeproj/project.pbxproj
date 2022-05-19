@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
+		33231B7B282AB924006340A7 /* PPStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33231B7A282AB924006340A7 /* PPStatusView.m */; };
 		3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.mm */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
 		3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */; };
@@ -31,6 +32,8 @@
 		332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */; };
 		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
 		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
+		3346BE8928240F5C00527864 /* TasksCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8828240F5C00527864 /* TasksCollectionCell.m */; };
+		3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8B28240FF700527864 /* PicProgressModel.m */; };
 		3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3349D2622729A145006109F6 /* DatabaseManager.mm */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
 		335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; };
@@ -44,12 +47,12 @@
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
 		33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FC6255455B600C33FD0 /* UINavigationController+push.m */; };
 		33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B8DB8E27D9DA960044BE44 /* TasksViewController.m */; };
+		33E33D70282816C000BCDCD5 /* TasksContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E33D6F282816C000BCDCD5 /* TasksContentView.m */; };
 		33E6404B2810104F00E763B6 /* NetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404A2810104F00E763B6 /* NetListViewController.m */; };
 		33E6404E2810108900E763B6 /* PicNetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404D2810108900E763B6 /* PicNetModel.m */; };
 		33E640542810138800E763B6 /* PicNet.json in Resources */ = {isa = PBXBuildFile; fileRef = 33E640532810122700E763B6 /* PicNet.json */; };
 		33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */; };
 		33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */; };
-		33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F0CD4824ED6C120051D74E /* TransViewCell.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
@@ -115,6 +118,8 @@
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
+		33231B79282AB924006340A7 /* PPStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPStatusView.h; sourceTree = "<group>"; };
+		33231B7A282AB924006340A7 /* PPStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPStatusView.m; sourceTree = "<group>"; };
 		3323205724ECB4A300FE5E33 /* PicBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBaseModel.h; sourceTree = "<group>"; };
 		3323205824ECB4A300FE5E33 /* PicBaseModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PicBaseModel.mm; sourceTree = "<group>"; };
 		3323206124ECE3D000FE5E33 /* PicRuleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicRuleModel.m; sourceTree = "<group>"; };
@@ -147,6 +152,10 @@
 		332D013E26FD845F00E3F387 /* TKGestureLockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockManager.h; sourceTree = "<group>"; };
 		332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockBackView.m; sourceTree = "<group>"; };
 		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
+		3346BE8728240F5C00527864 /* TasksCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksCollectionCell.h; sourceTree = "<group>"; };
+		3346BE8828240F5C00527864 /* TasksCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksCollectionCell.m; sourceTree = "<group>"; };
+		3346BE8A28240FF700527864 /* PicProgressModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicProgressModel.h; sourceTree = "<group>"; };
+		3346BE8B28240FF700527864 /* PicProgressModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicProgressModel.m; sourceTree = "<group>"; };
 		3349D25F27299D76006109F6 /* PicBaseModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicBaseModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		3349D2612729A145006109F6 /* DatabaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
 		3349D2622729A145006109F6 /* DatabaseManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DatabaseManager.mm; sourceTree = "<group>"; };
@@ -170,6 +179,8 @@
 		33B43FC6255455B600C33FD0 /* UINavigationController+push.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+push.m"; sourceTree = "<group>"; };
 		33B8DB8D27D9DA960044BE44 /* TasksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksViewController.h; sourceTree = "<group>"; };
 		33B8DB8E27D9DA960044BE44 /* TasksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksViewController.m; sourceTree = "<group>"; };
+		33E33D6E282816C000BCDCD5 /* TasksContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksContentView.h; sourceTree = "<group>"; };
+		33E33D6F282816C000BCDCD5 /* TasksContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksContentView.m; sourceTree = "<group>"; };
 		33E640492810104F00E763B6 /* NetListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetListViewController.h; sourceTree = "<group>"; };
 		33E6404A2810104F00E763B6 /* NetListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetListViewController.m; sourceTree = "<group>"; };
 		33E6404C2810108900E763B6 /* PicNetModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicNetModel.h; sourceTree = "<group>"; };
@@ -178,8 +189,6 @@
 		33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPDownloadTaskOperation.h; sourceTree = "<group>"; };
 		33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPDownloadTaskOperation.m; sourceTree = "<group>"; };
 		33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
-		33F0CD4724ED6C120051D74E /* TransViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransViewCell.h; sourceTree = "<group>"; };
-		33F0CD4824ED6C120051D74E /* TransViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransViewCell.m; sourceTree = "<group>"; };
 		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
 		33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ChangeUnicode.m"; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
@@ -347,13 +356,13 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
-		33967B5326EE001500B308B1 /* home */ = {
+		3346BE8D28240FFA00527864 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				33967B5026EDF44600B308B1 /* HomeViewController.h */,
-				33967B5126EDF44600B308B1 /* HomeViewController.m */,
+				3346BE8A28240FF700527864 /* PicProgressModel.h */,
+				3346BE8B28240FF700527864 /* PicProgressModel.m */,
 			);
-			path = home;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		33AB92B124C3F58900E97E42 /* Setting */ = {
@@ -370,19 +379,12 @@
 		33B8DB8C27D9DA7A0044BE44 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				3346BE8D28240FFA00527864 /* Model */,
+				33E1ABE22822BD0F00AA92CB /* View */,
 				33B8DB8D27D9DA960044BE44 /* TasksViewController.h */,
 				33B8DB8E27D9DA960044BE44 /* TasksViewController.m */,
 			);
 			path = Tasks;
-			sourceTree = "<group>";
-		};
-		33B9EEC024DCA9EB00ABE3E2 /* TransView */ = {
-			isa = PBXGroup;
-			children = (
-				33F0CD4624ED6BF30051D74E /* View */,
-				332C285424EBA5570083A5DC /* AddNetTask */,
-			);
-			path = TransView;
 			sourceTree = "<group>";
 		};
 		33DC2D4D281AC8A900C7A513 /* Download */ = {
@@ -414,6 +416,55 @@
 			path = Parser;
 			sourceTree = "<group>";
 		};
+		33E1ABDF2822BA6900AA92CB /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				9DC94C9A2552ECBB008ACAF8 /* Base */,
+				9DE95CDD244C465C00E31735 /* ContentList */,
+				332C285424EBA5570083A5DC /* AddNetTask */,
+				33B8DB8C27D9DA7A0044BE44 /* Tasks */,
+				33E640482810103000E763B6 /* netList */,
+				9DE95CD4244C415F00E31735 /* Models */,
+				9DC94CA82552F7C2008ACAF8 /* Viewer */,
+				33AB92B124C3F58900E97E42 /* Setting */,
+				9DE95C8E244C3F5500E31735 /* Index */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		33E1ABE02822BA9F00AA92CB /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
+				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
+				333ECEF725F71DFB00762219 /* ThirdParty */,
+				9DE95CB8244C3FDC00E31735 /* Categories */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		33E1ABE12822BBFF00AA92CB /* FloatingWindow */ = {
+			isa = PBXGroup;
+			children = (
+				335719B324DD358C00303E83 /* FloatingWindowView.h */,
+				335719B224DD358B00303E83 /* FloatingWindowView.m */,
+			);
+			path = FloatingWindow;
+			sourceTree = "<group>";
+		};
+		33E1ABE22822BD0F00AA92CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				33231B79282AB924006340A7 /* PPStatusView.h */,
+				33231B7A282AB924006340A7 /* PPStatusView.m */,
+				3346BE8728240F5C00527864 /* TasksCollectionCell.h */,
+				3346BE8828240F5C00527864 /* TasksCollectionCell.m */,
+				33E33D6E282816C000BCDCD5 /* TasksContentView.h */,
+				33E33D6F282816C000BCDCD5 /* TasksContentView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		33E640482810103000E763B6 /* netList */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,15 +493,6 @@
 			path = DownloadOperation;
 			sourceTree = "<group>";
 		};
-		33F0CD4624ED6BF30051D74E /* View */ = {
-			isa = PBXGroup;
-			children = (
-				33F0CD4724ED6C120051D74E /* TransViewCell.h */,
-				33F0CD4824ED6C120051D74E /* TransViewCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		8EAEFB2266B35620CEA3AC34 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,7 +505,12 @@
 		9D0E52CA24C2B35300FA8D88 /* ClassifyPage */ = {
 			isa = PBXGroup;
 			children = (
-				9D96DCA025A379230045D123 /* View */,
+				9D96DCA125A379540045D123 /* PicClassifyTableView.h */,
+				9D96DCA225A379540045D123 /* PicClassifyTableView.m */,
+				9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */,
+				9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */,
+				9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */,
+				9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */,
 			);
 			path = ClassifyPage;
 			sourceTree = "<group>";
@@ -485,19 +532,6 @@
 			children = (
 				9D3593ED244D6D32005ADF05 /* DetailViewContentCell.h */,
 				9D3593EE244D6D32005ADF05 /* DetailViewContentCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		9D96DCA025A379230045D123 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				9D96DCA125A379540045D123 /* PicClassifyTableView.h */,
-				9D96DCA225A379540045D123 /* PicClassifyTableView.m */,
-				9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */,
-				9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */,
-				9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */,
-				9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -551,19 +585,13 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
-				33B8DB8C27D9DA7A0044BE44 /* Tasks */,
-				9DC94C9A2552ECBB008ACAF8 /* Base */,
+				33E1ABE02822BA9F00AA92CB /* Utils */,
+				33E1ABDF2822BA6900AA92CB /* Modules */,
 				9DE95CF6244CA23000E31735 /* Manager */,
-				333ECEF725F71DFB00762219 /* ThirdParty */,
-				9DE95CB8244C3FDC00E31735 /* Categories */,
-				9DE95C8E244C3F5500E31735 /* Index */,
-				33AB92B124C3F58900E97E42 /* Setting */,
-				9DC94CA82552F7C2008ACAF8 /* Viewer */,
-				9DE95CD4244C415F00E31735 /* Models */,
-				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
+				9DE95C8D244C3F3700E31735 /* Others */,
 				9DE95C72244C3E0F00E31735 /* AppDelegate.h */,
 				9DE95C73244C3E0F00E31735 /* AppDelegate.m */,
-				9DE95C8D244C3F3700E31735 /* Others */,
+				9DE95C8B244C3E4900E31735 /* PicData.entitlements */,
 			);
 			path = PicData;
 			sourceTree = "<group>";
@@ -571,8 +599,6 @@
 		9DE95C8D244C3F3700E31735 /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
-				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
 				9DE95C7E244C3E1100E31735 /* Assets.xcassets */,
 				9DE95C80244C3E1100E31735 /* LaunchScreen.storyboard */,
 				9DE95C83244C3E1100E31735 /* Info.plist */,
@@ -586,13 +612,10 @@
 		9DE95C8E244C3F5500E31735 /* Index */ = {
 			isa = PBXGroup;
 			children = (
-				33E640482810103000E763B6 /* netList */,
-				33967B5326EE001500B308B1 /* home */,
-				33B9EEC024DCA9EB00ABE3E2 /* TransView */,
+				33967B5026EDF44600B308B1 /* HomeViewController.h */,
+				33967B5126EDF44600B308B1 /* HomeViewController.m */,
+				33E1ABE12822BBFF00AA92CB /* FloatingWindow */,
 				9D0E52CA24C2B35300FA8D88 /* ClassifyPage */,
-				9DE95CDD244C465C00E31735 /* ContentList */,
-				335719B324DD358C00303E83 /* FloatingWindowView.h */,
-				335719B224DD358B00303E83 /* FloatingWindowView.m */,
 			);
 			path = Index;
 			sourceTree = "<group>";
@@ -889,7 +912,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */,
-				33F0CD4924ED6C120051D74E /* TransViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */,
 				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
 				9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */,
@@ -904,6 +926,7 @@
 				9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */,
 				33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */,
 				9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */,
+				3346BE8928240F5C00527864 /* TasksCollectionCell.m in Sources */,
 				9DE95CC2244C3FDD00E31735 /* util.c in Sources */,
 				9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */,
 				33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */,
@@ -916,6 +939,7 @@
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
+				3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
 				33E6404E2810108900E763B6 /* PicNetModel.m in Sources */,
@@ -927,7 +951,9 @@
 				33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */,
 				9DE95CC1244C3FDD00E31735 /* string_buffer.c in Sources */,
 				9DE95CC4244C3FDD00E31735 /* vector.c in Sources */,
+				33231B7B282AB924006340A7 /* PPStatusView.m in Sources */,
 				9DE95C74244C3E0F00E31735 /* AppDelegate.m in Sources */,
+				33E33D70282816C000BCDCD5 /* TasksContentView.m in Sources */,
 				332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */,
 				9DE95CC8244C3FDD00E31735 /* error.c in Sources */,
 				9DE95CC5244C3FDD00E31735 /* attribute.c in Sources */,
@@ -1102,14 +1128,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",
 					"-l\"iconv\"",
 					"-l\"z\"",
-					"-framework",
-					"\"AFNetworking\"",
 					"-framework",
 					"\"Accelerate\"",
 					"-framework",
@@ -1149,23 +1173,15 @@
 					"-framework",
 					"\"Security\"",
 					"-framework",
-					"\"Tiercel\"",
-					"-framework",
-					"\"TiercelObjCBridge\"",
-					"-framework",
 					"\"UIKit\"",
 					"-framework",
 					"\"WCDB\"",
-					"-framework",
-					"\"XHWebImageAutoSize\"",
 					"-framework",
 					"\"YBImageBrowser\"",
 					"-framework",
 					"\"YYCategories\"",
 					"-framework",
 					"\"YYImage\"",
-					"-framework",
-					"\"YYModel\"",
 					"-framework",
 					"\"sqlcipher\"",
 					"-framework",
@@ -1208,14 +1224,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",
 					"-l\"iconv\"",
 					"-l\"z\"",
-					"-framework",
-					"\"AFNetworking\"",
 					"-framework",
 					"\"Accelerate\"",
 					"-framework",
@@ -1255,23 +1269,15 @@
 					"-framework",
 					"\"Security\"",
 					"-framework",
-					"\"Tiercel\"",
-					"-framework",
-					"\"TiercelObjCBridge\"",
-					"-framework",
 					"\"UIKit\"",
 					"-framework",
 					"\"WCDB\"",
-					"-framework",
-					"\"XHWebImageAutoSize\"",
 					"-framework",
 					"\"YBImageBrowser\"",
 					"-framework",
 					"\"YYCategories\"",
 					"-framework",
 					"\"YYImage\"",
-					"-framework",
-					"\"YYModel\"",
 					"-framework",
 					"\"sqlcipher\"",
 					"-framework",

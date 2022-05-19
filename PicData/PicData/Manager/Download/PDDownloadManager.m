@@ -47,7 +47,7 @@
 
 /// 数据库文件路径
 - (NSString *)databaseFilePath {
-    return [FileManager getDocumentPathWithTarget:self.databaseFileName];
+    return [PPFileManager getDocumentPathWithTarget:self.databaseFileName];
 }
 
 + (void)prepareDatabase {
@@ -67,15 +67,12 @@
 }
 
 + (BOOL)clearAllData:(BOOL)andFiles {
-    [PDDownloadManager.sharedPDDownloadManager.sessionManager totalCancel];
-    [PDDownloadManager.sharedPDDownloadManager.sessionManager totalRemove];
 
-//    if (![PDDownloadManager deleteDataBase]) {
-//        return NO;
-//    }
+    [PicContentTaskModel deleteFromTable_All];
+
     if (andFiles) {
 
-        if (![FileManager checkFolderPathExistOrCreate:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
+        if (![PPFileManager checkFolderPathExistOrCreate:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]]) {
             return NO;
         }
 
@@ -91,16 +88,8 @@
 
 singleton_implementation(PDDownloadManager);
 
-- (TRSessionManager *)sessionManager {
-    if (nil == _sessionManager) {
-        TRSessionManager.logLevel = TRLogLevelSimple;
-        _sessionManager = ((AppDelegate *)[UIApplication sharedApplication].delegate).sessionManager;
-    }
-    return _sessionManager;
-}
-
 - (void)totalCancel {
-    [self.sessionManager totalCancel];
+    [self.downloadQueue cancelAllOperations];
 }
 
 - (BOOL)resetDownloadPath {
@@ -127,7 +116,7 @@ singleton_implementation(PDDownloadManager);
 
     NSString *downloadPath = [self systemDownloadPath];
 
-    NSString *fullPath = [FileManager getDocumentPathWithTarget:downloadPath];
+    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
     return fullPath;
 }
 
@@ -135,9 +124,18 @@ singleton_implementation(PDDownloadManager);
     return [[self systemDownloadFullPath] lastPathComponent];
 }
 
+static NSString *favoriteFolderName = @"我的收藏";
+- (NSString *)systemFavoriteFolderPath {
+    return [[self systemDownloadFullPath] stringByAppendingPathComponent:favoriteFolderName];
+}
+
+- (NSString *)systemFavoriteFolderName {
+    return favoriteFolderName;
+}
+
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need {
 
-    BOOL isExist = [FileManager checkFolderPathExistOrCreate:[self systemDownloadFullPath]];
+    BOOL isExist = [PPFileManager checkFolderPathExistOrCreate:[self systemDownloadFullPath]];
     if (!isExist && need) {
             // 不存在
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECKDOWNLOADPATHKEY object:nil];
@@ -148,7 +146,7 @@ singleton_implementation(PDDownloadManager);
     /// 设置下载地址
 - (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath {
 
-    NSString *fullPath = [FileManager getDocumentPathWithTarget:downloadPath];
+    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
     BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     if (!result) {
         return NO;
@@ -173,8 +171,8 @@ singleton_implementation(PDDownloadManager);
         }
         return path;
     }
-    
-    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:sourceModel.systemTitle];
+
+    NSString *targetPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:contentModel.isFavor ? [self systemFavoriteFolderName] : sourceModel.systemTitle];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:targetPath isDirectory:&isDir]) {
         NSError *createDirError = nil;
@@ -232,10 +230,12 @@ singleton_implementation(PDDownloadManager);
                 // 遍历完成
                 if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
                     contentTaskModel.status = 3;
-                    [contentTaskModel updateTable];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHECOMPLETEDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteDownTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 }
             }
+
+            [contentTaskModel updateTable];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
         };
 
         NSString *targetPath = [[weakSelf getDirPathWithSource:sourceModel contentModel:contentTaskModel] stringByAppendingPathComponent:fileName];
@@ -254,15 +254,18 @@ singleton_implementation(PDDownloadManager);
                     downloadSuccessBlock();
                     return;
                 } else {
-                    NSError *copyError = nil;
-                    [[NSFileManager defaultManager] copyItemAtPath:location.path toPath:targetPath error:&copyError];
-                    if (nil == copyError) {
+                    NSError *moveError = nil;
+                    [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:targetPath] error:&moveError];
+                    if (nil == moveError) {
                         downloadSuccessBlock();
+                    } else {
+                        NSLog(@"task. move error:%@", moveError);
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
                     }
                 }
             } else {
                 NSLog(@"task.error:%@", error);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTICECHEFAILEDDOWNATASK object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
             }
         }];
         [self.downloadQueue addOperation:operation];

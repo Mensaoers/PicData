@@ -19,8 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PDDownloadManager : NSObject
 
-@property (nonatomic, strong) TRSessionManager *sessionManager;
-
 singleton_interface(PDDownloadManager);
 
 /// 重置当前下载相对地址
@@ -33,6 +31,10 @@ singleton_interface(PDDownloadManager);
 - (nonnull NSString *)systemDownloadFullPath;
 /// 获取当前系统的文件夹名
 - (nonnull NSString *)systemDownloadFullDirectory;
+/// 获取当前系统收藏文件夹路径
+- (nonnull NSString *)systemFavoriteFolderPath;
+/// 获取当前系统收藏文件夹名称
+- (nonnull NSString *)systemFavoriteFolderName;
 /// 数据库文件名
 @property (nonatomic, strong) NSString *databaseFileName;
 /// 数据库文件路径
@@ -56,8 +58,6 @@ singleton_interface(PDDownloadManager);
 
 /// 全部取消
 - (void)totalCancel;
-
-
 
 @end
 

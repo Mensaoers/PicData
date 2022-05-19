@@ -11,6 +11,7 @@
 @implementation DatabaseManager
 
 + (void)prepareDatabase {
+    NSLog(@"database filePath: %@", [PDDownloadManager sharedPDDownloadManager].databaseFilePath);
     [DatabaseManager getDatabase];
     [DatabaseManager createTables];
 }

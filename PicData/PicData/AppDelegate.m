@@ -61,6 +61,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ContentParserManager prepareForAppLaunch];
     });
+
+    // TODO: APP后台下载的问题, 目前移除了下载SDK, 后台下载已经不现实了
 }
 
 - (void)setupDataBase {
@@ -83,6 +85,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+    self.window.windowScene.sizeRestrictions.minimumSize = CGSizeMake(400, 600);
+    self.window.windowScene.sizeRestrictions.maximumSize = CGSizeMake(800, 600);
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.window.windowScene.sizeRestrictions.maximumSize = CGSizeMake(9999, 9999);
+    });
 
     [self setupIQKeyboardManager];
 
@@ -131,13 +140,10 @@
 }
 
 - (void)receiveNoticeOfDownloadPath:(NSNotification *)notification {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"下载路径设置有误, 请确认地址" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
+    [self.window.rootViewController showAlertWithTitle:@"提醒" message:@"下载路径设置有误, 请确认地址" confirmTitle:@"去设置" confirmHandler:^(UIAlertAction * _Nonnull action) {
         [self.window.rootViewController.navigationController pushViewController:[SettingViewController new] animated:YES];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"稍后" style:UIAlertActionStyleCancel handler:nil]];
-    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    } cancelTitle:@"稍后" cancelHandler:nil];
 }
 
 - (void)receiveGestureUnlockFaild:(NSNotification *)notification {
@@ -154,12 +160,6 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     [[TKGestureLockManager sharedInstance] showGestureLockWindow];
-}
-
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
-    if (identifier == self.sessionManager.identifier) {
-        self.sessionManager.completionHandler = completionHandler;
-    }
 }
 
 /// 屏幕旋转相关

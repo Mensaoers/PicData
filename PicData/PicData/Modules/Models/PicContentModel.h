@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *thumbnailUrl;
 @property (nonatomic, strong) NSString *href;
 
+// TODO: 此处有个bug, contentModel收藏与否与taskModel收藏与否不等价(分属俩表)
+// TODO: 后期专门做一个收藏表, 保存收藏信息(清空数据时需要清空收藏表)
+/// 是否收藏
 @property (nonatomic, assign) BOOL isFavor;
 
 - (BOOL)updateTableWhenHref:(NSString *)href;

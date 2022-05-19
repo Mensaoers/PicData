@@ -603,7 +603,7 @@
 
 /// 重新下载
 - (void)reDownloadContents {
-    PicContentModel *contentModel = self.contentModel;
+    PicContentModel *contentModel = [PicContentModel queryTableWithTitle:[self.targetFilePath lastPathComponent]].firstObject;
     if (nil == contentModel) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"找不到该套图的下载记录" afterDelay:1];
         return;

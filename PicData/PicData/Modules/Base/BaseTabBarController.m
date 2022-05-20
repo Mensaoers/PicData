@@ -36,4 +36,18 @@
     [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: ThemeColor, NSFontAttributeName: [UIFont systemFontOfSize:12]} forState: UIControlStateSelected];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationThatInitHostModelsFailed:) name:NotificationNameInitHostModelsFailed object:nil];
+}
+
+- (void)notificationThatInitHostModelsFailed:(NSNotification *)notification {
+
+    [self showAlertWithTitle:nil message:@"初始化域名模组失败, 无法使用APP" confirmTitle:@"退出" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        // TODO: 所有的杀死应用, 改为发送一个通知, 统一退出
+        abort();
+    }];
+}
+
 @end

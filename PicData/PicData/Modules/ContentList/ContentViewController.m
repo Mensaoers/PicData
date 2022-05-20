@@ -58,7 +58,7 @@
     PDBlockSelf
     collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        [weakSelf loadContentData:[NSURL URLWithString:[weakSelf.sourceModel.url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] isReload:YES];
+        [weakSelf loadContentData:[NSURL URLWithString:weakSelf.sourceModel.url] isReload:YES];
     }];
 
     collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
@@ -230,6 +230,11 @@
 
                 OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
                 NSString *title = aE.attr(@"title");
+
+                // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
+                title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
+                title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
+
                 NSString *href = aE.attr(@"href");
 
                 OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;

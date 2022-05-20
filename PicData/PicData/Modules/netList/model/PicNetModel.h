@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *HOST_URL;
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *tagsUrl;
+@property (nonatomic, strong) NSString *searchFormat;
 @property (nonatomic, strong) NSString *mark;
+@property (nonatomic, assign) BOOL prepared;
 
 @end
 

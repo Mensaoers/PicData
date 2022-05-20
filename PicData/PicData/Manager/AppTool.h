@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define NotificationNameInitHostModelsFailed @"NotificationNameInitHostModelsFailed"
+
 @interface AppTool : NSObject
 
 singleton_interface(AppTool)

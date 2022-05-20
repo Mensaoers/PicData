@@ -1,19 +1,22 @@
 [
     {
-        "title" : "https://www.tu963.cc",
-        "sourceType" : 2,
-        "HOST_URL": "https://www.tu963.cc",
-        "url": "https://www.tu963.cc/y/2/index.html",
-        "tagsUrl": "https://www.tu963.cc/y/2/index.html",
-        "mark": "tu963"
-    },
-    {
         "title" : "https://www.yun222.cc",
         "sourceType" : 1,
         "HOST_URL": "https://www.yun222.cc",
         "url": "https://www.yun222.cc/k",
         "tagsUrl": "https://www.yun222.cc/k/tag",
-        "mark": "yun222"
+        "searchFormat": "https://www.yun222.cc/plus/search.php?q=%@&pagesize=30",
+        "mark": "yun222",
+        "prepared": true,
+    },
+    {
+        "title" : "https://www.tu963.cc",
+        "sourceType" : 2,
+        "HOST_URL": "https://www.tu963.cc",
+        "url": "https://www.tu963.cc/y/2/index.html",
+        "tagsUrl": "https://www.tu963.cc/y/2/index.html",
+        "mark": "tu963",
+        "prepared": true,
     },
     {
         "title" : "https://hitxhot.com",
@@ -21,6 +24,16 @@
         "HOST_URL": "https://hitxhot.com",
         "url": "https://hitxhot.com/hot?page=140",
         "tagsUrl": "",
-        "mark": "hitxhot"
+        "mark": "hitxhot",
+        "prepared": true,
     },
+    {
+        "title" : "https://www.ku138.cc",
+        "sourceType" : 4,
+        "HOST_URL": "https://www.ku138.cc",
+        "url": "https://www.ku138.cc/b/1",
+        "tagsUrl": "https://www.ku138.cc/b/tag",
+        "mark": "ku138",
+        "prepared": false,
+    }
 ]

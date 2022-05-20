@@ -99,7 +99,7 @@
     
     self.titleLabel.text = contentModel.title;
     [self.titleLabel sizeToFit];
-    [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:contentModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"]];
+    [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:contentModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates];
 }
 
 @end

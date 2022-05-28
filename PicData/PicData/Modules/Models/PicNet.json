@@ -35,5 +35,14 @@
         "tagsUrl": "https://www.ku138.cc/b/tag",
         "mark": "ku138",
         "prepared": false,
+    },
+    {
+        "title" : "https://www.hh1234.cc",
+        "sourceType" : 5,
+        "HOST_URL": "https://www.hh1234.cc",
+        "url": "https://www.hh1234.cc/ku/xin/",
+        "tagsUrl": "https://www.hh1234.cc/ku/tag/",
+        "mark": "hh1234",
+        "prepared": false,
     }
 ]

@@ -304,17 +304,4 @@ singleton_implementation(ContentParserManager)
     return @{@"nextUrl" : url, @"urls" : [urlsString copy], @"count": @(count)};
 }
 
-+ (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType {
-    switch (sourceType) {
-        case 1:
-        case 2:
-            return [AppTool getStringWithGB_18030_2000Code:data];
-            break;
-        case 3:
-            return [AppTool getStringWithUTF8Code:data];
-        default:
-            break;
-    }
-    return @"";
-}
 @end

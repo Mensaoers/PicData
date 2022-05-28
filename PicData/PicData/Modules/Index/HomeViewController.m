@@ -174,9 +174,8 @@
     [subTitles addObject:getIndexModel()];
 
     if (hostModel.searchFormat.length > 0) {
-        NSArray *titleStrings = @[@"梦心玥", @"梦心月", @"程程程", @"一颗甜蛋黄", @"阿朱", @"芝芝Booty", @"糯美子", @"杨晨晨", @"抖娘利世", @"王馨瑶", @"吴雪瑶", @"唐安琪", @"周于希", @"林星阑", @"月音瞳", @"绯月樱"];
-        for (NSString *titleString in titleStrings) {
-            NSString *titleStringEncode = [titleString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
+        for (NSString *titleString in hostModel.searchKeys) {
+            NSString *titleStringEncode = hostModel.searchEncode ? [titleString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] : [titleString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
             NSString *searchUrl = [NSString stringWithFormat:hostModel.searchFormat, titleStringEncode];
 
             PicSourceModel *sourceModel = [[PicSourceModel alloc] init];

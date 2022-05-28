@@ -128,8 +128,13 @@
 #if TARGET_OS_MACCATALYST
     [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
 #else
+
+#if DEBUG
+    [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
+#else
     [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
     [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
+#endif
 #endif
 }
 

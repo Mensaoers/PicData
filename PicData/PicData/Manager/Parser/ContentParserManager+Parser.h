@@ -18,7 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSArray <PicClassModel *>*)parseTagsWithHtmlString:(NSString *)htmlString HostModel:(PicNetModel *)hostModel;
 
 /// 解析contentList
-+ (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray * _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler;
++ (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray <PicContentModel *> * _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler;
+
+/// 解析detail
++ (void)parseDetailWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void(^)(NSArray <NSString *>* _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray <PicContentModel *> * _Nullable suggestArray))completeHandler;
 
 @end
 

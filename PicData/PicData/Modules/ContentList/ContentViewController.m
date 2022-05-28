@@ -146,7 +146,8 @@
     }
 
     MJWeakSelf
-    [ContentParserManager parseContentListWithHtmlString:htmlString sourceModel:self.sourceModel completeHandler:^(NSArray * _Nonnull contentList, NSURL * _Nullable nextPageURL) {
+    [ContentParserManager parseContentListWithHtmlString:htmlString sourceModel:self.sourceModel completeHandler:^(NSArray<PicContentModel *> * _Nonnull contentList, NSURL * _Nullable nextPageURL) {
+
         [weakSelf.dataList addObjectsFromArray:contentList];
         weakSelf.nextPageURL = nextPageURL;
     }];

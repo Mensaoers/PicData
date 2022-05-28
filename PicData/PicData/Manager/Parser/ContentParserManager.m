@@ -159,18 +159,14 @@ singleton_implementation(ContentParserManager)
 
                 NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content WithSourceModel:sourceModel ContentTaskModel:contentTaskModel picCount:picCount];
+                NSDictionary *result = [ContentParserManager dealWithHtmlData:content nextUrl:url WithSourceModel:sourceModel ContentTaskModel:contentTaskModel picCount:picCount];
                 nextUrl = result[@"nextUrl"];
-                if (nextUrl.length > 0) {
-                    if (sourceModel.sourceType != 3) {
-                        nextUrl = [url stringByReplacingOccurrencesOfString:url.lastPathComponent withString:nextUrl];
-                    }
-                }
+
                 NSError *writeError = nil;
                 count = [result[@"count"] intValue];
                 [targetHandle seekToEndOfFile];
                 [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", result[@"urls"]] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
-//                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", [NSURL URLWithString:result[@"urls"] relativeToURL:baseURL].absoluteString] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
+
                 [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTaskNewPage object:nil userInfo:@{@"contentModel": contentTaskModel}];
                 if (writeError) {
                     NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
@@ -201,100 +197,30 @@ singleton_implementation(ContentParserManager)
 }
 
 /// 处理html标签, 创建下载图片任务开始下载
-+ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount {
-    NSString *url = @"";
++ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString nextUrl:(NSString *)nextUrl WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount {
+    __block NSString *url = @"";
     NSMutableString *urlsString = [NSMutableString string];
-    int count = 0;
-    if (htmlString.length > 0) {
+    __block int count = 0;
 
-        OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-        NSMutableArray *urls = [NSMutableArray array];
-        NSMutableArray *suggestNames = [NSMutableArray array];
-        
-        OCGumboElement *contentE;
+    [self parseDetailWithHtmlString:htmlString sourceModel:sourceModel preNextUrl:nextUrl needSuggest:NO completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray) {
 
-        switch (sourceModel.sourceType) {
-            case 1:{
-                contentE = document.QueryClass(@"contents").firstObject;
-            }
-                break;
-            case 2: {
-                contentE = document.QueryClass(@"content").firstObject;
-            }
-                break;
-            case 3: {
-                contentE = document.QueryClass(@"contentme").firstObject;
-            }
-                break;
-            default:
-                break;
-        }
-
-        OCQueryObject *es = contentE.Query(@"img");
-        NSInteger index = 1;
-        for (OCGumboElement *e in es) {
-            NSString *src = e.attr(@"src");
-            if (src.length > 0) {
-                [urls addObject:src];
-                [suggestNames addObject:[NSString stringWithFormat:@"%ld.jpg", picCount + index]];
-                index ++;
-                [urlsString appendFormat:@"%@\n", src];
-            }
-        }
-
-        OCGumboElement *nextE;
-
-        switch (sourceModel.sourceType) {
-            case 1:{
-                nextE = document.QueryClass(@"pageart").firstObject;
-            }
-                break;
-            case 2: {
-                nextE = document.QueryClass(@"page-tag").firstObject;
-            }
-                break;
-            case 3: {
-                nextE = document.QueryClass(@"pag").firstObject;
-            }
-                break;
-            default:
-                break;
-        }
-
-        BOOL find = NO;
-        if (nextE) {
-            OCQueryObject *aEs = nextE.QueryElement(@"a");
-
-            NSString *nextPageTitle = @"下一页";
-            switch (sourceModel.sourceType) {
-                case 1:
-                case 2:
-                    nextPageTitle = @"下一页";
-                    break;
-                case 3:
-                    nextPageTitle = @"Next >";
-                    break;
-                default:
-                    break;
-            }
-
-            for (OCGumboElement *aE in aEs) {
-                if ([aE.text() isEqualToString:nextPageTitle]) {
-                    find = YES;
-                    NSString *nextPage = aE.attr(@"href");
-
-                    url = nextPage;
-                    break;
-                }
-            }
-        }
-
-        count += urls.count;
         // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
         // TODO: 这边需要思考下, 是否需要串行队列添加任务
-        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[urls copy] suggestNames:suggestNames];
+        NSMutableArray *suggestNames = [NSMutableArray array];
+        NSInteger imageCount = imageUrls.count;
+        if (imageCount > 0) {
+            for (NSInteger index = 1; index <= imageCount; index ++) {
+                [suggestNames addObject:[NSString stringWithFormat:@"%ld.jpg", picCount + index]];
+                [urlsString appendFormat:@"%@\n", imageUrls[index - 1]];
+            }
+        }
 
-    }
+        count += imageCount;
+        url = nextPage;
+
+        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[imageUrls copy] suggestNames:suggestNames];
+
+    }];
 
     if (url.length == 0) {
         NSLog(@"获取到的下一个url是空的");

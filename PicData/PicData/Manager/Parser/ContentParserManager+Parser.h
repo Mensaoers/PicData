@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 解析tag列表
 + (NSArray <PicClassModel *>*)parseTagsWithHtmlString:(NSString *)htmlString HostModel:(PicNetModel *)hostModel;
 
+/// 解析contentList
++ (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray * _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

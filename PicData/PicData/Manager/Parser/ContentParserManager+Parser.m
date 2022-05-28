@@ -99,4 +99,165 @@
     return classModelsM;
 }
 
++ (NSArray<PicContentModel *> *)parseContentListWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
+
+    NSMutableArray *articleContents = [NSMutableArray array];
+
+    switch (sourceModel.sourceType) {
+        case 1: {
+            OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryClass(@"post");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                NSString *title = aE.attr(@"title");
+
+                // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
+                title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
+                title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
+
+                NSString *href = aE.attr(@"href");
+
+                OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+                NSString *thumbnailUrl = imgE.attr(@"src");
+
+                PicContentModel *contentModel = [[PicContentModel alloc] init];
+                contentModel.href = href;
+                contentModel.sourceHref = sourceModel.url;
+                contentModel.sourceTitle = sourceModel.title;
+                contentModel.HOST_URL = sourceModel.HOST_URL;
+                contentModel.title = title;
+                contentModel.thumbnailUrl = thumbnailUrl;
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
+        case 2: {
+            OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryElement(@"li");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                NSString *title = aE.attr(@"title");
+                NSString *href = aE.attr(@"href");
+
+                OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+                NSString *thumbnailUrl = imgE.attr(@"src");
+
+                PicContentModel *contentModel = [[PicContentModel alloc] init];
+                contentModel.href = href;
+                contentModel.sourceHref = sourceModel.url;
+                contentModel.sourceTitle = sourceModel.title;
+                contentModel.HOST_URL = sourceModel.HOST_URL;
+                contentModel.title = title;
+                contentModel.thumbnailUrl = thumbnailUrl;
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
+        case 3: {
+            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                OCGumboElement *aE = articleE.QueryElement(@"a").firstObject;
+                NSString *title = aE.attr(@"title");
+                NSString *href = aE.attr(@"href");
+
+                OCGumboElement *imgE = aE.QueryClass(@"xld").firstObject;
+                NSString *thumbnailUrl = imgE.attr(@"src");
+
+                PicContentModel *contentModel = [[PicContentModel alloc] init];
+                contentModel.href = href;
+                contentModel.sourceHref = sourceModel.url;
+                contentModel.sourceTitle = sourceModel.title;
+                contentModel.HOST_URL = sourceModel.HOST_URL;
+                contentModel.title = title;
+                contentModel.thumbnailUrl = thumbnailUrl;
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+
+    return [articleContents copy];
+}
+
++ (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray * _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler {
+    
+    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+
+    NSArray *results = [self parseContentListWithDocument:document sourceModel:sourceModel];
+
+    BOOL find = NO;
+    NSURL *nextPageURL = nil;
+
+    switch (sourceModel.sourceType) {
+        case 1: {
+            OCGumboElement *nextE = document.QueryClass(@"pageart").firstObject;
+            if (nextE) {
+                OCQueryObject *aEs = nextE.QueryElement(@"a");
+                for (OCGumboElement *aE in aEs) {
+                    if ([aE.text() isEqualToString:@"下一页"]) {
+                        find = YES;
+                        NSString *nextPage = aE.attr(@"href");
+
+                        nextPageURL = [NSURL URLWithString:[sourceModel.url stringByAppendingPathComponent:nextPage]];
+                        break;
+                    }
+                }
+            }
+        }
+            break;
+        case 2: {
+            OCGumboElement *nextE = document.QueryClass(@"TagPage").firstObject;
+            if (nextE) {
+                OCQueryObject *aEs = nextE.QueryElement(@"a");
+                for (OCGumboElement *aE in aEs) {
+                    if ([aE.text() isEqualToString:@"下一页"]) {
+                        find = YES;
+                        NSString *nextPage = aE.attr(@"href");
+
+                        nextPageURL = [NSURL URLWithString:[sourceModel.url stringByReplacingOccurrencesOfString:sourceModel.url.lastPathComponent withString:nextPage]];
+                        break;
+                    }
+                }
+            }
+        }
+            break;
+        case 3: {
+            OCGumboElement *nextE = document.QueryClass(@"pag").firstObject;
+            if (nextE) {
+                OCQueryObject *aEs = nextE.QueryElement(@"a");
+                for (OCGumboElement *aE in aEs) {
+                    if ([aE.text() isEqualToString:@"Next »"]) {
+                        find = YES;
+                        NSString *nextPage = aE.attr(@"href");
+
+                        nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+                        break;
+                    }
+                }
+            }
+        }
+            break;
+        default:
+            break;
+    }
+
+    if (!find) {
+        nextPageURL = nil;
+    }
+
+    PPIsBlockExecute(completeHandler, results, nextPageURL)
+}
+
 @end

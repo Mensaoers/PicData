@@ -96,7 +96,7 @@
         sourceModel.title = sourceTitle;
 
         sourceModel.HOST_URL = HOST_URLString;
-        sourceModel.url = targetHostModel.url;
+        sourceModel.url = targetHostModel.urls.firstObject.url;
         sourceModel.sourceType = targetHostModel.sourceType;
 
 

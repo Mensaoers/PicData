@@ -3,12 +3,17 @@
         "title" : "https://www.yun222.cc",
         "sourceType" : 1,
         "HOST_URL": "https://www.yun222.cc",
-        "url": "https://www.yun222.cc/k",
+        "urls": [
+            {
+                "url": "https://www.yun222.cc/k",
+                "title": "yun222首页"
+            },
+        ],
         "tagsUrl": "https://www.yun222.cc/k/tag",
         "searchFormat": "https://www.yun222.cc/plus/search.php?q=%@&pagesize=30",
         "searchKeys": [
-            "梦心玥", "梦心月", "萌琪琪", "沈梦瑶", "程程程", "一颗甜蛋黄", "阿朱",
-            "芝芝Booty", "糯美子", "杨晨晨", "抖娘利世", "利世", "唐安琪",
+            "梦心玥", "梦心月", "萌琪琪", "Irene", "沈梦瑶", "程程程", "一颗甜蛋黄", "阿朱",
+            "芝芝Booty", "糯美子", "杨晨晨", "抖娘利世", "利世", "白茹雪", "唐安琪",
             "周于希", "林星阑", "月音瞳", "绯月樱", "徐安安", "小蛮腰",
             "鱼子酱", "玉兔", "王馨瑶", "吴雪瑶", "孙梦瑶", "模特合集",
             "顾奈奈酱", "白露", "言沫", "诗诗", "西门小玉", "欧阳", "颜浅浅",
@@ -23,7 +28,12 @@
         "title" : "https://www.tu963.cc",
         "sourceType" : 2,
         "HOST_URL": "https://www.tu963.cc",
-        "url": "https://www.tu963.cc/y/2/index.html",
+        "urls": [
+            {
+                "url": "https://www.tu963.cc/y/2/index.html",
+                "title": "tu963首页"
+            },
+        ],
         "tagsUrl": "https://www.tu963.cc/y/2/index.html",
         "mark": "tu963",
         "prepared": false,
@@ -32,7 +42,12 @@
         "title" : "https://hitxhot.com",
         "sourceType" : 3,
         "HOST_URL": "https://hitxhot.com",
-        "url": "https://hitxhot.com/hot?page=1",
+        "urls": [
+            {
+                "url": "https://hitxhot.com/hot?page=1",
+                "title": "hitxhot首页"
+            },
+        ],
         "tagsUrl": "",
         "searchFormat": "https://hitxhot.com/tag/%@",
         "searchKeys": ["梦心玥", "梦心月", "闫盼盼", "萌兰酱", "萌白酱"],
@@ -44,7 +59,12 @@
         "title" : "https://www.ku138.cc",
         "sourceType" : 4,
         "HOST_URL": "https://www.ku138.cc",
-        "url": "https://www.ku138.cc/b/1",
+        "urls": [
+            {
+                "url": "https://www.ku138.cc/b/1",
+                "title": "ku138首页"
+            },
+        ],
         "tagsUrl": "https://www.ku138.cc/b/tag",
         "mark": "ku138",
         "prepared": false,
@@ -53,9 +73,32 @@
         "title" : "https://www.hh1234.cc",
         "sourceType" : 5,
         "HOST_URL": "https://www.hh1234.cc",
-        "url": "https://www.hh1234.cc/ku/xin/",
+        "urls": [
+            {
+                "url": "https://www.hh1234.cc/ku/xin",
+                "title": "hh1234首页"
+            },
+        ],
         "tagsUrl": "https://www.hh1234.cc/ku/tag/",
         "mark": "hh1234",
+        "prepared": false,
+    },
+    {
+        "title" : "https://www.xiurenb.com",
+        "sourceType" : 6,
+        "HOST_URL": "https://www.xiurenb.com",
+        "urls": [
+            {
+                "url": "https://www.xiurenb.com/new.html",
+                "title": "xiurenb最新更新"
+            },
+            {
+                "url": "https://www.xiurenb.com/hot.html",
+                "title": "xiurenb站长推荐"
+            },
+        ],
+        "tagsUrl": "",
+        "mark": "秀人集",
         "prepared": false,
     }
 ]

@@ -154,24 +154,37 @@
 
 - (void)prepareDefaultTags:(PicNetModel *)hostModel {
 
-    PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
-        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-        sourceModel.sourceType = hostModel.sourceType;
-        sourceModel.url = hostModel.url;
+    NSArray <PicSourceModel*>*(^getIndexModel)(PicNetModel *hostModel) = ^NSArray <PicSourceModel*> * (PicNetModel *hostModel) {
 
-        NSString *mark = hostModel.mark;
-        if (nil == mark || mark.length == 0) {
-            mark = [NSString stringWithFormat:@"%d", hostModel.sourceType];
+        NSMutableArray *sourceModels = [NSMutableArray array];
+
+        for (PicNetUrlModel *urlModel in hostModel.urls) {
+            PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+            sourceModel.sourceType = hostModel.sourceType;
+            sourceModel.url = urlModel.url;
+
+            if (urlModel.title.length > 0) {
+                sourceModel.title = urlModel.title;
+            } else {
+                NSString *mark = hostModel.mark;
+                if (nil == mark || mark.length == 0) {
+                    mark = [NSString stringWithFormat:@"%d", hostModel.sourceType];
+                }
+
+                sourceModel.title = [NSString stringWithFormat:@"%@首页", mark];
+            }
+
+            sourceModel.HOST_URL = hostModel.HOST_URL;
+            [sourceModel insertTable];
+
+            [sourceModels addObject:sourceModel];
         }
 
-        sourceModel.title = [NSString stringWithFormat:@"%@首页", mark];
-        sourceModel.HOST_URL = hostModel.HOST_URL;
-        [sourceModel insertTable];
-        return sourceModel;
+        return sourceModels;
     };
 
     NSMutableArray *subTitles = [NSMutableArray array];
-    [subTitles addObject:getIndexModel()];
+    [subTitles addObjectsFromArray:getIndexModel(hostModel)];
 
     if (hostModel.searchFormat.length > 0) {
         for (NSString *titleString in hostModel.searchKeys) {

@@ -10,12 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface PicNetUrlModel : NSObject
+
+@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *title;
+
+@end
+
 @interface PicNetModel : NSObject
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, assign) int sourceType;
 @property (nonatomic, strong) NSString *HOST_URL;
-@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSArray <PicNetUrlModel *>* urls;
 @property (nonatomic, strong) NSString *tagsUrl;
 @property (nonatomic, strong) NSString *searchFormat;
 @property (nonatomic, strong) NSArray <NSString *>*searchKeys;

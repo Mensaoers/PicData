@@ -233,7 +233,7 @@
                 nextPageTitle = @"下一页";
                 break;
             case 3:
-                nextPageTitle = @"Next >";
+                nextPageTitle = @"Next »";
                 break;
             default:
                 break;

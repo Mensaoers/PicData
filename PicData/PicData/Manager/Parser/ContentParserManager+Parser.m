@@ -14,6 +14,7 @@
     switch (sourceType) {
         case 1:
         case 2:
+        case 5:
             return [AppTool getStringWithGB_18030_2000Code:data];
             break;
         case 3:
@@ -27,7 +28,20 @@
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
     OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
-    NSString *title = aE.attr(@"title");
+    NSString *title;
+
+    switch (sourceModel.sourceType) {
+        case 1:
+        case 2:
+        case 3: {
+            title = aE.attr(@"title");
+        }
+            break;
+        case 5:
+            break;
+        default:
+            break;
+    }
 
     NSString *href = aE.attr(@"href");
 
@@ -36,7 +50,9 @@
     switch (sourceModel.sourceType) {
         case 1:
         case 2:
+        case 5:
             imgE = aE.QueryElement(@"img").firstObject;
+            title = imgE.attr(@"alt");
             break;
         case 3:
             imgE = aE.QueryClass(@"xld").firstObject;
@@ -80,10 +96,14 @@
                 url = href;
             }
                 break;
+            case 5: {
+                url = href;
+            }
+                break;
             default:
                 break;
         }
-        sourceModel.url = [hostModel.HOST_URL stringByAppendingPathComponent:href];
+        sourceModel.url = url;
         sourceModel.title = subTitle;
         sourceModel.HOST_URL = hostModel.HOST_URL;
         [sourceModel insertTable];
@@ -115,8 +135,8 @@
             tagsListEs = document.QueryClass(@"TagTop_Gs_r");
         }
             break;
-        case 3: {
-
+        case 5: {
+            tagsListEs = document.QueryClass(@"jigou");
         }
             break;
         default:
@@ -139,6 +159,7 @@
     switch (sourceModel.sourceType) {
         case 1: {
             OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
+            if(nil == listDiv) {return @[];}
             OCQueryObject *articleEs = listDiv.QueryClass(@"post");
 
             for (OCGumboElement *articleE in articleEs) {
@@ -182,6 +203,26 @@
             }
         }
             break;
+        case 5: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            OCQueryObject *articleEs = listDiv.QueryClass(@"piece");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
+                NSString *title = contentModel.title;
+                title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
+                title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
+                contentModel.title = title;
+
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
         default:
             break;
     }
@@ -217,6 +258,10 @@
             nextE = document.QueryClass(@"pag").firstObject;
         }
             break;
+        case 5: {
+            nextE = document.QueryClass(@"page-list").firstObject;
+        }
+            break;
         default:
             break;
     }
@@ -228,10 +273,6 @@
 
         NSString *nextPageTitle = @"下一页";
         switch (sourceModel.sourceType) {
-            case 1:
-            case 2:
-                nextPageTitle = @"下一页";
-                break;
             case 3:
                 nextPageTitle = @"Next »";
                 break;
@@ -261,6 +302,9 @@
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
             }
                 break;
+            case 5: {
+                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]];
+            }
             default:
                 break;
         }
@@ -298,6 +342,10 @@
             contentE = document.QueryClass(@"contentme").firstObject;
         }
             break;
+        case 5: {
+            contentE = document.QueryClass(@"content").firstObject;
+        }
+            break;
         default:
             break;
     }
@@ -325,6 +373,10 @@
             nextE = document.QueryClass(@"pag").firstObject;
         }
             break;
+        case 5: {
+            nextE = document.QueryClass(@"page-list").firstObject;
+        }
+            break;
         default:
             break;
     }
@@ -335,10 +387,6 @@
 
         NSString *nextPageTitle = @"下一页";
         switch (sourceModel.sourceType) {
-            case 1:
-            case 2:
-                nextPageTitle = @"下一页";
-                break;
             case 3:
                 nextPageTitle = @"Next >";
                 break;
@@ -368,6 +416,9 @@
                 nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
             }
                 break;
+            case 5: {
+                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]].absoluteString;
+            }
             default:
                 break;
         }
@@ -428,6 +479,22 @@
             }
         }
             break;
+        case 5: {
+
+            // 推荐
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryClass(@"piece");
+
+            NSMutableArray *suggesM = [NSMutableArray array];
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                [contentModel insertTable];
+                [suggesM addObject:contentModel];
+            }
+        }
+            break;
         default:
             break;
     }
@@ -468,6 +535,12 @@
                     NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
                     title = title2;
                 }
+            }
+                break;
+            case 5: {
+                OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
+                OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
+                title = titleE.text();
             }
             default:
                 break;

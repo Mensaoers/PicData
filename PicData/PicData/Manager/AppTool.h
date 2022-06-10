@@ -22,6 +22,7 @@ singleton_interface(AppTool)
 @property (nonatomic, strong, nonnull) PicNetModel *currentHostModel;
 
 @property (nonatomic, strong, readonly) NSArray <PicNetModel *> *hostModels;
+@property (nonatomic, strong, readonly) NSArray <NSString *> *searchKeys;
 
 /// bugly app_id
 + (NSString *)app_id_bugly;

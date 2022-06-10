@@ -64,8 +64,10 @@ singleton_implementation(AppTool)
     if (nil == _hostModels) {
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"PicNet" ofType:@"json"];
         NSError *jsError = nil;
-        NSArray *array = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:NSJSONReadingMutableContainers error:&jsError];
-        if (nil == jsError) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:NSJSONReadingMutableContainers error:&jsError];
+        NSArray *array = dictionary[@"hosts"];
+        _searchKeys = dictionary[@"searchKeys"];
+        if (nil == jsError && array.count > 0) {
             NSArray *hostModels = [PicNetModel mj_objectArrayWithKeyValuesArray:array];
             NSMutableArray *hostModelsM = [NSMutableArray array];
             for (PicNetModel *model in hostModels) {

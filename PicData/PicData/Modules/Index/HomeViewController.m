@@ -187,7 +187,11 @@
     [subTitles addObjectsFromArray:getIndexModel(hostModel)];
 
     if (hostModel.searchFormat.length > 0) {
-        for (NSString *titleString in hostModel.searchKeys) {
+        NSArray *searchKeys = hostModel.searchKeys;
+        if (nil == searchKeys || searchKeys.count == 0) {
+            searchKeys = AppTool.sharedAppTool.searchKeys;
+        }
+        for (NSString *titleString in searchKeys) {
             NSString *titleStringEncode = hostModel.searchEncode ? [titleString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] : [titleString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
             NSString *searchUrl = [NSString stringWithFormat:hostModel.searchFormat, titleStringEncode];
 

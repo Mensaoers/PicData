@@ -120,6 +120,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+
     [self loadAllTags];
 }
 

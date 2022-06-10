@@ -46,7 +46,7 @@
             },
         ],
         "tagsUrl": "https://www.hh1234.cc/ku/tag/",
-        "searchFormat": "",
+        "searchFormat": "https://www.hh1234.cc/plus/search.php?tbname=news&show=title&tempid=1&q=%@&pagesize=25",
         "searchKeys": [
             "梦心玥", "梦心月"
         ],

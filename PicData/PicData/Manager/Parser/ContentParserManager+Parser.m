@@ -417,7 +417,7 @@
             }
                 break;
             case 5: {
-                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]].absoluteString;
+                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:preNextUrl]].absoluteString;
             }
             default:
                 break;

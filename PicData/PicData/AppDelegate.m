@@ -129,12 +129,15 @@
     [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
 #else
 
-#if DEBUG
-    [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
-#else
-    [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
-    [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
-#endif
+// #if DEBUG 只要是xcode直接跑的都是debug(杀死应用重启也还是调试)
+    BOOL isDebugged = AmIBeingDebugged();
+    if (isDebugged) {
+        [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
+    } else {
+        [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
+        [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
+    }
+
 #endif
 }
 

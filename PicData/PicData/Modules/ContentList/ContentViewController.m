@@ -22,6 +22,14 @@
 
 @implementation ContentViewController
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.dataList = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (instancetype)initWithSourceModel:(PicSourceModel *)sourceModel {
     if (self = [super init]) {
         self.sourceModel = sourceModel;

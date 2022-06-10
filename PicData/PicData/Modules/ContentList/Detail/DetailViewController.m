@@ -134,7 +134,9 @@
 }
 
 - (void)refreshMainView {
-    self.contentLabel.text = self.detailModel.detailTitle;
+
+    [self updateContentTitle:self.detailModel.detailTitle];
+
     [self.tableView reloadData];
     if (self.detailModel.contentImgsUrl.count > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
@@ -219,11 +221,17 @@
     self.detailModel.nextUrl = self.detailModel.currentUrl;
 
     PDBlockSelf
-    [ContentParserManager parseDetailWithHtmlString:htmlString sourceModel:self.sourceModel preNextUrl:self.detailModel.nextUrl needSuggest:YES completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray) {
+    [ContentParserManager parseDetailWithHtmlString:htmlString sourceModel:self.sourceModel preNextUrl:self.detailModel.nextUrl needSuggest:YES completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray, NSString * _Nullable contentTitle) {
 
         weakSelf.detailModel.contentImgsUrl = imageUrls;
         weakSelf.detailModel.nextUrl = nextPage;
         weakSelf.detailModel.suggesArray = suggestArray;
+
+        if (contentTitle.length > 0) {
+            weakSelf.detailModel.detailTitle = contentTitle;
+            [weakSelf updateContentTitle:weakSelf.detailModel.detailTitle];
+        }
+
     }];
 
 }

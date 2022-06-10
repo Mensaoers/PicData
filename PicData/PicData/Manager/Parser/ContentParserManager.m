@@ -202,7 +202,7 @@ singleton_implementation(ContentParserManager)
     NSMutableString *urlsString = [NSMutableString string];
     __block int count = 0;
 
-    [self parseDetailWithHtmlString:htmlString sourceModel:sourceModel preNextUrl:nextUrl needSuggest:NO completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray) {
+    [self parseDetailWithHtmlString:htmlString sourceModel:sourceModel preNextUrl:nextUrl needSuggest:NO completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray, NSString * _Nullable contentTitle) {
 
         // 这边没必要异步添加任务了, 就直接添加即可, 本身这个解析过程就是异步的
         // TODO: 这边需要思考下, 是否需要串行队列添加任务

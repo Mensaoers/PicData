@@ -315,10 +315,10 @@
     PPIsBlockExecute(completeHandler, results, nextPageURL)
 }
 
-+ (void)parseDetailWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void(^)(NSArray <NSString *>* _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray <PicContentModel *> * _Nullable suggestArray))completeHandler {
++ (void)parseDetailWithHtmlString:(NSString *)htmlString sourceModel:(PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void (^)(NSArray<NSString *> * _Nonnull, NSString * _Nonnull, NSArray<PicContentModel *> * _Nullable, NSString * _Nullable))completeHandler {
 
     if (htmlString.length == 0) {
-        PPIsBlockExecute(completeHandler, @[], @"", @[]);
+        PPIsBlockExecute(completeHandler, @[], @"", @[], @"");
         return;
     }
 
@@ -426,8 +426,10 @@
         nextPage = @"";
     }
 
+    NSString *contentTitle = [self parsePageForTitleWithDocument:document sourceModel:sourceModel];
+
     if (!needSuggest) {
-        PPIsBlockExecute(completeHandler, urls, nextPage, suggesM);
+        PPIsBlockExecute(completeHandler, urls, nextPage, suggesM, contentTitle);
         return;
     }
 
@@ -437,7 +439,6 @@
             // 推荐
             OCGumboElement *listDiv = document.QueryClass(@"w980").firstObject;
             OCQueryObject *articleEs = listDiv.QueryClass(@"post");
-
 
             for (OCGumboElement *articleE in articleEs) {
 
@@ -469,7 +470,6 @@
             OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
             OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
 
-            NSMutableArray *suggesM = [NSMutableArray array];
             for (OCGumboElement *articleE in articleEs) {
 
                 PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
@@ -482,16 +482,19 @@
         case 5: {
 
             // 推荐
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryClass(@"piece");
+            OCQueryObject *listDivs = document.QueryClass(@"list");
 
-            NSMutableArray *suggesM = [NSMutableArray array];
-            for (OCGumboElement *articleE in articleEs) {
+            for (OCGumboElement *listDivE in listDivs) {
 
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+                OCQueryObject *articleEs = listDivE.QueryClass(@"piece");
 
-                [contentModel insertTable];
-                [suggesM addObject:contentModel];
+                for (OCGumboElement *articleE in articleEs) {
+
+                    PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                    [contentModel insertTable];
+                    [suggesM addObject:contentModel];
+                }
             }
         }
             break;
@@ -499,8 +502,51 @@
             break;
     }
 
-    PPIsBlockExecute(completeHandler, urls, nextPage, suggesM);
+    PPIsBlockExecute(completeHandler, urls, nextPage, suggesM, contentTitle);
 
+}
+
++ (NSString *)parsePageForTitleWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
+
+    NSString *title = @"";
+
+    switch (sourceModel.sourceType) {
+        case 1: {
+            OCGumboElement *divE = document.QueryClass(@"Title9").firstObject;
+            OCGumboElement *h9E = divE.childNodes.firstObject;
+            title = h9E.text();
+        }
+            break;
+        case 2: {
+            OCGumboElement *h1E = document.QueryClass(@"articleV4Tit").firstObject;
+            title = h1E.text();
+        }
+            break;
+        case 3: {
+            OCGumboElement *headE = document.QueryElement(@"head").firstObject;
+            OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
+            if (titleE) {
+                NSString *title1 = titleE.text();
+                // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
+                NSString *regex = @"(?<=Hit-x-Hot: ).*?(?= | Page)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
+                title = title2;
+            }
+        }
+            break;
+        case 5: {
+            OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
+            OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
+            title = titleE.text();
+        }
+        default:
+            break;
+    }
+
+    return title;
 }
 
 + (NSString *)parsePageForTitle:(NSString *)htmlString sourceModel:(PicSourceModel *)sourceModel {
@@ -509,42 +555,7 @@
     if (htmlString.length > 0) {
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-
-        switch (sourceModel.sourceType) {
-            case 1: {
-                OCGumboElement *divE = document.QueryClass(@"Title9").firstObject;
-                OCGumboElement *h9E = divE.childNodes.firstObject;
-                title = h9E.text();
-            }
-                break;
-            case 2: {
-                OCGumboElement *h1E = document.QueryClass(@"articleV4Tit").firstObject;
-                title = h1E.text();
-            }
-                break;
-            case 3: {
-                OCGumboElement *headE = document.QueryElement(@"head").firstObject;
-                OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
-                if (titleE) {
-                    NSString *title1 = titleE.text();
-                    // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
-                    NSString *regex = @"(?<=Hit-x-Hot: ).*?(?= | Page)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                    // 对str字符串进行匹配
-                    NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
-                    title = title2;
-                }
-            }
-                break;
-            case 5: {
-                OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
-                OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
-                title = titleE.text();
-            }
-            default:
-                break;
-        }
+        title = [self parsePageForTitleWithDocument:document sourceModel:sourceModel];
     }
 
     return title ?: @"";

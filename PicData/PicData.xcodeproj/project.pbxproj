@@ -65,8 +65,6 @@
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
 		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
-		9DBE6C79285CDC2F00A5678B /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DBE6C77285CDC2F00A5678B /* PicDataSDK.xcframework */; };
-		9DBE6C7A285CDC2F00A5678B /* PicDataSDKResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9DBE6C78285CDC2F00A5678B /* PicDataSDKResource.bundle */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* BaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* BaseTabBarController.m */; };
@@ -217,8 +215,6 @@
 		9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTagsFrame.m; sourceTree = "<group>"; };
 		9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsViewCell.h; sourceTree = "<group>"; };
 		9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsFrame.h; sourceTree = "<group>"; };
-		9DBE6C77285CDC2F00A5678B /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
-		9DBE6C78285CDC2F00A5678B /* PicDataSDKResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PicDataSDKResource.bundle; path = ../../../../../PicDataSDK/PicDataSDK/Products/PicDataSDKResource.bundle; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -299,7 +295,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */,
-				9DBE6C79285CDC2F00A5678B /* PicDataSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,15 +538,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		9DBE6C76285CDBEA00A5678B /* PicDataSDK */ = {
-			isa = PBXGroup;
-			children = (
-				9DBE6C77285CDC2F00A5678B /* PicDataSDK.xcframework */,
-				9DBE6C78285CDC2F00A5678B /* PicDataSDKResource.bundle */,
-			);
-			path = PicDataSDK;
-			sourceTree = "<group>";
-		};
 		9DC94C9A2552ECBB008ACAF8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,7 +587,6 @@
 		9DE95C71244C3E0F00E31735 /* PicData */ = {
 			isa = PBXGroup;
 			children = (
-				9DBE6C76285CDBEA00A5678B /* PicDataSDK */,
 				33E1ABE02822BA9F00AA92CB /* Utils */,
 				33E1ABDF2822BA6900AA92CB /* Modules */,
 				9DE95CF6244CA23000E31735 /* Manager */,
@@ -788,6 +773,7 @@
 				C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */,
 				330F778B25DD26A100CD38FD /* Bugly */,
 				335338992723277D00D18EDE /* Embed PlugIns */,
+				BCCDD2C1CF0042C23D12E5C7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -841,7 +827,6 @@
 				332D014D26FD845F00E3F387 /* gesture_normal@0.5x.png in Resources */,
 				332D014626FD845F00E3F387 /* gesture_selected@1.5x.png in Resources */,
 				332D014726FD845F00E3F387 /* gesture_selected@3x.png in Resources */,
-				9DBE6C7A285CDC2F00A5678B /* PicDataSDKResource.bundle in Resources */,
 				9DE95C82244C3E1100E31735 /* LaunchScreen.storyboard in Resources */,
 				332D014326FD845F00E3F387 /* gesture_headIcon@2x.png in Resources */,
 				332D014A26FD845F00E3F387 /* gesture_normal@2x.png in Resources */,
@@ -902,6 +887,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BCCDD2C1CF0042C23D12E5C7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */ = {

@@ -75,7 +75,11 @@
     NSMutableArray *operationModels = [NSMutableArray array];
 
 #if TARGET_OS_MACCATALYST
-    [operationModels addObject:[SettingOperationModel ModelWithName:@"下载路径" value:[[PDDownloadManager sharedPDDownloadManager] systemDownloadPath] func:@"setDownloadPath:"]];
+    // TODO: 设置路径
+    /// 目前该功能有点鸡肋, 已屏蔽
+    /// 设想应该是Mac端可以自由设置下载路径, 但是暂时设置的是相对documents, 不是我的本意
+    /// iOS相对documents设置, Mac端, 直接设置绝对路径, 才合理
+//    [operationModels addObject:[SettingOperationModel ModelWithName:@"下载路径" value:[[PDDownloadManager sharedPDDownloadManager] systemDownloadPath] func:@"setDownloadPath:"]];
 
 #endif
 

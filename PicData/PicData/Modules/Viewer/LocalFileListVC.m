@@ -999,9 +999,11 @@
                 self.browser.currentPage = MIN(self.browser.currentPage + 1, self.imgsList.count);
             }
             if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputUpArrow]) { // 上箭头
+                didHandleEvent = YES;
                 [self.browser hide];
             }
             if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputDownArrow]) { // 上箭头
+                didHandleEvent = YES;
                 [self.browser hide];
             }
         }else{

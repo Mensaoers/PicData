@@ -64,17 +64,21 @@ singleton_implementation(AppTool)
     if (nil == _hostModels) {
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"PicNet" ofType:@"json"];
         NSError *jsError = nil;
-        NSArray *array = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:NSJSONReadingMutableContainers error:&jsError];
-        if (nil == jsError) {
-            _hostModels = [PicNetModel mj_objectArrayWithKeyValuesArray:array];
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:NSJSONReadingMutableContainers error:&jsError];
+        NSArray *array = dictionary[@"hosts"];
+        _searchKeys = dictionary[@"searchKeys"];
+        if (nil == jsError && array.count > 0) {
+            NSArray *hostModels = [PicNetModel mj_objectArrayWithKeyValuesArray:array];
+            NSMutableArray *hostModelsM = [NSMutableArray array];
+            for (PicNetModel *model in hostModels) {
+                if (!model.prepared) { continue; }
+                [hostModelsM addObject:model];
+            }
+            _hostModels = hostModelsM.copy;
         }
 
         if (nil == _hostModels || _hostModels.count == 0) {
-            PicNetModel *netModel = [PicNetModel new];
-            netModel.title = @"https://www.tu963.cc";
-            netModel.sourceType = 2;
-            netModel.HOST_URL = @"https://www.tu963.cc";
-            _hostModels = @[netModel];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameInitHostModelsFailed object:nil];
         }
     }
     return _hostModels;

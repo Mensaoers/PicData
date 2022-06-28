@@ -41,6 +41,7 @@
 		3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
+		335849AB2841CA7500A5D9B3 /* ContentParserManager+Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
@@ -52,7 +53,6 @@
 		33E6404E2810108900E763B6 /* PicNetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404D2810108900E763B6 /* PicNetModel.m */; };
 		33E640542810138800E763B6 /* PicNet.json in Resources */ = {isa = PBXBuildFile; fileRef = 33E640532810122700E763B6 /* PicNet.json */; };
 		33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */; };
-		33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
@@ -168,6 +168,8 @@
 		335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_debug.bundle; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
+		335849A92841CA7500A5D9B3 /* ContentParserManager+Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContentParserManager+Parser.h"; sourceTree = "<group>"; };
+		335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ContentParserManager+Parser.m"; sourceTree = "<group>"; };
 		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
 		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
 		33967B5026EDF44600B308B1 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -188,7 +190,6 @@
 		33E640532810122700E763B6 /* PicNet.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicNet.json; sourceTree = "<group>"; };
 		33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPDownloadTaskOperation.h; sourceTree = "<group>"; };
 		33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPDownloadTaskOperation.m; sourceTree = "<group>"; };
-		33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PicDataSDK.xcframework; path = ../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework; sourceTree = "<group>"; };
 		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
 		33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ChangeUnicode.m"; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
@@ -294,7 +295,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */,
-				33E88E2228067BF30095AB73 /* PicDataSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +412,8 @@
 			children = (
 				9D3593DF244D3D38005ADF05 /* ContentParserManager.h */,
 				9D3593E0244D3D38005ADF05 /* ContentParserManager.m */,
+				335849A92841CA7500A5D9B3 /* ContentParserManager+Parser.h */,
+				335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -752,7 +754,6 @@
 		E272491668D574E526B80971 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				33E88E2128067BF30095AB73 /* PicDataSDK.xcframework */,
 				AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */,
 			);
 			name = Frameworks;
@@ -772,6 +773,7 @@
 				C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */,
 				330F778B25DD26A100CD38FD /* Bugly */,
 				335338992723277D00D18EDE /* Embed PlugIns */,
+				BCCDD2C1CF0042C23D12E5C7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -887,6 +889,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BCCDD2C1CF0042C23D12E5C7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -944,6 +963,7 @@
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
 				33E6404E2810108900E763B6 /* PicNetModel.m in Sources */,
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
+				335849AB2841CA7500A5D9B3 /* ContentParserManager+Parser.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
 				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
@@ -1114,6 +1134,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1128,7 +1149,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.3;
+				MARKETING_VERSION = 0.3.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",
@@ -1210,6 +1231,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PicData/PicData.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1224,7 +1246,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.3;
+				MARKETING_VERSION = 0.3.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",

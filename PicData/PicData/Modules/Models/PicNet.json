@@ -1,26 +1,118 @@
-[
-    {
-        "title" : "https://www.tu963.cc",
-        "sourceType" : 2,
-        "HOST_URL": "https://www.tu963.cc",
-        "url": "https://www.tu963.cc/y/2/index.html",
-        "tagsUrl": "https://www.tu963.cc/y/2/index.html",
-        "mark": "tu963"
-    },
-    {
-        "title" : "https://www.yun222.cc",
-        "sourceType" : 1,
-        "HOST_URL": "https://www.yun222.cc",
-        "url": "https://www.yun222.cc/k",
-        "tagsUrl": "https://www.yun222.cc/k/tag",
-        "mark": "yun222"
-    },
-    {
-        "title" : "https://hitxhot.com",
-        "sourceType" : 3,
-        "HOST_URL": "https://hitxhot.com",
-        "url": "https://hitxhot.com/hot?page=140",
-        "tagsUrl": "",
-        "mark": "hitxhot"
-    },
-]
+{
+    "hosts": [
+        {
+            "title" : "https://www.yun222.cc",
+            "sourceType" : 1,
+            "HOST_URL": "https://www.yun222.cc",
+            "urls": [
+                {
+                    "url": "https://www.yun222.cc/k",
+                    "title": "yun222首页"
+                },
+            ],
+            "tagsUrl": "https://www.yun222.cc/k/tag",
+            "searchFormat": "https://www.yun222.cc/plus/search.php?q=%@&pagesize=30",
+            "searchEncode": false,
+            "mark": "yun222",
+            "prepared": true,
+        },
+        {
+            "title" : "https://hitxhot.com",
+            "sourceType" : 3,
+            "HOST_URL": "https://hitxhot.com",
+            "urls": [
+                {
+                    "url": "https://hitxhot.com/hot?page=1",
+                    "title": "hitxhot首页1"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=11",
+                    "title": "hitxhot首页11"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=21",
+                    "title": "hitxhot首页21"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=31",
+                    "title": "hitxhot首页31"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=41",
+                    "title": "hitxhot首页41"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=51",
+                    "title": "hitxhot首页51"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=61",
+                    "title": "hitxhot首页61"
+                },
+                {
+                    "url": "https://hitxhot.com/hot?page=71",
+                    "title": "hitxhot首页71"
+                },
+            ],
+            "tagsUrl": "",
+            "searchFormat": "https://hitxhot.com/tag/%@",
+            "searchKeys": ["梦心玥", "梦心月", "闫盼盼", "萌兰酱", "萌白酱", "月音瞳",
+                "懂小姐", "峰不二子", "理万姬", "会有妻", "伊丽莎白", "李丽莎", "IVITAMINA"
+            ],
+            "searchEncode": true,
+            "mark": "hitxhot",
+            "prepared": true,
+        },
+        {
+            "title" : "https://www.hh1234.cc",
+            "sourceType" : 5,
+            "HOST_URL": "https://www.hh1234.cc",
+            "urls": [
+                {
+                    "url": "https://www.hh1234.cc/ku/xin",
+                    "title": "hh1234首页"
+                },
+            ],
+            "tagsUrl": "https://www.hh1234.cc/ku/tag/",
+            "searchFormat": "https://www.hh1234.cc/plus/search.php?tbname=news&show=title&tempid=1&q=%@&pagesize=25",
+            "searchEncode": false,
+            "mark": "hh1234",
+            "prepared": true,
+        },
+        {
+            "title" : "https://www.xiurenb.com",
+            "sourceType" : 6,
+            "HOST_URL": "https://www.xiurenb.com",
+            "urls": [
+                {
+                    "url": "https://www.xiurenb.com/new.html",
+                    "title": "xiurenb最新更新"
+                },
+                {
+                    "url": "https://www.xiurenb.com/hot.html",
+                    "title": "xiurenb站长推荐"
+                },
+            ],
+            "tagsUrl": "",
+            "mark": "秀人集",
+            "prepared": false,
+        },
+        {
+            "title" : "https://www.2meinv.com/",
+            "sourceType" : 7,
+            "HOST_URL": "https://www.2meinv.com",
+            "urls": [
+                {
+                    "url": "https://www.2meinv.com/index.html",
+                    "title": "爱美女"
+                },
+            ],
+            "tagsUrl": "https://www.2meinv.com/tags-all.html",
+            "searchFormat": "https://www.2meinv.com/search-%@.html",
+            "searchEncode": true,
+            "mark": "秀人集",
+            "prepared": false,
+        }
+    ],
+    "searchKeys": ["BoBo","Carry","Irene","Kiki","Lavinia","一颗甜蛋黄","乐朵朵","九月","于姬","仓井优香","以瑟","优优","佘贝拉","冯木木","刘奕宁","刘钰儿","利世","南初","可乐","吴雪瑶","周于希","周井空","周慕汐","唐婉儿","唐安琪","嘉宝贝","噜噜妞儿","园园","夏西","奈沐子","娜比","娜露","孙梦瑶","安然","宝宝","小不点","小狐狸","小蛮腰","尹甜甜","张小妮","张雨萌","徐安安","悦爷妖精","战姝羽","抖娘利世","方子萱","易阳","月音瞳","李雅柔","杨晨晨","林文文","林星阑","柳侑绮","梦心月","梦心玥","模特合集","欧阳","沈梦瑶","波多","熊小诺","玄子","玉兔","王心怡","王梓童","王馨瑶","璐璐","白茹雪","白露","程慧娴","程程程","糯美子","绮梦","绯月樱","美七","美桃酱","肉肉","良人","艺儿伢哟","艺轩","艾小青","艾尔莎","芝芝Booty","萌琪琪","萌萌","薛琪琪","西门小玉","觉蒽酱","言沫","许诺","诗诗","贾诗晗","过期米线线喵","郑颖姗","阿朱","陆萱萱","陈小喵","顾乔楠","顾奈奈酱","颜浅浅","鱼子酱","龙泽美曦","徐微微"]
+}

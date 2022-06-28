@@ -8,6 +8,20 @@
 
 #import "PicNetModel.h"
 
+@implementation PicNetUrlModel
+
+@end
+
 @implementation PicNetModel
+
++ (NSDictionary *)mj_objectClassInArray {
+    return @{
+        @"urls": @"PicNetUrlModel"
+    };
+}
+
+- (void)setSearchKeys:(NSArray<NSString *> *)searchKeys {
+    _searchKeys = [searchKeys sortedArrayUsingSelector:@selector(compare:)];
+}
 
 @end

@@ -16,9 +16,6 @@
 @property (nonatomic, strong) PicClassifyTableView *tableView;
 @property (nonatomic, strong) NSArray *dataList;
 
-@property (nonatomic, strong) NSString *tagsAddressUrl;
-@property (nonatomic, strong) NSString *host_url;
-
 @property (nonatomic, strong) NSMutableArray <PicClassModel *> *classModels;
 
 @end
@@ -37,13 +34,6 @@
         _classModels = [NSMutableArray array];
     }
     return _classModels;
-}
-
-- (NSString *)host_url {
-    return [[AppTool sharedAppTool].currentHostModel HOST_URL];
-}
-- (NSString *)tagsAddressUrl {
-    return [[AppTool sharedAppTool].currentHostModel tagsUrl];
 }
 
 - (void)loadNavigationItem {
@@ -130,6 +120,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+
     [self loadAllTags];
 }
 
@@ -140,7 +132,7 @@
 
     // 方法重置, 在mac端拖动界面大小之后, 刷新tag列表, 重新布局
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshDataList) object:nil];
-    [self performSelector:@selector(refreshDataList) afterDelay:0.2];
+    [self performSelector:@selector(refreshDataList) afterDelay:0.5];
 
 #endif
 
@@ -162,140 +154,113 @@
 
 #pragma mark request tags
 
+- (void)prepareDefaultTags:(PicNetModel *)hostModel {
+
+    NSArray <PicSourceModel*>*(^getIndexModel)(PicNetModel *hostModel) = ^NSArray <PicSourceModel*> * (PicNetModel *hostModel) {
+
+        NSMutableArray *sourceModels = [NSMutableArray array];
+
+        for (PicNetUrlModel *urlModel in hostModel.urls) {
+            PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+            sourceModel.sourceType = hostModel.sourceType;
+            sourceModel.url = urlModel.url;
+
+            if (urlModel.title.length > 0) {
+                sourceModel.title = urlModel.title;
+            } else {
+                NSString *mark = hostModel.mark;
+                if (nil == mark || mark.length == 0) {
+                    mark = [NSString stringWithFormat:@"%d", hostModel.sourceType];
+                }
+
+                sourceModel.title = [NSString stringWithFormat:@"%@首页", mark];
+            }
+
+            sourceModel.HOST_URL = hostModel.HOST_URL;
+            [sourceModel insertTable];
+
+            [sourceModels addObject:sourceModel];
+        }
+
+        return sourceModels;
+    };
+
+    NSMutableArray *subTitles = [NSMutableArray array];
+    [subTitles addObjectsFromArray:getIndexModel(hostModel)];
+
+    if (hostModel.searchFormat.length > 0) {
+        NSArray *searchKeys = hostModel.searchKeys;
+        if (nil == searchKeys || searchKeys.count == 0) {
+            searchKeys = AppTool.sharedAppTool.searchKeys;
+        }
+        for (NSString *titleString in searchKeys) {
+            NSString *titleStringEncode = hostModel.searchEncode ? [titleString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] : [titleString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
+            NSString *searchUrl = [NSString stringWithFormat:hostModel.searchFormat, titleStringEncode];
+
+            PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+            sourceModel.sourceType = hostModel.sourceType;
+            sourceModel.url = searchUrl;
+
+            sourceModel.title = titleString;
+            sourceModel.HOST_URL = hostModel.HOST_URL;
+            [sourceModel insertTable];
+
+            [subTitles addObject:sourceModel];
+        }
+    }
+
+    PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:hostModel.HOST_URL Title:@"首页" sourceType:hostModel.sourceType subTitles:subTitles];
+    [self.classModels addObject:indexModel];
+}
+
 - (void)loadAllTags {
 
-    self.classModels = nil;
+    [self.classModels removeAllObjects];
 
     // 添加默认页面
     PicNetModel *hostModel = [AppTool sharedAppTool].currentHostModel;
-    PicSourceModel*(^getIndexModel)(void) = ^PicSourceModel *{
-        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-        sourceModel.sourceType = hostModel.sourceType;
-        sourceModel.url = hostModel.url;
 
-        NSString *mark = hostModel.mark;
-        if (nil == mark || mark.length == 0) {
-            mark = [NSString stringWithFormat:@"%d", hostModel.sourceType];
-        }
-
-        sourceModel.title = [NSString stringWithFormat:@"%@首页", mark];
-        sourceModel.HOST_URL = self.host_url;
-        [sourceModel insertTable];
-        return sourceModel;
-    };
-
-    PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"首页" sourceType:hostModel.sourceType subTitles:@[getIndexModel()]];
-    [self.classModels addObject:indexModel];
-
+    [self prepareDefaultTags:hostModel];
+    // 先加载默认的
     [self.tableView reloadDataWithSource:self.classModels];
 
-    if (self.tagsAddressUrl.length == 0) {
-        [self.tableView reloadDataWithSource:self.classModels];
+    if (hostModel.tagsUrl.length == 0) {
         [self.tableView.mj_header endRefreshing];
         return;
     }
     MJWeakSelf
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [PDRequest getWithURL:[NSURL URLWithString:self.tagsAddressUrl] isPhone:NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [PDRequest getWithURL:[NSURL URLWithString:hostModel.tagsUrl] isPhone:NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
             [weakSelf.tableView.mj_header endRefreshing];
         });
         if (nil == error) {
-            NSString *htmlString = [ContentParserManager getHtmlStringWithData:data sourceType:hostModel.sourceType];
 
-            // 解析html
-            [weakSelf paraseHtmlString_tags:htmlString];
-        } else {
-            MJWeakSelf
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.tableView reloadDataWithSource:self.classModels];
-            });
+            // 处理数据
+            [weakSelf paraseResponseData:data hostModel:hostModel];
         }
+
+        MJWeakSelf
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadDataWithSource:self.classModels];
+        });
     }];
 }
 
-- (void)paraseHtmlString_tags:(NSString *)htmlString {
+- (void)paraseResponseData:(NSData *)data hostModel:(PicNetModel *)hostModel {
 
-    if (htmlString.length == 0) { return; }
+    NSString *htmlString = [ContentParserManager getHtmlStringWithData:data sourceType:hostModel.sourceType];
 
-    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+    NSArray *classModels = [ContentParserManager parseTagsWithHtmlString:htmlString HostModel:hostModel];
 
-    PicNetModel *hostModel = [AppTool sharedAppTool].currentHostModel;
-
-    switch (hostModel.sourceType) {
-        case 1: {
-
-            OCQueryObject *tagsListEs = document.QueryClass(@"jigou");
-
-            for (OCGumboElement *tagsListE in tagsListEs) {
-
-                OCQueryObject *aEs = tagsListE.QueryElement(@"a");
-
-                NSMutableArray *subTitles = [NSMutableArray array];
-                for (OCGumboElement *aE in aEs) {
-                    NSString *href = aE.attr(@"href");
-                    NSString *subTitle = aE.text();
-
-                    PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-                    sourceModel.sourceType = hostModel.sourceType;
-                    sourceModel.url = [self.host_url stringByAppendingPathComponent:href];
-                    sourceModel.title = subTitle;
-                    sourceModel.HOST_URL = self.host_url;
-                    [sourceModel insertTable];
-
-                    [subTitles addObject:sourceModel];
-                }
-
-                PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:hostModel.sourceType subTitles:subTitles];
-                [self.classModels addObject:classModel];
-            }
-        }
-            break;
-        case 2: {
-            OCQueryObject *tagsListEs = document.QueryClass(@"TagTop_Gs_r");
-
-            for (OCGumboElement *tagsListE in tagsListEs) {
-
-                OCQueryObject *aEs = tagsListE.QueryElement(@"a");
-
-                NSMutableArray *subTitles = [NSMutableArray array];
-                for (OCGumboElement *aE in aEs) {
-                    NSString *href = aE.attr(@"href");
-                    NSString *subTitle = aE.text();
-
-                    PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-                    sourceModel.sourceType = hostModel.sourceType;
-                    sourceModel.url = href;// [self.host_url stringByAppendingPathComponent:href];
-                    sourceModel.title = subTitle;
-                    sourceModel.HOST_URL = self.host_url;
-                    [sourceModel insertTable];
-
-                    [subTitles addObject:sourceModel];
-                }
-
-                PicClassModel *classModel = [PicClassModel modelWithHOST_URL:self.host_url Title:@"标签" sourceType:hostModel.sourceType subTitles:subTitles];
-                [self.classModels addObject:classModel];
-            }
-        }
-            break;
-        case 3: {
-
-        }
-            break;
-        default:
-            break;
-    }
-
-    MJWeakSelf
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.tableView reloadDataWithSource:self.classModels];
-    });
+    [self.classModels addObjectsFromArray:classModels];
 }
 
 #pragma mark PicClassifyTableViewActionDelegate
 -  (void)tableView:(PicClassifyTableView *)tableView didSelectActionAtIndexPath:(NSIndexPath *)indexPath withClassModel:(PicClassModel *)classModel {
+
     PicSourceModel *sourceModel = classModel.subTitles[indexPath.row];
     [sourceModel insertTable];
 

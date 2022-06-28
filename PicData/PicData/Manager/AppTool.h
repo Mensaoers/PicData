@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define NotificationNameInitHostModelsFailed @"NotificationNameInitHostModelsFailed"
+
 @interface AppTool : NSObject
 
 singleton_interface(AppTool)
@@ -20,6 +22,7 @@ singleton_interface(AppTool)
 @property (nonatomic, strong, nonnull) PicNetModel *currentHostModel;
 
 @property (nonatomic, strong, readonly) NSArray <PicNetModel *> *hostModels;
+@property (nonatomic, strong, readonly) NSArray <NSString *> *searchKeys;
 
 /// bugly app_id
 + (NSString *)app_id_bugly;

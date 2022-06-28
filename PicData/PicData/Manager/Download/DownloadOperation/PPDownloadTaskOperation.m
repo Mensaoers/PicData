@@ -127,4 +127,8 @@
     [self didChangeValueForKey:@"isFinished"];
 }
 
+- (void)dealloc {
+    NSLog(@"PPDownloadTaskOperation dealloc ======");
+}
+
 @end

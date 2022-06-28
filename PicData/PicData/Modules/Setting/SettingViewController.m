@@ -52,27 +52,55 @@
     return AppTool.sharedAppTool.isPerformanceMonitor ? @"开" : @"关";
 }
 
+- (void)reloadData {
+    self.operationModels = [[self getDefaultOperations] copy];
+    [self.tableView reloadData];
+}
+
 - (NSArray<SettingOperationModel *> *)operationModels {
     if (nil == _operationModels) {
-        [[PDDownloadManager sharedPDDownloadManager] checksystemDownloadFullPathExistNeedNotice:NO];
-        self.monitorModel = [SettingOperationModel ModelWithName:@"切换监控开关" value:[self getMonitorStatusString] func:@"checkMonitor:"];
-        _operationModels = @[
-            [SettingOperationModel ModelWithName:@"下载路径" value:[[PDDownloadManager sharedPDDownloadManager] systemDownloadPath] func:@"setDownloadPath:"],
-            [SettingOperationModel ModelWithName:@"导出数据库" value:@"" func:@"shareDatabase:"],
 
-            // 如果是mac端  // #if !TARGET_OS_MACCATALYST // 如果不是mac端
-            // 不用检查
-            #if !TARGET_OS_MACCATALYST
-            // version
-            [SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"],
-            [SettingOperationModel ModelWithName:@"显示手势锁屏" value:@"" func:@"showGesture:"],
-            #endif
-            [SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"],
-            self.monitorModel
-        ];
+        _operationModels = [[self getDefaultOperations] copy];
+
         NSLog(@"%@", [[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]);
     }
     return _operationModels;
+}
+
+- (NSArray<SettingOperationModel *> *)getDefaultOperations {
+
+    [[PDDownloadManager sharedPDDownloadManager] checksystemDownloadFullPathExistNeedNotice:NO];
+    self.monitorModel = [SettingOperationModel ModelWithName:@"切换监控开关" value:[self getMonitorStatusString] func:@"checkMonitor:"];
+
+    NSMutableArray *operationModels = [NSMutableArray array];
+
+#if TARGET_OS_MACCATALYST
+    // TODO: 设置路径
+    /// 目前该功能有点鸡肋, 已屏蔽
+    /// 设想应该是Mac端可以自由设置下载路径, 但是暂时设置的是相对documents, 不是我的本意
+    /// iOS相对documents设置, Mac端, 直接设置绝对路径, 才合理
+//    [operationModels addObject:[SettingOperationModel ModelWithName:@"下载路径" value:[[PDDownloadManager sharedPDDownloadManager] systemDownloadPath] func:@"setDownloadPath:"]];
+
+#endif
+
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"导出数据库" value:@"" func:@"shareDatabase:"]];
+
+    // 如果是mac端  // #if !TARGET_OS_MACCATALYST // 如果不是mac端
+    // 不用检查
+#if !TARGET_OS_MACCATALYST
+    // version
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"]];
+    if ([[TKGestureLockManager sharedInstance] checkGettureLockNeeded]) {
+        [operationModels addObject:[SettingOperationModel ModelWithName:@"关闭手势锁屏" value:@"" func:@"hideGesture:"]];
+    } else {
+        [operationModels addObject:[SettingOperationModel ModelWithName:@"显示手势锁屏" value:@"" func:@"showGesture:"]];
+    }
+#endif
+
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"]];
+    [operationModels addObject:self.monitorModel];
+
+    return operationModels;
 }
 
 - (void)loadNavigationItem {
@@ -131,11 +159,13 @@ static NSString *identifier = @"identifier";
 
 - (void)checkNewVersion:(UIView *)sender {
 
-    PDBlockSelf
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [PDRequest requestToCheckVersion:NO onView:self.view completehandler:^{
-        [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
-    }];
+    [self showAlertWithTitle:@"检查更新" message:@"检查更新目前只适用于内测服务器, 未添加UDID的请不要尝试更新!!" confirmTitle:@"继续" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        PDBlockSelf
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [PDRequest requestToCheckVersion:NO onView:self.view completehandler:^{
+            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+        }];
+    } cancelTitle:@"不更了" cancelHandler:nil];
 }
 
 - (void)setDownloadPath:(UIView *)sender {
@@ -181,8 +211,19 @@ static NSString *identifier = @"identifier";
 }
 
 - (void)showGesture:(UIView *)sender {
-    [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
-    [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+    [self showAlertWithTitle:@"是否开启手势保护" message:@"开启后, app将显示手势保护界面, 需要输入指定的手势才可以进入app, 当前内置密码是9527" confirmTitle:@"打开" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
+        [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
+        [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+        [self reloadData];
+    } cancelTitle:@"不打开" cancelHandler:nil];
+}
+
+- (void)hideGesture:(UIView *)sender {
+    [self showAlertWithTitle:@"是否需要关闭手势" message:@"关闭后, APP将缺少隐私保护, 是否继续?" confirmTitle:@"关掉" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
+        [self reloadData];
+    } cancelTitle:@"不关了" cancelHandler:nil];
 }
 
 - (void)checkMonitor:(UIView *)sender {

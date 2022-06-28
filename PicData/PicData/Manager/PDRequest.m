@@ -34,7 +34,7 @@ singleton_implementation(PDRequest)
 
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     config.timeoutIntervalForRequest = 10;
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:[PDRequest sharedPDRequest] delegateQueue:nil];// [NSURLSession sessionWithConfiguration:config];
     // [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:[PDRequest sharedPDRequest] delegateQueue:nil];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:completionHandler];
     [dataTask resume];

@@ -511,29 +511,34 @@
     NSString *title = @"";
 
     switch (sourceModel.sourceType) {
-        case 1: {
-            OCGumboElement *divE = document.QueryClass(@"Title9").firstObject;
-            OCGumboElement *h9E = divE.childNodes.firstObject;
-            title = h9E.text();
-        }
-            break;
-        case 2: {
-            OCGumboElement *h1E = document.QueryClass(@"articleV4Tit").firstObject;
-            title = h1E.text();
-        }
-            break;
+//        case 1: {
+//            OCGumboElement *divE = document.QueryClass(@"Title9").firstObject;
+//            OCGumboElement *h9E = divE.childNodes.firstObject;
+//            title = h9E.text();
+//        }
+//            break;
+//        case 2: {
+//            OCGumboElement *h1E = document.QueryClass(@"articleV4Tit").firstObject;
+//            title = h1E.text();
+//        }
+//            break;
         case 3: {
             OCGumboElement *headE = document.QueryElement(@"head").firstObject;
             OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
             if (titleE) {
                 NSString *title1 = titleE.text();
                 // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
-                NSString *regex = @"(?<=Hit-x-Hot: ).*?(?= | Page)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                // 对str字符串进行匹配
-                NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
-                title = title2;
+                if ([title1 containsString:@" | Page"]) {
+                    NSString *regex = @"(?<= Hit-x-Hot: ).*?(?= | Page)";
+                    NSError *error;
+                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                    // 对str字符串进行匹配
+                    NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
+                    title = title2;
+                } else {
+                    title = [title1 stringByReplacingOccurrencesOfString:@" Hit-x-Hot: " withString:@""];
+                }
+
             }
         }
             break;

@@ -20,7 +20,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [self showAlertWithTitle:@"提醒" message:@"最好在开始下载任务之前设置路径, 避免不必要的错误" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction * _Nonnull action) {
+    [self showAlertWithTitle:@"提醒" message:@"1. iOS端设置下载路径意义不大, Mac版本方便一些\n2. 最好在开始下载任务之前设置路径, 避免不必要的错误" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction * _Nonnull action) {
         [self loadMainView];
     }];
 }

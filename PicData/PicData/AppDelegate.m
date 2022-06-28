@@ -125,20 +125,21 @@
 }
 
 - (void)setupGestureLock {
-#if TARGET_OS_MACCATALYST
-    [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
-#else
-
-// #if DEBUG 只要是xcode直接跑的都是debug(杀死应用重启也还是调试)
-    BOOL isDebugged = AmIBeingDebugged();
-    if (isDebugged) {
-        [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
-    } else {
-        [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
-        [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
-    }
-
-#endif
+    [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
+//#if TARGET_OS_MACCATALYST
+//    [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
+//#else
+//
+//// #if DEBUG 只要是xcode直接跑的都是debug(杀死应用重启也还是调试)
+//    BOOL isDebugged = AmIBeingDebugged();
+//    if (isDebugged) {
+//        [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
+//    } else {
+//        [[TKGestureLockManager sharedInstance] updateGestureLock:YES];
+//        [[TKGestureLockManager sharedInstance] saveGesturesPassword:@"8416"];
+//    }
+//
+//#endif
 }
 
 - (void)registerNotice {

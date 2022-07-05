@@ -912,6 +912,7 @@
     browser.delegate = self;
     browser.dataSourceArray = self.imgsList;
     browser.currentPage = currentIndex;
+    browser.supportedOrientations = UIInterfaceOrientationMaskPortrait;
     // 只有一个保存操作的时候，可以直接右上角显示保存按钮
     PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
     browser.toolViewHandlers = @[handler];

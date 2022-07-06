@@ -14,11 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DetailViewContentCell : UITableViewCell
 
+@property (nonatomic, strong) UIImageView *conImgView;
+
 @property (nonatomic, strong) NSIndexPath *indexpath;
 
 @property (nonatomic, strong) NSString *url;
 
 @property (nonatomic, copy) void(^updateCellHeightBlock)(NSIndexPath *indexPath, CGFloat height);
+
+@property (nonatomic, copy) void(^longPressBlock)(DetailViewContentCell *cell);
 
 @end
 

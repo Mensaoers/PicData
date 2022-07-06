@@ -10,8 +10,6 @@
 
 @interface DetailViewContentCell()
 
-@property (nonatomic, strong) UIImageView *conImgView;
-
 @end
 
 @implementation DetailViewContentCell
@@ -34,6 +32,10 @@
         
         conImgView.layer.cornerRadius = 4;
         conImgView.layer.masksToBounds = YES;
+
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+        longPress.minimumPressDuration = 0.7;
+        [self addGestureRecognizer:longPress];
     }
     return self;
 }
@@ -53,6 +55,10 @@
             }
         }
     }];
+}
+
+- (void)longPressAction:(UILongPressGestureRecognizer *)recognizer {
+    self.longPressBlock(self);
 }
 
 @end

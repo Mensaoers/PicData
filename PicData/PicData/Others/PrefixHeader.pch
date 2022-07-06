@@ -22,6 +22,7 @@
     #import <MJRefresh/MJRefresh.h>
     #import <YYCategories/YYCategories.h>
     #import <YBImageBrowser/YBImageBrowser.h>
+    #import <YBImageBrowser/YBIBPhotoAlbumManager.h>
     #import <SSZipArchive/SSZipArchive.h>
     #import <IQKeyboardManager/IQKeyboardManager.h>
     #import <PicDataSDK/PicDataSDK.h>

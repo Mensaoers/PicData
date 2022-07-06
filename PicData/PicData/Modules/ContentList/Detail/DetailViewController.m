@@ -11,6 +11,7 @@
 #import "DetailViewContentCell.h"
 #import "PicContentCell.h"
 #import "LocalFileListVC.h"
+#import "PicBrowserToolViewHandler.h"
 
 @interface DetailViewController ()<UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PicContentCellDelegate>
 
@@ -347,6 +348,57 @@
                     }
                 });
             };
+            cell.longPressBlock = ^(DetailViewContentCell * _Nonnull cell) {
+
+                NSLog(@"==== long press action");
+                if (nil == cell.conImgView.image) {
+                    [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"不能操作空白图片"];
+                    return;
+                }
+
+                NSMutableArray *actions = [NSMutableArray array];
+                [actions addObject:[UIAlertAction actionWithTitle:@"查看大图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+                    YBIBImageData *data = [YBIBImageData new];
+                    data.image = ^UIImage * _Nullable{
+                        return cell.conImgView.image;
+                    };
+                    data.projectiveView = cell.conImgView;
+
+                    YBImageBrowser *browser = [YBImageBrowser new];
+                    browser.dataSourceArray = @[data];
+                    browser.currentPage = 0;
+                    browser.supportedOrientations = UIInterfaceOrientationMaskPortrait;
+                    // 只有一个保存操作的时候，可以直接右上角显示保存按钮
+                    PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
+                    browser.toolViewHandlers = @[handler];
+                    [browser show];
+                }]];
+                [actions addObject:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [AppTool shareWithActivityItems:@[cell.conImgView.image] sourceView:cell.conImgView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+                    }];
+                }]];
+                [actions addObject:[UIAlertAction actionWithTitle:@"保存到相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [YBIBPhotoAlbumManager getPhotoAlbumAuthorizationSuccess:^{
+                        UIImageWriteToSavedPhotosAlbum(cell.conImgView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), @"saveToAlbum");
+                    } failed:^{
+                        [weakSelf showAlertWithTitle:@"相册权限" message:@"获取相册权限失败, 请手动设置app权限" confirmTitle:@"去设置" confirmHandler:^(UIAlertAction * _Nonnull action) {
+                            // 打开通知设置
+                            NSLog(@"%@", UIApplicationOpenSettingsURLString);
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                            }];
+                        } cancelTitle:@"算了" cancelHandler:^(UIAlertAction * _Nonnull action) {
+
+                        }];
+                    }];
+                }]];
+                [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+                }]];
+
+                [weakSelf showAlertWithTitle:nil message:@"你想对该图片做什么?" actions:actions];
+            };
             tCell = cell;
         }
             break;
@@ -379,6 +431,17 @@
     }
 
     return tCell;
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    if (contextInfo != @"saveToAlbum") {
+        return;
+    }
+    if (error) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存失败"];
+    } else {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存成功"];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

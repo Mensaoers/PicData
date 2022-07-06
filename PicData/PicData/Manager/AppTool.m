@@ -140,9 +140,15 @@ singleton_implementation(AppTool)
 #endif
     }
 
+    [self shareWithActivityItems:urls sourceView:sourceView completionWithItemsHandler:completionWithItemsHandler];
+}
+
+/// 调用系统分享
++ (void)shareWithActivityItems:(NSArray *)ctivityItems sourceView:(UIView *)sourceView completionWithItemsHandler:(nonnull UIActivityViewControllerCompletionWithItemsHandler)completionWithItemsHandler {
+
     UIViewController *topRootViewController = [AppTool getAppKeyWindow].rootViewController;
 
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:urls applicationActivities:nil];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:ctivityItems applicationActivities:nil];
     if (completionWithItemsHandler) {
         activityVC.completionWithItemsHandler = completionWithItemsHandler;
     } else {

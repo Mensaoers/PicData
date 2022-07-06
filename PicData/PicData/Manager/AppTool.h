@@ -35,6 +35,8 @@ singleton_interface(AppTool)
 
 /// 分享app中的文件,区分是iOS端或者mac端
 + (void)shareFileWithURLs:(NSArray <NSURL *>*)urls sourceView:(UIView *)sourceView completionWithItemsHandler:(UIActivityViewControllerCompletionWithItemsHandler)completionWithItemsHandler;
+/// 调用系统分享
++ (void)shareWithActivityItems:(NSArray *)ctivityItems sourceView:(UIView *)sourceView completionWithItemsHandler:(nonnull UIActivityViewControllerCompletionWithItemsHandler)completionWithItemsHandler;
 
 /// 初始化监控
 + (void)setupPerformanceMonitor;

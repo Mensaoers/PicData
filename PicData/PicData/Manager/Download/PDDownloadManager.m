@@ -79,8 +79,9 @@
         NSError *rmError = nil;
         [[NSFileManager defaultManager] removeItemAtPath:[[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath] stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
         if (rmError) {
-            return NO;
+            NSLog(@"======%@", rmError);
         }
+        return YES;
     }
 
     return YES;

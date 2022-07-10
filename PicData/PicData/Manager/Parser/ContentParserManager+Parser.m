@@ -31,7 +31,7 @@
 
     OCGumboElement *aE;
     NSString *title;
-
+    
     switch (sourceModel.sourceType) {
         case 1:
         case 2:
@@ -118,15 +118,28 @@
                 break;
             case 8: {
                 url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-                NSString *regex = @"(?<=series-).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                // 对str字符串进行匹配
-                NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
-                if (result.length == 0) {
-                    subTitle = aE.text();
-                } else {
-                    subTitle = result;
+                url = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
+                subTitle = aE.text();
+                if ([href containsString:@"series-"]) {
+                    NSString *regex = @"(?<=series-).*?(?=.html)";
+                    NSError *error;
+                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                    // 对str字符串进行匹配
+                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    if (result.length > 0) {
+                        subTitle = result;
+                    }
+                } else if ([href containsString:@"model-"]) {
+                    NSString *regex = @"(?<=model-).*?(?=.html)";
+                    NSError *error;
+                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                    // 对str字符串进行匹配
+                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    if (result.length > 0) {
+                        subTitle = result;
+                    }
+                } else if ([subTitle containsString:@"全部"]){
+                    subTitle = @"全部";
                 }
             }
                 break;
@@ -170,7 +183,7 @@
         }
             break;
         case 8: {
-            tagsListEs = document.QueryClass(@"_categories");
+            tagsListEs = document.QueryClass(@"series");
         }
         default:
             break;
@@ -628,6 +641,11 @@
             OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
             OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
             title = titleE.text();
+        }
+        case 8: {
+            OCGumboElement *breadcrumbE = document.QueryClass(@"breadcrumb").firstObject;
+            OCGumboElement *aEs = breadcrumbE.QueryElement(@"a").lastObject;
+            title = aEs.text();
         }
         default:
             break;

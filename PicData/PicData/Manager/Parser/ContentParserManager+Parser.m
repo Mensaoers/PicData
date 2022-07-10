@@ -18,7 +18,9 @@
             return [AppTool getStringWithGB_18030_2000Code:data];
             break;
         case 3:
+        case 8:
             return [AppTool getStringWithUTF8Code:data];
+            break;
         default:
             break;
     }
@@ -27,17 +29,24 @@
 
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
-    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
+    OCGumboElement *aE;
     NSString *title;
 
     switch (sourceModel.sourceType) {
         case 1:
         case 2:
         case 3: {
+            aE = articleElement.QueryElement(@"a").firstObject;
             title = aE.attr(@"title");
         }
             break;
         case 5:
+            break;
+        case 8: {
+            OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
+            aE = divE.QueryElement(@"a").firstObject;
+            title = aE.text();
+        }
             break;
         default:
             break;
@@ -56,6 +65,10 @@
             break;
         case 3:
             imgE = aE.QueryClass(@"xld").firstObject;
+            break;
+        case 8: {
+            imgE = articleElement.QueryElement(@"img").firstObject;
+        }
             break;
         default:
             break;
@@ -81,23 +94,40 @@
     NSMutableArray *subTitles = [NSMutableArray array];
     for (OCGumboElement *aE in aEs) {
         NSString *href = aE.attr(@"href");
-        NSString *subTitle = aE.text();
 
         PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
         sourceModel.sourceType = hostModel.sourceType;
 
         NSString *url;
+        NSString *subTitle;
         switch (hostModel.sourceType) {
             case 1: {
                 url = [hostModel.HOST_URL stringByAppendingPathComponent:href];
+                subTitle = aE.text();
             }
                 break;
             case 2: {
                 url = href;
+                subTitle = aE.text();
             }
                 break;
             case 5: {
                 url = href;
+                subTitle = aE.text();
+            }
+                break;
+            case 8: {
+                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+                NSString *regex = @"(?<=series-).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (result.length == 0) {
+                    subTitle = aE.text();
+                } else {
+                    subTitle = result;
+                }
             }
                 break;
             default:
@@ -139,6 +169,9 @@
             tagsListEs = document.QueryClass(@"jigou");
         }
             break;
+        case 8: {
+            tagsListEs = document.QueryClass(@"_categories");
+        }
         default:
             break;
     }
@@ -223,6 +256,20 @@
             }
         }
             break;
+        case 8: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            OCQueryObject *articleEs = listDiv.QueryClass(@"item");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
         default:
             break;
     }
@@ -260,6 +307,10 @@
             break;
         case 5: {
             nextE = document.QueryClass(@"page-list").firstObject;
+        }
+            break;
+        case 8: {
+            nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
         default:
@@ -305,6 +356,11 @@
             case 5: {
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]];
             }
+                break;
+            case 8: {
+                nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+            }
+                break;
             default:
                 break;
         }
@@ -346,13 +402,30 @@
             contentE = document.QueryClass(@"content").firstObject;
         }
             break;
+        case 8: {
+            contentE = document.QueryClass(@"photos").firstObject;
+        }
+            break;
         default:
             break;
     }
 
     OCQueryObject *es = contentE.Query(@"img");
     for (OCGumboElement *e in es) {
-        NSString *src = e.attr(@"src");
+        NSString *src;
+        switch (sourceModel.sourceType) {
+            case 8: {
+                src = e.attr(@"src");
+                if (![src containsString:@"https://"]) {
+                    continue;
+                }
+                src = [src stringByReplacingOccurrencesOfString:@"_600x0" withString:@""];
+            }
+                break;
+            default:
+                src = e.attr(@"src");
+                break;
+        }
         if (src.length > 0) {
             [urls addObject:src];
         }
@@ -375,6 +448,10 @@
             break;
         case 5: {
             nextE = document.QueryClass(@"page-list").firstObject;
+        }
+            break;
+        case 8: {
+            nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
         default:
@@ -419,6 +496,11 @@
             case 5: {
                 nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:preNextUrl]].absoluteString;
             }
+                break;
+            case 8: {
+                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
+            }
+                break;
             default:
                 break;
         }

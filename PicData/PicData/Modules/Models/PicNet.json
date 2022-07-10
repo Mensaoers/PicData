@@ -14,6 +14,7 @@
             "searchFormat": "https://www.yun222.cc/plus/search.php?q=%@&pagesize=30",
             "searchEncode": false,
             "mark": "yun222",
+            "tips": "需关闭代理",
             "prepared": true,
         },
         {
@@ -61,6 +62,7 @@
             ],
             "searchEncode": true,
             "mark": "hitxhot",
+            "tips": "建议开启代理",
             "prepared": true,
         },
         {
@@ -77,6 +79,7 @@
             "searchFormat": "https://www.hh1234.cc/plus/search.php?tbname=news&show=title&tempid=1&q=%@&pagesize=25",
             "searchEncode": false,
             "mark": "hh1234",
+            "tips": "需关闭代理",
             "prepared": true,
         },
         {
@@ -130,6 +133,7 @@
             ],
             "searchEncode": true,
             "mark": "8色人体",
+            "tips": "需开启代理",
             "prepared": true,
         }
     ],

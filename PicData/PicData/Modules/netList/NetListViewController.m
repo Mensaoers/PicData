@@ -7,7 +7,7 @@
 //
 
 #import "NetListViewController.h"
-#import "PicNetModel.h"
+#import "NetListTCell.h"
 
 @interface NetListViewController() <UITableViewDelegate, UITableViewDataSource>
 
@@ -60,7 +60,8 @@
     self.tableView = tableView;
 
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsZero);
+        make.left.topMargin.bottomMargin.mas_equalTo(0);
+        make.width.equalTo(self.view.mas_width).multipliedBy(0.75);
     }];
 }
 
@@ -70,18 +71,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSString *identifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    NSString *identifier = @"NetListTCell";
+    NetListTCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 
     if (nil == cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[NetListTCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
 
     PicNetModel *netModel = self.dataList[indexPath.row];
-    cell.textLabel.text = netModel.title;
-    cell.textLabel.font = [UIFont systemFontOfSize:17];
-
-    cell.backgroundColor = [netModel.HOST_URL isEqualToString:self.selectedModel.HOST_URL] ? [UIColor redColor] : [UIColor whiteColor];
+    cell.hostModel = netModel;
+    cell.isForcus = [netModel.HOST_URL isEqualToString:self.selectedModel.HOST_URL];
 
     return cell;
 }
@@ -91,10 +90,6 @@
 
     self.selectedModel = self.dataList[indexPath.row];
     [tableView reloadData];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 48;
 }
 
 @end

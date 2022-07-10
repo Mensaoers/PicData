@@ -43,6 +43,7 @@
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		335849AB2841CA7500A5D9B3 /* ContentParserManager+Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
+		33919AD1287A9AC500491DB2 /* NetListTCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33919AD0287A9AC500491DB2 /* NetListTCell.m */; };
 		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
 		33AB92B424C3F5AA00E97E42 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AB92B324C3F5AA00E97E42 /* SettingViewController.m */; };
 		33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B43FB62554436C00C33FD0 /* Foundation+Log.m */; };
@@ -172,6 +173,8 @@
 		335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ContentParserManager+Parser.m"; sourceTree = "<group>"; };
 		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
 		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
+		33919ACF287A9AC500491DB2 /* NetListTCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetListTCell.h; sourceTree = "<group>"; };
+		33919AD0287A9AC500491DB2 /* NetListTCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetListTCell.m; sourceTree = "<group>"; };
 		33967B5026EDF44600B308B1 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		33967B5126EDF44600B308B1 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		33AB92B224C3F5AA00E97E42 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -365,6 +368,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		33919ACE287A9AB000491DB2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				33919ACF287A9AC500491DB2 /* NetListTCell.h */,
+				33919AD0287A9AC500491DB2 /* NetListTCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		33AB92B124C3F58900E97E42 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,6 +482,7 @@
 		33E640482810103000E763B6 /* netList */ = {
 			isa = PBXGroup;
 			children = (
+				33919ACE287A9AB000491DB2 /* View */,
 				33E6404F2810108E00E763B6 /* model */,
 				33E640492810104F00E763B6 /* NetListViewController.h */,
 				33E6404A2810104F00E763B6 /* NetListViewController.m */,
@@ -935,6 +948,7 @@
 				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
 				9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */,
 				9DE95CD0244C3FDD00E31735 /* MBProgressHUD+LZPShow.m in Sources */,
+				33919AD1287A9AC500491DB2 /* NetListTCell.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
 				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,

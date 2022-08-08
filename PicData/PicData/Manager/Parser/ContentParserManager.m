@@ -86,6 +86,8 @@ singleton_implementation(ContentParserManager)
 
     [[PDDownloadManager sharedPDDownloadManager] cancelDownloadsByIdentifiers:identifiers];
     [self.queue setSuspended:NO];
+
+    [ContentParserManager prepareToDoNextTask];
 }
 
 /// 查询接下来要开始的任务

@@ -74,7 +74,8 @@
         PDBlockSelf
         self.dataTask = [PDRequest getWithURL:[NSURL URLWithString:url relativeToURL:baseURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
-            if (self.isCancelled) {
+            if (weakSelf.isCancelled) {
+                [weakSelf finishOperation];
                 return;
             }
 
@@ -82,29 +83,31 @@
             int count = 0;
             if (nil == error) {
                 // 获取字符串
-                NSString *content = [ContentParserManager getHtmlStringWithData:data sourceType:self.sourceModel.sourceType];
+                NSString *content = [ContentParserManager getHtmlStringWithData:data sourceType:weakSelf.sourceModel.sourceType];
 
-                NSLog(@"第%d页, %@, 完成", self.pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
+                NSLog(@"第%d页, %@, 完成", weakSelf.pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content nextUrl:url WithSourceModel:self.sourceModel ContentTaskModel:self.contentTaskModel picCount:self.picCount];
+                NSDictionary *result = [ContentParserManager dealWithHtmlData:content nextUrl:url WithSourceModel:weakSelf.sourceModel ContentTaskModel:weakSelf.contentTaskModel picCount:weakSelf.picCount];
                 nextUrl = result[@"nextUrl"];
 
                 count = [result[@"count"] intValue];
 
-                PPIsBlockExecute(self.middleWriteHandler, [NSURL URLWithString:url relativeToURL:baseURL], [NSString stringWithFormat:@"\n%@", result[@"urls"]]);
+                PPIsBlockExecute(weakSelf.middleWriteHandler, [NSURL URLWithString:url relativeToURL:baseURL], [NSString stringWithFormat:@"\n%@", result[@"urls"]]);
 
             } else {
-                NSLog(@"第%d页, %@, 出现错误-1, %@", self.pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
+                NSLog(@"第%d页, %@, 出现错误-1, %@", weakSelf.pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
             }
 
             if (![nextUrl containsString:@".html"]) {
 
-                NSLog(@"%@ - %@ 完成", self.contentTaskModel.title, self.contentTaskModel.href);
-                PPIsBlockExecute(self.taskCompleteHandler, self.picCount + count)
+                NSLog(@"%@ - %@ 完成", weakSelf.contentTaskModel.title, weakSelf.contentTaskModel.href);
+                PPIsBlockExecute(weakSelf.taskCompleteHandler, weakSelf.picCount + count)
+
+                [weakSelf finishOperation];
             } else {
-                self.pageCount += 1;
-                self.picCount += count;
-                [self requestHtmlStringWithUrl:nextUrl];
+                weakSelf.pageCount += 1;
+                weakSelf.picCount += count;
+                [weakSelf requestHtmlStringWithUrl:nextUrl];
             }
         }];
     }

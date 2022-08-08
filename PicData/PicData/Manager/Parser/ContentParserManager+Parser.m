@@ -118,7 +118,7 @@
                 break;
             case 8: {
                 url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-                url = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
+
                 subTitle = aE.text();
                 if ([href containsString:@"series-"]) {
                     NSString *regex = @"(?<=series-).*?(?=.html)";
@@ -141,6 +141,17 @@
                 } else if ([subTitle containsString:@"全部"]){
                     subTitle = @"全部";
                 }
+
+                NSString *readUrl = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
+                // 准备一个默认的顺序
+                PicSourceModel *sourcePreModel = [sourceModel copy];
+                sourcePreModel.sourceType = sourcePreModel.sourceType;
+                sourcePreModel.url = readUrl;
+                sourcePreModel.title = [subTitle stringByAppendingString:@"-观看最多"];
+                sourcePreModel.systemTitle = subTitle;
+                sourcePreModel.HOST_URL = hostModel.HOST_URL;
+                [sourcePreModel insertTable];
+                [subTitles addObject:sourcePreModel];
             }
                 break;
             default:

@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)updateTableWhenHref:(NSString *)href;
 
 + (NSArray *)queryTableWithHref:(NSString *)href;
++ (NSArray *)queryTableWithSourceHref:(NSString *)sourceHref;
++ (NSArray *)queryTableWithSourceTitle:(NSString *)sourceTitle;
 
 @end
 

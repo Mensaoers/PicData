@@ -1,40 +1,22 @@
 //
-//  PPDownloadTaskOperation.m
-//  PicData
+//  CustomAsyncOperation.m
+//  CustomOperation
 //
-//  Created by 鹏鹏 on 2022/4/20.
-//  Copyright © 2022 garenge. All rights reserved.
+//  Created by 鹏鹏 on 2022/8/7.
 //
 
-#import "PPDownloadTaskOperation.h"
+#import "CustomAsyncOperation.h"
 
-@interface PPDownloadTaskOperation()
+@interface CustomAsyncOperation()
 
 @property(nonatomic, assign, readonly) BOOL hasStart;
 
-// 上传任务标识
 @property(nonatomic, assign) BOOL operationExecuting;
 @property(nonatomic, assign) BOOL operationFinished;
 
-@property (nonatomic, strong) NSDictionary *headers;
-
 @end
 
-@implementation PPDownloadTaskOperation
-
-- (instancetype)initWithUrl:(NSString *)url identifier:(nonnull NSString *)identifier headers:(nonnull NSDictionary *)headers downloadFinishedBlock:(nonnull DownloadFinishedBlock)downloadFinishedBlock {
-    if (self = [super init]) {
-        self.url = url;
-        self.identifier = identifier;
-        self.downloadFinishedBlock = downloadFinishedBlock;
-        self.headers = headers;
-    }
-    return self;
-}
-
-+ (instancetype)operationWithUrl:(NSString *)url identifier:(nonnull NSString *)identifier headers:(nonnull NSDictionary *)headers downloadFinishedBlock:(nonnull DownloadFinishedBlock)downloadFinishedBlock {
-    return [[PPDownloadTaskOperation alloc] initWithUrl:url  identifier:identifier headers:headers downloadFinishedBlock:downloadFinishedBlock];
-}
+@implementation CustomAsyncOperation
 
 #pragma mark - 重写系统方法
 
@@ -59,18 +41,9 @@
             return;
         }
 
-        __weak typeof(self) weakSelf = self;
-
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
-        for (NSString *key in self.headers.allKeys) {
-            [request setValue:self.headers[key] forHTTPHeaderField:key];
+        if (self.mainOperationDoBlock(self)) {
+            [self finishOperation];
         }
-        NSURLSessionDownloadTask *downloadTask = [[NSURLSession sharedSession] downloadTaskWithRequest:request completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-
-            PPIsBlockExecute(self.downloadFinishedBlock, location, response, error);
-            [weakSelf finishOperation];
-        }];
-        [downloadTask resume];
     }
 }
 
@@ -129,7 +102,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"PPDownloadTaskOperation dealloc ======");
+    NSLog(@"===== CustomAsyncOperation dealloc; identifier: %@ ======", self.identifier);
 }
 
 @end

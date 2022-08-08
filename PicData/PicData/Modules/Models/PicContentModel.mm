@@ -37,6 +37,14 @@ WCDB_INDEX(PicContentModel, "_index", href)
     return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.href == href];
 }
 
++ (NSArray *)queryTableWithSourceHref:(NSString *)sourceHref {
+    return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.sourceHref == sourceHref];
+}
+
++ (NSArray *)queryTableWithSourceTitle:(NSString *)sourceTitle {
+    return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.sourceTitle == sourceTitle];
+}
+
 @end
 
 @implementation PicContentTaskModel

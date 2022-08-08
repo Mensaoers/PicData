@@ -100,6 +100,7 @@ static CGFloat TitleHeight = 56;
         UIImageView *thumbnailIV = [[UIImageView alloc] init];
         thumbnailIV.backgroundColor = UIColor.clearColor;
         thumbnailIV.contentMode = UIViewContentModeScaleAspectFill;
+        thumbnailIV.layer.masksToBounds = YES;
         [bgView addSubview:thumbnailIV];
         self.thumbnailIV = thumbnailIV;
 

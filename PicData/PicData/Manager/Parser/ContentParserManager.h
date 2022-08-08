@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 #define NotificationNameCompleteDownTask @"NotificationNameCompleteDownTask"
 /// 某个套图下载失败
 #define NotificationNameFailedDownTask @"NotificationNameFailedDownTask"
+/// 某个套图取消下载
+#define NotificationNameCancelDownTasks @"NotificationNameCancelDownTasks"
 
 /// 某个套图某张图下载成功
 #define NotificationNameCompleteDownPicture @"NotificationNameCompleteDownPicture"
@@ -40,6 +42,9 @@ singleton_interface(ContentParserManager)
 
 /// 尝试下载某一个套图, 做出基本判断,
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel operationTips:(void(^ __nonnull)(BOOL isSuccess, NSString *tips))operationTips;
+/// 处理html标签, 创建下载图片任务开始下载
++ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString nextUrl:(NSString *)nextUrl WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount;
+
 /// app启动的时候, 将所有1的任务取出来开始进行
 + (void)prepareForAppLaunch;
 /// 查询接下来要开始的任务

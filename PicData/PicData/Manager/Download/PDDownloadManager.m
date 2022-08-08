@@ -23,7 +23,7 @@
 - (NSOperationQueue *)downloadQueue {
     if (nil == _downloadQueue) {
         _downloadQueue = [[NSOperationQueue alloc] init];
-        _downloadQueue.maxConcurrentOperationCount = 8;
+        _downloadQueue.maxConcurrentOperationCount = 6;
     }
     return _downloadQueue;
 }
@@ -89,8 +89,21 @@
 
 singleton_implementation(PDDownloadManager);
 
-- (void)totalCancel {
+- (void)cancelAllDownloads {
+    [self.downloadQueue setSuspended:YES];
     [self.downloadQueue cancelAllOperations];
+    [self.downloadQueue setSuspended:NO];
+}
+
+- (void)cancelDownloadsByIdentifiers:(NSArray<NSString *> *)indentifiers {
+    [self.downloadQueue setSuspended:YES];
+    for (PPDownloadTaskOperation *operation in self.downloadQueue.operations) {
+
+        if ([indentifiers containsObject:operation.identifier]) {
+            [operation cancel];
+        }
+    }
+    [self.downloadQueue setSuspended:NO];
 }
 
 - (BOOL)resetDownloadPath {
@@ -246,7 +259,7 @@ static NSString *favoriteFolderName = @"我的收藏";
             continue;
         }
 
-        PPDownloadTaskOperation *operation = [PPDownloadTaskOperation operationWithUrl:url headers:headers downloadFinishedBlock:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        PPDownloadTaskOperation *operation = [PPDownloadTaskOperation operationWithUrl:url identifier:contentTaskModel.href headers:headers downloadFinishedBlock:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
             if (nil == error) {
 

@@ -18,7 +18,7 @@ target 'PicData' do
   pod 'SSZipArchive'
   pod 'IQKeyboardManager'
   pod 'CWLateralSlide', '~> 1.6.3'
-  pod 'PicDataSDK', :path => '../../PicDataSDK/PicDataSDK/Products'
+  pod 'PicDataSDK', :path => '../../PicDataSDK/Products'
   # Pods for PicData
 
 end

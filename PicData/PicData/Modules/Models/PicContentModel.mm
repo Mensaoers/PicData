@@ -65,15 +65,24 @@ WCDB_SYNTHESIZE(PicContentTaskModel, totalCount)
 WCDB_SYNTHESIZE(PicContentTaskModel, downloadedCount)
 WCDB_SYNTHESIZE(PicContentTaskModel, status)
 
+WCDB_SYNTHESIZE(PicContentTaskModel, createTime)
+WCDB_SYNTHESIZE(PicContentTaskModel, startTime)
+WCDB_SYNTHESIZE(PicContentTaskModel, endTime)
+
 WCDB_PRIMARY(PicContentTaskModel, href)
 
 WCDB_INDEX(PicContentTaskModel, "_index", href)
+
+- (BOOL)insertTable {
+    self.createTime = [[NSDate date] timeIntervalSince1970];
+    return [super insertTable];
+}
 
 /// 利用已有的contentModel初始化一个子类对象
 + (instancetype)taskModelWithContentModel:(PicContentModel *)contentModel {
     NSMutableDictionary *keyValues = [contentModel mj_keyValues];
     PicContentTaskModel *taskModel = [PicContentTaskModel mj_objectWithKeyValues:keyValues];
-    taskModel.status = 0;
+    taskModel.status = ContentTaskStatusNormal;
     return taskModel;
 }
 
@@ -82,13 +91,25 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == 0 orderBy:self.href.order(WCTOrderedAscending) limit:1];
 }
 /// 获取所有task status为0的任务数
-+ (NSInteger)queryCountForTaskStatus:(int)status {
++ (NSInteger)queryCountForTaskStatus:(ContentTaskStatus)status {
     return [[[DatabaseManager getDatabase] getOneValueOnResult:self.AnyProperty.count() fromTable:[self tableName] where:self.status == status] integerValue];
 }
 
 /// 获取所有tasks status为给定值的任务
-+ (NSArray <PicContentTaskModel *>*)queryTasksForStatus:(int)status {
-    return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == status];
++ (NSArray <PicContentTaskModel *>*)queryTasksForStatus:(ContentTaskStatus)status {
+    const WCTOrderByList &orderByCreateTime = self.class.createTime.order(WCTOrderedAscending);
+    const WCTOrderByList &orderByStartTime = self.class.startTime.order(WCTOrderedDescending);
+    const WCTOrderByList &orderByEndTime = self.class.endTime.order(WCTOrderedDescending);
+
+    if (status == ContentTaskStatusNormal) {
+        return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == status orderBy:orderByCreateTime];
+    } else if (status == ContentTaskStatusStartScane || status == ContentTaskStatusFinishScane) {
+        return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == status orderBy:orderByStartTime];
+    } else if (status == ContentTaskStatusFinishDownload) {
+        return [[DatabaseManager getDatabase] getObjectsOfClass:self fromTable:[self tableName] where:self.status == status orderBy:orderByEndTime];
+    } else {
+        return @[];
+    }
 }
 
 /// 获取所有task status为给定值的任务数
@@ -96,8 +117,33 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[[DatabaseManager getDatabase] getOneValueOnResult:self.AnyProperty.count() fromTable:[self tableName] where:self.status == 1 || self.status == 2] integerValue];
 }
 
+- (BOOL)updateTable {
+    if (self.status == 1) {
+        self.startTime = [[NSDate date] timeIntervalSince1970];
+    } else if (self.status == 3) {
+        self.endTime = [[NSDate date] timeIntervalSince1970];
+    }
+    return [self updateTableWhenHref:self.href];
+}
+
 - (BOOL)updateTableWithStatus {
-    return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:self.class.status withObject:self where:self.class.href == self.href];
+    if (self.status == 1) {
+        self.startTime = [[NSDate date] timeIntervalSince1970];
+        return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:{self.class.status, self.class.startTime} withObject:self where:self.class.href == self.href];
+    } else if (self.status == 3) {
+        self.endTime = [[NSDate date] timeIntervalSince1970];
+        return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:{self.class.status, self.class.endTime} withObject:self where:self.class.href == self.href];
+    } else {
+        return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:self.class.status withObject:self where:self.class.href == self.href];
+    }
+}
+
+- (BOOL)updateTableWithStartTime {
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:self.class.startTime withObject:self where:self.class.href == self.href];
+}
+
+- (BOOL)updateTableWithEndTime {
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:self.class.endTime withObject:self where:self.class.href == self.href];
 }
 
 /// 初始化所有任务

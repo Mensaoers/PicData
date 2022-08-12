@@ -39,4 +39,8 @@ WCDB_PROPERTY(totalCount)
 WCDB_PROPERTY(downloadedCount)
 WCDB_PROPERTY(status)
 
+WCDB_PROPERTY(createTime)
+WCDB_PROPERTY(startTime)
+WCDB_PROPERTY(endTime)
+
 @end

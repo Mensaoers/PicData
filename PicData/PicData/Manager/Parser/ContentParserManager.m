@@ -47,7 +47,6 @@ singleton_implementation(ContentParserManager)
         NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
         NSLog(@"taskModel filepath: %@", targetPath);
 
-        // 这里判断过, 那么就没必要重写这个insert方法
         [taskModel insertTable];
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameAddNewTask object:nil userInfo:@{@"contentModel": contentModel}];
         [ContentParserManager prepareToDoNextTask];

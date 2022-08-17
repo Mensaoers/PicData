@@ -9,6 +9,8 @@
 #import "TasksCollectionCell.h"
 #import "PPStatusView.h"
 
+static CGFloat TitleHeight = 56;
+static CGFloat progressWidth = 46;
 @interface TasksProgressView : UIView
 
 - (void)setProgressFinished:(NSInteger)finished total:(NSInteger)total;
@@ -27,9 +29,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
 
-        CGFloat centerX = frame.size.width * 0.5;
-        CGFloat centerY = frame.size.height * 0.5;
-        PPStatusView *statusView = [[PPStatusView alloc] initWithFrame:CGRectMake(centerX - 24, centerY - 24, 48, 48)];
+        PPStatusView *statusView = [[PPStatusView alloc] initWithFrame:CGRectMake(0, 0, progressWidth, progressWidth)];
         [self addSubview:statusView];
         self.statusView = statusView;
 
@@ -38,8 +38,9 @@
         }];
 
         UILabel *progressLabel = [[UILabel alloc] init];
-        progressLabel.font = [UIFont systemFontOfSize:12];
+        progressLabel.font = [UIFont systemFontOfSize:8];
         progressLabel.textAlignment = NSTextAlignmentCenter;
+        progressLabel.textColor = UIColor.whiteColor;
         [self addSubview:progressLabel];
         self.progressLabel = progressLabel;
 
@@ -72,8 +73,6 @@
 
 @implementation TasksCollectionCell
 
-static CGFloat TitleHeight = 56;
-
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
 
@@ -88,15 +87,6 @@ static CGFloat TitleHeight = 56;
         bgView.layer.cornerRadius = 4;
         bgView.layer.masksToBounds = YES;
 
-        TasksProgressView *progressView = [[TasksProgressView alloc] initWithFrame:CGRectMake(0, 0, TitleHeight, TitleHeight)];
-        [bgView addSubview:progressView];
-        self.progressView = progressView;
-
-        [progressView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.mas_equalTo(TitleHeight);
-            make.bottom.right.mas_equalTo(-2);
-        }];
-
         UIImageView *thumbnailIV = [[UIImageView alloc] init];
         thumbnailIV.backgroundColor = UIColor.clearColor;
         thumbnailIV.contentMode = UIViewContentModeScaleAspectFill;
@@ -106,13 +96,23 @@ static CGFloat TitleHeight = 56;
 
         [thumbnailIV mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.mas_equalTo(0);
-            make.bottom.equalTo(progressView.mas_top).with.offset(-4);
+            make.bottom.offset(-2 - TitleHeight);
+        }];
+
+        TasksProgressView *progressView = [[TasksProgressView alloc] initWithFrame:CGRectMake(0, 0, progressWidth, progressWidth)];
+        [bgView addSubview:progressView];
+        self.progressView = progressView;
+
+        [progressView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.mas_equalTo(progressWidth);
+            make.top.mas_equalTo(2);
+            make.right.mas_equalTo(-2);
         }];
 
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.numberOfLines = 3;
-        titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
         titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.textColor = pdColor(63, 63, 63, 1);
         [bgView addSubview:titleLabel];
@@ -120,8 +120,8 @@ static CGFloat TitleHeight = 56;
 
         [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(2);
-            make.top.equalTo(thumbnailIV.mas_bottom).with.offset(4);
-            make.right.mas_equalTo(-TitleHeight -2 - 2);
+            make.bottom.offset(-2);
+            make.right.mas_equalTo(-2);
             make.height.mas_equalTo(TitleHeight);
         }];
 
@@ -152,7 +152,7 @@ static CGFloat TitleHeight = 56;
     NSString *sourceTitleStr = [NSString stringWithFormat:@" [%@] ", taskModel.sourceTitle];
     NSMutableAttributedString *attributedSourceString = [[NSMutableAttributedString alloc] initWithString:sourceTitleStr];
     [attributedSourceString addAttributes:@{NSForegroundColorAttributeName: [UIColor grayColor],
-                                            NSFontAttributeName: [UIFont systemFontOfSize:12],
+                                            NSFontAttributeName: [UIFont systemFontOfSize:11],
                                             NSBackgroundColorAttributeName: pdColor(230, 230, 230, 1)}
                                     range:NSMakeRange(0, sourceTitleStr.length)];
 
@@ -160,7 +160,7 @@ static CGFloat TitleHeight = 56;
 
     NSString *titleStr = taskModel.title;
     NSMutableAttributedString *attributedTitleString = [[NSMutableAttributedString alloc] initWithString:titleStr];
-    [attributedTitleString addAttributes:@{NSForegroundColorAttributeName: [UIColor darkTextColor], NSFontAttributeName: [UIFont systemFontOfSize:14]} range:NSMakeRange(0, titleStr.length)];
+    [attributedTitleString addAttributes:@{NSForegroundColorAttributeName: [UIColor darkTextColor], NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, titleStr.length)];
 
     [attributedString appendAttributedString:attributedTitleString];
 
@@ -168,16 +168,10 @@ static CGFloat TitleHeight = 56;
 
     if (taskModel.status == 2) {
         // 2表示下载中
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(- TitleHeight - 4);
-        }];
         self.progressView.hidden = NO;
         [self.progressView setProgressFinished:taskModel.downloadedCount total:taskModel.totalCount];
     } else {
         self.progressView.hidden = YES;
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(- 2);
-        }];
     }
 }
 

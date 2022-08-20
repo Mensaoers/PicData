@@ -89,43 +89,13 @@
 
 #endif
 
-    /** 划重点
-     *  imageBrowser是加载在keyWindow上的, 遮挡住控制器keyWindow.rootViewController
-     *  控制器弹出新的界面都没有imageBrowser的界面高, 都会被遮挡
-     *  也就是说, 我们哪怕获取了顶层控制器, present:activityVC的时候, 也会被预览图遮住
-     *  所以我们新建一个临时的window, 设置一个空白的控制器tmpViewController
-     *  用这个临时控制器去弹出分享视图activityVC
-     */
-    UIWindow *tmpWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    UIViewController *topRootViewController = [[UIViewController alloc] init];
-    topRootViewController.view.backgroundColor = [UIColor clearColor];
-        tmpWindow.windowLevel = UIWindowLevelAlert - 1;
-        tmpWindow.rootViewController = topRootViewController;
-        [tmpWindow makeKeyAndVisible];
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[fileURL] applicationActivities:nil];
-    activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {
-        NSLog(@"调用分享的应用id :%@", activityType);
-        [tmpWindow resignKeyWindow];
+    [AppTool shareWithActivityItems:@[fileURL] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         if (completed) {
             NSLog(@"分享成功!");
         } else {
             NSLog(@"分享失败!");
         }
-    };
-
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        UIPopoverPresentationController *popover = activityVC.popoverPresentationController;
-        if (popover) {
-            popover.sourceView = sender;
-            popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        }
-        [topRootViewController presentViewController:activityVC animated:YES completion:nil];
-    } else {
-        //do nothing
-    }
+    }];
 }
 
 #pragma mark - getters

@@ -22,8 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void(^updateCellHeightBlock)(NSIndexPath *indexPath, CGFloat height);
 
-@property (nonatomic, copy) void(^longPressBlock)(DetailViewContentCell *cell);
-
 @end
 
 NS_ASSUME_NONNULL_END

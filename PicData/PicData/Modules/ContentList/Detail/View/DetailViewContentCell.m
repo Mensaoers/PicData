@@ -17,6 +17,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
 
+        self.backgroundColor = UIColor.clearColor;
+
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImageView *conImgView = [[UIImageView alloc] init];
         conImgView.backgroundColor = UIColor.clearColor;
@@ -32,10 +34,6 @@
         
         conImgView.layer.cornerRadius = 4;
         conImgView.layer.masksToBounds = YES;
-
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
-        longPress.minimumPressDuration = 0.7;
-        [self addGestureRecognizer:longPress];
     }
     return self;
 }
@@ -55,10 +53,6 @@
             }
         }
     }];
-}
-
-- (void)longPressAction:(UILongPressGestureRecognizer *)recognizer {
-    self.longPressBlock(self);
 }
 
 @end

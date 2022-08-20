@@ -76,6 +76,8 @@ typedef NS_ENUM(NSInteger, ContentTaskStatus) {
 + (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref;
 /// 取消已添加任务, 根据title
 + (BOOL)deleteFromTableWithTitle:(NSString *)title;
+/// 取消已添加任务, 根据href
++ (BOOL)deleteFromTableWithHref:(NSString *)href;
 
 @end
 

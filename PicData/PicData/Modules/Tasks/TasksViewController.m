@@ -165,6 +165,19 @@ static NSString *headerdentifier = @"headerdentifier";
     }
 }
 
+- (void)viewContentWithTaskModel:(PicContentTaskModel *)taskModel {
+    // 点击跳转到本地预览
+    PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+    if (nil == sourceModel) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
+        return;
+    }
+
+    LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
+    fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+    [self.navigationController pushViewController:fileListVC animated:YES];
+}
+
 #pragma mark - notification
 
 - (void)receiveNoticeStartScaneTask:(NSNotification *)notification {
@@ -271,17 +284,70 @@ static CGFloat headerHeight = 35;
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
     PicContentTaskModel *taskModel = self.progressModels[indexPath.section].taskModels[indexPath.row];
-    // 点击跳转到本地预览
-    PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
-    if (nil == sourceModel) {
-        [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
-        return;
-    }
-    
-    LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
-    fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
-    [self.navigationController pushViewController:fileListVC animated:YES];
+    [self viewContentWithTaskModel:taskModel];
 
+}
+
+- (nullable UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, tvos) {
+
+    PicContentTaskModel *taskModel = self.progressModels[indexPath.section].taskModels[indexPath.row];
+
+    PDBlockSelf
+    UIContextMenuConfiguration *configration = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+
+        NSMutableArray *actions = [NSMutableArray array];
+        /// 右击
+        /// 1. 取消/删除 下载
+        /// 2. 查看套图
+        if (taskModel.status != ContentTaskStatusFinishDownload) {
+            // 取消
+            UIAction *cancelDownload = [UIAction actionWithTitle:@"重新下载" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+
+                [ContentParserManager.sharedContentParserManager cancelDownloadsByIdentifiers:@[taskModel.href]];
+                taskModel.status = ContentTaskStatusNormal;
+                taskModel.totalCount = 0;
+                taskModel.downloadedCount = 0;
+                [taskModel updateTable];
+                [weakSelf reCallLoadDataList:0.5];
+                [ContentParserManager prepareToDoNextTask];
+            }];
+            [actions addObject:cancelDownload];
+        }
+
+        // 删除
+        UIAction *deleteDownload = [UIAction actionWithTitle:@"删除任务" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+
+            [ContentParserManager.sharedContentParserManager cancelDownloadsByIdentifiers:@[taskModel.href]];
+            [PicContentTaskModel deleteFromTableWithHref:taskModel.href];
+            [weakSelf reCallLoadDataList:0.5];
+
+            [weakSelf showAlertWithTitle:nil message:@"下载记录已删除, 是否需要删除本地文件?" confirmTitle:@"删除" confirmHandler:^(UIAlertAction * _Nonnull action) {
+
+                PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+                if (nil == sourceModel) {
+                    [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图分类, 请到文件列表手动删除"];
+                    return;
+                }
+
+                NSString *targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+                NSError *rmError = nil;
+                [[NSFileManager defaultManager] removeItemAtPath:targetFilePath error:&rmError];
+                if (rmError) {
+                    NSLog(@"TasksViewController: deleteContentFile: %@, error: %@", targetFilePath, rmError);
+                }
+            } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
+
+            }];
+        }];
+        [actions addObject:deleteDownload];
+
+        UIAction *viewContent = [UIAction actionWithTitle:@"查看套图" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf viewContentWithTaskModel:taskModel];
+        }];
+        [actions addObject:viewContent];
+        return [UIMenu menuWithTitle:@"下载记录右击菜单" children:actions];
+    }];
+    return configration;
 }
 
 @end

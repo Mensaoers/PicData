@@ -689,7 +689,7 @@
 
             } else {
                 // 更新contentModel就好了
-                [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.title];
+                [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.href];
                 [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": @[self.contentModel.href ?: @""]}];
             }
 

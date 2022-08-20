@@ -165,4 +165,9 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.title == title];
 }
 
+/// 取消已添加任务, 根据href
++ (BOOL)deleteFromTableWithHref:(NSString *)href {
+    return [[DatabaseManager getDatabase] deleteObjectsFromTable:[self tableName] where:self.href == href];
+}
+
 @end

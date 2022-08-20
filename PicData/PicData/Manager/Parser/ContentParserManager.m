@@ -26,6 +26,20 @@ singleton_implementation(ContentParserManager)
     [PDDownloadManager.sharedPDDownloadManager cancelAllDownloads];
 }
 
+- (void)cancelDownloadsByIdentifiers:(NSArray <NSString *>*)identifiers {
+    [self.queue setSuspended:YES];
+    for (ParseOperation *operation in self.queue.operations) {
+        if ([identifiers containsObject:operation.identifier]) {
+            [operation cancel];
+        }
+    }
+
+    [[PDDownloadManager sharedPDDownloadManager] cancelDownloadsByIdentifiers:identifiers];
+    [self.queue setSuspended:NO];
+
+    [ContentParserManager prepareToDoNextTask];
+}
+
 - (int)maxConcurrentTasksLimit {
     return 2;
 }
@@ -76,17 +90,7 @@ singleton_implementation(ContentParserManager)
 
 - (void)receiveNoticeCancelTasks:(NSNotification *)notification {
     NSArray *identifiers = notification.userInfo[@"identifiers"];
-    [self.queue setSuspended:YES];
-    for (ParseOperation *operation in self.queue.operations) {
-        if ([identifiers containsObject:operation.identifier]) {
-            [operation cancel];
-        }
-    }
-
-    [[PDDownloadManager sharedPDDownloadManager] cancelDownloadsByIdentifiers:identifiers];
-    [self.queue setSuspended:NO];
-
-    [ContentParserManager prepareToDoNextTask];
+    [self cancelDownloadsByIdentifiers:identifiers];
 }
 
 /// 查询接下来要开始的任务

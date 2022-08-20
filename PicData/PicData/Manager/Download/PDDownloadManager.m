@@ -95,11 +95,11 @@ singleton_implementation(PDDownloadManager);
     [self.downloadQueue setSuspended:NO];
 }
 
-- (void)cancelDownloadsByIdentifiers:(NSArray<NSString *> *)indentifiers {
+- (void)cancelDownloadsByIdentifiers:(NSArray<NSString *> *)identifiers {
     [self.downloadQueue setSuspended:YES];
     for (PPDownloadTaskOperation *operation in self.downloadQueue.operations) {
 
-        if ([indentifiers containsObject:operation.identifier]) {
+        if ([identifiers containsObject:operation.identifier]) {
             [operation cancel];
         }
     }

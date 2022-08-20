@@ -58,8 +58,8 @@ singleton_interface(PDDownloadManager);
 
 /// 全部取消
 - (void)cancelAllDownloads;
-/// 取消某个任务
-- (void)cancelDownloadsByIdentifiers:(NSArray <NSString *>*)indentifiers;
+/// 取消某个任务(根据任务的href)
+- (void)cancelDownloadsByIdentifiers:(NSArray <NSString *>*)identifiers;
 
 @end
 

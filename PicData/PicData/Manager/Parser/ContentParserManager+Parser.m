@@ -35,12 +35,11 @@
     switch (sourceModel.sourceType) {
         case 1:
         case 2:
-        case 3: {
+        case 3:
+        case 5: {
             aE = articleElement.QueryElement(@"a").firstObject;
             title = aE.attr(@"title");
         }
-            break;
-        case 5:
             break;
         case 8: {
             OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
@@ -288,6 +287,18 @@
             for (OCGumboElement *articleE in articleEs) {
 
                 PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                NSString *href = contentModel.href;
+                if ([href containsString:@"/id-"]) {
+                    NSString *regex = @"(?<=/id-).*?(?=.html)";
+                    NSError *error;
+                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                    // 对str字符串进行匹配
+                    href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    if (href.length > 0) {
+                        contentModel.title = [NSString stringWithFormat:@"%@%@", contentModel.title, href];
+                    }
+                }
 
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
@@ -653,6 +664,7 @@
             OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
             title = titleE.text();
         }
+            break;
         case 8: {
             OCGumboElement *breadcrumbE = document.QueryClass(@"breadcrumb").firstObject;
             OCGumboElement *aEs = breadcrumbE.QueryElement(@"a").lastObject;

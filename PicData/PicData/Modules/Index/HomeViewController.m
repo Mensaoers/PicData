@@ -259,8 +259,7 @@
     PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:hostModel.HOST_URL Title:@"首页" sourceType:hostModel.sourceType subTitles:subTitles];
     [self.classModels addObject:indexModel];
 
-    [self loadRightNavigationItem:NO];
-    self.tableView.classifyStyle = PicClassifyTableViewStyleTags;
+    [self loadRightNavigationItem:self.tableView.classifyStyle == PicClassifyTableViewStyleDefault];
 }
 
 - (void)loadAllTags {

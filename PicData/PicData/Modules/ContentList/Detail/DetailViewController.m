@@ -507,21 +507,21 @@
         [actions addObject:viewBigPic];
 
         // 删除
-        UIAction *share = [UIAction actionWithTitle:@"直接分享" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
 
 #if TARGET_OS_MACCATALYST
 
+        UIAction *share = [UIAction actionWithTitle:@"复制图片" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
             UIPasteboard.generalPasteboard.image = cell.conImgView.image;
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"图片已复制"];
-
-#else
-            [AppTool shareWithActivityItems:@[cell.conImgView.image] sourceView:cell.conImgView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-
-            }];
-#endif
-
         }];
         [actions addObject:share];
+#else
+        UIAction *share = [UIAction actionWithTitle:@"直接分享" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [AppTool shareWithActivityItems:@[cell.conImgView.image] sourceView:cell.conImgView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            }];
+        }];
+        [actions addObject:share];
+#endif
 
         UIAction *viewContent = [UIAction actionWithTitle:@"保存到相册" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
             [YBIBPhotoAlbumManager getPhotoAlbumAuthorizationSuccess:^{

@@ -228,6 +228,17 @@
                 title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
                 contentModel.title = title;
 
+                // 追加指定名称 提高唯一性
+                NSString *href = contentModel.href;
+                NSString *regex = @"(?<=/k/).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (href.length > 0) {
+                    contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+                }
+
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
             }
@@ -254,6 +265,10 @@
 
                 PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
 
+                // 追加指定名称 提高唯一性
+                NSString *identifier = [contentModel.href.lastPathComponent stringByDeletingPathExtension];
+                contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, identifier];
+
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
             }
@@ -274,6 +289,17 @@
                 title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
                 contentModel.title = title;
 
+                // 追加指定名称 提高唯一性
+                NSString *href = contentModel.href;
+                NSString *regex = @"(?<=/ku/).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (href.length > 0) {
+                    contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+                }
+
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
             }
@@ -288,16 +314,15 @@
 
                 PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
 
+                // 追加指定名称 提高唯一性
                 NSString *href = contentModel.href;
-                if ([href containsString:@"/id-"]) {
-                    NSString *regex = @"(?<=/id-).*?(?=.html)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                    // 对str字符串进行匹配
-                    href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
-                    if (href.length > 0) {
-                        contentModel.title = [NSString stringWithFormat:@"%@%@", contentModel.title, href];
-                    }
+                NSString *regex = @"(?<=/id-).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (href.length > 0) {
+                    contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, href];
                 }
 
                 [contentModel insertTable];

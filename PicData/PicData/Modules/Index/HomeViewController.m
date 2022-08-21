@@ -53,21 +53,24 @@
 #endif
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
-    UIBarButtonItem *rightItem;
+    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
+
+    UIBarButtonItem *listItem;
     if (isList) {
-        rightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list_tags"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(rightNavigationItemClickAction:)];
+        listItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list_tags"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(listNavigationItemClickAction:)];
     } else {
-        rightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(rightNavigationItemClickAction:)];
+        listItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"list"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(listNavigationItemClickAction:)];
+    }
+    [rightBarButtonItems addObject:listItem];
+
+    PicNetModel *hostModel = [AppTool sharedAppTool].currentHostModel;
+    if (hostModel.searchKeys.count > 0 || [[AppTool sharedAppTool] searchKeys].count > 0) {
+        UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"magnifyingglass"] style:UIBarButtonItemStyleDone target:self action:@selector(searchItemClickAction:)];
+        [rightBarButtonItems addObject:searchItem];
     }
 
-    self.navigationItem.rightBarButtonItems = @[rightItem];
+    self.navigationItem.rightBarButtonItems = rightBarButtonItems;
 
-    MJWeakSelf
-    [self cw_registerShowIntractiveWithEdgeGesture:NO transitionDirectionAutoBlock:^(CWDrawerTransitionDirection direction) {
-        if (direction == CWDrawerTransitionFromLeft) {
-            [weakSelf selectNetHost:nil];
-        }
-    }];
 }
 
 - (void)selectNetHost:(UIBarButtonItem *)sender {
@@ -81,7 +84,7 @@
     [self cw_showDrawerViewController:hostVC animationType:CWDrawerAnimationTypeDefault configuration:configuration];
 }
 
-- (void)rightNavigationItemClickAction:(UIBarButtonItem *)sender {
+- (void)listNavigationItemClickAction:(UIBarButtonItem *)sender {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if (self.tableView.classifyStyle == PicClassifyTableViewStyleDefault) {
         [self loadRightNavigationItem:NO];
@@ -91,6 +94,43 @@
         self.tableView.classifyStyle = PicClassifyTableViewStyleDefault;
     }
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
+- (void)searchItemClickAction:(UIBarButtonItem *)sender {
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"搜索套图" message:@"请输入你想要搜索的关键字" preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"套图关键字";
+    }];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        UITextField *keywordTF = alert.textFields.firstObject;
+        NSString *titleString = keywordTF.text;
+        if (titleString.length == 0) {
+            return;
+        }
+
+        PicNetModel *hostModel = AppTool.sharedAppTool.currentHostModel;
+        NSString *titleStringEncode = hostModel.searchEncode ? [titleString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] : [titleString stringByAddingPercentEscapesUsingEncoding:[AppTool getNSStringEncoding_GB_18030_2000]];
+        NSString *searchUrl = [NSString stringWithFormat:hostModel.searchFormat, titleStringEncode];
+
+        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+        sourceModel.sourceType = hostModel.sourceType;
+        sourceModel.url = searchUrl;
+        sourceModel.title = titleString;
+        sourceModel.HOST_URL = hostModel.HOST_URL;
+        [sourceModel insertTable];
+
+        ContentViewController *contentVC = [[ContentViewController alloc] initWithSourceModel:sourceModel];
+        [self.navigationController pushViewController:contentVC animated:YES];
+
+    }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)loadMainView {
@@ -121,6 +161,13 @@
     [super viewDidLoad];
 
     [[TKGestureLockManager sharedInstance] showGestureLockWindow];
+
+    MJWeakSelf
+    [self cw_registerShowIntractiveWithEdgeGesture:NO transitionDirectionAutoBlock:^(CWDrawerTransitionDirection direction) {
+        if (direction == CWDrawerTransitionFromLeft) {
+            [weakSelf selectNetHost:nil];
+        }
+    }];
 
     [self loadAllTags];
 }
@@ -211,6 +258,9 @@
 
     PicClassModel *indexModel = [PicClassModel modelWithHOST_URL:hostModel.HOST_URL Title:@"首页" sourceType:hostModel.sourceType subTitles:subTitles];
     [self.classModels addObject:indexModel];
+
+    [self loadRightNavigationItem:NO];
+    self.tableView.classifyStyle = PicClassifyTableViewStyleTags;
 }
 
 - (void)loadAllTags {

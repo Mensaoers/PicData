@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DetailViewContentCell : UITableViewCell
 
+@property (nonatomic, strong) UIImageView *conImgView;
+
 @property (nonatomic, strong) NSIndexPath *indexpath;
 
 @property (nonatomic, strong) NSString *url;

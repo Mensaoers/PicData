@@ -97,10 +97,10 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "${PODS_ROOT}/../../../PicDataSDK/PicDataSDK/Products/PicDataSDKResource.bundle"
+  install_resource "${PODS_ROOT}/../../../PicDataSDK/Products/PicDataSDKResource.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "${PODS_ROOT}/../../../PicDataSDK/PicDataSDK/Products/PicDataSDKResource.bundle"
+  install_resource "${PODS_ROOT}/../../../PicDataSDK/Products/PicDataSDKResource.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

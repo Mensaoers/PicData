@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSArray <NSString *>*searchKeys;
 @property (nonatomic, assign) BOOL searchEncode;
 @property (nonatomic, strong) NSString *mark;
+@property (nonatomic, strong) NSString *tips;
 @property (nonatomic, assign) BOOL prepared;
 
 @end

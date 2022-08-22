@@ -25,8 +25,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)updateTableWhenHref:(NSString *)href;
 
 + (NSArray *)queryTableWithHref:(NSString *)href;
++ (NSArray *)queryTableWithSourceHref:(NSString *)sourceHref;
++ (NSArray *)queryTableWithSourceTitle:(NSString *)sourceTitle;
 
 @end
+
+typedef NS_ENUM(NSInteger, ContentTaskStatus) {
+    ContentTaskStatusNormal = 0,
+    ContentTaskStatusStartScane = 1,
+    ContentTaskStatusFinishScane = 2,
+    ContentTaskStatusFinishDownload = 3,
+};
 
 /// 已添加下载的任务
 @interface PicContentTaskModel : PicContentModel
@@ -39,18 +48,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// 表示该任务是否已经开始进行(不表示全部下载完成) 0尚未开始, 1开始遍历, 2完成遍历, 3下载完成
 /// 该任务下一共有多少图片
 @property (nonatomic, assign) int totalCount;
-@property (nonatomic, assign) int status;
+@property (nonatomic, assign) ContentTaskStatus status;
+
+@property (nonatomic, assign) NSTimeInterval createTime;
+@property (nonatomic, assign) NSTimeInterval startTime;
+@property (nonatomic, assign) NSTimeInterval endTime;
 
 /// 获取下一个没有开始的任务
 + (NSArray *)queryNextTask;
 /// 获取所有task status为给定值的任务数
-+ (NSInteger)queryCountForTaskStatus:(int)status;
++ (NSInteger)queryCountForTaskStatus:(ContentTaskStatus)status;
 /// 获取所有tasks status为给定值的任务
-+ (NSArray <PicContentTaskModel *>*)queryTasksForStatus:(int)status;
++ (NSArray <PicContentTaskModel *>*)queryTasksForStatus:(ContentTaskStatus)status;
 /// 获取所有task status为给定值的任务数
 + (NSInteger)queryCountForTaskInStatus12;
 
 - (BOOL)updateTableWithStatus;
+- (BOOL)updateTableWithStartTime;
+- (BOOL)updateTableWithEndTime;
 
 /// 初始化所有任务
 + (BOOL)resetHalfWorkingTasks;
@@ -61,6 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)deleteFromTableWithSourceHref:(NSString *)sourceHref;
 /// 取消已添加任务, 根据title
 + (BOOL)deleteFromTableWithTitle:(NSString *)title;
+/// 取消已添加任务, 根据href
++ (BOOL)deleteFromTableWithHref:(NSString *)href;
 
 @end
 

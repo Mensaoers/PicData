@@ -57,7 +57,9 @@ singleton_interface(PDDownloadManager);
 - (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls suggestNames:(nullable NSArray <NSString *> *)suggestNames;
 
 /// 全部取消
-- (void)totalCancel;
+- (void)cancelAllDownloads;
+/// 取消某个任务(根据任务的href)
+- (void)cancelDownloadsByIdentifiers:(NSArray <NSString *>*)identifiers;
 
 @end
 

@@ -11,6 +11,7 @@
 #import "DetailViewContentCell.h"
 #import "PicContentCell.h"
 #import "LocalFileListVC.h"
+#import "PicBrowserToolViewHandler.h"
 
 @interface DetailViewController ()<UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PicContentCellDelegate>
 
@@ -381,6 +382,17 @@
     return tCell;
 }
 
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    if (contextInfo != @"saveToAlbum") {
+        return;
+    }
+    if (error) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存失败"];
+    } else {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存成功"];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
@@ -453,6 +465,85 @@
         return 100;//((self.detailModel.suggesArray ? self.detailModel.suggesArray.count : 0) + 1) / 2.0 * ((self.view.mj_w - 30) / 2 * 360.0 / 250 + 50);
     }
 }
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point {
+
+    if (indexPath.section != 0) {
+        return nil;
+    }
+
+    DetailViewContentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+
+    if (nil == cell.conImgView.image) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"不能操作空白图片"];
+        return nil;
+    }
+
+    PDBlockSelf
+    UIContextMenuConfiguration *configration = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+
+        NSMutableArray *actions = [NSMutableArray array];
+        /// 右击
+        /// 1. 查看大图
+        /// 2. 直接分享
+        /// 3. 保存到相册
+        UIAction *viewBigPic = [UIAction actionWithTitle:@"查看大图" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+
+            YBIBImageData *data = [YBIBImageData new];
+            data.image = ^UIImage * _Nullable{
+                return cell.conImgView.image;
+            };
+            data.projectiveView = cell.conImgView;
+
+            YBImageBrowser *browser = [YBImageBrowser new];
+            browser.dataSourceArray = @[data];
+            browser.currentPage = 0;
+            browser.supportedOrientations = UIInterfaceOrientationMaskPortrait;
+            // 只有一个保存操作的时候，可以直接右上角显示保存按钮
+            PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
+            browser.toolViewHandlers = @[handler];
+            [browser show];
+        }];
+        [actions addObject:viewBigPic];
+
+        // 删除
+
+#if TARGET_OS_MACCATALYST
+
+        UIAction *share = [UIAction actionWithTitle:@"复制图片" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            UIPasteboard.generalPasteboard.image = cell.conImgView.image;
+            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"图片已复制"];
+        }];
+        [actions addObject:share];
+#else
+        UIAction *share = [UIAction actionWithTitle:@"直接分享" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [AppTool shareWithActivityItems:@[cell.conImgView.image] sourceView:cell.conImgView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            }];
+        }];
+        [actions addObject:share];
+#endif
+
+        UIAction *viewContent = [UIAction actionWithTitle:@"保存到相册" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [YBIBPhotoAlbumManager getPhotoAlbumAuthorizationSuccess:^{
+                UIImageWriteToSavedPhotosAlbum(cell.conImgView.image, weakSelf, @selector(image:didFinishSavingWithError:contextInfo:), @"saveToAlbum");
+            } failed:^{
+                [weakSelf showAlertWithTitle:@"相册权限" message:@"获取相册权限失败, 请手动设置app权限" confirmTitle:@"去设置" confirmHandler:^(UIAlertAction * _Nonnull action) {
+                    // 打开通知设置
+                    NSLog(@"%@", UIApplicationOpenSettingsURLString);
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                    }];
+                } cancelTitle:@"算了" cancelHandler:^(UIAlertAction * _Nonnull action) {
+
+                }];
+            }];
+        }];
+        [actions addObject:viewContent];
+        return [UIMenu menuWithTitle:@"你想对该图片做什么?" children:actions];
+    }];
+    return configration;
+}
+
+#pragma mark collection delegate / dataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.detailModel.suggesArray ? self.detailModel.suggesArray.count : 0;

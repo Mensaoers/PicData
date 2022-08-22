@@ -15,10 +15,11 @@ typedef void(^DownloadFinishedBlock)(NSURL * _Nullable location, NSURLResponse *
 @interface PPDownloadTaskOperation : NSOperation
 
 @property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, copy) DownloadFinishedBlock downloadFinishedBlock;
 
-- (instancetype)initWithUrl:(NSString *)url headers:(NSDictionary *)headers downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
-+ (instancetype)operationWithUrl:(NSString *)url headers:(NSDictionary *)headers downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
+- (instancetype)initWithUrl:(NSString *)url identifier:(NSString *)identifier headers:(NSDictionary *)headers downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
++ (instancetype)operationWithUrl:(NSString *)url identifier:(NSString *)identifier headers:(NSDictionary *)headers downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 @end
 

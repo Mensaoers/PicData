@@ -121,14 +121,13 @@
         }
         [weakSelf.lock unlock];
 
-
-        NSError *error = nil;
         NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
-        NSString *content = [NSString stringWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL] encoding:[AppTool getNSStringEncoding_GB_18030_2000] error:&error];
 
-        if (error) {
-            NSLog(@"%@, 出现错误-1, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
-        } else {
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url relativeToURL:baseURL]];
+        if (nil == data || data.length == 0) {
+            NSLog(@"%@, 出现错误-1, 网页数据为空", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
+        } else{
+            NSString *content = [ContentParserManager getHtmlStringWithData:data sourceType:sourceModel.sourceType];
             NSLog(@"%@, 完成", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
             NSString *title = [ContentParserManager parsePageForTitle:content sourceModel:sourceModel];
@@ -137,6 +136,7 @@
                 [contentModel updateTable];
             }
         }
+
         dispatch_async(dispatch_get_main_queue(), ^{
             result(sourceModel, contentModel);
         });

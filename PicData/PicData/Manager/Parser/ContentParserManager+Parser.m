@@ -18,7 +18,9 @@
             return [AppTool getStringWithGB_18030_2000Code:data];
             break;
         case 3:
+        case 8:
             return [AppTool getStringWithUTF8Code:data];
+            break;
         default:
             break;
     }
@@ -27,17 +29,23 @@
 
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
-    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
+    OCGumboElement *aE;
     NSString *title;
-
+    
     switch (sourceModel.sourceType) {
         case 1:
         case 2:
-        case 3: {
+        case 3:
+        case 5: {
+            aE = articleElement.QueryElement(@"a").firstObject;
             title = aE.attr(@"title");
         }
             break;
-        case 5:
+        case 8: {
+            OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
+            aE = divE.QueryElement(@"a").firstObject;
+            title = aE.text();
+        }
             break;
         default:
             break;
@@ -56,6 +64,10 @@
             break;
         case 3:
             imgE = aE.QueryClass(@"xld").firstObject;
+            break;
+        case 8: {
+            imgE = articleElement.QueryElement(@"img").firstObject;
+        }
             break;
         default:
             break;
@@ -81,23 +93,64 @@
     NSMutableArray *subTitles = [NSMutableArray array];
     for (OCGumboElement *aE in aEs) {
         NSString *href = aE.attr(@"href");
-        NSString *subTitle = aE.text();
 
         PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
         sourceModel.sourceType = hostModel.sourceType;
 
         NSString *url;
+        NSString *subTitle;
         switch (hostModel.sourceType) {
             case 1: {
                 url = [hostModel.HOST_URL stringByAppendingPathComponent:href];
+                subTitle = aE.text();
             }
                 break;
             case 2: {
                 url = href;
+                subTitle = aE.text();
             }
                 break;
             case 5: {
                 url = href;
+                subTitle = aE.text();
+            }
+                break;
+            case 8: {
+                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
+                subTitle = aE.text();
+                if ([href containsString:@"series-"]) {
+                    NSString *regex = @"(?<=series-).*?(?=.html)";
+                    NSError *error;
+                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                    // 对str字符串进行匹配
+                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    if (result.length > 0) {
+                        subTitle = result;
+                    }
+                } else if ([href containsString:@"model-"]) {
+                    NSString *regex = @"(?<=model-).*?(?=.html)";
+                    NSError *error;
+                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                    // 对str字符串进行匹配
+                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    if (result.length > 0) {
+                        subTitle = result;
+                    }
+                } else if ([subTitle containsString:@"全部"]){
+                    subTitle = @"全部";
+                }
+
+                NSString *readUrl = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
+                // 准备一个默认的顺序
+                PicSourceModel *sourcePreModel = [sourceModel copy];
+                sourcePreModel.sourceType = sourcePreModel.sourceType;
+                sourcePreModel.url = readUrl;
+                sourcePreModel.title = [subTitle stringByAppendingString:@"-观看最多"];
+                sourcePreModel.systemTitle = subTitle;
+                sourcePreModel.HOST_URL = hostModel.HOST_URL;
+                [sourcePreModel insertTable];
+                [subTitles addObject:sourcePreModel];
             }
                 break;
             default:
@@ -139,6 +192,9 @@
             tagsListEs = document.QueryClass(@"jigou");
         }
             break;
+        case 8: {
+            tagsListEs = document.QueryClass(@"series");
+        }
         default:
             break;
     }
@@ -172,6 +228,17 @@
                 title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
                 contentModel.title = title;
 
+                // 追加指定名称 提高唯一性
+                NSString *href = contentModel.href;
+                NSString *regex = @"(?<=/k/).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (href.length > 0) {
+                    contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+                }
+
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
             }
@@ -198,6 +265,10 @@
 
                 PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
 
+                // 追加指定名称 提高唯一性
+                NSString *identifier = [contentModel.href.lastPathComponent stringByDeletingPathExtension];
+                contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, identifier];
+
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
             }
@@ -217,6 +288,42 @@
                 title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
                 title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
                 contentModel.title = title;
+
+                // 追加指定名称 提高唯一性
+                NSString *href = contentModel.href;
+                NSString *regex = @"(?<=/ku/).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (href.length > 0) {
+                    contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+                }
+
+                [contentModel insertTable];
+                [articleContents addObject:contentModel];
+            }
+        }
+            break;
+        case 8: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            OCQueryObject *articleEs = listDiv.QueryClass(@"item");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                // 追加指定名称 提高唯一性
+                NSString *href = contentModel.href;
+                NSString *regex = @"(?<=/id-).*?(?=.html)";
+                NSError *error;
+                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
+                // 对str字符串进行匹配
+                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                if (href.length > 0) {
+                    contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, href];
+                }
 
                 [contentModel insertTable];
                 [articleContents addObject:contentModel];
@@ -262,6 +369,10 @@
             nextE = document.QueryClass(@"page-list").firstObject;
         }
             break;
+        case 8: {
+            nextE = document.QueryClass(@"pager").firstObject;
+        }
+            break;
         default:
             break;
     }
@@ -305,6 +416,11 @@
             case 5: {
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]];
             }
+                break;
+            case 8: {
+                nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+            }
+                break;
             default:
                 break;
         }
@@ -346,13 +462,30 @@
             contentE = document.QueryClass(@"content").firstObject;
         }
             break;
+        case 8: {
+            contentE = document.QueryClass(@"photos").firstObject;
+        }
+            break;
         default:
             break;
     }
 
     OCQueryObject *es = contentE.Query(@"img");
     for (OCGumboElement *e in es) {
-        NSString *src = e.attr(@"src");
+        NSString *src;
+        switch (sourceModel.sourceType) {
+            case 8: {
+                src = e.attr(@"src");
+                if (![src containsString:@"https://"]) {
+                    continue;
+                }
+                src = [src stringByReplacingOccurrencesOfString:@"_600x0" withString:@""];
+            }
+                break;
+            default:
+                src = e.attr(@"src");
+                break;
+        }
         if (src.length > 0) {
             [urls addObject:src];
         }
@@ -375,6 +508,10 @@
             break;
         case 5: {
             nextE = document.QueryClass(@"page-list").firstObject;
+        }
+            break;
+        case 8: {
+            nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
         default:
@@ -419,6 +556,11 @@
             case 5: {
                 nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:preNextUrl]].absoluteString;
             }
+                break;
+            case 8: {
+                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
+            }
+                break;
             default:
                 break;
         }
@@ -546,6 +688,12 @@
             OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
             OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
             title = titleE.text();
+        }
+            break;
+        case 8: {
+            OCGumboElement *breadcrumbE = document.QueryClass(@"breadcrumb").firstObject;
+            OCGumboElement *aEs = breadcrumbE.QueryElement(@"a").lastObject;
+            title = aEs.text();
         }
         default:
             break;

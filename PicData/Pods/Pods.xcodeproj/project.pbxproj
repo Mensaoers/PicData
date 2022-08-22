@@ -1210,6 +1210,7 @@
 		16B977D11B874A348A3D1654E62EBDE9 /* YYCategories.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YYCategories.h; path = YYCategories/YYCategories.h; sourceTree = "<group>"; };
 		1716B5FBCF0DF55C120AC52CFC22452D /* YYCategories */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = YYCategories; path = YYCategories.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17F25B4E999E5D5FF7D69C7AD2EC8F59 /* YYAnimatedImageView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YYAnimatedImageView.h; path = YYImage/YYAnimatedImageView.h; sourceTree = "<group>"; };
+		182ACFB0D029EFFFE2C4E5CFE34D7945 /* PicDataSDK.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = PicDataSDK.xcframework; sourceTree = "<group>"; };
 		1839361DD740A21C91FDE8D99CA67731 /* WCTInsert.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WCTInsert.h; path = objc/WCDB/interface/chaincall/WCTInsert.h; sourceTree = "<group>"; };
 		18769DC1BCB7095D2A866A8D74A6BF61 /* SDImageIOAnimatedCoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageIOAnimatedCoder.h; path = SDWebImage/Core/SDImageIOAnimatedCoder.h; sourceTree = "<group>"; };
 		18C3A9C17CE5D9B9F8652526E4099364 /* fts3_tokenize_vtab.c */ = {isa = PBXFileReference; includeInIndex = 1; name = fts3_tokenize_vtab.c; path = ext/fts3/fts3_tokenize_vtab.c; sourceTree = "<group>"; };
@@ -1218,7 +1219,6 @@
 		19807AD82A9EF1C1FAB2848530C100B3 /* btree.c */ = {isa = PBXFileReference; includeInIndex = 1; name = btree.c; path = src/btree.c; sourceTree = "<group>"; };
 		19AD1559311F96917BFCB7D7CF743131 /* mz_strm_wzaes.c */ = {isa = PBXFileReference; includeInIndex = 1; name = mz_strm_wzaes.c; path = SSZipArchive/minizip/mz_strm_wzaes.c; sourceTree = "<group>"; };
 		19B48A7493BD03D29F031120663DC94E /* WCDBOptimizedSQLCipher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = WCDBOptimizedSQLCipher.release.xcconfig; sourceTree = "<group>"; };
-		1A38EA9B8B87796DCFD3BD7EC0E27C1D /* PicDataSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PicDataSDK.debug.xcconfig; sourceTree = "<group>"; };
 		1A75D932FFEE8959FDCCB660DF377D15 /* WCTRowSelect.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WCTRowSelect.h; path = objc/WCDB/interface/chaincall/WCTRowSelect.h; sourceTree = "<group>"; };
 		1ADD85884B1DEC60C6F65D7CEA920930 /* SDWebImageDownloader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloader.h; path = SDWebImage/Core/SDWebImageDownloader.h; sourceTree = "<group>"; };
 		1B0F90944F90293F3654C9581D103295 /* YBIBToastView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = YBIBToastView.m; path = YBImageBrowser/AuxiliaryView/YBIBToastView.m; sourceTree = "<group>"; };
@@ -1332,6 +1332,7 @@
 		3436346FE296D8DD5F5B62ED873A503A /* NSString+WCTColumnCoding.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = "NSString+WCTColumnCoding.mm"; path = "objc/WCDB/interface/builtin/NSString+WCTColumnCoding.mm"; sourceTree = "<group>"; };
 		344733692141FBF3E4610207EA2B4B42 /* IQKeyboardManagerConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IQKeyboardManagerConstants.h; path = IQKeyboardManager/Constants/IQKeyboardManagerConstants.h; sourceTree = "<group>"; };
 		34570A0BAB9731280FD2CDFC2BBF2739 /* CWLateralSlide.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CWLateralSlide.modulemap; sourceTree = "<group>"; };
+		34902F0D95318C1C394B2E24928B855C /* PicDataSDKResource.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; path = PicDataSDKResource.bundle; sourceTree = "<group>"; };
 		34CE827EB05DAC5B8F1C532D2A157E8D /* mz_strm_wzaes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mz_strm_wzaes.h; path = SSZipArchive/minizip/mz_strm_wzaes.h; sourceTree = "<group>"; };
 		34CEBF2F8494F5FA650C4B5119A86A72 /* WCTInterface.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WCTInterface.h; path = objc/WCDB/interface/declare/WCTInterface.h; sourceTree = "<group>"; };
 		34D80666F9DB8CDD39EC415B65CD8E37 /* vacuum.c */ = {isa = PBXFileReference; includeInIndex = 1; name = vacuum.c; path = src/vacuum.c; sourceTree = "<group>"; };
@@ -1510,6 +1511,7 @@
 		6066FBF0424E44167786D4595364FE2F /* pcache.c */ = {isa = PBXFileReference; includeInIndex = 1; name = pcache.c; path = src/pcache.c; sourceTree = "<group>"; };
 		60E6BE743D4487BF2DE71305DABA2CD4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		6103898C6E732363B1C53794599930AC /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
+		611616AE1CA264352D263E2C28EACEA8 /* PicDataSDK-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "PicDataSDK-xcframeworks.sh"; sourceTree = "<group>"; };
 		614B8A87ED50D13E228474248946623E /* WCTTable+Database.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "WCTTable+Database.h"; path = "objc/WCDB/interface/table/WCTTable+Database.h"; sourceTree = "<group>"; };
 		61992FB0DED5B74BD113A2B8D182AB26 /* constraint_table.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; name = constraint_table.hpp; path = objc/WCDB/abstract/constraint_table.hpp; sourceTree = "<group>"; };
 		619CB843A2C821BC2A283E02460E7020 /* UIImageView+HighlightedWebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+HighlightedWebCache.h"; path = "SDWebImage/Core/UIImageView+HighlightedWebCache.h"; sourceTree = "<group>"; };
@@ -1566,6 +1568,7 @@
 		6DD4D8A2AE093E80B142285302E893EB /* YBIBContainerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = YBIBContainerView.m; path = YBImageBrowser/Base/YBIBContainerView.m; sourceTree = "<group>"; };
 		6E2AB55E192E49D7B0B41C6C1349C33E /* SDWebImageDownloaderConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloaderConfig.m; path = SDWebImage/Core/SDWebImageDownloaderConfig.m; sourceTree = "<group>"; };
 		6E54CD356217CAC900C75B89E44526C2 /* MJFoundation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJFoundation.m; path = MJExtension/MJFoundation.m; sourceTree = "<group>"; };
+		6F00ED6496A27623B392B1D5DF312895 /* PicDataSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PicDataSDK.debug.xcconfig; sourceTree = "<group>"; };
 		6F61E03AC9BFC102B9A8938E51DEF7E1 /* column_index.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; name = column_index.hpp; path = objc/WCDB/abstract/column_index.hpp; sourceTree = "<group>"; };
 		6F61F3A601C95D28FB4F61A48126D76D /* SDImageIOAnimatedCoderInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageIOAnimatedCoderInternal.h; path = SDWebImage/Private/SDImageIOAnimatedCoderInternal.h; sourceTree = "<group>"; };
 		6FC6D98A23A6B576DDAF63D67F0A0E70 /* YBIBAuxiliaryViewHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = YBIBAuxiliaryViewHandler.m; path = YBImageBrowser/AuxiliaryView/YBIBAuxiliaryViewHandler.m; sourceTree = "<group>"; };
@@ -1587,6 +1590,7 @@
 		755A000C1D142EF78C3F3321C5882B04 /* NSDate+YYAdd.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSDate+YYAdd.h"; path = "YYCategories/Foundation/NSDate+YYAdd.h"; sourceTree = "<group>"; };
 		756532CEFC36A92BC998ACB3A0851B38 /* order.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; name = order.hpp; path = objc/WCDB/abstract/order.hpp; sourceTree = "<group>"; };
 		761F4ECAB2D9464C7F643CCC3B2F5782 /* NSObject+YYAddForARC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+YYAddForARC.h"; path = "YYCategories/Foundation/NSObject+YYAddForARC.h"; sourceTree = "<group>"; };
+		76205861FA17BFB4BE3E6C85A4A2BD66 /* PicDataSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PicDataSDK.release.xcconfig; sourceTree = "<group>"; };
 		76C5F3993A5CD507AA8007929E04CCE9 /* insert.c */ = {isa = PBXFileReference; includeInIndex = 1; name = insert.c; path = src/insert.c; sourceTree = "<group>"; };
 		76E00117C1FFC5E43493C199347F43C8 /* UIColor+YYAdd.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIColor+YYAdd.h"; path = "YYCategories/UIKit/UIColor+YYAdd.h"; sourceTree = "<group>"; };
 		76FA29CF91C407E112C0B0CEA6F746E3 /* WCTTokenizer+Apple.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = "WCTTokenizer+Apple.mm"; path = "objc/WCDB/interface/fts/WCTTokenizer+Apple.mm"; sourceTree = "<group>"; };
@@ -1675,7 +1679,6 @@
 		8DE91709FA7AB3D67DBF88E1BB723961 /* MJExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MJExtension.debug.xcconfig; sourceTree = "<group>"; };
 		8DFC285846C04EEEC74E61218B34156E /* MJRefreshFooter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJRefreshFooter.m; path = MJRefresh/Base/MJRefreshFooter.m; sourceTree = "<group>"; };
 		8E54A6EA63527E59D369C8344D76E54F /* WCTAnyProperty.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = WCTAnyProperty.mm; path = objc/WCDB/interface/orm/coding/WCTAnyProperty.mm; sourceTree = "<group>"; };
-		8E6069B2F575BD9939F4F35004A28280 /* PicDataSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = PicDataSDK.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		8E836A1C3462EFB970E939FE8BD6D7BA /* SDImageGraphics.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageGraphics.m; path = SDWebImage/Core/SDImageGraphics.m; sourceTree = "<group>"; };
 		8EEB31634304A9462235ABDFC221BAF4 /* malloc.c */ = {isa = PBXFileReference; includeInIndex = 1; name = malloc.c; path = src/malloc.c; sourceTree = "<group>"; };
 		8F55BBEDD78214A70DA6A90D5DAD37EE /* mz_strm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mz_strm.h; path = SSZipArchive/minizip/mz_strm.h; sourceTree = "<group>"; };
@@ -1700,7 +1703,6 @@
 		93F3CBAE008590A7146057EC997EA77E /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+GIF.h"; path = "SDWebImage/Core/UIImage+GIF.h"; sourceTree = "<group>"; };
 		943DB41BC00F5A0A567BE35E8458DE5A /* WCTDelete.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = WCTDelete.mm; path = objc/WCDB/interface/chaincall/WCTDelete.mm; sourceTree = "<group>"; };
 		94B065E6B7ED2C9E045A16CCC13FDC4C /* order_term.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = order_term.cpp; path = objc/WCDB/abstract/order_term.cpp; sourceTree = "<group>"; };
-		94E7BBAE108E9B19A31CA1FE6395817B /* PicDataSDKResource.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; path = PicDataSDKResource.bundle; sourceTree = "<group>"; };
 		95A093A1589BFC366B2708C1C97D7B8B /* thread_local.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; name = thread_local.hpp; path = objc/WCDB/util/thread_local.hpp; sourceTree = "<group>"; };
 		95C1EE43461EFFE0B37EFE564EBFA62F /* abstract.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = abstract.h; path = objc/WCDB/abstract/abstract.h; sourceTree = "<group>"; };
 		95C515BB107387EC52681236E4F52E9E /* IQKeyboardManager.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = IQKeyboardManager.modulemap; sourceTree = "<group>"; };
@@ -1926,6 +1928,7 @@
 		CB26C91B89EDCFB72AD88A74A1CB3A61 /* WCTCompatible.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WCTCompatible.h; path = objc/WCDB/interface/compatible/WCTCompatible.h; sourceTree = "<group>"; };
 		CB660A5748AFAF98E253831B696585AE /* SDFileAttributeHelper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDFileAttributeHelper.m; path = SDWebImage/Private/SDFileAttributeHelper.m; sourceTree = "<group>"; };
 		CB6F1D115D1C2EDCB43D4A24C51A5917 /* expr.c */ = {isa = PBXFileReference; includeInIndex = 1; name = expr.c; path = src/expr.c; sourceTree = "<group>"; };
+		CC189BB253527B1864F2160EE05A0B5C /* PicDataSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = PicDataSDK.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CC7FC1BE6F46EFB8D6E8376CBEF1DC64 /* hash.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = hash.h; path = src/hash.h; sourceTree = "<group>"; };
 		CCB3A5C832A9A180C1FF12C42EF72F32 /* SDWebImageDefine.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDefine.m; path = SDWebImage/Core/SDWebImageDefine.m; sourceTree = "<group>"; };
 		CCDA726B980DDF623C13B47C054E2234 /* YYImage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = YYImage.debug.xcconfig; sourceTree = "<group>"; };
@@ -1934,7 +1937,6 @@
 		CDC2CD01562D039A6066856D44B1DC39 /* WCDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = WCDB.release.xcconfig; sourceTree = "<group>"; };
 		CDD1583B086F2D6F77B6EE60F8F2D917 /* MJExtension-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJExtension-umbrella.h"; sourceTree = "<group>"; };
 		CE0AE3830694C9717BF10C930D96B85C /* WCTResult.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = WCTResult.mm; path = objc/WCDB/interface/orm/coding/WCTResult.mm; sourceTree = "<group>"; };
-		CE2C679DF2F0D0BD2B804DC52412D31B /* PicDataSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PicDataSDK.release.xcconfig; sourceTree = "<group>"; };
 		CE6DB97BD49915571155350F60B1FDE5 /* MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
 		CEB11CBBF5863817C7D1990BA8637F0F /* btmutex.c */ = {isa = PBXFileReference; includeInIndex = 1; name = btmutex.c; path = src/btmutex.c; sourceTree = "<group>"; };
 		CF3BBCBE2839B33A312741215C2BFD8A /* CALayer+YYAdd.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "CALayer+YYAdd.m"; path = "YYCategories/Quartz/CALayer+YYAdd.m"; sourceTree = "<group>"; };
@@ -1997,10 +1999,8 @@
 		DB43173AD7146CDEE40034814CD610BF /* hwtime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = hwtime.h; path = src/hwtime.h; sourceTree = "<group>"; };
 		DB63E6092E40AED3F7963E0E5DCF1A87 /* WCTDatabase+File.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "WCTDatabase+File.h"; path = "objc/WCDB/interface/database/WCTDatabase+File.h"; sourceTree = "<group>"; };
 		DC2DC3B8C5706DAAE11E909AF0C5E5F7 /* mz.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mz.h; path = SSZipArchive/minizip/mz.h; sourceTree = "<group>"; };
-		DCD9D484EB4363F58513526978EB52EE /* PicDataSDK.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = PicDataSDK.xcframework; sourceTree = "<group>"; };
 		DD064BB9B37CE5A3646E2DA7286208E9 /* SDWebImageOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageOperation.h; path = SDWebImage/Core/SDWebImageOperation.h; sourceTree = "<group>"; };
 		DD1B06906E8CD68068EABD17F2AD7EB0 /* fts3_aux.c */ = {isa = PBXFileReference; includeInIndex = 1; name = fts3_aux.c; path = ext/fts3/fts3_aux.c; sourceTree = "<group>"; };
-		DD2B6773567EB922CC026220F852D345 /* PicDataSDK-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "PicDataSDK-xcframeworks.sh"; sourceTree = "<group>"; };
 		DD5C7A37505A346205E5FB61C5A0988A /* WCTDatabase+Table.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = "WCTDatabase+Table.mm"; path = "objc/WCDB/interface/table/WCTDatabase+Table.mm"; sourceTree = "<group>"; };
 		DD76C7E5F85B16167991FFE78584E5BD /* mz_strm_zlib.c */ = {isa = PBXFileReference; includeInIndex = 1; name = mz_strm_zlib.c; path = SSZipArchive/minizip/mz_strm_zlib.c; sourceTree = "<group>"; };
 		DDBB7926A3AD26E20455745688B3EBC6 /* WCTMacroHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WCTMacroHelper.h; path = objc/WCDB/interface/orm/macro/WCTMacroHelper.h; sourceTree = "<group>"; };
@@ -2792,15 +2792,12 @@
 			path = WCDB;
 			sourceTree = "<group>";
 		};
-		2DB575B94F740DDB5F465825AA69F895 /* Support Files */ = {
+		2FD16EB444C684573232524B436D4AB8 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				DD2B6773567EB922CC026220F852D345 /* PicDataSDK-xcframeworks.sh */,
-				1A38EA9B8B87796DCFD3BD7EC0E27C1D /* PicDataSDK.debug.xcconfig */,
-				CE2C679DF2F0D0BD2B804DC52412D31B /* PicDataSDK.release.xcconfig */,
+				CC189BB253527B1864F2160EE05A0B5C /* PicDataSDK.podspec */,
 			);
-			name = "Support Files";
-			path = "../../../PicData/PicData/Pods/Target Support Files/PicDataSDK";
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		320ED3E37C585AFDDCAD555668CFA202 /* Core */ = {
@@ -2971,14 +2968,6 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		3F29398B21ADFFB239B33DBB9AC3235C /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				8E6069B2F575BD9939F4F35004A28280 /* PicDataSDK.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
 		401BF50FB840E2D8774041B42E16CAE7 /* YBImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -2989,28 +2978,12 @@
 			path = YBImageBrowser;
 			sourceTree = "<group>";
 		};
-		4053CB4583C108EE95D3F726E3EC3C45 /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B42376A0B9BE7ACB2DB31C17732DC88F /* PicDataSDK */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
 		45A80AC6F1BC443A7ED921331F9ED5ED /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				98E6A59C1E8B3AAE41C420F513BD8B7D /* MJRefresh.bundle */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		4DFFE7E5A69E0B85D0D1354EC0FC0E75 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DCD9D484EB4363F58513526978EB52EE /* PicDataSDK.xcframework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		4EAFB076B45014368B8CBFC6957C1F79 /* CWLateralSlide */ = {
@@ -3177,6 +3150,18 @@
 			path = WCDBOptimizedSQLCipher;
 			sourceTree = "<group>";
 		};
+		5254F57E6D311B96E001A1DA468E89EC /* PicDataSDK */ = {
+			isa = PBXGroup;
+			children = (
+				34902F0D95318C1C394B2E24928B855C /* PicDataSDKResource.bundle */,
+				5E7722BD61479F0C23AEB9C235277896 /* Frameworks */,
+				2FD16EB444C684573232524B436D4AB8 /* Pod */,
+				9D9359F705ABBBB6E208003EB3591D18 /* Support Files */,
+			);
+			name = PicDataSDK;
+			path = ../../../PicDataSDK/Products;
+			sourceTree = "<group>";
+		};
 		564D87E08E87876B72A3B1A92991D77B /* SSZipArchive */ = {
 			isa = PBXGroup;
 			children = (
@@ -3217,6 +3202,14 @@
 			);
 			name = SSZipArchive;
 			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		5E7722BD61479F0C23AEB9C235277896 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				182ACFB0D029EFFFE2C4E5CFE34D7945 /* PicDataSDK.xcframework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5F802B24C4102A6E4F4B18AA7E849F4B /* Products */ = {
@@ -3397,6 +3390,17 @@
 			path = SQLiteRepairKit;
 			sourceTree = "<group>";
 		};
+		9D9359F705ABBBB6E208003EB3591D18 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				611616AE1CA264352D263E2C28EACEA8 /* PicDataSDK-xcframeworks.sh */,
+				6F00ED6496A27623B392B1D5DF312895 /* PicDataSDK.debug.xcconfig */,
+				76205861FA17BFB4BE3E6C85A4A2BD66 /* PicDataSDK.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../PicData/PicData/Pods/Target Support Files/PicDataSDK";
+			sourceTree = "<group>";
+		};
 		A0C1C390C4F74C765F67D005A7BBBB08 /* YYImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -3482,18 +3486,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B42376A0B9BE7ACB2DB31C17732DC88F /* PicDataSDK */ = {
-			isa = PBXGroup;
-			children = (
-				94E7BBAE108E9B19A31CA1FE6395817B /* PicDataSDKResource.bundle */,
-				4DFFE7E5A69E0B85D0D1354EC0FC0E75 /* Frameworks */,
-				3F29398B21ADFFB239B33DBB9AC3235C /* Pod */,
-				2DB575B94F740DDB5F465825AA69F895 /* Support Files */,
-			);
-			name = PicDataSDK;
-			path = ../../../PicDataSDK/PicDataSDK/Products;
-			sourceTree = "<group>";
-		};
 		B4BC4C07FC276E3667DCAACC44724D92 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -3532,11 +3524,19 @@
 			path = "../Target Support Files/YYCategories";
 			sourceTree = "<group>";
 		};
+		C83D207DDDF11019094EFD46D0B5ACDF /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5254F57E6D311B96E001A1DA468E89EC /* PicDataSDK */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
 		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				4053CB4583C108EE95D3F726E3EC3C45 /* Development Pods */,
+				C83D207DDDF11019094EFD46D0B5ACDF /* Development Pods */,
 				AF05E25BC5214EAFD8E7781B8806C564 /* Frameworks */,
 				0A66F92432B161A044B7E703D8E8FF31 /* Pods */,
 				5F802B24C4102A6E4F4B18AA7E849F4B /* Products */,
@@ -6058,21 +6058,22 @@
 			};
 			name = Debug;
 		};
-		890C473E43184519768CD1046C920EBA /* Debug */ = {
+		8E1C5D348674D5EA64299BA4F8B3FECC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A38EA9B8B87796DCFD3BD7EC0E27C1D /* PicDataSDK.debug.xcconfig */;
+			baseConfigurationReference = 76205861FA17BFB4BE3E6C85A4A2BD66 /* PicDataSDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
 		9C400A267413BFCD066C12DBE405705A /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6489,23 +6490,6 @@
 			};
 			name = Release;
 		};
-		E2856499BC8F31A0527A7D7DD14C54EC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE2C679DF2F0D0BD2B804DC52412D31B /* PicDataSDK.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		E7ADFBFDA3433DE392A047B73093FC02 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4B47EECD0BEE62C342D3E57A351095B5 /* YYCategories.release.xcconfig */;
@@ -6609,6 +6593,22 @@
 			};
 			name = Debug;
 		};
+		F684BAD19D4F23935F1E02030382EB47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F00ED6496A27623B392B1D5DF312895 /* PicDataSDK.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -6624,8 +6624,8 @@
 		14E5986534D1752925904CB9B6F8C4B2 /* Build configuration list for PBXAggregateTarget "PicDataSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				890C473E43184519768CD1046C920EBA /* Debug */,
-				E2856499BC8F31A0527A7D7DD14C54EC /* Release */,
+				F684BAD19D4F23935F1E02030382EB47 /* Debug */,
+				8E1C5D348674D5EA64299BA4F8B3FECC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

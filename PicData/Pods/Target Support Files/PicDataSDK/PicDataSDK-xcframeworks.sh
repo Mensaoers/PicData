@@ -20,11 +20,11 @@ variant_for_slice()
   "PicDataSDK.xcframework/ios-arm64_armv7")
     echo ""
     ;;
-  "PicDataSDK.xcframework/ios-arm64_x86_64-maccatalyst")
-    echo "maccatalyst"
-    ;;
   "PicDataSDK.xcframework/ios-arm64_i386_x86_64-simulator")
     echo "simulator"
+    ;;
+  "PicDataSDK.xcframework/ios-arm64_x86_64-maccatalyst")
+    echo "maccatalyst"
     ;;
   esac
 }
@@ -35,11 +35,11 @@ archs_for_slice()
   "PicDataSDK.xcframework/ios-arm64_armv7")
     echo "arm64 armv7"
     ;;
-  "PicDataSDK.xcframework/ios-arm64_x86_64-maccatalyst")
-    echo "arm64 x86_64"
-    ;;
   "PicDataSDK.xcframework/ios-arm64_i386_x86_64-simulator")
     echo "arm64 i386 x86_64"
+    ;;
+  "PicDataSDK.xcframework/ios-arm64_x86_64-maccatalyst")
+    echo "arm64 x86_64"
     ;;
   esac
 }
@@ -123,5 +123,5 @@ install_xcframework() {
   echo "Copied $source to $destination"
 }
 
-install_xcframework "${PODS_ROOT}/../../../PicDataSDK/PicDataSDK/Products/PicDataSDK.xcframework" "PicDataSDK" "framework" "ios-arm64_armv7" "ios-arm64_x86_64-maccatalyst" "ios-arm64_i386_x86_64-simulator"
+install_xcframework "${PODS_ROOT}/../../../PicDataSDK/Products/PicDataSDK.xcframework" "PicDataSDK" "framework" "ios-arm64_armv7" "ios-arm64_i386_x86_64-simulator" "ios-arm64_x86_64-maccatalyst"
 

@@ -680,9 +680,17 @@
             if (nil == self.contentModel) {
                 // 进到列表中, 只需要更新这个类别下面所有的数据就好了
                 [PicContentTaskModel deleteFromTableWithSourceTitle:self.targetFilePath.lastPathComponent];
+                NSArray *tasks = [PicContentTaskModel queryTableWithSourceTitle:self.targetFilePath.lastPathComponent];
+                NSMutableArray *taskHrefs = [NSMutableArray array];
+                for (PicContentTaskModel *taskModel in tasks) {
+                    [taskHrefs addObject:taskModel.href];
+                }
+                [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": taskHrefs}];
+
             } else {
                 // 更新contentModel就好了
-                [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.title];
+                [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.href];
+                [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": @[self.contentModel.href ?: @""]}];
             }
 
             // [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
@@ -912,6 +920,7 @@
     browser.delegate = self;
     browser.dataSourceArray = self.imgsList;
     browser.currentPage = currentIndex;
+    browser.supportedOrientations = UIInterfaceOrientationMaskPortrait;
     // 只有一个保存操作的时候，可以直接右上角显示保存按钮
     PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
     browser.toolViewHandlers = @[handler];

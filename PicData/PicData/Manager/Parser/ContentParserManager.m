@@ -8,6 +8,7 @@
 
 #import "ContentParserManager.h"
 #import "PDDownloadManager.h"
+#import "ParseOperation.h"
 
 @interface ContentParserManager()
 
@@ -22,7 +23,21 @@ singleton_implementation(ContentParserManager)
 
 + (void)cancelAll {
     [ContentParserManager.sharedContentParserManager.queue cancelAllOperations];
-    [PDDownloadManager.sharedPDDownloadManager totalCancel];
+    [PDDownloadManager.sharedPDDownloadManager cancelAllDownloads];
+}
+
+- (void)cancelDownloadsByIdentifiers:(NSArray <NSString *>*)identifiers {
+    [self.queue setSuspended:YES];
+    for (ParseOperation *operation in self.queue.operations) {
+        if ([identifiers containsObject:operation.identifier]) {
+            [operation cancel];
+        }
+    }
+
+    [[PDDownloadManager sharedPDDownloadManager] cancelDownloadsByIdentifiers:identifiers];
+    [self.queue setSuspended:NO];
+
+    [ContentParserManager prepareToDoNextTask];
 }
 
 - (int)maxConcurrentTasksLimit {
@@ -46,7 +61,6 @@ singleton_implementation(ContentParserManager)
         NSString *targetPath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
         NSLog(@"taskModel filepath: %@", targetPath);
 
-        // 这里判断过, 那么就没必要重写这个insert方法
         [taskModel insertTable];
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameAddNewTask object:nil userInfo:@{@"contentModel": contentModel}];
         [ContentParserManager prepareToDoNextTask];
@@ -63,6 +77,7 @@ singleton_implementation(ContentParserManager)
 
     [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeCompleteATask:) name:NotificationNameCompleteDownTask object:nil];
     [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeFailedATask:) name:NotificationNameFailedDownTask object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:[ContentParserManager sharedContentParserManager] selector:@selector(receiveNoticeCancelTasks:) name:NotificationNameCancelDownTasks object:nil];
 }
 
 - (void)receiveNoticeCompleteATask:(NSNotification *)notification {
@@ -71,6 +86,11 @@ singleton_implementation(ContentParserManager)
 
 - (void)receiveNoticeFailedATask:(NSNotification *)notification {
     [ContentParserManager prepareToDoNextTask:YES];
+}
+
+- (void)receiveNoticeCancelTasks:(NSNotification *)notification {
+    NSArray *identifiers = notification.userInfo[@"identifiers"];
+    [self cancelDownloadsByIdentifiers:identifiers];
 }
 
 /// 查询接下来要开始的任务
@@ -124,75 +144,48 @@ singleton_implementation(ContentParserManager)
         [contentTaskModel updateTableWithStatus];
         [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameStartScaneTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
 
-        [queue addOperationWithBlock:^{
+//        //创建信号量并设置计数默认为0
+//        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+//        {
+//        // 模拟异步耗时操作
+//        dispatch_semaphore_signal(sema);
+//        }
+//        //若计数为0则一直等待
+//        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
 
-            //创建信号量并设置计数默认为0
-            dispatch_semaphore_t sema = dispatch_semaphore_create(0);
-            NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
-            // 网页请求获取一组套图, 创建下载任务
-            [ContentParserManager requestHtmlStringWithUrl:contentTaskModel.href targetHandle:targetHandle pageCount:1 picCount:0 WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:^{
+        NSFileHandle *targetHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
 
-                dispatch_semaphore_signal(sema);
-                // 我们需要做一个操作, 是让他继续下一个任务
-                [ContentParserManager prepareToDoNextTask];
-            }];
-            //若计数为0则一直等待
-            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-        }];
-    }
-}
+        ParseOperation *operation = [ParseOperation operationWithSourceModel:sourceModel contentTaskModel:contentTaskModel];
+        operation.middleWriteHandler = ^ (NSURL *currentURL, NSString *urls) {
+            NSError *writeError = nil;
+            [targetHandle seekToEndOfFile];
+            [targetHandle writeData:[urls dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
 
-/// 处理页面源码, 提取页面数据
-+ (void)requestHtmlStringWithUrl:(NSString *)url targetHandle:(NSFileHandle *)targetHandle pageCount:(int)pageCount picCount:(int)picCount WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel taskCompleteHandler:(void(^)(void))taskCompleteHandler {
-    // 错误-1, 网络部分错误
-    // 错误-2, 写入部分错误
-    if ([url containsString:@".html"]) {
-        NSURL *baseURL = [NSURL URLWithString:sourceModel.HOST_URL];
-
-        [PDRequest getWithURL:[NSURL URLWithString:url relativeToURL:baseURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-
-            NSString *nextUrl = @"";
-            int count = 0;
-            if (nil == error) {
-                // 获取字符串
-                NSString *content = [self getHtmlStringWithData:data sourceType:sourceModel.sourceType];
-
-                NSLog(@"第%d页, %@, 完成", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
-
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content nextUrl:url WithSourceModel:sourceModel ContentTaskModel:contentTaskModel picCount:picCount];
-                nextUrl = result[@"nextUrl"];
-
-                NSError *writeError = nil;
-                count = [result[@"count"] intValue];
-                [targetHandle seekToEndOfFile];
-                [targetHandle writeData:[[NSString stringWithFormat:@"\n%@", result[@"urls"]] dataUsingEncoding:NSUTF8StringEncoding] error:&writeError];
-
-                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTaskNewPage object:nil userInfo:@{@"contentModel": contentTaskModel}];
-                if (writeError) {
-                    NSLog(@"%@, 出现错误-2, %@", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, writeError);
-                }
-            } else {
-                NSLog(@"第%d页, %@, 出现错误-1, %@", pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTaskNewPage object:nil userInfo:@{@"contentModel": contentTaskModel}];
+            if (writeError) {
+                NSLog(@"%@, 出现错误-2, %@", currentURL.absoluteString, writeError);
             }
+        };
+        operation.taskCompleteHandler = ^ (int totalCount) {
 
-            if (![nextUrl containsString:@".html"]) {
-                [targetHandle closeFile];
-                NSLog(@"完成");
-                // 获取到最后一页一直到这一行, 都是同步运行, 所以下载肯定会晚于遍历结束
-                contentTaskModel.totalCount = picCount + count;
-                contentTaskModel.status = 2;
-                [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
-                // 遍历完成
-                if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
-                    contentTaskModel.status = 3;
-                }
-                [contentTaskModel updateTable];
-
-                PPIsBlockExecute(taskCompleteHandler)
-            } else {
-                [ContentParserManager requestHtmlStringWithUrl:nextUrl targetHandle:targetHandle pageCount:pageCount + 1 picCount:picCount + count WithSourceModel:sourceModel ContentTaskModel:contentTaskModel taskCompleteHandler:taskCompleteHandler];
+            [targetHandle closeFile];
+            // 获取到最后一页一直到这一行, 都是同步运行, 所以下载肯定会晚于遍历结束
+            contentTaskModel.totalCount = totalCount;
+            contentTaskModel.status = 2;
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameCompleteScaneTask object:nil userInfo:@{@"contentModel": contentTaskModel}];
+            // 遍历完成
+            if (contentTaskModel.totalCount > 0 && contentTaskModel.downloadedCount == contentTaskModel.totalCount) {
+                contentTaskModel.status = 3;
             }
-        }];
+            [contentTaskModel updateTable];
+
+            // 我们需要做一个操作, 是让他继续下一个任务
+            [ContentParserManager prepareToDoNextTask];
+        };
+        operation.identifier = contentTaskModel.href;
+        [queue addOperation:operation];
+
+        [ContentParserManager prepareToDoNextTask];
     }
 }
 

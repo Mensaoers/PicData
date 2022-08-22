@@ -10,6 +10,7 @@
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
 		331E994E289D6585001EC22E /* ParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 331E994D289D6585001EC22E /* ParseOperation.m */; };
+		331F4CD428B3905600A0EF5D /* NSString+Ex.m in Sources */ = {isa = PBXBuildFile; fileRef = 331F4CD328B3905600A0EF5D /* NSString+Ex.m */; };
 		33231B7B282AB924006340A7 /* PPStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33231B7A282AB924006340A7 /* PPStatusView.m */; };
 		3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3323205824ECB4A300FE5E33 /* PicBaseModel.mm */; };
 		3323206524ECE3D100FE5E33 /* PicRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3323206124ECE3D000FE5E33 /* PicRuleModel.m */; };
@@ -123,6 +124,8 @@
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
 		331E994C289D6585001EC22E /* ParseOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParseOperation.h; sourceTree = "<group>"; };
 		331E994D289D6585001EC22E /* ParseOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParseOperation.m; sourceTree = "<group>"; };
+		331F4CD228B3905600A0EF5D /* NSString+Ex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Ex.h"; sourceTree = "<group>"; };
+		331F4CD328B3905600A0EF5D /* NSString+Ex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Ex.m"; sourceTree = "<group>"; };
 		33231B79282AB924006340A7 /* PPStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPStatusView.h; sourceTree = "<group>"; };
 		33231B7A282AB924006340A7 /* PPStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPStatusView.m; sourceTree = "<group>"; };
 		3323205724ECB4A300FE5E33 /* PicBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicBaseModel.h; sourceTree = "<group>"; };
@@ -724,6 +727,8 @@
 				9DE95CBA244C3FDC00E31735 /* MBProgressHUD+LZPShow.m */,
 				9DE95CEC244C5FBC00E31735 /* UILabel+text.h */,
 				9DE95CED244C5FBC00E31735 /* UILabel+text.m */,
+				331F4CD228B3905600A0EF5D /* NSString+Ex.h */,
+				331F4CD328B3905600A0EF5D /* NSString+Ex.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1005,6 +1010,7 @@
 				33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */,
 				335849AB2841CA7500A5D9B3 /* ContentParserManager+Parser.m in Sources */,
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
+				331F4CD428B3905600A0EF5D /* NSString+Ex.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
 				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,

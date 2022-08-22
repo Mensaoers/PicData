@@ -570,11 +570,8 @@
             NSString *fileNameWithoutP = fileName.stringByDeletingPathExtension;
             if (fileNameWithoutP.length == 0) { continue; }
 
-            NSString *regex = @"(?<=-).*?(?=-)";
-            NSError *error;
-            NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
             // 对str字符串进行匹配
-            NSString *fileNameWithoutPAfter = [fileNameWithoutP substringWithRange:[regular firstMatchInString:fileNameWithoutP options:0 range:NSMakeRange(0, fileNameWithoutP.length)].range];
+            NSString *fileNameWithoutPAfter = [fileNameWithoutP splitStringWithLeadingString:@"-" trailingString:@"-" error:nil];
             if (fileNameWithoutPAfter.length == 0) {
                 continue;
             }
@@ -586,7 +583,6 @@
                 [fileManager removeItemAtPath:filePath error:nil];
                 continue;
             }
-
 
             NSString *afterPath = [dirPath stringByAppendingPathComponent:fileNameAfter];
 

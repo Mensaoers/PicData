@@ -103,20 +103,13 @@
 
                 subTitle = aE.text();
                 if ([href containsString:@"series-"]) {
-                    NSString *regex = @"(?<=series-).*?(?=.html)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                     // 对str字符串进行匹配
-                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    NSString *result = [href splitStringWithLeadingString:@"series-" trailingString:@".html" error:nil];
                     if (result.length > 0) {
                         subTitle = result;
                     }
                 } else if ([href containsString:@"model-"]) {
-                    NSString *regex = @"(?<=model-).*?(?=.html)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                    // 对str字符串进行匹配
-                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    NSString *result = [href splitStringWithLeadingString:@"model-" trailingString:@".html" error:nil];
                     if (result.length > 0) {
                         subTitle = result;
                     }
@@ -213,11 +206,8 @@
 
                 // 追加指定名称 提高唯一性
                 NSString *href = contentModel.href;
-                NSString *regex = @"(?<=/k/).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                 // 对str字符串进行匹配
-                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                href = [href splitStringWithLeadingString:@"/k/" trailingString:@".html" error:nil];
                 if (href.length > 0) {
                     contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
                 }
@@ -274,11 +264,8 @@
 
                 // 追加指定名称 提高唯一性
                 NSString *href = contentModel.href;
-                NSString *regex = @"(?<=/ku/).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                 // 对str字符串进行匹配
-                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                href = [href splitStringWithLeadingString:@"/ku/" trailingString:@".html" error:nil];
                 if (href.length > 0) {
                     contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
                 }
@@ -299,11 +286,8 @@
 
                 // 追加指定名称 提高唯一性
                 NSString *href = contentModel.href;
-                NSString *regex = @"(?<=/id-).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                 // 对str字符串进行匹配
-                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                href = [href splitStringWithLeadingString:@"/id-" trailingString:@".html" error:nil];
                 if (href.length > 0) {
                     contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, href];
                 }
@@ -654,12 +638,8 @@
                 NSString *title1 = titleE.text();
                 // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
                 if ([title1 containsString:@" | Page"]) {
-                    NSString *regex = @"(?<= Hit-x-Hot: ).*?(?= | Page)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                     // 对str字符串进行匹配
-                    NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
-                    title = title2;
+                    title = [title1 splitStringWithLeadingString:@" Hit-x-Hot: " trailingString:@" | Page" error:nil];
                 } else {
                     title = [title1 stringByReplacingOccurrencesOfString:@" Hit-x-Hot: " withString:@""];
                 }

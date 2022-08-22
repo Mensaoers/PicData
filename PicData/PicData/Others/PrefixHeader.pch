@@ -32,6 +32,7 @@
     #import "NSObject+ChangeUnicode.h"
     #import "UILabel+text.h"
     #import "UINavigationController+push.h"
+    #import "NSString+Ex.h""
     #import "OCGumbo+Query.h"
 
     #import "DatabaseManager.h"

@@ -10,4 +10,11 @@
 
 @implementation DetailViewModel
 
+- (instancetype)init {
+    if (self = [super init]) {
+        self.canUpdateTitle = YES;
+    }
+    return self;
+}
+
 @end

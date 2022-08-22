@@ -130,7 +130,7 @@
             NSString *content = [ContentParserManager getHtmlStringWithData:data sourceType:sourceModel.sourceType];
             NSLog(@"%@, 完成", [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-            NSString *title = [ContentParserManager parsePageForTitle:content sourceModel:sourceModel];
+            NSString *title = [ContentParserManager parsePageForTitle:content href:url sourceModel:sourceModel];
             if (title.length > 0) {
                 contentModel.title = title;
                 [contentModel updateTable];

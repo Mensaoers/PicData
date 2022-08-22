@@ -48,7 +48,7 @@
     if (nil == _detailModel) {
         _detailModel = [[DetailViewModel alloc] init];
     }
-                        return _detailModel;;
+    return _detailModel;
 }
 
 - (void)setContentModel:(PicContentModel *)contentModel {
@@ -222,14 +222,15 @@
     self.detailModel.nextUrl = self.detailModel.currentUrl;
 
     PDBlockSelf
-    [ContentParserManager parseDetailWithHtmlString:htmlString sourceModel:self.sourceModel preNextUrl:self.detailModel.nextUrl needSuggest:YES completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray, NSString * _Nullable contentTitle) {
+    [ContentParserManager parseDetailWithHtmlString:htmlString href:self.contentModel.href sourceModel:self.sourceModel preNextUrl:self.detailModel.nextUrl needSuggest:YES completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray, NSString * _Nullable contentTitle) {
 
         weakSelf.detailModel.contentImgsUrl = imageUrls;
         weakSelf.detailModel.nextUrl = nextPage;
         weakSelf.detailModel.suggesArray = suggestArray;
 
-        if (contentTitle.length > 0) {
+        if (contentTitle.length > 0 && weakSelf.detailModel.canUpdateTitle) {
             weakSelf.detailModel.detailTitle = contentTitle;
+            weakSelf.detailModel.canUpdateTitle = NO;
             [weakSelf updateContentTitle:weakSelf.detailModel.detailTitle];
         }
 

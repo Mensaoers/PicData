@@ -29,21 +29,24 @@
 
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
-    OCGumboElement *aE;
-    NSString *title;
+    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;;
+    NSString *title = aE.attr(@"title");
+    OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+    title = imgE.attr(@"alt");
     
     switch (sourceModel.sourceType) {
-        case 1:
-        case 2:
-        case 3:
-        case 5: {
-            aE = articleElement.QueryElement(@"a").firstObject;
-            title = aE.attr(@"title");
+        case 1: break;
+        case 2: break;
+        case 3: {
+            imgE = aE.QueryClass(@"xld").firstObject;
         }
             break;
+        case 5: break;
         case 8: {
+
             OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
             aE = divE.QueryElement(@"a").firstObject;
+            imgE = articleElement.QueryElement(@"img").firstObject;
             title = aE.text();
         }
             break;
@@ -52,26 +55,6 @@
     }
 
     NSString *href = aE.attr(@"href");
-
-    OCGumboElement *imgE;
-
-    switch (sourceModel.sourceType) {
-        case 1:
-        case 2:
-        case 5:
-            imgE = aE.QueryElement(@"img").firstObject;
-            title = imgE.attr(@"alt");
-            break;
-        case 3:
-            imgE = aE.QueryClass(@"xld").firstObject;
-            break;
-        case 8: {
-            imgE = articleElement.QueryElement(@"img").firstObject;
-        }
-            break;
-        default:
-            break;
-    }
 
     NSString *thumbnailUrl = imgE.attr(@"src");
 

@@ -577,6 +577,7 @@
             OCGumboElement *aEs = breadcrumbE.QueryElement(@"a").lastObject;
             title = aEs.text();
         }
+            break;
         default:
             break;
     }
@@ -588,6 +589,8 @@
 
 /// 封装补充随机名称的代码
 + (NSString *)updateCustomContentName:(NSString *)preContentTitle contentHref:(NSString *)contentHref sourceModel:(PicSourceModel *)sourceModel {
+
+    if (preContentTitle.length == 0) { return preContentTitle; }
 
     NSString *title = preContentTitle;
     NSString *href = contentHref;

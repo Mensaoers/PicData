@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DetailViewContentCell : UITableViewCell
 
+@property (nonatomic, assign) CGFloat targetImageWidth;
 @property (nonatomic, strong) UIImageView *conImgView;
 
 @property (nonatomic, strong) NSIndexPath *indexpath;

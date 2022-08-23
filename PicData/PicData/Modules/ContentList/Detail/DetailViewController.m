@@ -288,36 +288,43 @@
     }
 }
 
+- (void)shareThisContent_copy:(UIView *)sender {
+    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
+    NSURL *url = [NSURL URLWithString:self.contentModel.href relativeToURL:baseURL];
+    [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    }];
+}
+
+- (void)shareThisContent_folder:(PicContentTaskModel *)taskModel {
+    // 点击跳转到本地预览
+    PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+    if (nil == sourceModel) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
+        return;
+    }
+
+    LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
+    fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+    [self.navigationController pushViewController:fileListVC animated:YES];
+}
+
 - (void)shareThisContent:(UIButton *)sender {
     PDBlockSelf
     NSMutableArray *actions = [NSMutableArray array];
     [actions addObject:[UIAlertAction actionWithTitle:@"复制地址" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSURL *baseURL = [NSURL URLWithString:weakSelf.sourceModel.HOST_URL];
-        NSURL *url = [NSURL URLWithString:weakSelf.contentModel.href relativeToURL:baseURL];
-        [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-            NSLog(@"调用分享的应用id :%@", activityType);
-            if (completed) {
-                NSLog(@"分享成功!");
-            } else {
-                NSLog(@"分享失败!");
-            }
-        }];
+        [weakSelf shareThisContent_copy:sender];
     }]];
 
     PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithHref:self.contentModel.href] firstObject];
     if (taskModel) {
         [actions addObject:[UIAlertAction actionWithTitle:@"查看文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-            // 点击跳转到本地预览
-            PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
-            if (nil == sourceModel) {
-                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
-                return;
-            }
-
-            LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
-            fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
-            [weakSelf.navigationController pushViewController:fileListVC animated:YES];
+            [weakSelf shareThisContent_folder:taskModel];
         }]];
     }
 
@@ -566,6 +573,22 @@
             }];
         }];
         [actions addObject:viewContent];
+
+        NSMutableArray *contentActions = [NSMutableArray array];
+        UIAction *copyContentHref = [UIAction actionWithTitle:@"复制套图地址" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf shareThisContent_copy:weakSelf.view];
+        }];
+        [contentActions addObject:copyContentHref];
+        PicContentTaskModel *taskModel = [PicContentTaskModel queryTableWithHref:self.contentModel.href].firstObject;
+        if (taskModel != nil) {
+            UIAction *viewFolder = [UIAction actionWithTitle:@"查看文件夹" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+                [weakSelf shareThisContent_folder:taskModel];
+            }];
+            [contentActions addObject:viewFolder];
+        }
+        UIMenu *contentAction = [UIMenu menuWithTitle:@"你想对该套图做什么" children:contentActions];
+        [actions addObject:contentAction];
+
         return [UIMenu menuWithTitle:@"你想对该图片做什么?" children:actions];
     }];
     return configration;

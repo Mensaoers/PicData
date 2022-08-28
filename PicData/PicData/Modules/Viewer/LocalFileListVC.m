@@ -273,11 +273,6 @@
                 }
             }];
         }]];
-
-
-        [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self sharePDF:sender];
-        }]];
     }
 
     [actions addObject:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -290,6 +285,10 @@
                 NSLog(@"分享失败!");
             }
         }];
+    }]];
+
+    [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self sharePDF:sender];
     }]];
 
     [actions addObject:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

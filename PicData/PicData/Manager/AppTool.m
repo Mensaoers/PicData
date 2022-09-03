@@ -66,7 +66,7 @@ singleton_implementation(AppTool)
         NSError *jsError = nil;
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:NSJSONReadingMutableContainers error:&jsError];
         NSArray *array = dictionary[@"hosts"];
-        _searchKeys = dictionary[@"searchKeys"];
+        _searchKeys = [dictionary[@"searchKeys"] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         if (nil == jsError && array.count > 0) {
             NSArray *hostModels = [PicNetModel mj_objectArrayWithKeyValuesArray:array];
             NSMutableArray *hostModelsM = [NSMutableArray array];

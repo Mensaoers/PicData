@@ -29,7 +29,7 @@ static CGFloat progressWidth = 46;
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
 
-        PPStatusView *statusView = [[PPStatusView alloc] initWithFrame:CGRectMake(0, 0, progressWidth, progressWidth)];
+        PPStatusView *statusView = [[PPStatusView alloc] initWithFrame:CGRectMake(0, 0, progressWidth - 8, progressWidth - 8)];
         [self addSubview:statusView];
         self.statusView = statusView;
 

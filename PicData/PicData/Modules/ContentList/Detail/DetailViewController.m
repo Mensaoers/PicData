@@ -236,6 +236,7 @@
             NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
 
+                if (nil == weakSelf) { return; }
                 [weakSelf refreshMainView];
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
             });
@@ -426,6 +427,8 @@
     } else {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存成功"];
     }
+
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

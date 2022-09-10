@@ -167,8 +167,6 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
 
-#if TARGET_OS_MACCATALYST
-
     if (self.view.mj_w == self.lastWidth) { return; }
     self.lastWidth = self.view.mj_w;
 
@@ -176,7 +174,6 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resizeMainView) object:nil];
     [self performSelector:@selector(resizeMainView) afterDelay:0.5];
 
-#endif
 }
 
 - (void)resizeMainView {

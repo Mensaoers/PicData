@@ -32,16 +32,24 @@
     OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;;
     NSString *title = aE.attr(@"title");
     OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
-    title = imgE.attr(@"alt");
-    
+
     switch (sourceModel.sourceType) {
-        case 1: break;
-        case 2: break;
+        case 1: {
+            title = imgE.attr(@"alt");
+        }
+            break;
+        case 2: {
+            title = imgE.attr(@"alt");
+        }
+            break;
         case 3: {
             imgE = aE.QueryClass(@"xld").firstObject;
         }
             break;
-        case 5: break;
+        case 5: {
+            title = imgE.attr(@"alt");
+        }
+            break;
         case 8: {
             OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
             aE = divE.QueryElement(@"a").firstObject;

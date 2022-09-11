@@ -273,11 +273,6 @@
                 }
             }];
         }]];
-
-
-        [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self sharePDF:sender];
-        }]];
     }
 
     [actions addObject:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -290,6 +285,10 @@
                 NSLog(@"分享失败!");
             }
         }];
+    }]];
+
+    [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self sharePDF:sender];
     }]];
 
     [actions addObject:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -570,11 +569,8 @@
             NSString *fileNameWithoutP = fileName.stringByDeletingPathExtension;
             if (fileNameWithoutP.length == 0) { continue; }
 
-            NSString *regex = @"(?<=-).*?(?=-)";
-            NSError *error;
-            NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
             // 对str字符串进行匹配
-            NSString *fileNameWithoutPAfter = [fileNameWithoutP substringWithRange:[regular firstMatchInString:fileNameWithoutP options:0 range:NSMakeRange(0, fileNameWithoutP.length)].range];
+            NSString *fileNameWithoutPAfter = [fileNameWithoutP splitStringWithLeadingString:@"-" trailingString:@"-" error:nil];
             if (fileNameWithoutPAfter.length == 0) {
                 continue;
             }
@@ -586,7 +582,6 @@
                 [fileManager removeItemAtPath:filePath error:nil];
                 continue;
             }
-
 
             NSString *afterPath = [dirPath stringByAppendingPathComponent:fileNameAfter];
 
@@ -689,7 +684,7 @@
 
             } else {
                 // 更新contentModel就好了
-                [PicContentTaskModel deleteFromTableWithTitle:self.contentModel.href];
+                [PicContentTaskModel deleteFromTableWithHref:self.contentModel.href];
                 [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": @[self.contentModel.href ?: @""]}];
             }
 

@@ -16,7 +16,7 @@
 @implementation BaseViewController
 
 - (void)dealloc {
-    NSLog(@"%s 被释放了?", __func__);
+    NSLog(@"%@ dealloc 被释放了?", NSStringFromClass(self.class));
 }
 
 - (void)viewDidLoad {

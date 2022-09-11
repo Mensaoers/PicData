@@ -10,6 +10,8 @@
 
 @interface DetailViewContentCell()
 
+@property (nonatomic, assign) CGSize lastSize;
+
 @end
 
 @implementation DetailViewContentCell
@@ -40,6 +42,9 @@
 
 - (void)setUrl:(NSString *)url {
     if ([url isEqualToString:_url]) {
+        if (fabs(self.targetImageWidth - self.lastSize.width) >= 4) {
+            [self updateImageViewSize:self.conImgView.image.size];
+        }
         return;
     }
     _url = url;
@@ -47,12 +52,19 @@
     [self.conImgView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (nil == error) {
             CGSize imageSize = image.size;
-            CGFloat height = imageSize.height * weakSelf.conImgView.mj_w / imageSize.width;
-            if (weakSelf.updateCellHeightBlock) {
-                weakSelf.updateCellHeightBlock(weakSelf.indexpath, height + 9);
-            }
+            [weakSelf updateImageViewSize:imageSize];
         }
     }];
+}
+
+- (void)updateImageViewSize:(CGSize)imageSize {
+
+    CGFloat height = imageSize.height * self.targetImageWidth / imageSize.width;
+    self.lastSize = CGSizeMake(self.targetImageWidth, height);
+
+    if (self.updateCellHeightBlock) {
+        self.updateCellHeightBlock(self.indexpath, height + 9);
+    }
 }
 
 @end

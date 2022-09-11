@@ -21,7 +21,7 @@
 }
 
 - (void)setSearchKeys:(NSArray<NSString *> *)searchKeys {
-    _searchKeys = [searchKeys sortedArrayUsingSelector:@selector(compare:)];
+    _searchKeys = [searchKeys sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 }
 
 @end

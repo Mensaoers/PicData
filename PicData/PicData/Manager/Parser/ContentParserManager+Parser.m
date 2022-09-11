@@ -29,49 +29,40 @@
 
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
-    OCGumboElement *aE;
-    NSString *title;
-    
+    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;;
+    NSString *title = aE.attr(@"title");
+    OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+
     switch (sourceModel.sourceType) {
-        case 1:
-        case 2:
-        case 3:
+        case 1: {
+            title = imgE.attr(@"alt");
+        }
+            break;
+        case 2: {
+            title = imgE.attr(@"alt");
+        }
+            break;
+        case 3: {
+            imgE = aE.QueryClass(@"xld").firstObject;
+        }
+            break;
         case 5: {
-            aE = articleElement.QueryElement(@"a").firstObject;
-            title = aE.attr(@"title");
+            title = imgE.attr(@"alt");
         }
             break;
         case 8: {
             OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
             aE = divE.QueryElement(@"a").firstObject;
+            imgE = articleElement.QueryElement(@"img").firstObject;
             title = aE.text();
         }
             break;
         default:
             break;
     }
-
     NSString *href = aE.attr(@"href");
 
-    OCGumboElement *imgE;
-
-    switch (sourceModel.sourceType) {
-        case 1:
-        case 2:
-        case 5:
-            imgE = aE.QueryElement(@"img").firstObject;
-            title = imgE.attr(@"alt");
-            break;
-        case 3:
-            imgE = aE.QueryClass(@"xld").firstObject;
-            break;
-        case 8: {
-            imgE = articleElement.QueryElement(@"img").firstObject;
-        }
-            break;
-        default:
-            break;
-    }
+    title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
 
     NSString *thumbnailUrl = imgE.attr(@"src");
 
@@ -120,20 +111,13 @@
 
                 subTitle = aE.text();
                 if ([href containsString:@"series-"]) {
-                    NSString *regex = @"(?<=series-).*?(?=.html)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                     // 对str字符串进行匹配
-                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    NSString *result = [href splitStringWithLeadingString:@"series-" trailingString:@".html" error:nil];
                     if (result.length > 0) {
                         subTitle = result;
                     }
                 } else if ([href containsString:@"model-"]) {
-                    NSString *regex = @"(?<=model-).*?(?=.html)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                    // 对str字符串进行匹配
-                    NSString *result = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
+                    NSString *result = [href splitStringWithLeadingString:@"model-" trailingString:@".html" error:nil];
                     if (result.length > 0) {
                         subTitle = result;
                     }
@@ -211,127 +195,47 @@
 + (NSArray<PicContentModel *> *)parseContentListWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
 
     NSMutableArray *articleContents = [NSMutableArray array];
+    OCQueryObject *articleEs;
 
     switch (sourceModel.sourceType) {
         case 1: {
             OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
             if(nil == listDiv) {return @[];}
-            OCQueryObject *articleEs = listDiv.QueryClass(@"post");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
-                NSString *title = contentModel.title;
-                title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
-                title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
-                contentModel.title = title;
-
-                // 追加指定名称 提高唯一性
-                NSString *href = contentModel.href;
-                NSString *regex = @"(?<=/k/).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                // 对str字符串进行匹配
-                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
-                if (href.length > 0) {
-                    contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
-                }
-
-                [contentModel insertTable];
-                [articleContents addObject:contentModel];
-            }
+            articleEs = listDiv.QueryClass(@"post");
         }
             break;
         case 2: {
             OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryElement(@"li");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                [contentModel insertTable];
-                [articleContents addObject:contentModel];
-            }
+            articleEs = listDiv.QueryElement(@"li");
         }
             break;
         case 3: {
             OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                // 追加指定名称 提高唯一性
-                NSString *identifier = [contentModel.href.lastPathComponent stringByDeletingPathExtension];
-                contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, identifier];
-
-                [contentModel insertTable];
-                [articleContents addObject:contentModel];
-            }
+            articleEs = listDiv.QueryClass(@"thcovering-video");
         }
             break;
         case 5: {
             OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
             if(nil == listDiv) {return @[];}
-            OCQueryObject *articleEs = listDiv.QueryClass(@"piece");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
-                NSString *title = contentModel.title;
-                title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
-                title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
-                contentModel.title = title;
-
-                // 追加指定名称 提高唯一性
-                NSString *href = contentModel.href;
-                NSString *regex = @"(?<=/ku/).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                // 对str字符串进行匹配
-                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
-                if (href.length > 0) {
-                    contentModel.title = [[NSString stringWithFormat:@"%@ %@", contentModel.title, href] stringByReplacingOccurrencesOfString:@"/" withString:@""];
-                }
-
-                [contentModel insertTable];
-                [articleContents addObject:contentModel];
-            }
+            articleEs = listDiv.QueryClass(@"piece");
         }
             break;
         case 8: {
             OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
             if(nil == listDiv) {return @[];}
-            OCQueryObject *articleEs = listDiv.QueryClass(@"item");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                // 追加指定名称 提高唯一性
-                NSString *href = contentModel.href;
-                NSString *regex = @"(?<=/id-).*?(?=.html)";
-                NSError *error;
-                NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
-                // 对str字符串进行匹配
-                href = [href substringWithRange:[regular firstMatchInString:href options:0 range:NSMakeRange(0, href.length)].range];
-                if (href.length > 0) {
-                    contentModel.title = [NSString stringWithFormat:@"%@ %@", contentModel.title, href];
-                }
-
-                [contentModel insertTable];
-                [articleContents addObject:contentModel];
-            }
+            articleEs = listDiv.QueryClass(@"item");
         }
             break;
         default:
             break;
+    }
+
+    for (OCGumboElement *articleE in articleEs) {
+
+        PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+        [contentModel insertTable];
+        [articleContents addObject:contentModel];
     }
 
     return [articleContents copy];
@@ -431,7 +335,7 @@
     PPIsBlockExecute(completeHandler, results, nextPageURL)
 }
 
-+ (void)parseDetailWithHtmlString:(NSString *)htmlString sourceModel:(PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void (^)(NSArray<NSString *> * _Nonnull, NSString * _Nonnull, NSArray<PicContentModel *> * _Nullable, NSString * _Nullable))completeHandler {
++ (void)parseDetailWithHtmlString:(NSString *)htmlString href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void (^)(NSArray<NSString *> * _Nonnull, NSString * _Nonnull, NSArray<PicContentModel *> * _Nullable, NSString * _Nullable))completeHandler {
 
     if (htmlString.length == 0) {
         PPIsBlockExecute(completeHandler, @[], @"", @[], @"");
@@ -568,7 +472,7 @@
         nextPage = @"";
     }
 
-    NSString *contentTitle = [self parsePageForTitleWithDocument:document sourceModel:sourceModel];
+    NSString *contentTitle = [self parsePageForTitleWithDocument:document href:href sourceModel:sourceModel];
 
     if (!needSuggest) {
         PPIsBlockExecute(completeHandler, urls, nextPage, suggesM, contentTitle);
@@ -648,22 +552,13 @@
 
 }
 
-+ (NSString *)parsePageForTitleWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
++ (NSString *)parsePageForTitleWithDocument:(OCGumboDocument *)document href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel {
 
     NSString *title = @"";
 
     switch (sourceModel.sourceType) {
-//        case 1: {
-//            OCGumboElement *divE = document.QueryClass(@"Title9").firstObject;
-//            OCGumboElement *h9E = divE.childNodes.firstObject;
-//            title = h9E.text();
-//        }
-//            break;
-//        case 2: {
-//            OCGumboElement *h1E = document.QueryClass(@"articleV4Tit").firstObject;
-//            title = h1E.text();
-//        }
-//            break;
+        case 1: break;
+        case 2: break;
         case 3: {
             OCGumboElement *headE = document.QueryElement(@"head").firstObject;
             OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
@@ -671,16 +566,11 @@
                 NSString *title1 = titleE.text();
                 // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
                 if ([title1 containsString:@" | Page"]) {
-                    NSString *regex = @"(?<= Hit-x-Hot: ).*?(?= | Page)";
-                    NSError *error;
-                    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:&error];
                     // 对str字符串进行匹配
-                    NSString *title2 = [title1 substringWithRange:[regular firstMatchInString:title1 options:0 range:NSMakeRange(0, title1.length)].range];
-                    title = title2;
+                    title = [title1 splitStringWithLeadingString:@" Hit-x-Hot: " trailingString:@" | Page" error:nil];
                 } else {
                     title = [title1 stringByReplacingOccurrencesOfString:@" Hit-x-Hot: " withString:@""];
                 }
-
             }
         }
             break;
@@ -695,20 +585,80 @@
             OCGumboElement *aEs = breadcrumbE.QueryElement(@"a").lastObject;
             title = aEs.text();
         }
+            break;
         default:
             break;
     }
 
+    title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
+
     return title;
 }
 
-+ (NSString *)parsePageForTitle:(NSString *)htmlString sourceModel:(PicSourceModel *)sourceModel {
+/// 封装补充随机名称的代码
++ (NSString *)updateCustomContentName:(NSString *)preContentTitle contentHref:(NSString *)contentHref sourceModel:(PicSourceModel *)sourceModel {
+
+    if (preContentTitle.length == 0) { return preContentTitle; }
+
+    NSString *title = preContentTitle;
+    NSString *href = contentHref;
+
+    switch (sourceModel.sourceType) {
+        case 1: {
+            // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
+            title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
+            title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
+            // 追加指定名称 提高唯一性
+            // 对str字符串进行匹配
+            NSString *identifier = [href splitStringWithLeadingString:@"/k/" trailingString:@".html" error:nil];
+            if (identifier.length > 0) {
+                title = [[NSString stringWithFormat:@"%@ %@", title, identifier] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+            }
+        }
+            break;
+        case 2: break;
+        case 3: {
+            // 追加指定名称 提高唯一性
+            NSString *identifier = [href.lastPathComponent stringByDeletingPathExtension];
+            title = [NSString stringWithFormat:@"%@ %@", title, identifier];
+        }
+            break;
+        case 4: break;
+        case 5: {
+            // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
+            title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
+            title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
+            // 追加指定名称 提高唯一性
+            // 对str字符串进行匹配
+            NSString *identifier = [href splitStringWithLeadingString:@"/ku/" trailingString:@".html" error:nil];
+            if (identifier.length > 0) {
+                title = [[NSString stringWithFormat:@"%@ %@", title, identifier] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+            }
+        }
+            break;
+        case 8: {
+            // 追加指定名称 提高唯一性
+            // 对str字符串进行匹配
+            NSString *identifier = [href splitStringWithLeadingString:@"/id-" trailingString:@".html" error:nil];
+            if (identifier.length > 0) {
+                title = [NSString stringWithFormat:@"%@ %@", title, identifier];
+            }
+        }
+            break;
+
+        default:
+            break;
+    }
+    return title;
+}
+
++ (NSString *)parsePageForTitle:(NSString *)htmlString href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel {
 
     NSString *title = @"";
     if (htmlString.length > 0) {
 
         OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-        title = [self parsePageForTitleWithDocument:document sourceModel:sourceModel];
+        title = [self parsePageForTitleWithDocument:document href: href sourceModel:sourceModel];
     }
 
     return title ?: @"";

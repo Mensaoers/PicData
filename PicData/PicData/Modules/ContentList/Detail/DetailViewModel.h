@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *suggesTitle;
 @property (nonatomic, strong) NSArray *suggesArray;
 
+/// Default is YES. Only can set one time;
+@property (nonatomic, assign) BOOL canUpdateTitle;
 
 @end
 

@@ -46,7 +46,7 @@
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.numberOfLines = 3;
-        titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
         titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.textColor = pdColor(63, 63, 63, 1);
         [bgView addSubview:titleLabel];
@@ -54,29 +54,24 @@
         
         [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(2);
-            make.right.mas_equalTo(-35);
+            make.right.mas_equalTo(-2);
             make.top.equalTo(thumbnailIV.mas_bottom).with.offset(2);
             make.bottom.mas_equalTo(-2);
         }];
-        
-        UIView *cView = [[UIView alloc] init];
-        [bgView addSubview:cView];
-        
-        [cView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(titleLabel.mas_right);
-            make.right.mas_equalTo(0);
-            make.top.bottom.equalTo(titleLabel);
-        }];
+
+        [self.contentView layoutIfNeeded];
         
         UIButton *downBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         [downBtn setImage:[[UIImage imageNamed:@"download"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
         [downBtn addTarget:self action:@selector(downBtnClickAction:) forControlEvents:UIControlEventTouchUpInside];
+        downBtn.layer.cornerRadius = titleLabel.mj_h * 0.5;
+        downBtn.backgroundColor = pdColor(222, 222, 222, 0.5);
         [bgView addSubview:downBtn];
         
         [downBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(0);
             make.top.bottom.equalTo(titleLabel);
             make.width.equalTo(downBtn.mas_height);
-            make.centerX.equalTo(cView);
         }];
         
         self.contentView.layer.shadowColor = [UIColor blackColor].CGColor;//shadowColor阴影颜色

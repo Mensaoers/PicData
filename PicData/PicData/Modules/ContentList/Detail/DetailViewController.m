@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) NSMutableDictionary *heightDic;
 
+@property (nonatomic, assign) CGFloat lastWidth;
+
 @end
 
 @implementation DetailViewController
@@ -48,7 +50,7 @@
     if (nil == _detailModel) {
         _detailModel = [[DetailViewModel alloc] init];
     }
-                        return _detailModel;;
+    return _detailModel;
 }
 
 - (void)setContentModel:(PicContentModel *)contentModel {
@@ -162,6 +164,27 @@
     }
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    if (self.view.mj_w == self.lastWidth) { return; }
+    self.lastWidth = self.view.mj_w;
+
+    // 方法重置, 在mac端拖动界面大小之后, 刷新tag列表, 重新布局
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resizeMainView) object:nil];
+    [self performSelector:@selector(resizeMainView) afterDelay:0.5];
+
+}
+
+- (void)resizeMainView {
+
+    NSIndexPath *indexPath = self.tableView.indexPathsForVisibleRows.firstObject;
+    if (indexPath == nil) { return; }
+
+    [self.tableView reloadData];
+
+}
+
 #pragma mark - data
 
 - (void)loadLastPageDetailData {
@@ -210,6 +233,7 @@
             NSLog(@"获取%@数据错误:%@", weakSelf.sourceModel.url,  error);
             dispatch_async(dispatch_get_main_queue(), ^{
 
+                if (nil == weakSelf) { return; }
                 [weakSelf refreshMainView];
                 [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"获取数据失败"];
             });
@@ -222,14 +246,15 @@
     self.detailModel.nextUrl = self.detailModel.currentUrl;
 
     PDBlockSelf
-    [ContentParserManager parseDetailWithHtmlString:htmlString sourceModel:self.sourceModel preNextUrl:self.detailModel.nextUrl needSuggest:YES completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray, NSString * _Nullable contentTitle) {
+    [ContentParserManager parseDetailWithHtmlString:htmlString href:self.contentModel.href sourceModel:self.sourceModel preNextUrl:self.detailModel.nextUrl needSuggest:YES completeHandler:^(NSArray<NSString *> * _Nonnull imageUrls, NSString * _Nonnull nextPage, NSArray<PicContentModel *> * _Nullable suggestArray, NSString * _Nullable contentTitle) {
 
         weakSelf.detailModel.contentImgsUrl = imageUrls;
         weakSelf.detailModel.nextUrl = nextPage;
         weakSelf.detailModel.suggesArray = suggestArray;
 
-        if (contentTitle.length > 0) {
+        if (contentTitle.length > 0 && weakSelf.detailModel.canUpdateTitle) {
             weakSelf.detailModel.detailTitle = contentTitle;
+            weakSelf.detailModel.canUpdateTitle = NO;
             [weakSelf updateContentTitle:weakSelf.detailModel.detailTitle];
         }
 
@@ -261,36 +286,43 @@
     }
 }
 
+- (void)shareThisContent_copy:(UIView *)sender {
+    NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
+    NSURL *url = [NSURL URLWithString:self.contentModel.href relativeToURL:baseURL];
+    [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        NSLog(@"调用分享的应用id :%@", activityType);
+        if (completed) {
+            NSLog(@"分享成功!");
+        } else {
+            NSLog(@"分享失败!");
+        }
+    }];
+}
+
+- (void)shareThisContent_folder:(PicContentTaskModel *)taskModel {
+    // 点击跳转到本地预览
+    PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+    if (nil == sourceModel) {
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
+        return;
+    }
+
+    LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
+    fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+    [self.navigationController pushViewController:fileListVC animated:YES];
+}
+
 - (void)shareThisContent:(UIButton *)sender {
     PDBlockSelf
     NSMutableArray *actions = [NSMutableArray array];
     [actions addObject:[UIAlertAction actionWithTitle:@"复制地址" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSURL *baseURL = [NSURL URLWithString:weakSelf.sourceModel.HOST_URL];
-        NSURL *url = [NSURL URLWithString:weakSelf.contentModel.href relativeToURL:baseURL];
-        [AppTool shareFileWithURLs:@[url] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-            NSLog(@"调用分享的应用id :%@", activityType);
-            if (completed) {
-                NSLog(@"分享成功!");
-            } else {
-                NSLog(@"分享失败!");
-            }
-        }];
+        [weakSelf shareThisContent_copy:sender];
     }]];
 
     PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithHref:self.contentModel.href] firstObject];
     if (taskModel) {
         [actions addObject:[UIAlertAction actionWithTitle:@"查看文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-            // 点击跳转到本地预览
-            PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
-            if (nil == sourceModel) {
-                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"未找到套图分类, 请到文件列表手动查看"];
-                return;
-            }
-
-            LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
-            fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
-            [weakSelf.navigationController pushViewController:fileListVC animated:YES];
+            [weakSelf shareThisContent_folder:taskModel];
         }]];
     }
 
@@ -330,6 +362,7 @@
             }
 
             cell.indexpath = indexPath;
+            cell.targetImageWidth = self.tableView.mj_w - 10;
             cell.url = self.detailModel.contentImgsUrl[indexPath.row];
             PDBlockSelf
             cell.updateCellHeightBlock = ^(NSIndexPath * _Nonnull indexPath_, CGFloat height) {
@@ -391,6 +424,8 @@
     } else {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存成功"];
     }
+
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -538,6 +573,22 @@
             }];
         }];
         [actions addObject:viewContent];
+
+        NSMutableArray *contentActions = [NSMutableArray array];
+        UIAction *copyContentHref = [UIAction actionWithTitle:@"复制套图地址" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf shareThisContent_copy:weakSelf.view];
+        }];
+        [contentActions addObject:copyContentHref];
+        PicContentTaskModel *taskModel = [PicContentTaskModel queryTableWithHref:self.contentModel.href].firstObject;
+        if (taskModel != nil) {
+            UIAction *viewFolder = [UIAction actionWithTitle:@"查看文件夹" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+                [weakSelf shareThisContent_folder:taskModel];
+            }];
+            [contentActions addObject:viewFolder];
+        }
+        UIMenu *contentAction = [UIMenu menuWithTitle:@"你想对该套图做什么" children:contentActions];
+        [actions addObject:contentAction];
+
         return [UIMenu menuWithTitle:@"你想对该图片做什么?" children:actions];
     }];
     return configration;

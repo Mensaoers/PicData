@@ -80,6 +80,7 @@
         [weakSelf loadAllTags];
     };
     CGFloat distance = MIN(self.view.mj_w * 0.75, 400);
+    hostVC.targetWidth = distance;
     CWLateralSlideConfiguration *configuration = [CWLateralSlideConfiguration configurationWithDistance:distance maskAlpha:0.4 scaleY:1.0 direction:CWDrawerTransitionFromLeft backImage:nil];
     [self cw_showDrawerViewController:hostVC animationType:CWDrawerAnimationTypeDefault configuration:configuration];
 }

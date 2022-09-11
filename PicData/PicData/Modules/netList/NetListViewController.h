@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NetListViewController : BaseViewController
 
+@property (nonatomic, assign) CGFloat targetWidth;
 @property (nonatomic, copy) void(^refreshBlock)(void);
 
 @end

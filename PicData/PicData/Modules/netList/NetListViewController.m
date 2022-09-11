@@ -61,7 +61,7 @@
 
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.topMargin.bottomMargin.mas_equalTo(0);
-        make.width.equalTo(self.view.mas_width).multipliedBy(0.75);
+        make.width.mas_equalTo(self.targetWidth > 0 ? self.targetWidth : 300);
     }];
 }
 

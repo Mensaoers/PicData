@@ -818,6 +818,7 @@
 				330F778B25DD26A100CD38FD /* Bugly */,
 				335338992723277D00D18EDE /* Embed PlugIns */,
 				BCCDD2C1CF0042C23D12E5C7 /* [CP] Copy Pods Resources */,
+				33E6B1EF28CD879000EF0E14 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -910,6 +911,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    ${SRCROOT}/BuglydSYMUploader/dSYMUpload.sh\nfi\n";
+		};
+		33E6B1EF28CD879000EF0E14 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxcrun agvtool next-version -all\n\n";
 		};
 		B2F266D8A1C5331D291E3DFA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

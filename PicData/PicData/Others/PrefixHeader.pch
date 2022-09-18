@@ -44,6 +44,7 @@
     #import "PDDownloadManager.h"
     #import "PicClassModel.h"
     #import "ContentParserManager+Parser.h"
+    #import "AppInfoModel.h"
     #import "PDRequest.h"
     #import "AddNetTaskVC.h"
     #import "DetailViewController.h"

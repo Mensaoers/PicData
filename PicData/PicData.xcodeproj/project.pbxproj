@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		330FDE7F28D7460B00FEDEEE /* AppInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */; };
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
 		331E994E289D6585001EC22E /* ParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 331E994D289D6585001EC22E /* ParseOperation.m */; };
@@ -119,6 +120,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		330FDE7D28D7460B00FEDEEE /* AppInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInfoModel.h; sourceTree = "<group>"; };
+		330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppInfoModel.m; sourceTree = "<group>"; };
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
@@ -752,6 +755,8 @@
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
 				33E640532810122700E763B6 /* PicNet.json */,
+				330FDE7D28D7460B00FEDEEE /* AppInfoModel.h */,
+				330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1014,6 +1019,7 @@
 				33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */,
 				9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */,
 				332D014226FD845F00E3F387 /* TKGestureLockView.m in Sources */,
+				330FDE7F28D7460B00FEDEEE /* AppInfoModel.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */,
@@ -1202,7 +1208,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				ENABLE_BITCODE = NO;
@@ -1299,7 +1305,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				ENABLE_BITCODE = NO;

@@ -27,4 +27,7 @@
 
 #define PPIsBlockExecute(block, ...) if (block) { block(__VA_ARGS__); };
 
+#define KAppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
+#define KAppVersionBuild [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
+
 #endif /* Config_h */

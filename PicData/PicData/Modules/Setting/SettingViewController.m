@@ -89,7 +89,7 @@
     // 不用检查
 #if !TARGET_OS_MACCATALYST
     // version
-    [operationModels addObject:[SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"]];
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"检查更新" value:KAppVersion func:@"checkNewVersion:"]];
     if ([[TKGestureLockManager sharedInstance] checkGettureLockNeeded]) {
         [operationModels addObject:[SettingOperationModel ModelWithName:@"关闭手势锁屏" value:@"" func:@"hideGesture:"]];
     } else {

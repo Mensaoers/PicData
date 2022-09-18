@@ -154,12 +154,22 @@ singleton_implementation(AppTool)
      *  所以我们新建一个临时的window, 设置一个空白的控制器tmpViewController
      *  用这个临时控制器去弹出分享视图activityVC
      */
-    UIWindow *tmpWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    UIViewController *topRootViewController = [[UIViewController alloc] init];
-    topRootViewController.view.backgroundColor = [UIColor clearColor];
-        tmpWindow.windowLevel = UIWindowLevelAlert - 1;
-        tmpWindow.rootViewController = topRootViewController;
-        [tmpWindow makeKeyAndVisible];
+
+    UIViewController *topRootViewController = UIApplication.sharedApplication.windows.firstObject.rootViewController;
+    UIWindow *tmpWindow;
+
+    if ([ctivityItems.firstObject isKindOfClass:[NSURL class]]) {
+        NSURL *urlObjc = ctivityItems.firstObject;
+        NSArray *targetPathExtension = @[@"jpg", @"jpeg", @"png"];
+        if ([targetPathExtension containsObject:urlObjc.absoluteString.lastPathComponent.pathExtension]) {
+            topRootViewController = [[UIViewController alloc] init];
+            tmpWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+            topRootViewController.view.backgroundColor = [UIColor clearColor];
+            tmpWindow.windowLevel = UIWindowLevelAlert - 1;
+            tmpWindow.rootViewController = topRootViewController;
+            [tmpWindow makeKeyAndVisible];
+        }
+    }
 
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:ctivityItems applicationActivities:nil];
     activityVC.completionWithItemsHandler = ^(UIActivityType __nullable activityType, BOOL completed, NSArray *__nullable returnedItems, NSError *__nullable activityError) {

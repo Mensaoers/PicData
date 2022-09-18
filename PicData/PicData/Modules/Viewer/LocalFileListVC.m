@@ -287,9 +287,11 @@
         }];
     }]];
 
-    [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self sharePDF:sender];
-    }]];
+    if (self.contentModel != nil) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self sharePDF:sender];
+        }]];
+    }
 
     [actions addObject:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self shareZip:sender];

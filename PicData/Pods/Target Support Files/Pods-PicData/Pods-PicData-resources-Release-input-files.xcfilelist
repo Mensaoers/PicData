@@ -1,2 +1,2 @@
 ${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-resources.sh
-${PODS_ROOT}/../../../PicDataSDK/Products/PicDataSDKResource.bundle
+${PODS_ROOT}/PicDataSDK/PicDataSDKResource.bundle

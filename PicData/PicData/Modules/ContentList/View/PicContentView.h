@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGFloat)itemHeight:(CGFloat)wholeWidth;
 + (CGSize)itemSize:(CGFloat)wholeWidth;
 
++ (CGSize)contentViewSize:(CGFloat)wholeWidth targetCount:(NSInteger)targetCount;
+
 + (instancetype)collectionView:(CGFloat)wholeWidth;
 
 @end

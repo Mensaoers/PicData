@@ -72,6 +72,13 @@ static CGFloat sideMargin = 5;
     return collectionView;
 }
 
++ (CGSize)contentViewSize:(CGFloat)wholeWidth targetCount:(NSInteger)targetCount {
+    CGSize size = [PicContentView itemSize:wholeWidth - 4 * sideMargin];
+    double line = ceil((targetCount) / (wholeWidth / size.width));
+    CGFloat height = line * size.height + (line - 1) * 2 * sideMargin;
+    return CGSizeMake(wholeWidth, height);
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
 

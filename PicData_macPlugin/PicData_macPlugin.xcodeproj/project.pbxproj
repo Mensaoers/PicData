@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		33681E2828E1A432008AAABC /* PicData_macPluginShell */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 33681E2928E1A432008AAABC /* Build configuration list for PBXAggregateTarget "PicData_macPluginShell" */;
+			buildPhases = (
+				33681E2C28E1A438008AAABC /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = PicData_macPluginShell;
+			productName = PicData_macPluginShell;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		33E241F025F9C20C00CEED3B /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E241EF25F9C20C00CEED3B /* Plugin.m */; };
 /* End PBXBuildFile section */
@@ -82,6 +96,9 @@
 			attributes = {
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					33681E2828E1A432008AAABC = {
+						CreatedOnToolsVersion = 14.0;
+					};
 					33E241D825F9C14300CEED3B = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -96,11 +113,12 @@
 				Base,
 			);
 			mainGroup = 33E241D025F9C14300CEED3B;
-			productRefGroup = 33E241D025F9C14300CEED3B /* Products */;
+			productRefGroup = 33E241D025F9C14300CEED3B;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				33E241D825F9C14300CEED3B /* PicData_macPlugin */,
+				33681E2828E1A432008AAABC /* PicData_macPluginShell */,
 			);
 		};
 /* End PBXProject section */
@@ -115,6 +133,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		33681E2C28E1A438008AAABC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./build.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		33E241D525F9C14300CEED3B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -127,6 +165,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		33681E2A28E1A432008AAABC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		33681E2B28E1A432008AAABC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		33E241DD25F9C14300CEED3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -273,6 +327,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		33681E2928E1A432008AAABC /* Build configuration list for PBXAggregateTarget "PicData_macPluginShell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33681E2A28E1A432008AAABC /* Debug */,
+				33681E2B28E1A432008AAABC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		33E241D425F9C14300CEED3B /* Build configuration list for PBXProject "PicData_macPlugin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

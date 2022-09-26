@@ -119,11 +119,8 @@ singleton_implementation(AppTool)
         }
 
         NSString *filePath = urls.firstObject.path;
-        NSString *release = @"release";
-#ifdef DEBUG
-        release = @"debug";
-#endif
-        NSString *bundleFile = [NSString stringWithFormat:@"PicData_macPlugin_%@.bundle", release];
+
+        NSString *bundleFile = @"PicData_macPlugin.bundle";
         NSURL *bundleURL = [[[NSBundle mainBundle] builtInPlugInsURL] URLByAppendingPathComponent:bundleFile];
         if (!bundleURL) {
             return;

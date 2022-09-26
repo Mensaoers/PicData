@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -39,12 +39,10 @@
 		3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8B28240FF700527864 /* PicProgressModel.m */; };
 		3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3349D2622729A145006109F6 /* DatabaseManager.mm */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
-		335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; };
-		335338872723254C00D18EDE /* PicData_macPlugin_debug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; platformFilter = maccatalyst; };
-		3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		335849AB2841CA7500A5D9B3 /* ContentParserManager+Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */; };
+		33681E5A28E1AF47008AAABC /* PicData_macPlugin.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 33681E5928E1AF46008AAABC /* PicData_macPlugin.bundle */; };
+		33681E5B28E1AF52008AAABC /* PicData_macPlugin.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 33681E5928E1AF46008AAABC /* PicData_macPlugin.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
 		33919AD1287A9AC500491DB2 /* NetListTCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33919AD0287A9AC500491DB2 /* NetListTCell.m */; };
 		33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33967B5126EDF44600B308B1 /* HomeViewController.m */; };
@@ -111,8 +109,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */,
-				3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */,
+				33681E5B28E1AF52008AAABC /* PicData_macPlugin.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,12 +172,11 @@
 		3349D2662729A60F006109F6 /* PicContentModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicContentModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
-		335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_release.bundle; sourceTree = "<group>"; };
-		335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_debug.bundle; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
 		335849A92841CA7500A5D9B3 /* ContentParserManager+Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContentParserManager+Parser.h"; sourceTree = "<group>"; };
 		335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ContentParserManager+Parser.m"; sourceTree = "<group>"; };
+		33681E5928E1AF46008AAABC /* PicData_macPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PicData_macPlugin.bundle; path = ../../../PicData_macPlugin/Products/PicData_macPlugin.bundle; sourceTree = "<group>"; };
 		336A9D99250DF17C00BF277C /* PicContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicContentView.h; sourceTree = "<group>"; };
 		336A9D9A250DF17C00BF277C /* PicContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PicContentView.m; sourceTree = "<group>"; };
 		33919ACF287A9AC500491DB2 /* NetListTCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetListTCell.h; sourceTree = "<group>"; };
@@ -471,8 +467,7 @@
 		33E1ABE02822BA9F00AA92CB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
-				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
+				33681E5928E1AF46008AAABC /* PicData_macPlugin.bundle */,
 				333ECEF725F71DFB00762219 /* ThirdParty */,
 				9DE95CB8244C3FDC00E31735 /* Categories */,
 			);
@@ -885,14 +880,13 @@
 				332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */,
 				332D014426FD845F00E3F387 /* gesture_normal@1.5x.png in Resources */,
 				332D014526FD845F00E3F387 /* gesture_indicator_normal@2x.png in Resources */,
+				33681E5A28E1AF47008AAABC /* PicData_macPlugin.bundle in Resources */,
 				332D014926FD845F00E3F387 /* gesture_indicator_selected@2x.png in Resources */,
-				335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */,
 				332D014C26FD845F00E3F387 /* gesture_normal.png in Resources */,
 				9DE95CC9244C3FDD00E31735 /* tag.in in Resources */,
 				331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */,
 				332D014E26FD845F00E3F387 /* gesture_selected.png in Resources */,
 				332D014B26FD845F00E3F387 /* gesture_selected@2x.png in Resources */,
-				335338872723254C00D18EDE /* PicData_macPlugin_debug.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

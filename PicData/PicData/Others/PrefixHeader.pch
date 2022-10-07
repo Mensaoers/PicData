@@ -18,7 +18,7 @@
     #import <MBProgressHUD/MBProgressHUD.h>
     #import "MBProgressHUD+LZPShow.h"
     #import <MJExtension/MJExtension.h>
-    #import <SDWebImage/UIImageView+WebCache.h>
+    #import <SDWebImage/SDWebImage.h>
     #import <MJRefresh/MJRefresh.h>
     #import <YYCategories/YYCategories.h>
     #import <YBImageBrowser/YBImageBrowser.h>
@@ -35,6 +35,7 @@
     #import "NSString+Ex.h"
     #import "OCGumbo+Query.h"
 
+    #import "PPSDWebImageManager.h"
     #import "DatabaseManager.h"
     #import "AppTool.h"
     #import "BaseViewController.h"

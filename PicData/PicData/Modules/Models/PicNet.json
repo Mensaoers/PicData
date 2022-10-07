@@ -4,6 +4,7 @@
             "title" : "https://www.yun222.cc",
             "sourceType" : 1,
             "HOST_URL": "https://www.yun222.cc",
+            "referer": "https://www.yun222.cc",
             "urls": [
                 {
                     "url": "https://www.yun222.cc/k",
@@ -21,6 +22,7 @@
             "title" : "https://hitxhot.com",
             "sourceType" : 3,
             "HOST_URL": "https://hitxhot.com",
+            "referer": "https://hitxhot.com",
             "urls": [
                 {
                     "url": "https://hitxhot.com/hot?page=1",
@@ -69,6 +71,7 @@
             "title" : "https://www.hh1234.cc",
             "sourceType" : 5,
             "HOST_URL": "https://www.hh1234.cc",
+            "referer": "https://www.hh1234.cc",
             "urls": [
                 {
                     "url": "https://www.hh1234.cc/ku/xin/",
@@ -86,6 +89,7 @@
             "title" : "https://www.xiurenb.com",
             "sourceType" : 6,
             "HOST_URL": "https://www.xiurenb.com",
+            "referer": "https://www.xiurenb.com",
             "urls": [
                 {
                     "url": "https://www.xiurenb.com/new.html",
@@ -104,6 +108,7 @@
             "title" : "https://www.2meinv.com",
             "sourceType" : 7,
             "HOST_URL": "https://www.2meinv.com",
+            "referer": "https://www.2meinv.com",
             "urls": [
                 {
                     "url": "https://www.2meinv.com/index.html",
@@ -120,6 +125,7 @@
             "title" : "https://8se.me",
             "sourceType" : 8,
             "HOST_URL": "https://8se.me",
+            "referer": "https://8se.me",
             "urls": [
                 {
                     "url": "https://8se.me/photos/kind-2.html",

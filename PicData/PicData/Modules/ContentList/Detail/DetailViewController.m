@@ -62,6 +62,11 @@
     self.detailModel.currentUrl = contentModel.href;
 }
 
+- (void)dealloc {
+    [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
+    [self willDealloc];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         self.headerExpanded = YES;
@@ -205,6 +210,7 @@
 - (void)loadLastPageDetailData {
     NSDictionary *lastInfo = self.historyInfos.lastObject;
     if (nil != lastInfo) {
+        [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
         self.detailModel.nextUrl = self.detailModel.currentUrl;
         self.detailModel.currentUrl = lastInfo[@"url"];
         self.detailModel.detailTitle = lastInfo[@"title"];
@@ -224,6 +230,7 @@
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"到底了"];
         return;
     }
+    [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
     self.detailModel.currentUrl = self.detailModel.nextUrl;
     [self loadDetailData];
     [self loadNavigationItem];
@@ -423,7 +430,7 @@
             };
             cell.indexpath = indexPath;
             cell.targetImageWidth = self.tableView.mj_w - 10;
-            cell.url = self.detailModel.contentImgsUrl[indexPath.row];
+            [cell setImageUrl:self.detailModel.contentImgsUrl[indexPath.row] refererUrl:self.detailModel.currentUrl];
             tCell = cell;
         }
             break;

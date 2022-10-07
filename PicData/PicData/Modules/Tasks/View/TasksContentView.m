@@ -67,7 +67,7 @@ static CGFloat sideMargin = 5;
 + (instancetype)collectionView:(CGFloat)wholeWidth {
 
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = [PicContentView itemSize:wholeWidth - 4 * sideMargin];
+    layout.itemSize = [TasksContentView itemSize:wholeWidth - 4 * sideMargin];
     layout.sectionInset = UIEdgeInsetsMake(2 * sideMargin, 2 * sideMargin, 2 * sideMargin, 2 * sideMargin);
     layout.minimumLineSpacing = 2 * sideMargin;
     layout.minimumInteritemSpacing = 2 * sideMargin;

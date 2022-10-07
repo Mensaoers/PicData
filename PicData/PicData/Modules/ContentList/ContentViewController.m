@@ -22,6 +22,11 @@
 
 @implementation ContentViewController
 
+- (void)dealloc {
+    [AppTool releaseSDWebImageManager:self.sourceModel.HOST_URL];
+    [self willDealloc];
+}
+
 - (instancetype)init {
     self = [super init];
     if (self) {

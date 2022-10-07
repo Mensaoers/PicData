@@ -251,4 +251,50 @@ singleton_implementation(AppTool)
     return [[NSString alloc] initWithData:data encoding:dataEncoding];
 }
 
+#pragma mark - SDWebImage
+
+- (NSMutableDictionary<NSString *, PPSDWebImageManager *> *)managers {
+    if (nil == _managers) {
+        _managers = [NSMutableDictionary dictionary];
+    }
+    return _managers;
+}
+
++ (SDWebImageManager *)sdWebImageManager:(NSString *)referer {
+
+    if (nil == referer || referer.length == 0) {
+        return [SDWebImageManager sharedManager];
+    }
+
+    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[referer];
+
+    if (nil == manager) {
+        // 默认的cache
+        id<SDImageCache> cache = [[SDWebImageManager class] defaultImageCache];
+        if (!cache) {
+            cache = [SDImageCache sharedImageCache];
+        }
+
+        // 自定义的loader
+        SDWebImageDownloader *loader = [[SDWebImageDownloader alloc] initWithConfig:SDWebImageDownloaderConfig.defaultDownloaderConfig];
+        [loader setValue:referer forHTTPHeaderField:@"referer"];
+
+        manager = [[PPSDWebImageManager alloc] initWithCache:cache loader:loader];
+
+        AppTool.sharedAppTool.managers[referer] = manager;
+    }
+
+    return manager;
+}
+
++ (void)releaseSDWebImageManager:(NSString *)referer {
+    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[referer];
+    if (manager) {
+        [manager cancelAll];
+        [manager.imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
+    }
+    AppTool.sharedAppTool.managers[referer] = nil;
+    NSLog(@"AppTool.sharedAppTool.managers: %@", AppTool.sharedAppTool.managers.allKeys);
+}
+
 @end

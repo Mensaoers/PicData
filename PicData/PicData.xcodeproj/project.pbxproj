@@ -35,6 +35,7 @@
 		332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */; };
 		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
 		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
+		3341DC1928EF3213001CB02A /* PPSDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3341DC1828EF3213001CB02A /* PPSDWebImageManager.m */; };
 		3346BE8928240F5C00527864 /* TasksCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8828240F5C00527864 /* TasksCollectionCell.m */; };
 		3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8B28240FF700527864 /* PicProgressModel.m */; };
 		3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3349D2622729A145006109F6 /* DatabaseManager.mm */; };
@@ -160,6 +161,8 @@
 		332D013E26FD845F00E3F387 /* TKGestureLockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockManager.h; sourceTree = "<group>"; };
 		332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockBackView.m; sourceTree = "<group>"; };
 		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
+		3341DC1728EF3213001CB02A /* PPSDWebImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPSDWebImageManager.h; sourceTree = "<group>"; };
+		3341DC1828EF3213001CB02A /* PPSDWebImageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPSDWebImageManager.m; sourceTree = "<group>"; };
 		3346BE8728240F5C00527864 /* TasksCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksCollectionCell.h; sourceTree = "<group>"; };
 		3346BE8828240F5C00527864 /* TasksCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksCollectionCell.m; sourceTree = "<group>"; };
 		3346BE8A28240FF700527864 /* PicProgressModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicProgressModel.h; sourceTree = "<group>"; };
@@ -376,6 +379,15 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
+		3341DC1628EF2E3C001CB02A /* SDWebImageEX */ = {
+			isa = PBXGroup;
+			children = (
+				3341DC1728EF3213001CB02A /* PPSDWebImageManager.h */,
+				3341DC1828EF3213001CB02A /* PPSDWebImageManager.m */,
+			);
+			path = SDWebImageEX;
+			sourceTree = "<group>";
+		};
 		3346BE8D28240FFA00527864 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -419,6 +431,7 @@
 		33DC2D4D281AC8A900C7A513 /* Download */ = {
 			isa = PBXGroup;
 			children = (
+				3341DC1628EF2E3C001CB02A /* SDWebImageEX */,
 				33E6405528103DCD00E763B6 /* DownloadOperation */,
 				9DE95CF8244CA25900E31735 /* PDDownloadManager.h */,
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
@@ -500,20 +513,10 @@
 			isa = PBXGroup;
 			children = (
 				33919ACE287A9AB000491DB2 /* View */,
-				33E6404F2810108E00E763B6 /* model */,
 				33E640492810104F00E763B6 /* NetListViewController.h */,
 				33E6404A2810104F00E763B6 /* NetListViewController.m */,
 			);
 			path = netList;
-			sourceTree = "<group>";
-		};
-		33E6404F2810108E00E763B6 /* model */ = {
-			isa = PBXGroup;
-			children = (
-				33E6404C2810108900E763B6 /* PicNetModel.h */,
-				33E6404D2810108900E763B6 /* PicNetModel.m */,
-			);
-			path = model;
 			sourceTree = "<group>";
 		};
 		33E6405528103DCD00E763B6 /* DownloadOperation */ = {
@@ -750,6 +753,8 @@
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
 				33E640532810122700E763B6 /* PicNet.json */,
+				33E6404C2810108900E763B6 /* PicNetModel.h */,
+				33E6404D2810108900E763B6 /* PicNetModel.m */,
 				330FDE7D28D7460B00FEDEEE /* AppInfoModel.h */,
 				330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */,
 			);
@@ -1058,6 +1063,7 @@
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
+				3341DC1928EF3213001CB02A /* PPSDWebImageManager.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
 				3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */,

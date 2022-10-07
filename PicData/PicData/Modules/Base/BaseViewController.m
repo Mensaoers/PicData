@@ -15,8 +15,11 @@
 
 @implementation BaseViewController
 
-- (void)dealloc {
+- (void)willDealloc {
     NSLog(@"%@ dealloc 被释放了?", NSStringFromClass(self.class));
+}
+- (void)dealloc {
+    [self willDealloc];
 }
 
 - (void)viewDidLoad {

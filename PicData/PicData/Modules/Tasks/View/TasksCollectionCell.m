@@ -143,7 +143,7 @@ static CGFloat progressWidth = 46;
 - (void)setTaskModel:(PicContentTaskModel *)taskModel {
     _taskModel = taskModel;
 
-    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:taskModel.HOST_URL]};
+    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:taskModel.HOST_URL sourceType:taskModel.sourceType]};
 
     [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:taskModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context:context];
 

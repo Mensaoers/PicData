@@ -42,7 +42,7 @@
     return self;
 }
 
-- (void)setImageUrl:(NSString *)imageUrl refererUrl:(NSString *)refererUrl {
+- (void)setImageUrl:(NSString *)imageUrl refererUrl:(NSString *)refererUrl sourceType:(int)sourceType {
 
     if ([imageUrl isEqualToString:_url]) {
         if (fabs(self.targetImageWidth - self.lastSize.width) >= 4) {
@@ -52,7 +52,7 @@
     }
     _url = imageUrl;
 
-    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:refererUrl]};
+    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:refererUrl sourceType:sourceType]};
 
     PDBlockSelf
     [self.conImgView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context: context progress: nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {

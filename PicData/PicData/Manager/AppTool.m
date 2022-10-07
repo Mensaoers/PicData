@@ -17,6 +17,13 @@ static BOOL canChangeOrientation = NO;
 
 singleton_implementation(AppTool)
 
+- (NSMutableArray *)referTypes {
+    if (nil == _referTypes) {
+        _referTypes = [NSMutableArray array];
+    }
+    return _referTypes;
+}
+
 - (NSString *)HOST_URL {
     return [AppTool sharedAppTool].currentHostModel.HOST_URL;
 }
@@ -73,6 +80,10 @@ singleton_implementation(AppTool)
             for (PicNetModel *model in hostModels) {
                 if (!model.prepared) { continue; }
                 [hostModelsM addObject:model];
+
+                if (model.referer.length > 0) {
+                    [self.referTypes addObject:@(model.sourceType)];
+                }
             }
             _hostModels = hostModelsM.copy;
         }
@@ -260,9 +271,9 @@ singleton_implementation(AppTool)
     return _managers;
 }
 
-+ (SDWebImageManager *)sdWebImageManager:(NSString *)referer {
++ (SDWebImageManager *)sdWebImageManager:(NSString *)referer sourceType:(int)sourceType {
 
-    if (nil == referer || referer.length == 0) {
+    if (nil == referer || referer.length == 0 || ![AppTool.sharedAppTool.referTypes containsObject:@(sourceType)]) {
         return [SDWebImageManager sharedManager];
     }
 

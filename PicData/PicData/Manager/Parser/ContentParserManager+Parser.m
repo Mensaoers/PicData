@@ -68,6 +68,7 @@
 
     PicContentModel *contentModel = [[PicContentModel alloc] init];
     contentModel.href = href;
+    contentModel.sourceType = sourceModel.sourceType;
     contentModel.sourceHref = sourceModel.url;
     contentModel.sourceTitle = sourceModel.title;
     contentModel.HOST_URL = sourceModel.HOST_URL;

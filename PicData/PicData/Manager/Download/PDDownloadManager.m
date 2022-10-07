@@ -232,7 +232,8 @@ static NSString *favoriteFolderName = @"我的收藏";
         NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithDictionary:@{
             @"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36",
         }];
-        if (referer.length > 0) {
+        // 部分网页是不需要设置referer的
+        if ([AppTool.sharedAppTool.referTypes containsObject:@(sourceModel.sourceType)] && referer.length > 0) {
             [headers setValue:referer forKey:@"referer"];
         }
 

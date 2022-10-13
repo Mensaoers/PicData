@@ -32,8 +32,8 @@
 - (NSInteger)defaultMaxDownloadOperationCount {
 #if TARGET_OS_MACCATALYST
     return 20;
-#elif
-    return 12
+#else
+    return 12;
 #endif
 }
 

@@ -11,7 +11,6 @@
 #import "PicContentModel.h"
 #import "AppDelegate.h"
 
-#define DOWNLOADSPATHKEY @"DOWNLOADSPATHKEY"
 #define NOTICECHECKDOWNLOADPATHKEY @"NOTICECHECKDOWNLOADPATHKEY"
 #define NOTICEPICDOWNLOADSUCCESS @"NOTICEPICDOWNLOADSUCCESS"
 
@@ -20,6 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PDDownloadManager : NSObject
 
 singleton_interface(PDDownloadManager);
+
+- (NSInteger)defaultMinDownloadOperationCount;
+- (NSInteger)defaultMaxDownloadOperationCount;
+/// 同时下载的图片的数量, 默认6
+@property (nonatomic, assign) NSInteger maxDownloadOperationCount;
 
 /// 重置当前下载相对地址
 - (BOOL)resetDownloadPath;

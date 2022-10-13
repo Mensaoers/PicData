@@ -9,6 +9,9 @@
 #import "PDDownloadManager.h"
 #import "PPDownloadTaskOperation.h"
 
+#define DOWNLOADSPATHKEY @"DOWNLOADSPATHKEY"
+#define KMaxDownloadOperationCount @"KMaxDownloadOperationCount"
+
 @interface PDDownloadManager()
 
 /// 用不到 作废
@@ -20,10 +23,56 @@
 
 @implementation PDDownloadManager
 
+@synthesize maxDownloadOperationCount = _maxDownloadOperationCount;
+
+- (NSInteger)defaultMinDownloadOperationCount {
+    return 6;
+}
+
+- (NSInteger)defaultMaxDownloadOperationCount {
+#if TARGET_OS_MACCATALYST
+    return 20;
+#elif
+    return 12
+#endif
+}
+
+- (BOOL)checkDownloadOperationCountCorrect:(NSInteger)willSetValue {
+    return willSetValue >= [self defaultMinDownloadOperationCount] && willSetValue <= [self defaultMaxDownloadOperationCount];
+}
+
+- (NSInteger)getDownloadOperationCountCorrect:(NSInteger)willSetValue {
+    return MAX(MIN(willSetValue, [self defaultMaxDownloadOperationCount]), [self defaultMinDownloadOperationCount]);
+}
+
+- (void)setMaxDownloadOperationCount:(NSInteger)maxDownloadOperationCount {
+    maxDownloadOperationCount = [self getDownloadOperationCountCorrect:maxDownloadOperationCount];
+    _maxDownloadOperationCount = maxDownloadOperationCount;
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:maxDownloadOperationCount forKey:KMaxDownloadOperationCount];
+    [userDefaults synchronize];
+
+    self.downloadQueue.maxConcurrentOperationCount = maxDownloadOperationCount;
+}
+
+- (NSInteger)maxDownloadOperationCount {
+
+    if (_maxDownloadOperationCount > 0) {
+
+    } else {
+        _maxDownloadOperationCount = [[NSUserDefaults standardUserDefaults] integerForKey:KMaxDownloadOperationCount];
+    }
+    if (![self checkDownloadOperationCountCorrect:_maxDownloadOperationCount]) {
+        [self setMaxDownloadOperationCount:6];
+    }
+    return _maxDownloadOperationCount;
+}
+
 - (NSOperationQueue *)downloadQueue {
     if (nil == _downloadQueue) {
         _downloadQueue = [[NSOperationQueue alloc] init];
-        _downloadQueue.maxConcurrentOperationCount = 6;
+        _downloadQueue.maxConcurrentOperationCount = self.maxDownloadOperationCount;
     }
     return _downloadQueue;
 }

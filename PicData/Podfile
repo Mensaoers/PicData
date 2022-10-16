@@ -22,6 +22,7 @@ target 'PicData' do
   pod 'IQKeyboardManager'
   pod 'CWLateralSlide', '~> 1.6.3'
   pod 'PicDataSDK'
+  pod 'PPCatalystTool'
   # Pods for PicData
 
 end

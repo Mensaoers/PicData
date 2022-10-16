@@ -131,19 +131,7 @@ singleton_implementation(AppTool)
 
         NSString *filePath = urls.firstObject.path;
 
-        NSString *bundleFile = @"PicData_macPlugin.bundle";
-        NSURL *bundleURL = [[[NSBundle mainBundle] builtInPlugInsURL] URLByAppendingPathComponent:bundleFile];
-        if (!bundleURL) {
-            return;
-        }
-        NSBundle *pluginBundle = [NSBundle bundleWithURL:bundleURL];
-        NSString *className = @"Plugin";
-        Class Plugin= [pluginBundle classNamed:className];
-        //    Plugin *obj = [[Plugin alloc] init];
-        SEL openSel = NSSelectorFromString(@"openFileOrDirWithPath:");
-        if ([Plugin respondsToSelector:openSel]) {
-            [Plugin performSelector:NSSelectorFromString(@"openFileOrDirWithPath:") withObject:filePath];
-        }
+        [[PPCatalystHandle sharedPPCatalystHandle] openFileOrDirWithPath:filePath];
         return;
 #endif
     }

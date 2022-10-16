@@ -8,6 +8,7 @@ PODS:
   - PicDataSDK (1.0.2):
     - Masonry
     - SDWebImage (~> 5.0)
+  - PPCatalystTool (1.0.0)
   - SDWebImage (5.12.5):
     - SDWebImage/Core (= 5.12.5)
   - SDWebImage/Core (5.12.5)
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - MJExtension (~> 3.0.13)
   - MJRefresh (~> 3.1.12)
   - PicDataSDK
+  - PPCatalystTool
   - SDWebImage (~> 5.0)
   - SSZipArchive
   - WCDB
@@ -48,6 +50,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/Garenge/pengpengSpecs.git:
     - PicDataSDK
+    - PPCatalystTool
   trunk:
     - CWLateralSlide
     - IQKeyboardManager
@@ -80,6 +83,7 @@ SPEC CHECKSUMS:
   MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
   MJRefresh: ee5b68f639775462faba4db0fd243baf4d42c2cf
   PicDataSDK: e7d0751b3791243048292cae96c6204998eb65f1
+  PPCatalystTool: 847604facf73058b3f9f0cb45c1c5e445daa60d5
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   SQLiteRepairKit: 35aaae5a8838adb85f5b1eb4d796055be6060a4b
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
@@ -89,6 +93,6 @@ SPEC CHECKSUMS:
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
   YYImage: 20ec986d18a8d0ad421619d166a9e628097e2433
 
-PODFILE CHECKSUM: ac527572464a10dc35d0a9c63ad49f32ecc1cfdd
+PODFILE CHECKSUM: 1e010f22c5ecb78d92c44360a11321221df2e19b
 
 COCOAPODS: 1.11.3

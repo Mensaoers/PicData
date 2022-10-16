@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3301B40328F9C6830063F285 /* PicData_macPlugin.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3301B40228F9C6820063F285 /* PicData_macPlugin.bundle */; };
-		3301B40428F9C68B0063F285 /* PicData_macPlugin.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 3301B40228F9C6820063F285 /* PicData_macPlugin.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		330FDE7F28D7460B00FEDEEE /* AppInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */; };
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
@@ -110,7 +108,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3301B40428F9C68B0063F285 /* PicData_macPlugin.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,7 +115,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3301B40228F9C6820063F285 /* PicData_macPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin.bundle; sourceTree = "<group>"; };
 		330FDE7D28D7460B00FEDEEE /* AppInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInfoModel.h; sourceTree = "<group>"; };
 		330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppInfoModel.m; sourceTree = "<group>"; };
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
@@ -480,7 +476,6 @@
 		33E1ABE02822BA9F00AA92CB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				3301B40228F9C6820063F285 /* PicData_macPlugin.bundle */,
 				333ECEF725F71DFB00762219 /* ThirdParty */,
 				9DE95CB8244C3FDC00E31735 /* Categories */,
 			);
@@ -884,7 +879,6 @@
 				332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */,
 				332D014426FD845F00E3F387 /* gesture_normal@1.5x.png in Resources */,
 				332D014526FD845F00E3F387 /* gesture_indicator_normal@2x.png in Resources */,
-				3301B40328F9C6830063F285 /* PicData_macPlugin.bundle in Resources */,
 				332D014926FD845F00E3F387 /* gesture_indicator_selected@2x.png in Resources */,
 				332D014C26FD845F00E3F387 /* gesture_normal.png in Resources */,
 				9DE95CC9244C3FDD00E31735 /* tag.in in Resources */,

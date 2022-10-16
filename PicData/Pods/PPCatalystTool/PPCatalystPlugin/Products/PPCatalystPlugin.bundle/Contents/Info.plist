@@ -7,13 +7,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>PicData_macPlugin</string>
+	<string>PPCatalystPlugin</string>
 	<key>CFBundleIdentifier</key>
-	<string>per.garenge.picDataMacPlugin.PicData-macPlugin</string>
+	<string>per.garenge.PPCatalystPlugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PicData_macPlugin</string>
+	<string>PPCatalystPlugin</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,6 +41,6 @@
 	<key>DTXcodeBuild</key>
 	<string>14A400</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>11.1</string>
+	<string>11.0</string>
 </dict>
 </plist>

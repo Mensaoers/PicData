@@ -24,9 +24,6 @@ singleton_interface(AppTool)
 @property (nonatomic, strong, readonly) NSArray <PicNetModel *> *hostModels;
 @property (nonatomic, strong, readonly) NSArray <NSString *> *searchKeys;
 
-/// bugly app_id
-+ (NSString *)app_id_bugly;
-
 /// 获取当前是否支持横屏
 + (BOOL)getCanChangeOrientation;
 

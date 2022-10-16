@@ -95,11 +95,6 @@ singleton_implementation(AppTool)
     return _hostModels;
 }
 
-/// bugly app_id
-+ (NSString *)app_id_bugly {
-    return @"8eb9d79660";
-}
-
 /// 获取当前是否支持横屏
 + (BOOL)getCanChangeOrientation {
     return canChangeOrientation;

@@ -804,18 +804,17 @@
                     }
                 }
 
-                NSMutableArray *actions = [NSMutableArray array];
                 if (needBack) {
-                    [actions addObject:[UIAlertAction actionWithTitle:@"返回上一层" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [weakSelf.navigationController popViewControllerAnimated:YES];
-                    }]];
+
+                    [MBProgressHUD showInfoOnView:AppTool.getAppKeyWindow WithStatus:@"已删除"];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 } else {
+                    NSMutableArray *actions = [NSMutableArray array];
                     [actions addObject:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                         [weakSelf refreshLoadData:NO];
                     }]];
+                    [weakSelf showAlertWithTitle:nil message:@"已删除" actions:actions];
                 }
-                [weakSelf showAlertWithTitle:nil message:@"已删除" actions:actions];
-
             } cancelTitle:@"返回" cancelHandler:nil];
 
         } else {

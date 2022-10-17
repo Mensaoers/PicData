@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设置浮窗
 - (void)setupFloating;
 
+/// 重写系统dealloc方法时先调用该方法, 方便打日志和子类调用
+- (void)willDealloc;
+
 @end
 
 NS_ASSUME_NONNULL_END

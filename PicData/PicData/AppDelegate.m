@@ -69,10 +69,6 @@
     [PDDownloadManager prepareDatabase];
 }
 
-- (void)setupBugly {
-//    [Bugly startWithAppId:[AppTool app_id_bugly]];
-}
-
 - (void)setupIQKeyboardManager {
     IQKeyboardManager.sharedManager.shouldResignOnTouchOutside = YES;
     IQKeyboardManager.sharedManager.enable = YES;
@@ -109,14 +105,13 @@
     // 数据库初始化
     [self setupDataBase];
 
-    // 初始化bugly
-    [self setupBugly];
-
     // 下载模块初始化
     [self setupDownloadManager];
 
     // 检查更新
-    [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
+    dispatch_after(2, dispatch_get_main_queue(), ^{
+        [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
+    });
 
     /// 设置屏幕常亮
     application.idleTimerDisabled = YES;

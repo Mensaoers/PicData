@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSIndexPath *indexpath;
 
-@property (nonatomic, strong) NSString *url;
+- (void)setImageUrl:(NSString *)imageUrl refererUrl:(NSString *)refererUrl sourceType:(int)sourceType;
 
 @property (nonatomic, copy) void(^updateCellHeightBlock)(NSIndexPath *indexPath, CGFloat height);
 

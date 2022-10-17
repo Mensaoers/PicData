@@ -18,7 +18,7 @@
     #import <MBProgressHUD/MBProgressHUD.h>
     #import "MBProgressHUD+LZPShow.h"
     #import <MJExtension/MJExtension.h>
-    #import <SDWebImage/UIImageView+WebCache.h>
+    #import <SDWebImage/SDWebImage.h>
     #import <MJRefresh/MJRefresh.h>
     #import <YYCategories/YYCategories.h>
     #import <YBImageBrowser/YBImageBrowser.h>
@@ -26,15 +26,17 @@
     #import <SSZipArchive/SSZipArchive.h>
     #import <IQKeyboardManager/IQKeyboardManager.h>
     #import <PicDataSDK/PicDataSDK.h>
+    #import <PPCatalystTool/PPCatalystTool.h>
     #import "UIViewController+CWLateralSlide.h"
 
     #import "Singleton.h"
     #import "NSObject+ChangeUnicode.h"
     #import "UILabel+text.h"
     #import "UINavigationController+push.h"
-    #import "NSString+Ex.h""
+    #import "NSString+Ex.h"
     #import "OCGumbo+Query.h"
 
+    #import "PPSDWebImageManager.h"
     #import "DatabaseManager.h"
     #import "AppTool.h"
     #import "BaseViewController.h"
@@ -44,6 +46,7 @@
     #import "PDDownloadManager.h"
     #import "PicClassModel.h"
     #import "ContentParserManager+Parser.h"
+    #import "AppInfoModel.h"
     #import "PDRequest.h"
     #import "AddNetTaskVC.h"
     #import "DetailViewController.h"

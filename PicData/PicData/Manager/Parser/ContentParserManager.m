@@ -190,7 +190,7 @@ singleton_implementation(ContentParserManager)
 }
 
 /// 处理html标签, 创建下载图片任务开始下载
-+ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString nextUrl:(NSString *)nextUrl WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount {
++ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString referer:(NSString *)referer nextUrl:(NSString *)nextUrl WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount {
     __block NSString *url = @"";
     NSMutableString *urlsString = [NSMutableString string];
     __block int count = 0;
@@ -211,7 +211,7 @@ singleton_implementation(ContentParserManager)
         count += imageCount;
         url = nextPage;
 
-        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[imageUrls copy] suggestNames:suggestNames];
+        [[PDDownloadManager sharedPDDownloadManager] downWithSource:sourceModel ContentTaskModel:contentTaskModel urls:[imageUrls copy] referer: referer suggestNames:suggestNames];
 
     }];
 

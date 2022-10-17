@@ -45,8 +45,16 @@ singleton_interface(ContentParserManager)
 
 /// 尝试下载某一个套图, 做出基本判断,
 + (void)tryToAddTaskWithSourceModel:(PicSourceModel *)sourceModel ContentModel:(PicContentModel *)contentModel operationTips:(void(^ __nonnull)(BOOL isSuccess, NSString *tips))operationTips;
+
 /// 处理html标签, 创建下载图片任务开始下载
-+ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString nextUrl:(NSString *)nextUrl WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount;
+/// - Parameters:
+///   - htmlString: 该网页的源文件
+///   - referer: 该网上的图都引用自该地址, 即该网页地址
+///   - nextUrl: 下一页图的地址
+///   - sourceModel: App内部分类模型
+///   - contentTaskModel: 当前下载任务
+///   - picCount: 该页共多少张图
++ (NSDictionary *)dealWithHtmlData:(NSString *)htmlString referer: (NSString *)referer nextUrl:(NSString *)nextUrl WithSourceModel:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel picCount:(int)picCount;
 
 /// app启动的时候, 将所有1的任务取出来开始进行
 + (void)prepareForAppLaunch;

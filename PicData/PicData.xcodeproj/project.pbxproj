@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		330FDE7F28D7460B00FEDEEE /* AppInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */; };
 		33178B94256A184700CB47F2 /* ViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33178B93256A184700CB47F2 /* ViewerViewController.m */; };
 		331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331ACC0824F0B5080027857B /* AddNetTaskVC.xib */; };
 		331E994E289D6585001EC22E /* ParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 331E994D289D6585001EC22E /* ParseOperation.m */; };
@@ -34,14 +35,11 @@
 		332D014F26FD845F00E3F387 /* gesture_selected@0.5x.png in Resources */ = {isa = PBXBuildFile; fileRef = 332D013926FD845F00E3F387 /* gesture_selected@0.5x.png */; };
 		332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013A26FD845F00E3F387 /* TKGestureLockWindow.m */; };
 		332D015226FD845F00E3F387 /* TKGestureLockBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */; };
+		3341DC1928EF3213001CB02A /* PPSDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3341DC1828EF3213001CB02A /* PPSDWebImageManager.m */; };
 		3346BE8928240F5C00527864 /* TasksCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8828240F5C00527864 /* TasksCollectionCell.m */; };
 		3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3346BE8B28240FF700527864 /* PicProgressModel.m */; };
 		3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3349D2622729A145006109F6 /* DatabaseManager.mm */; };
 		335124E224D6E2C9004489CA /* PDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 335124E124D6E2C9004489CA /* PDRequest.m */; };
-		335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; };
-		335338872723254C00D18EDE /* PicData_macPlugin_debug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; platformFilter = maccatalyst; };
-		3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		335719B424DD358C00303E83 /* FloatingWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 335719B224DD358B00303E83 /* FloatingWindowView.m */; };
 		335849AB2841CA7500A5D9B3 /* ContentParserManager+Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 335849AA2841CA7500A5D9B3 /* ContentParserManager+Parser.m */; };
 		336A9D9B250DF17C00BF277C /* PicContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 336A9D9A250DF17C00BF277C /* PicContentView.m */; };
@@ -110,8 +108,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3353389A2723279C00D18EDE /* PicData_macPlugin_debug.bundle in Embed PlugIns */,
-				3353389B2723279C00D18EDE /* PicData_macPlugin_release.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +115,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		330FDE7D28D7460B00FEDEEE /* AppInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppInfoModel.h; sourceTree = "<group>"; };
+		330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppInfoModel.m; sourceTree = "<group>"; };
 		33178B92256A184700CB47F2 /* ViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerViewController.h; sourceTree = "<group>"; };
 		33178B93256A184700CB47F2 /* ViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerViewController.m; sourceTree = "<group>"; };
 		331ACC0824F0B5080027857B /* AddNetTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNetTaskVC.xib; sourceTree = "<group>"; };
@@ -160,6 +158,8 @@
 		332D013E26FD845F00E3F387 /* TKGestureLockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockManager.h; sourceTree = "<group>"; };
 		332D013F26FD845F00E3F387 /* TKGestureLockBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGestureLockBackView.m; sourceTree = "<group>"; };
 		332D014026FD845F00E3F387 /* TKGestureLockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGestureLockWindow.h; sourceTree = "<group>"; };
+		3341DC1728EF3213001CB02A /* PPSDWebImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPSDWebImageManager.h; sourceTree = "<group>"; };
+		3341DC1828EF3213001CB02A /* PPSDWebImageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPSDWebImageManager.m; sourceTree = "<group>"; };
 		3346BE8728240F5C00527864 /* TasksCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksCollectionCell.h; sourceTree = "<group>"; };
 		3346BE8828240F5C00527864 /* TasksCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksCollectionCell.m; sourceTree = "<group>"; };
 		3346BE8A28240FF700527864 /* PicProgressModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicProgressModel.h; sourceTree = "<group>"; };
@@ -172,8 +172,6 @@
 		3349D2662729A60F006109F6 /* PicContentModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicContentModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		335124E024D6E2C9004489CA /* PDRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDRequest.h; sourceTree = "<group>"; };
 		335124E124D6E2C9004489CA /* PDRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDRequest.m; sourceTree = "<group>"; };
-		335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_release.bundle; sourceTree = "<group>"; };
-		335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PicData_macPlugin_debug.bundle; sourceTree = "<group>"; };
 		335719B224DD358B00303E83 /* FloatingWindowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingWindowView.m; sourceTree = "<group>"; };
 		335719B324DD358C00303E83 /* FloatingWindowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingWindowView.h; sourceTree = "<group>"; };
 		335849A92841CA7500A5D9B3 /* ContentParserManager+Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContentParserManager+Parser.h"; sourceTree = "<group>"; };
@@ -377,6 +375,15 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
+		3341DC1628EF2E3C001CB02A /* SDWebImageEX */ = {
+			isa = PBXGroup;
+			children = (
+				3341DC1728EF3213001CB02A /* PPSDWebImageManager.h */,
+				3341DC1828EF3213001CB02A /* PPSDWebImageManager.m */,
+			);
+			path = SDWebImageEX;
+			sourceTree = "<group>";
+		};
 		3346BE8D28240FFA00527864 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +427,7 @@
 		33DC2D4D281AC8A900C7A513 /* Download */ = {
 			isa = PBXGroup;
 			children = (
+				3341DC1628EF2E3C001CB02A /* SDWebImageEX */,
 				33E6405528103DCD00E763B6 /* DownloadOperation */,
 				9DE95CF8244CA25900E31735 /* PDDownloadManager.h */,
 				9DE95CF9244CA25900E31735 /* PDDownloadManager.m */,
@@ -468,8 +476,6 @@
 		33E1ABE02822BA9F00AA92CB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				335338852723254C00D18EDE /* PicData_macPlugin_debug.bundle */,
-				335338842723254C00D18EDE /* PicData_macPlugin_release.bundle */,
 				333ECEF725F71DFB00762219 /* ThirdParty */,
 				9DE95CB8244C3FDC00E31735 /* Categories */,
 			);
@@ -502,20 +508,10 @@
 			isa = PBXGroup;
 			children = (
 				33919ACE287A9AB000491DB2 /* View */,
-				33E6404F2810108E00E763B6 /* model */,
 				33E640492810104F00E763B6 /* NetListViewController.h */,
 				33E6404A2810104F00E763B6 /* NetListViewController.m */,
 			);
 			path = netList;
-			sourceTree = "<group>";
-		};
-		33E6404F2810108E00E763B6 /* model */ = {
-			isa = PBXGroup;
-			children = (
-				33E6404C2810108900E763B6 /* PicNetModel.h */,
-				33E6404D2810108900E763B6 /* PicNetModel.m */,
-			);
-			path = model;
 			sourceTree = "<group>";
 		};
 		33E6405528103DCD00E763B6 /* DownloadOperation */ = {
@@ -752,6 +748,10 @@
 				3323206224ECE3D000FE5E33 /* PicRuleStepModel.h */,
 				3323206424ECE3D100FE5E33 /* PicRuleStepModel.m */,
 				33E640532810122700E763B6 /* PicNet.json */,
+				33E6404C2810108900E763B6 /* PicNetModel.h */,
+				33E6404D2810108900E763B6 /* PicNetModel.m */,
+				330FDE7D28D7460B00FEDEEE /* AppInfoModel.h */,
+				330FDE7E28D7460B00FEDEEE /* AppInfoModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -815,10 +815,8 @@
 				9DE95C6C244C3E0F00E31735 /* Frameworks */,
 				9DE95C6D244C3E0F00E31735 /* Resources */,
 				C3C21B8A87AB1B8B82AA95D9 /* [CP] Embed Pods Frameworks */,
-				330F778B25DD26A100CD38FD /* Bugly */,
 				335338992723277D00D18EDE /* Embed PlugIns */,
 				BCCDD2C1CF0042C23D12E5C7 /* [CP] Copy Pods Resources */,
-				33E6B1EF28CD879000EF0E14 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -881,54 +879,17 @@
 				332D014426FD845F00E3F387 /* gesture_normal@1.5x.png in Resources */,
 				332D014526FD845F00E3F387 /* gesture_indicator_normal@2x.png in Resources */,
 				332D014926FD845F00E3F387 /* gesture_indicator_selected@2x.png in Resources */,
-				335338862723254C00D18EDE /* PicData_macPlugin_release.bundle in Resources */,
 				332D014C26FD845F00E3F387 /* gesture_normal.png in Resources */,
 				9DE95CC9244C3FDD00E31735 /* tag.in in Resources */,
 				331ACC0924F0B5080027857B /* AddNetTaskVC.xib in Resources */,
 				332D014E26FD845F00E3F387 /* gesture_selected.png in Resources */,
 				332D014B26FD845F00E3F387 /* gesture_selected@2x.png in Resources */,
-				335338872723254C00D18EDE /* PicData_macPlugin_debug.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		330F778B25DD26A100CD38FD /* Bugly */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = Bugly;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    ${SRCROOT}/BuglydSYMUploader/dSYMUpload.sh\nfi\n";
-		};
-		33E6B1EF28CD879000EF0E14 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxcrun agvtool next-version -all\n\n";
-		};
 		B2F266D8A1C5331D291E3DFA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1014,6 +975,7 @@
 				33B8DB8F27D9DA960044BE44 /* TasksViewController.m in Sources */,
 				9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */,
 				332D014226FD845F00E3F387 /* TKGestureLockView.m in Sources */,
+				330FDE7F28D7460B00FEDEEE /* AppInfoModel.m in Sources */,
 				3323206624ECE3D100FE5E33 /* PicRuleStepModel.m in Sources */,
 				33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */,
 				9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */,
@@ -1058,6 +1020,7 @@
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
+				3341DC1928EF3213001CB02A /* PPSDWebImageManager.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
 				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
 				3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */,
@@ -1202,7 +1165,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				ENABLE_BITCODE = NO;
@@ -1215,7 +1178,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.1;
+				MARKETING_VERSION = 0.4.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",
@@ -1279,7 +1242,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = per.garenge.picdata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "PicData/Viewer/PicData-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1299,7 +1264,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = E7W6597ZYH;
 				ENABLE_BITCODE = NO;
@@ -1312,7 +1277,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.1;
+				MARKETING_VERSION = 0.4.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"c++\"",
@@ -1376,7 +1341,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = per.garenge.picdata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "PicData/Viewer/PicData-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";

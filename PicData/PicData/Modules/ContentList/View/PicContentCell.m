@@ -94,7 +94,14 @@
     
     self.titleLabel.text = contentModel.title;
     [self.titleLabel sizeToFit];
-    [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:contentModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates];
+
+    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:contentModel.HOST_URL sourceType:contentModel.sourceType]};
+
+    [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:contentModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context:context progress:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (error) {
+            NSLog(@"contentCell image: %@, load error: %@", contentModel.thumbnailUrl, error);
+        }
+    }];
 }
 
 @end

@@ -24,9 +24,6 @@ singleton_interface(AppTool)
 @property (nonatomic, strong, readonly) NSArray <PicNetModel *> *hostModels;
 @property (nonatomic, strong, readonly) NSArray <NSString *> *searchKeys;
 
-/// bugly app_id
-+ (NSString *)app_id_bugly;
-
 /// 获取当前是否支持横屏
 + (BOOL)getCanChangeOrientation;
 
@@ -53,6 +50,18 @@ singleton_interface(AppTool)
 + (NSString *)getStringWithGB_18030_2000Code:(NSData *)data;
 + (NSString *)getStringWithUTF8Code:(NSData *)data;
 + (NSString *)getStringWithData:(NSData *)data dataEncoding:(NSStringEncoding)dataEncoding;
+
+@property (nonatomic, strong) NSMutableArray *referTypes;
+
+/// 自定义sdWebImageManager, 以实现不同的任务设置不同的header(部分网站需要提供"referer"的header设置)
+/// SDWebImageDownloader只支持设置一次header, 内部创建的request都是使用这个header, 不利于加载各式各样的来源图片, 所以我们需要多个downloader, 也就是多个manager来管理(是否真的需要创建多个manager)
+/// 还有一个点没考虑清楚的是SDImageLoadersManager这个类, 它持有一个loaders数组, 管理downloader, 并根据- (BOOL)canRequestImageForURL:(NSURL *)url options:(SDWebImageOptions)options context:(SDWebImageContext *)context判断是否使用该loader加载图片, 跟我的+ (SDWebImageManager *)sdWebImageManager:(NSString *)referer;类似
+/// 能用sdk提供的尽量用sdk的, 后面有机会再研究研究
+@property (nonatomic, strong) NSMutableDictionary<NSString *, PPSDWebImageManager *> *managers;
+/// 根据referer获取或创建一个新的manager
++ (SDWebImageManager *)sdWebImageManager:(NSString *)referer sourceType:(int)sourceType;
+/// 根据referer释放指定manager
++ (void)releaseSDWebImageManager:(NSString *)referer;
 
 @end
 

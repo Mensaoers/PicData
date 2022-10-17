@@ -26,6 +26,8 @@
 
 @property (nonatomic, assign) CGFloat lastWidth;
 
+@property (nonatomic, assign) BOOL headerExpanded;
+
 @end
 
 @implementation DetailViewController
@@ -58,6 +60,18 @@
     self.detailModel.nextUrl = contentModel.href;
     self.detailModel.detailTitle = contentModel.title;
     self.detailModel.currentUrl = contentModel.href;
+}
+
+- (void)dealloc {
+    [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
+    [self willDealloc];
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.headerExpanded = YES;
+    }
+    return self;
 }
 
 #pragma mark - view
@@ -105,6 +119,7 @@
     contentLabel.textAlignment = NSTextAlignmentLeft;
     contentLabel.textColor = UIColor.lightGrayColor;
     contentLabel.numberOfLines = 0;
+    contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
     contentLabel.text = self.contentModel.title;
     [self.view addSubview:contentLabel];
     self.contentLabel = contentLabel;
@@ -119,6 +134,12 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     [self.view addSubview:tableView];
+
+    if (@available(iOS 15.0, *)) {
+        tableView.sectionHeaderTopPadding = 0;
+    } else {
+        // Fallback on earlier versions
+    }
     
     self.tableView = tableView;
     
@@ -141,11 +162,10 @@
     [self updateContentTitle:self.detailModel.detailTitle];
 
     [self.tableView reloadData];
-    if (self.detailModel.contentImgsUrl.count > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    if (self.detailModel.contentImgsUrl.count > 0 && self.historyInfos.count > 0) {
+        self.headerExpanded = NO;
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionNone animated:NO];
     }
-
-    [self.tableView.mj_header endRefreshing];
 }
 
 - (void)updateContentTitle:(NSString *)contentTitle {
@@ -190,6 +210,7 @@
 - (void)loadLastPageDetailData {
     NSDictionary *lastInfo = self.historyInfos.lastObject;
     if (nil != lastInfo) {
+        [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
         self.detailModel.nextUrl = self.detailModel.currentUrl;
         self.detailModel.currentUrl = lastInfo[@"url"];
         self.detailModel.detailTitle = lastInfo[@"title"];
@@ -209,6 +230,7 @@
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"到底了"];
         return;
     }
+    [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
     self.detailModel.currentUrl = self.detailModel.nextUrl;
     [self loadDetailData];
     [self loadNavigationItem];
@@ -216,6 +238,7 @@
 
 - (void)loadDetailData {
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
+    [self.tableView.mj_header endRefreshing];
     PDBlockSelf
     [PDRequest getWithURL:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]] isPhone:NO completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
@@ -263,6 +286,11 @@
 }
 
 #pragma mark - Action
+
+- (void)headerViewTapGesAction:(UITapGestureRecognizer *)sender {
+    self.headerExpanded = !self.headerExpanded;
+    [self.tableView reloadSection:0 withRowAnimation:UITableViewRowAnimationTop];
+}
 
 - (void)refreshItemClickAction:(UIBarButtonItem *)sender {
     [self.tableView.mj_header beginRefreshing];
@@ -338,15 +366,15 @@
     if (self.detailModel.suggesArray.count > 0) {
         return 2;
     } else {
-        return 1;
+        return 2;
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return self.detailModel.contentImgsUrl ? self.detailModel.contentImgsUrl.count : 0;
-    } else {
         return 1;
+    } else {
+        return self.detailModel.contentImgsUrl ? self.detailModel.contentImgsUrl.count : 0;
     }
 }
 
@@ -356,35 +384,6 @@
 
     switch (indexPath.section) {
         case 0: {
-            DetailViewContentCell *cell = (DetailViewContentCell *)[tableView dequeueReusableCellWithIdentifier:@"DetailViewContentCell"];
-            if (nil == cell) {
-                cell = [[DetailViewContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailViewContentCell"];
-            }
-
-            cell.indexpath = indexPath;
-            cell.targetImageWidth = self.tableView.mj_w - 10;
-            cell.url = self.detailModel.contentImgsUrl[indexPath.row];
-            PDBlockSelf
-            cell.updateCellHeightBlock = ^(NSIndexPath * _Nonnull indexPath_, CGFloat height) {
-                [weakSelf.heightDic setValue:@(height) forKey:[NSString stringWithFormat:@"%ld-%ld", (long)indexPath_.section, (long)indexPath_.row]];
-                dispatch_async( dispatch_get_main_queue(), ^{
-                    UITableViewCell  *existcell = [tableView cellForRowAtIndexPath:indexPath_];
-                    if (existcell) {
-                        // assign image to cell here
-                        @try {
-                            [tableView reloadRowsAtIndexPaths:@[indexPath_] withRowAnimation:UITableViewRowAnimationNone];
-                        } @catch (NSException *exception) {
-
-                        } @finally {
-
-                        }
-                    }
-                });
-            };
-            tCell = cell;
-        }
-            break;
-        case 1: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"collect"];
             if (nil == cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"collect"];
@@ -407,6 +406,34 @@
             tCell = cell;
         }
             break;
+        case 1: {
+            DetailViewContentCell *cell = (DetailViewContentCell *)[tableView dequeueReusableCellWithIdentifier:@"DetailViewContentCell"];
+            if (nil == cell) {
+                cell = [[DetailViewContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailViewContentCell"];
+            }
+            PDBlockSelf
+            cell.updateCellHeightBlock = ^(NSIndexPath * _Nonnull indexPath_, CGFloat height) {
+                [weakSelf.heightDic setValue:@(height) forKey:[NSString stringWithFormat:@"%ld-%ld", (long)indexPath_.section, (long)indexPath_.row]];
+                dispatch_async( dispatch_get_main_queue(), ^{
+                    UITableViewCell  *existcell = [tableView cellForRowAtIndexPath:indexPath_];
+                    if (existcell) {
+                        // assign image to cell here
+                        @try {
+                            [tableView reloadRowsAtIndexPaths:@[indexPath_] withRowAnimation:UITableViewRowAnimationNone];
+                        } @catch (NSException *exception) {
+
+                        } @finally {
+
+                        }
+                    }
+                });
+            };
+            cell.indexpath = indexPath;
+            cell.targetImageWidth = self.tableView.mj_w - 10;
+            [cell setImageUrl:self.detailModel.contentImgsUrl[indexPath.row] refererUrl:self.detailModel.currentUrl sourceType:self.sourceModel.sourceType];
+            tCell = cell;
+        }
+            break;
         default:
             tCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
             break;
@@ -424,13 +451,11 @@
     } else {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"保存成功"];
     }
-
-
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 0) {
+    if (indexPath.section == 1) {
         [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
         [self loadNextDetailData];
     }
@@ -438,32 +463,41 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        if (self.headerExpanded && self.detailModel.suggesArray.count > 0) {
+
+            NSInteger count = self.detailModel.suggesArray.count;
+            CGSize size = [PicContentView contentViewSize:self.tableView.mj_w targetCount:count];
+            return size.height + 20;
+        } else {
+            return CGFLOAT_MIN;
+        }
+    } else {
         NSNumber *height = [self.heightDic valueForKey:[NSString stringWithFormat:@"%ld-%ld", (long)indexPath.section, (long)indexPath.row]];
         if (height && [height floatValue] > 0) {
             return [height floatValue];
         }
         // 默认高度200, 不然触发频繁请求, 会导致服务器卡死
         return 200;//UITableViewAutomaticDimension;
-    } else {
-        if (self.detailModel.suggesArray.count > 0) {
-            NSInteger count = self.detailModel.suggesArray.count;
-            CGFloat width = self.tableView.mj_w;
-            CGFloat height = ceil((count) / (self.view.mj_w / [PicContentView itemWidth:width])) * ([PicContentView itemHeight:width] + 10);
-            return height;
-        } else {
-            return 0;
-        }
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 10;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return [UIView new];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return  section == 0 ? CGFLOAT_MIN : 40;
+    return 40;
+//    return  section == 0 ? 40 : CGFLOAT_MIN;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 
     UIView *bgView = [[UIView alloc] init];
-    bgView.backgroundColor = UIColor.whiteColor;
+    bgView.backgroundColor = pdColor(205, 218, 223, 1);
     CGRect frame = CGRectMake(0, 0, tableView.mj_w, 40);
     bgView.frame = frame;
 
@@ -475,9 +509,7 @@
     [bgView addSubview:titleLabel];
 
     if (section == 0) {
-        titleLabel.text = @"图片";// self.detailModel.detailTitle ?: @"";
-    } else {
-        titleLabel.text = self.detailModel.suggesTitle ?: @"";
+        titleLabel.text = [self.detailModel.suggesTitle ?: @"" stringByAppendingString:self.headerExpanded ? @"▼" : @"►"];
         if (titleLabel.text.length > 0) {
             // 添加一个全部下载按钮
             UIButton *downloadAllBtn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -488,6 +520,13 @@
             [downloadAllBtn addTarget:self action:@selector(downloadAllContents:) forControlEvents:UIControlEventTouchUpInside];
             [bgView addSubview:downloadAllBtn];
         }
+    } else {
+        titleLabel.text = @"图片";// self.detailModel.detailTitle ?: @"";
+    }
+
+    if (section == 0) {
+        UITapGestureRecognizer *tapges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerViewTapGesAction:)];
+        [bgView addGestureRecognizer:tapges];
     }
 
     return bgView;
@@ -495,15 +534,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return 200;
-    } else {
         return 100;//((self.detailModel.suggesArray ? self.detailModel.suggesArray.count : 0) + 1) / 2.0 * ((self.view.mj_w - 30) / 2 * 360.0 / 250 + 50);
+    } else {
+        return 200;
     }
 }
 
 - (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point {
 
-    if (indexPath.section != 0) {
+    if (indexPath.section == 0) {
         return nil;
     }
 

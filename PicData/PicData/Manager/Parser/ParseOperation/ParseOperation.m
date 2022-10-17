@@ -72,7 +72,8 @@
         NSURL *baseURL = [NSURL URLWithString:self.sourceModel.HOST_URL];
 
         PDBlockSelf
-        self.dataTask = [PDRequest getWithURL:[NSURL URLWithString:url relativeToURL:baseURL] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSURL *taskURL = [NSURL URLWithString:url relativeToURL:baseURL];
+        self.dataTask = [PDRequest getWithURL:taskURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
             if (weakSelf.isCancelled) {
                 [weakSelf finishOperation];
@@ -87,7 +88,7 @@
 
                 NSLog(@"第%d页, %@, 完成", weakSelf.pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString);
 
-                NSDictionary *result = [ContentParserManager dealWithHtmlData:content nextUrl:url WithSourceModel:weakSelf.sourceModel ContentTaskModel:weakSelf.contentTaskModel picCount:weakSelf.picCount];
+                NSDictionary *result = [ContentParserManager dealWithHtmlData:content referer:taskURL.absoluteString nextUrl:url WithSourceModel:weakSelf.sourceModel ContentTaskModel:weakSelf.contentTaskModel picCount:weakSelf.picCount];
                 nextUrl = result[@"nextUrl"];
 
                 count = [result[@"count"] intValue];

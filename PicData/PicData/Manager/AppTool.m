@@ -17,6 +17,13 @@ static BOOL canChangeOrientation = NO;
 
 singleton_implementation(AppTool)
 
+- (NSMutableArray *)referTypes {
+    if (nil == _referTypes) {
+        _referTypes = [NSMutableArray array];
+    }
+    return _referTypes;
+}
+
 - (NSString *)HOST_URL {
     return [AppTool sharedAppTool].currentHostModel.HOST_URL;
 }
@@ -73,6 +80,10 @@ singleton_implementation(AppTool)
             for (PicNetModel *model in hostModels) {
                 if (!model.prepared) { continue; }
                 [hostModelsM addObject:model];
+
+                if (model.referer.length > 0) {
+                    [self.referTypes addObject:@(model.sourceType)];
+                }
             }
             _hostModels = hostModelsM.copy;
         }
@@ -82,11 +93,6 @@ singleton_implementation(AppTool)
         }
     }
     return _hostModels;
-}
-
-/// bugly app_id
-+ (NSString *)app_id_bugly {
-    return @"8eb9d79660";
 }
 
 /// 获取当前是否支持横屏
@@ -119,23 +125,8 @@ singleton_implementation(AppTool)
         }
 
         NSString *filePath = urls.firstObject.path;
-        NSString *release = @"release";
-#ifdef DEBUG
-        release = @"debug";
-#endif
-        NSString *bundleFile = [NSString stringWithFormat:@"PicData_macPlugin_%@.bundle", release];
-        NSURL *bundleURL = [[[NSBundle mainBundle] builtInPlugInsURL] URLByAppendingPathComponent:bundleFile];
-        if (!bundleURL) {
-            return;
-        }
-        NSBundle *pluginBundle = [NSBundle bundleWithURL:bundleURL];
-        NSString *className = @"Plugin";
-        Class Plugin= [pluginBundle classNamed:className];
-        //    Plugin *obj = [[Plugin alloc] init];
-        SEL openSel = NSSelectorFromString(@"openFileOrDirWithPath:");
-        if ([Plugin respondsToSelector:openSel]) {
-            [Plugin performSelector:NSSelectorFromString(@"openFileOrDirWithPath:") withObject:filePath];
-        }
+
+        [[PPCatalystHandle sharedPPCatalystHandle] openFileOrDirWithPath:filePath];
         return;
 #endif
     }
@@ -252,6 +243,52 @@ singleton_implementation(AppTool)
 }
 + (NSString *)getStringWithData:(NSData *)data dataEncoding:(NSStringEncoding)dataEncoding {
     return [[NSString alloc] initWithData:data encoding:dataEncoding];
+}
+
+#pragma mark - SDWebImage
+
+- (NSMutableDictionary<NSString *, PPSDWebImageManager *> *)managers {
+    if (nil == _managers) {
+        _managers = [NSMutableDictionary dictionary];
+    }
+    return _managers;
+}
+
++ (SDWebImageManager *)sdWebImageManager:(NSString *)referer sourceType:(int)sourceType {
+
+    if (nil == referer || referer.length == 0 || ![AppTool.sharedAppTool.referTypes containsObject:@(sourceType)]) {
+        return [SDWebImageManager sharedManager];
+    }
+
+    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[referer];
+
+    if (nil == manager) {
+        // 默认的cache
+        id<SDImageCache> cache = [[SDWebImageManager class] defaultImageCache];
+        if (!cache) {
+            cache = [SDImageCache sharedImageCache];
+        }
+
+        // 自定义的loader
+        SDWebImageDownloader *loader = [[SDWebImageDownloader alloc] initWithConfig:SDWebImageDownloaderConfig.defaultDownloaderConfig];
+        [loader setValue:referer forHTTPHeaderField:@"referer"];
+
+        manager = [[PPSDWebImageManager alloc] initWithCache:cache loader:loader];
+
+        AppTool.sharedAppTool.managers[referer] = manager;
+    }
+
+    return manager;
+}
+
++ (void)releaseSDWebImageManager:(NSString *)referer {
+    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[referer];
+    if (manager) {
+        [manager cancelAll];
+        [manager.imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
+    }
+    AppTool.sharedAppTool.managers[referer] = nil;
+    NSLog(@"AppTool.sharedAppTool.managers: %@", AppTool.sharedAppTool.managers.allKeys);
 }
 
 @end

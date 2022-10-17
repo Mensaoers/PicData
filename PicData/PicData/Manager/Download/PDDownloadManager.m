@@ -9,6 +9,9 @@
 #import "PDDownloadManager.h"
 #import "PPDownloadTaskOperation.h"
 
+#define DOWNLOADSPATHKEY @"DOWNLOADSPATHKEY"
+#define KMaxDownloadOperationCount @"KMaxDownloadOperationCount"
+
 @interface PDDownloadManager()
 
 /// 用不到 作废
@@ -20,10 +23,56 @@
 
 @implementation PDDownloadManager
 
+@synthesize maxDownloadOperationCount = _maxDownloadOperationCount;
+
+- (NSInteger)defaultMinDownloadOperationCount {
+    return 6;
+}
+
+- (NSInteger)defaultMaxDownloadOperationCount {
+#if TARGET_OS_MACCATALYST
+    return 20;
+#else
+    return 12;
+#endif
+}
+
+- (BOOL)checkDownloadOperationCountCorrect:(NSInteger)willSetValue {
+    return willSetValue >= [self defaultMinDownloadOperationCount] && willSetValue <= [self defaultMaxDownloadOperationCount];
+}
+
+- (NSInteger)getDownloadOperationCountCorrect:(NSInteger)willSetValue {
+    return MAX(MIN(willSetValue, [self defaultMaxDownloadOperationCount]), [self defaultMinDownloadOperationCount]);
+}
+
+- (void)setMaxDownloadOperationCount:(NSInteger)maxDownloadOperationCount {
+    maxDownloadOperationCount = [self getDownloadOperationCountCorrect:maxDownloadOperationCount];
+    _maxDownloadOperationCount = maxDownloadOperationCount;
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:maxDownloadOperationCount forKey:KMaxDownloadOperationCount];
+    [userDefaults synchronize];
+
+    self.downloadQueue.maxConcurrentOperationCount = maxDownloadOperationCount;
+}
+
+- (NSInteger)maxDownloadOperationCount {
+
+    if (_maxDownloadOperationCount > 0) {
+
+    } else {
+        _maxDownloadOperationCount = [[NSUserDefaults standardUserDefaults] integerForKey:KMaxDownloadOperationCount];
+    }
+    if (![self checkDownloadOperationCountCorrect:_maxDownloadOperationCount]) {
+        [self setMaxDownloadOperationCount:6];
+    }
+    return _maxDownloadOperationCount;
+}
+
 - (NSOperationQueue *)downloadQueue {
     if (nil == _downloadQueue) {
         _downloadQueue = [[NSOperationQueue alloc] init];
-        _downloadQueue.maxConcurrentOperationCount = 6;
+        _downloadQueue.maxConcurrentOperationCount = self.maxDownloadOperationCount;
     }
     return _downloadQueue;
 }
@@ -207,7 +256,7 @@ static NSString *favoriteFolderName = @"我的收藏";
     return contentPath;
 }
 
-- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls suggestNames:(nullable NSArray<NSString *> *)suggestNames {
+- (void)downWithSource:(PicSourceModel *)sourceModel ContentTaskModel:(PicContentTaskModel *)contentTaskModel urls:(NSArray *)urls referer:(NSString *)referer suggestNames:(NSArray<NSString *> *)suggestNames {
 
     if (![self checksystemDownloadFullPathExistNeedNotice:YES]) {
         return;
@@ -229,9 +278,13 @@ static NSString *favoriteFolderName = @"我的收藏";
         PDBlockSelf
 
         // 研究了一下web端下载图片时候的header, 添加一些字段, 这样可以下载大图
-        NSDictionary *headers = @{
-            @"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"
-        };
+        NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithDictionary:@{
+            @"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36",
+        }];
+        // 部分网页是不需要设置referer的
+        if ([AppTool.sharedAppTool.referTypes containsObject:@(sourceModel.sourceType)] && referer.length > 0) {
+            [headers setValue:referer forKey:@"referer"];
+        }
 
         void(^downloadSuccessBlock)(void) = ^{
             NSLog(@"文件%@下载完成", fileName);

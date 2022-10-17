@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign) CGSize lastSize;
 
+@property (nonatomic, strong) NSString *url;
+
 @end
 
 @implementation DetailViewContentCell
@@ -40,16 +42,20 @@
     return self;
 }
 
-- (void)setUrl:(NSString *)url {
-    if ([url isEqualToString:_url]) {
+- (void)setImageUrl:(NSString *)imageUrl refererUrl:(NSString *)refererUrl sourceType:(int)sourceType {
+
+    if ([imageUrl isEqualToString:_url]) {
         if (fabs(self.targetImageWidth - self.lastSize.width) >= 4) {
             [self updateImageViewSize:self.conImgView.image.size];
         }
         return;
     }
-    _url = url;
+    _url = imageUrl;
+
+    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:refererUrl sourceType:sourceType]};
+
     PDBlockSelf
-    [self.conImgView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [self.conImgView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context: context progress: nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (nil == error) {
             CGSize imageSize = image.size;
             [weakSelf updateImageViewSize:imageSize];

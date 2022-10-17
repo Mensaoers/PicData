@@ -1,0 +1,6 @@
+framework module PPCatalystTool {
+  umbrella header "PPCatalystTool.h"
+
+  export *
+  module * { export * }
+}

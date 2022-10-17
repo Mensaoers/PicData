@@ -89,7 +89,7 @@
     // 不用检查
 #if !TARGET_OS_MACCATALYST
     // version
-    [operationModels addObject:[SettingOperationModel ModelWithName:@"检查更新" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] func:@"checkNewVersion:"]];
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"检查更新" value:KAppVersion func:@"checkNewVersion:"]];
     if ([[TKGestureLockManager sharedInstance] checkGettureLockNeeded]) {
         [operationModels addObject:[SettingOperationModel ModelWithName:@"关闭手势锁屏" value:@"" func:@"hideGesture:"]];
     } else {
@@ -99,6 +99,8 @@
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"]];
     [operationModels addObject:self.monitorModel];
+
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"切换最大同时下载数量" value:[NSString stringWithFormat:@"当前限制最多%ld个任务", [PDDownloadManager sharedPDDownloadManager].maxDownloadOperationCount] func:@"changeMaxDownloadOperationCount:"]];
 
     return operationModels;
 }
@@ -241,6 +243,26 @@ static NSString *identifier = @"identifier";
     [self showAlertWithTitle:@"提醒" message:@"清理完成, 请重启app" confirmTitle:@"退出app" confirmHandler:^(UIAlertAction * _Nonnull action) {
         abort();
     } cancelTitle:@"以后再说" cancelHandler:nil];
+}
+
+- (void)changeMaxDownloadOperationCount: (UIView *)sender {
+
+    NSString *message = [NSString stringWithFormat:@"设置同时下载的最大图片数量, 该值介于%ld和%ld之间", [PDDownloadManager.sharedPDDownloadManager defaultMinDownloadOperationCount], [PDDownloadManager.sharedPDDownloadManager defaultMaxDownloadOperationCount]];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"设置最大任务数" message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = [NSString stringWithFormat:@"请输入%ld~%ld之间的整数", [PDDownloadManager.sharedPDDownloadManager defaultMinDownloadOperationCount], [PDDownloadManager.sharedPDDownloadManager defaultMaxDownloadOperationCount]];
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *field = alert.textFields.firstObject;
+        if ([field.text integerValue] > 0) {
+            PDDownloadManager.sharedPDDownloadManager.maxDownloadOperationCount = [field.text integerValue];
+            [self reloadData];
+        }
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

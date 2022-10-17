@@ -42,33 +42,56 @@ singleton_implementation(PDRequest)
 }
 
 + (void)requestToCheckVersion:(BOOL)autoCheck onView:(UIView *)onView completehandler:(void (^)(void))completehandler {
-    // 蒲公英封禁了该app bundleID, 目前不请求更新了
+
+#if DEBUG
+
     if (autoCheck) {
-        if (completehandler) {
-            completehandler();
-        }
+        PPIsBlockExecute(completehandler);
         return;
-    } else {
-        NSString *urlString = @"itms-services://?action=download-manifest&url=https://www.garenge.top/PicData/picdata.plist";
-        NSString *messageAlert = [NSString stringWithFormat:@"是否直接安装: %@", urlString];
-        NSString *titleAlert = @"版本提醒";
-        NSString *downloadTitle = @"安装";
-
-        UIViewController *presentingViewController = UIApplication.sharedApplication.windows.firstObject.rootViewController;
-        [presentingViewController showAlertWithTitle:titleAlert message:messageAlert confirmTitle:downloadTitle confirmHandler:^(UIAlertAction * _Nonnull action) {
-            BOOL isDebugged = AmIBeingDebugged();
-            if (isDebugged) {
-
-                [presentingViewController showAlertWithTitle:nil message:@"调试模式下不支持直接安装app" confirmTitle:@"好的" confirmHandler:nil];
-            } else {
-                [UIApplication.sharedApplication openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
-            }
-
-            PPIsBlockExecute(completehandler);
-        } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
-            PPIsBlockExecute(completehandler);
-        }];
     }
+#endif
+
+    [PDRequest getWithURL:[NSURL URLWithString:@"https://garenge.top/app/PicData"] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+        if (error) {
+            return;
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [PDRequest parasResponse:data completeHandler:^(NSString * _Nullable responseString, NSDictionary * _Nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message) {
+                if (!isSuccess) { return; }
+                NSArray *array = responseDataDic[@"data"];
+                AppInfoModel *appInfoModel = [AppInfoModel mj_objectArrayWithKeyValuesArray:array].firstObject;
+                if (nil == appInfoModel) { return; }
+                NSLog(@"获取到PicData最新版本为%@, build: %@", appInfoModel.version, appInfoModel.build);
+
+                if (appInfoModel.urlService.length == 0) { return; }
+
+                BOOL sameVersion = [appInfoModel.version isEqualToString:KAppVersion] && [appInfoModel.build isEqualToString:KAppVersionBuild];
+                if (sameVersion && autoCheck) { return; }
+
+                NSString *messageAlert = sameVersion ? [NSString stringWithFormat:@"是否直接安装该版本: V%@(build%@)", appInfoModel.version, appInfoModel.build] : [NSString stringWithFormat:@"监测到服务器版本V%@(build%@), 当前app版本V%@(build%@), 是否安装新版本?", appInfoModel.version, appInfoModel.build, KAppVersion, KAppVersionBuild];
+                NSString *titleAlert = @"版本提醒";
+                NSString *downloadTitle = @"安装";
+
+                UIViewController *presentingViewController = UIApplication.sharedApplication.windows.firstObject.rootViewController;
+                [presentingViewController showAlertWithTitle:titleAlert message:messageAlert confirmTitle:downloadTitle confirmHandler:^(UIAlertAction * _Nonnull action) {
+                    BOOL isDebugged = AmIBeingDebugged();
+                    if (isDebugged) {
+
+                        [presentingViewController showAlertWithTitle:nil message:@"调试模式下不支持直接安装app" confirmTitle:@"好的" confirmHandler:nil];
+                    } else {
+                        [UIApplication.sharedApplication openURL:[NSURL URLWithString:appInfoModel.urlService] options:@{} completionHandler:nil];
+                    }
+
+                    PPIsBlockExecute(completehandler);
+                } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
+                    PPIsBlockExecute(completehandler);
+                }];
+
+            }];
+        });
+    }];
 }
 
 + (void)postWith:( NSString * _Nonnull )urlString paramsString:( NSString * _Nullable )paramsString completeHandler:(void(^)(NSString * __nullable responseString, NSDictionary * __nullable responseDataDic, BOOL isSuccess, NSString * _Nullable message))completeHandler; {
@@ -113,9 +136,8 @@ singleton_implementation(PDRequest)
         return;
     }
 
-    if ([dictionary[@"code"] intValue] == 0) {
-        NSDictionary *dic = dictionary[@"data"];
-        completeHandler(returnDataStr, dic, YES, @"");
+    if ([dictionary[@"code"] intValue] == 200) {
+        completeHandler(returnDataStr, dictionary, YES, @"");
         return;
     } else {
         completeHandler(returnDataStr, nil, NO, @"请求失败");

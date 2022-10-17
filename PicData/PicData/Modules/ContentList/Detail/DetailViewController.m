@@ -140,6 +140,8 @@
     } else {
         // Fallback on earlier versions
     }
+
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     self.tableView = tableView;
     
@@ -200,7 +202,7 @@
 
     NSIndexPath *indexPath = self.tableView.indexPathsForVisibleRows.firstObject;
     if (indexPath == nil) { return; }
-
+    [self.heightDic removeAllObjects];
     [self.tableView reloadData];
 
 }
@@ -237,6 +239,7 @@
 }
 
 - (void)loadDetailData {
+    [self.heightDic removeAllObjects];
     [MBProgressHUD showHUDAddedTo:self.view WithStatus:@"请稍等"];
     [self.tableView.mj_header endRefreshing];
     PDBlockSelf
@@ -412,21 +415,23 @@
                 cell = [[DetailViewContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailViewContentCell"];
             }
             PDBlockSelf
-            cell.updateCellHeightBlock = ^(NSIndexPath * _Nonnull indexPath_, CGFloat height) {
-                [weakSelf.heightDic setValue:@(height) forKey:[NSString stringWithFormat:@"%ld-%ld", (long)indexPath_.section, (long)indexPath_.row]];
-                dispatch_async( dispatch_get_main_queue(), ^{
-                    UITableViewCell  *existcell = [tableView cellForRowAtIndexPath:indexPath_];
-                    if (existcell) {
-                        // assign image to cell here
-                        @try {
-                            [tableView reloadRowsAtIndexPaths:@[indexPath_] withRowAnimation:UITableViewRowAnimationNone];
-                        } @catch (NSException *exception) {
+            cell.updateCellHeightBlock = ^(NSIndexPath * _Nonnull indexPath_, CGFloat height, BOOL force) {
+                NSString *key = [NSString stringWithFormat:@"%ld-%ld", (long)indexPath_.section, (long)indexPath_.row];
+                if (weakSelf.heightDic[key] != nil && !force) { return; }
 
-                        } @finally {
+                [weakSelf.heightDic setValue:@(height) forKey: key];
 
-                        }
+                UITableViewCell  *existcell = [tableView cellForRowAtIndexPath:indexPath_];
+                if (existcell) {
+                    // assign image to cell here
+                    @try {
+                        [tableView reloadRowsAtIndexPaths:@[indexPath_] withRowAnimation:UITableViewRowAnimationNone];
+                    } @catch (NSException *exception) {
+
+                    } @finally {
+
                     }
-                });
+                }
             };
             cell.indexpath = indexPath;
             cell.targetImageWidth = self.tableView.mj_w - 10;

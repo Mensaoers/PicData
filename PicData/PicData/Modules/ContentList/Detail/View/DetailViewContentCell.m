@@ -45,8 +45,8 @@
 - (void)setImageUrl:(NSString *)imageUrl refererUrl:(NSString *)refererUrl sourceType:(int)sourceType {
 
     if ([imageUrl isEqualToString:_url]) {
-        if (fabs(self.targetImageWidth - self.lastSize.width) >= 4) {
-            [self updateImageViewSize:self.conImgView.image.size];
+        if (fabs(self.targetImageWidth - self.lastSize.width) >= 4 || fabs(self.mj_h - self.lastSize.height) >= 4) {
+            [self updateImageViewSize:self.conImgView.image.size force:YES];
         }
         return;
     }
@@ -56,20 +56,20 @@
 
     PDBlockSelf
     [self.conImgView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context: context progress: nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        if (nil == error) {
+        if (nil == error && [weakSelf.url isEqualToString:imageUrl]) {
             CGSize imageSize = image.size;
-            [weakSelf updateImageViewSize:imageSize];
+            [weakSelf updateImageViewSize:imageSize force:NO];
         }
     }];
 }
 
-- (void)updateImageViewSize:(CGSize)imageSize {
+- (void)updateImageViewSize:(CGSize)imageSize force:(BOOL)force {
 
     CGFloat height = imageSize.height * self.targetImageWidth / imageSize.width;
     self.lastSize = CGSizeMake(self.targetImageWidth, height);
 
     if (self.updateCellHeightBlock) {
-        self.updateCellHeightBlock(self.indexpath, height + 9);
+        self.updateCellHeightBlock(self.indexpath, height + 9, force);
     }
 }
 

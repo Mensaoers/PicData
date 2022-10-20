@@ -69,7 +69,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.headerExpanded = YES;
+        self.headerExpanded = NO;
     }
     return self;
 }
@@ -268,7 +268,7 @@
 }
 
 - (void)parserDetailListHtmlDataType:(NSString *)htmlString {
-    self.detailModel.suggesTitle = @"推荐";
+    self.detailModel.suggesTitle = @"推荐列表";
     self.detailModel.nextUrl = self.detailModel.currentUrl;
 
     PDBlockSelf
@@ -514,7 +514,7 @@
     [bgView addSubview:titleLabel];
 
     if (section == 0) {
-        titleLabel.text = [self.detailModel.suggesTitle ?: @"" stringByAppendingString:self.headerExpanded ? @"▼" : @"►"];
+        titleLabel.text = [NSString stringWithFormat:@"%@%@", self.headerExpanded ? @"点击收起" : @"点击展开", [self.detailModel.suggesTitle ?: @"" stringByAppendingString:self.headerExpanded ? @"▼" : @"►"]];
         if (titleLabel.text.length > 0) {
             // 添加一个全部下载按钮
             UIButton *downloadAllBtn = [UIButton buttonWithType:UIButtonTypeSystem];

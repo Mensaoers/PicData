@@ -69,7 +69,11 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+#if TARGET_OS_MACCATALYST
+        self.headerExpanded = YES;
+#else
         self.headerExpanded = NO;
+#endif
     }
     return self;
 }

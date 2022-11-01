@@ -31,5 +31,4 @@ if test $? -eq 0
         echo -e "\033[31m 打包失败 \033[0m"
         exit -1
      fi
-fi
 

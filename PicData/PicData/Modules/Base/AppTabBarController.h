@@ -1,5 +1,5 @@
 //
-//  BaseTabBarController.h
+//  AppTabBarController.h
 //  PicData
 //
 //  Created by Garenge on 2020/11/4.
@@ -10,7 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BaseTabBarController : UITabBarController
+@interface AppTabBarController : UITabBarController
+
+- (void)prepare;
 
 @end
 

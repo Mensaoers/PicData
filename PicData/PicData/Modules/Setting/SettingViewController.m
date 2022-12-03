@@ -196,6 +196,7 @@ static NSString *identifier = @"identifier";
     void(^clearBlock)(BOOL clear) = ^(BOOL clear){
         if ([PDDownloadManager clearAllData:clear]) {
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"清理完成"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameClearedAllFiles object:nil];
             [weakSelf tipsToReOpenApp];
         } else {
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"清理失败"];

@@ -7,10 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "HomeViewController.h"
-#import "SettingViewController.h"
-#import "LocalFileListVC.h"
-#import "TasksViewController.h"
 
 @interface AppDelegate ()
 
@@ -18,40 +14,9 @@
 
 @implementation AppDelegate
 
-
 - (void)setUpMainTab {
-    BaseTabBarController *tabbarVC = [[BaseTabBarController alloc] init];
-
-    // 主页
-    HomeViewController *indexVC = [[HomeViewController alloc] init];
-    BaseNavigationController *indexNavi = [[BaseNavigationController alloc] initWithRootViewController:indexVC];
-    indexNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"home"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    indexNavi.tabBarItem.image = [[UIImage imageNamed:@"home_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    indexNavi.tabBarItem.title = @"首页";
-
-    // 预览
-    LocalFileListVC *viewerVC = [[LocalFileListVC alloc] init];
-    BaseNavigationController *viewerNavi = [[BaseNavigationController alloc] initWithRootViewController:viewerVC];
-    viewerNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"folder"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    viewerNavi.tabBarItem.image = [[UIImage imageNamed:@"folder_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    viewerNavi.tabBarItem.title = @"浏览";
-
-    // 下载
-    TasksViewController *tasksVC = [[TasksViewController alloc] init];
-    BaseNavigationController *tasksNavi = [[BaseNavigationController alloc] initWithRootViewController:tasksVC];
-    tasksNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"downloaded"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    tasksNavi.tabBarItem.image = [[UIImage imageNamed:@"download_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    tasksNavi.tabBarItem.title = @"下载";
-
-    // 设置
-    SettingViewController *settingVC = [[SettingViewController alloc] init];
-    BaseNavigationController *settingNavi = [[BaseNavigationController alloc] initWithRootViewController:settingVC];
-    settingNavi.tabBarItem.selectedImage = [[UIImage imageNamed:@"set"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    settingNavi.tabBarItem.image = [[UIImage imageNamed:@"set_disabled"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    settingNavi.tabBarItem.title = @"设置";
-
-    tabbarVC.viewControllers = @[indexNavi, viewerNavi, tasksNavi, settingNavi];
-
+    AppTabBarController *tabbarVC = [[AppTabBarController alloc] init];
+    [tabbarVC prepare];
 
     [self.window setRootViewController:tabbarVC];
     [self.window makeKeyAndVisible];
@@ -138,16 +103,8 @@
 }
 
 - (void)registerNotice {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeOfDownloadPath:) name:NOTICECHECKDOWNLOADPATHKEY object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveGestureUnlockFaild:) name:TKGestureLockNotice_unlockFailed object:nil];
-}
-
-- (void)receiveNoticeOfDownloadPath:(NSNotification *)notification {
-
-    [self.window.rootViewController showAlertWithTitle:@"提醒" message:@"下载路径设置有误, 请确认地址" confirmTitle:@"去设置" confirmHandler:^(UIAlertAction * _Nonnull action) {
-        [self.window.rootViewController.navigationController pushViewController:[SettingViewController new] animated:YES];
-    } cancelTitle:@"稍后" cancelHandler:nil];
 }
 
 - (void)receiveGestureUnlockFaild:(NSNotification *)notification {

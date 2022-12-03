@@ -41,7 +41,7 @@
     #import "AppTool.h"
     #import "BaseViewController.h"
     #import "BaseNavigationController.h"
-    #import "BaseTabBarController.h"
+    #import "AppTabBarController.h"
     #import "PicBaseModel.h"
     #import "PDDownloadManager.h"
     #import "PicClassModel.h"

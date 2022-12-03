@@ -11,6 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define NotificationNameClearedAllFiles @"NotificationNameClearedAllFiles"
 #define NotificationNameInitHostModelsFailed @"NotificationNameInitHostModelsFailed"
 
 @interface AppTool : NSObject

@@ -185,7 +185,7 @@
         [self.fileNamesList removeAllObjects];
         for (NSString *fileName in fileContents) {
 
-            if ([fileName isEqualToString:@".DS_Store"]) {
+            if ([fileName hasPrefix:@"."]) {
                 continue;
             }
 

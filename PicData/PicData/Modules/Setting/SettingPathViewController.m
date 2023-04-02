@@ -33,6 +33,8 @@
 - (void)loadMainView {
     [super loadMainView];
 
+    if (self.view.subviews.count > 0) { return; }
+
     UILabel *staticLabel = [[UILabel alloc] init];
     staticLabel.text = @"当前下载路径:";
     staticLabel.font = [UIFont systemFontOfSize:16];
@@ -70,6 +72,19 @@
         make.top.equalTo(fullPathLabel.mas_bottom).with.offset(24);
         make.left.mas_equalTo(24);
         make.height.mas_equalTo(20);
+    }];
+
+    UIButton *selectButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [selectButton setTitle:@"选择文件夹" forState:UIControlStateNormal];
+    selectButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    [selectButton addTarget:self action:@selector(selectButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:selectButton];
+
+    [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-24);
+        make.centerY.equalTo(tipsLabel);
+        make.width.mas_equalTo(150);
+        make.height.mas_equalTo(35);
     }];
 
     UITextView *textView = [[UITextView alloc] init];
@@ -139,6 +154,14 @@
         make.bottom.equalTo(self.view.mas_bottomMargin).with.offset(-30);
         make.height.mas_equalTo(35);
     }];
+}
+
+- (void)selectButtonClickAction:(UIButton *)sender {
+    [self.view endEditing:YES];
+    NSURL *selectedFolder = [PPCatalystHandle.sharedPPCatalystHandle selectFolderWithPath:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
+    if (selectedFolder) {
+        self.textView.text = selectedFolder.path;
+    }
 }
 
 - (void)checkButtonClickAction:(UIButton *)sender {

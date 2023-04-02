@@ -160,10 +160,15 @@ singleton_implementation(PDDownloadManager);
 }
 
 - (nonnull NSString *)defaultDownloadPath {
-    NSString *targetPath = @"PicDownloads";
-    return targetPath;
+    NSString *targetName = @"PicDownloads";
+#if TARGET_OS_MACCATALYST
+    return [PPFileManager getDocumentPathWithTarget:targetName];;
+#else
+    return targetName;
+#endif
 }
 
+/// 如果是mac端, 保存全路径, 如果是iOS端, 保存相对路径
 - (nonnull NSString *)systemDownloadPath {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *downloadPath = [defaults valueForKey:DOWNLOADSPATHKEY];
@@ -179,8 +184,13 @@ singleton_implementation(PDDownloadManager);
 
     NSString *downloadPath = [self systemDownloadPath];
 
+    NSString *fullPath;
     // @"/Volumes/T7/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File";
-    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
+#if TARGET_OS_MACCATALYST
+    fullPath = downloadPath;
+#else
+    fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
+#endif
     return fullPath;
 }
 
@@ -210,7 +220,13 @@ static NSString *favoriteFolderName = @"我的收藏";
     /// 设置下载地址
 - (BOOL)updatesystemDownloadPath:(nonnull NSString *)downloadPath {
 
-    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
+    NSString *fullPath;
+#if TARGET_OS_MACCATALYST
+    fullPath = [PPFileManager getDocumentPathWithTarget:downloadPath];
+#else
+    fullPath = downloadPath;
+#endif
+
     BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     if (!result) {
         return NO;

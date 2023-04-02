@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/PPCatalystHandle.h</key>
 		<data>
-		8T8fjn9BxFLsiMDpd1BZktGL0EQ=
+		2uhbpAZy2/GkCWHDHsrFAWbR/Zo=
 		</data>
 		<key>Headers/PPCatalystTool.h</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		W3zGa2ZcwNEQTebFtKPpHSyjo1w=
+		uuSyqZtqDZxe5ZIuVpoEpbshQ9Y=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -22,11 +22,11 @@
 		</data>
 		<key>PPCatalystPlugin.bundle/Contents/Info.plist</key>
 		<data>
-		SrdYTtZiTYHTWRXZvMdD8xUSchk=
+		/wyYnJRJMXz1M2sBMpsyBydlbPY=
 		</data>
 		<key>PPCatalystPlugin.bundle/Contents/MacOS/PPCatalystPlugin</key>
 		<data>
-		0RbuOuSuaJpegkmJIFyO743xeVY=
+		3g7N1tU00TdaKD5KZbXfWXP1Ok0=
 		</data>
 		<key>PPCatalystPlugin.bundle/Contents/_CodeSignature/CodeResources</key>
 		<data>
@@ -39,11 +39,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8T8fjn9BxFLsiMDpd1BZktGL0EQ=
+			2uhbpAZy2/GkCWHDHsrFAWbR/Zo=
 			</data>
 			<key>hash2</key>
 			<data>
-			x6MtxyB9icVS/uIsslKHEn3kx+rTqPNxekROn59NX1g=
+			yT8dVrSASozR8z7ChBLD52E2n9ruqTZYMpYKB0IF8js=
 			</data>
 		</dict>
 		<key>Headers/PPCatalystTool.h</key>
@@ -72,22 +72,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			SrdYTtZiTYHTWRXZvMdD8xUSchk=
+			/wyYnJRJMXz1M2sBMpsyBydlbPY=
 			</data>
 			<key>hash2</key>
 			<data>
-			KQO2wLK5FH7+2Fq4kbyChdhpLbJhzLEHHTCos69gpnI=
+			UUQ4KxxVMfbke1s6TJyi+pXHmlSWLU6nDjxfcdqE1a0=
 			</data>
 		</dict>
 		<key>PPCatalystPlugin.bundle/Contents/MacOS/PPCatalystPlugin</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			0RbuOuSuaJpegkmJIFyO743xeVY=
+			3g7N1tU00TdaKD5KZbXfWXP1Ok0=
 			</data>
 			<key>hash2</key>
 			<data>
-			Kn2nJTEx68q4KgpVUvu0p0zOOvEi3C9WS6xtZpj2qsc=
+			aiaJe1ycCB3RW7iUvg+NOIec1Ekm+VHOmn0kevN96xs=
 			</data>
 		</dict>
 		<key>PPCatalystPlugin.bundle/Contents/_CodeSignature/CodeResources</key>

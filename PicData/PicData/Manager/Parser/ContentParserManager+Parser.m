@@ -179,7 +179,7 @@
         }
             break;
         case 8: {
-            tagsListEs = document.QueryClass(@"series");
+            tagsListEs = document.QueryClass(@"_categories");
         }
         default:
             break;

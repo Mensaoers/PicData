@@ -291,4 +291,10 @@ singleton_implementation(AppTool)
     NSLog(@"AppTool.sharedAppTool.managers: %@", AppTool.sharedAppTool.managers.allKeys);
 }
 
++ (void)clearSDWebImageCache {
+    [[SDImageCache sharedImageCache] clearMemory];
+    [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+    [[SDImageCache sharedImageCache] clearWithCacheType:SDImageCacheTypeAll completion:nil];
+}
+
 @end

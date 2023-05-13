@@ -194,6 +194,8 @@ static NSString *identifier = @"identifier";
 
 - (void)resetCache:(UIView *)sender {
 
+    [AppTool clearSDWebImageCache];
+
     MJWeakSelf
     void(^clearBlock)(BOOL clear) = ^(BOOL clear){
         if ([PDDownloadManager clearAllData:clear]) {

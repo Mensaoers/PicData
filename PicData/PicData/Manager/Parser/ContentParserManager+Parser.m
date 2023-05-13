@@ -51,10 +51,11 @@
         }
             break;
         case 8: {
-            OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
-            aE = divE.QueryElement(@"a").firstObject;
-            imgE = articleElement.QueryElement(@"img").firstObject;
-            title = aE.text();
+//            OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
+//            aE = divE.QueryElement(@"a").firstObject;
+//            imgE = articleElement.QueryElement(@"img").firstObject;
+//            title = aE.text();
+            title = imgE.attr(@"alt");
         }
             break;
         default:

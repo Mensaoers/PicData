@@ -76,6 +76,8 @@
     // 检查更新
     dispatch_after(2, dispatch_get_main_queue(), ^{
         [PDRequest requestToCheckVersion:YES onView:self.window completehandler:nil];
+
+        [[SocketManager sharedSocketManager] connect];
     });
 
     /// 设置屏幕常亮

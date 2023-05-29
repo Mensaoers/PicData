@@ -67,6 +67,8 @@
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
 		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
+		9DB107F72A24969900131F45 /* SocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB107F62A24969900131F45 /* SocketManager.m */; };
+		9DB107FE2A24AED400131F45 /* SocketMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB107FD2A24AED400131F45 /* SocketMessageModel.m */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* AppTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* AppTabBarController.m */; };
@@ -225,6 +227,10 @@
 		9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicClassifyTagsFrame.m; sourceTree = "<group>"; };
 		9D96DCC325A37CBB0045D123 /* PicClassifyTagsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsViewCell.h; sourceTree = "<group>"; };
 		9D96DCC425A37CBB0045D123 /* PicClassifyTagsFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicClassifyTagsFrame.h; sourceTree = "<group>"; };
+		9DB107F52A24969900131F45 /* SocketManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketManager.h; sourceTree = "<group>"; };
+		9DB107F62A24969900131F45 /* SocketManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketManager.m; sourceTree = "<group>"; };
+		9DB107FC2A24AED400131F45 /* SocketMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketMessageModel.h; sourceTree = "<group>"; };
+		9DB107FD2A24AED400131F45 /* SocketMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketMessageModel.m; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -575,6 +581,17 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9DB107FB2A24AEB700131F45 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				9DB107F52A24969900131F45 /* SocketManager.h */,
+				9DB107F62A24969900131F45 /* SocketManager.m */,
+				9DB107FC2A24AED400131F45 /* SocketMessageModel.h */,
+				9DB107FD2A24AED400131F45 /* SocketMessageModel.m */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
 		9DC94C9A2552ECBB008ACAF8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -783,6 +800,7 @@
 		9DE95CF6244CA23000E31735 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				9DB107FB2A24AEB700131F45 /* Socket */,
 				33EB6C9128A00A3000D41268 /* Operation */,
 				33DC2D4F281AD36200C7A513 /* Parser */,
 				33DC2D4E281AD35600C7A513 /* Database */,
@@ -953,6 +971,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DB107FE2A24AED400131F45 /* SocketMessageModel.m in Sources */,
 				9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */,
 				9DC94CA32552ECFE008ACAF8 /* AppTabBarController.m in Sources */,
 				9DC94CAB2552F7E0008ACAF8 /* LocalFileListVC.m in Sources */,
@@ -992,6 +1011,7 @@
 				9D3593E8244D66C7005ADF05 /* DetailViewModel.m in Sources */,
 				331F4CD428B3905600A0EF5D /* NSString+Ex.m in Sources */,
 				33B43FC7255455B600C33FD0 /* UINavigationController+push.m in Sources */,
+				9DB107F72A24969900131F45 /* SocketManager.m in Sources */,
 				9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */,
 				9D3593EF244D6D32005ADF05 /* DetailViewContentCell.m in Sources */,
 				331E994E289D6585001EC22E /* ParseOperation.m in Sources */,

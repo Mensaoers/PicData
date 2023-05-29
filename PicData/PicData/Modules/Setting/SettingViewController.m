@@ -98,7 +98,7 @@
         [operationModels addObject:[SettingOperationModel ModelWithName:@"显示手势锁屏" value:@"" func:@"showGesture:"]];
     }
 #endif
-
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"连接socket" value:@"127.0.0.1:12138" func:@"connectSocket:"]];
     [operationModels addObject:[SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"]];
     [operationModels addObject:self.monitorModel];
 
@@ -231,6 +231,10 @@ static NSString *identifier = @"identifier";
         [[TKGestureLockManager sharedInstance] updateGestureLock:NO];
         [self reloadData];
     } cancelTitle:@"不关了" cancelHandler:nil];
+}
+
+- (void)connectSocket:(UIView *)sender {
+    [[SocketManager sharedSocketManager] connect];
 }
 
 - (void)checkMonitor:(UIView *)sender {

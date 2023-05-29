@@ -1,5 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-PicData/Pods-PicData-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/CWLateralSlide/CWLateralSlide.framework
+${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework
 ${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework
 ${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework
 ${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework

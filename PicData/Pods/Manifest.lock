@@ -1,4 +1,5 @@
 PODS:
+  - CocoaAsyncSocket (7.6.5)
   - CWLateralSlide (1.6.5)
   - IQKeyboardManager (6.5.9)
   - Masonry (1.1.0)
@@ -32,6 +33,7 @@ PODS:
   - YYImage/Core (1.0.4)
 
 DEPENDENCIES:
+  - CocoaAsyncSocket
   - CWLateralSlide (~> 1.6.3)
   - IQKeyboardManager
   - Masonry
@@ -48,6 +50,8 @@ DEPENDENCIES:
   - YYImage (from `https://github.com/QiuYeHong90/YYImage.git`)
 
 SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - CocoaAsyncSocket
   https://github.com/Garenge/pengpengSpecs.git:
     - PicDataSDK
     - PPCatalystTool
@@ -76,6 +80,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/QiuYeHong90/YYImage.git
 
 SPEC CHECKSUMS:
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CWLateralSlide: 8939c8dea91a24e40d0793553118cb57cd67f64b
   IQKeyboardManager: 241cc94ccabc9deb8f8bd7d12f00d73288d13ecc
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -93,6 +98,6 @@ SPEC CHECKSUMS:
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
   YYImage: 20ec986d18a8d0ad421619d166a9e628097e2433
 
-PODFILE CHECKSUM: 1e010f22c5ecb78d92c44360a11321221df2e19b
+PODFILE CHECKSUM: 2b26d60b0bcba8b8403cd40265f0967b544ddef9
 
 COCOAPODS: 1.11.3

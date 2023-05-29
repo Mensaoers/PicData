@@ -21,6 +21,7 @@ target 'PicData' do
   pod 'SSZipArchive'
   pod 'IQKeyboardManager'
   pod 'CWLateralSlide', '~> 1.6.3'
+  pod 'CocoaAsyncSocket'
   pod 'PicDataSDK'
   pod 'PPCatalystTool'
   # Pods for PicData

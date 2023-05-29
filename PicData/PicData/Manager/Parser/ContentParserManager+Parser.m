@@ -29,7 +29,8 @@
 
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
-    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;;
+    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
+    if (nil == aE) { return nil; }
     NSString *title = aE.attr(@"title");
     OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
 
@@ -235,7 +236,7 @@
     for (OCGumboElement *articleE in articleEs) {
 
         PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
+        if (nil == contentModel) { continue; }
         [contentModel insertTable];
         [articleContents addObject:contentModel];
     }
@@ -361,7 +362,7 @@
         }
             break;
         case 3: {
-            contentE = document.QueryClass(@"contentme").firstObject;
+            contentE = document.QueryClass(@"contentme2").firstObject;
         }
             break;
         case 5: {

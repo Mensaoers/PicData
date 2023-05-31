@@ -45,6 +45,14 @@ singleton_implementation(SocketManager)
     NSLog(@"SocketManager: 已发送消息: %@, tag: %d", model.toString, 10086);
 }
 
+#pragma mark - func
+- (void)scan {
+    SocketMessageModel *model = [[SocketMessageModel alloc] initWithEvent:@"scan"];
+    NSData *data = [model.toString dataUsingEncoding:NSUTF8StringEncoding];
+    [self.socket writeData:data withTimeout:-1 tag:10086];
+    NSLog(@"SocketManager: 已发送消息: %@, tag: %d", model.toString, 10086);
+}
+
 #pragma mark - delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {

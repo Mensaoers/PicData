@@ -98,11 +98,15 @@
         [operationModels addObject:[SettingOperationModel ModelWithName:@"显示手势锁屏" value:@"" func:@"showGesture:"]];
     }
 #endif
-    [operationModels addObject:[SettingOperationModel ModelWithName:@"连接socket" value:@"127.0.0.1:12138" func:@"connectSocket:"]];
+
     [operationModels addObject:[SettingOperationModel ModelWithName:@"重置缓存" value:@"" func:@"resetCache:"]];
     [operationModels addObject:self.monitorModel];
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"切换最大同时下载数量" value:[NSString stringWithFormat:@"当前限制最多%ld个任务", [PDDownloadManager sharedPDDownloadManager].maxDownloadOperationCount] func:@"changeMaxDownloadOperationCount:"]];
+
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-连接" value:@"127.0.0.1:12138" func:@"socket_connect:"]];
+
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-文件扫描" value:@"" func:@"socket_scan:"]];
 
     return operationModels;
 }
@@ -160,6 +164,8 @@ static NSString *identifier = @"identifier";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 44;
 }
+
+#pragma mark - func
 
 - (void)checkNewVersion:(UIView *)sender {
 
@@ -233,8 +239,12 @@ static NSString *identifier = @"identifier";
     } cancelTitle:@"不关了" cancelHandler:nil];
 }
 
-- (void)connectSocket:(UIView *)sender {
+- (void)socket_connect:(UIView *)sender {
     [[SocketManager sharedSocketManager] connect];
+}
+
+- (void)socket_scan:(UIView *)sender {
+    [[SocketManager sharedSocketManager] scan];
 }
 
 - (void)checkMonitor:(UIView *)sender {

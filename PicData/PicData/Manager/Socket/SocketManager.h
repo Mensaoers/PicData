@@ -18,6 +18,8 @@ singleton_interface(SocketManager)
 - (void)connect;
 - (void)sendMessage:(NSString *)message;
 
+- (void)scan;
+
 @end
 
 NS_ASSUME_NONNULL_END

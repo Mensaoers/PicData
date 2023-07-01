@@ -996,11 +996,11 @@
                 [self.browser hide];
             }
             if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputLeftArrow]) {//左箭头
-                didHandleEvent = YES;
+//                didHandleEvent = YES;
                 self.browser.currentPage = MAX(self.browser.currentPage - 1, 0);
             }
             if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputRightArrow]) {//右箭头
-                didHandleEvent = YES;
+//                didHandleEvent = YES;
                 self.browser.currentPage = MIN(self.browser.currentPage + 1, self.imgsList.count);
             }
             if ([key.charactersIgnoringModifiers isEqualToString:UIKeyInputUpArrow]) { // 上箭头

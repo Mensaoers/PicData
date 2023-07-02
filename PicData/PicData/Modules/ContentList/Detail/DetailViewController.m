@@ -439,7 +439,8 @@
             };
             cell.indexpath = indexPath;
             cell.targetImageWidth = self.tableView.mj_w - 10;
-            [cell setImageUrl:self.detailModel.contentImgsUrl[indexPath.row] refererUrl:self.detailModel.currentUrl sourceType:self.sourceModel.sourceType];
+            [cell setImageUrl:self.detailModel.contentImgsUrl[indexPath.row] refererUrl:[NSURL URLWithString:self.detailModel.currentUrl relativeToURL:[NSURL URLWithString:self.sourceModel.HOST_URL]].absoluteString sourceType:self.sourceModel.sourceType];
+            
             tCell = cell;
         }
             break;

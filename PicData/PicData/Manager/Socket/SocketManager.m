@@ -25,6 +25,10 @@ singleton_implementation(SocketManager)
     return _socket;
 }
 
+- (BOOL)isConnected {
+    return self.socket.isConnected;
+}
+
 - (void)connect {
     if (!self.socket.isConnected) {
         NSError *error = nil;
@@ -58,10 +62,20 @@ singleton_implementation(SocketManager)
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {
     NSLog(@"SocketManager: 已连接: %@, port: %d", host, port);
     [self.socket readDataWithTimeout:-1 tag:10086];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameSocketDidConnected object:nil userInfo:@{
+        @"host": host ?: @"",
+        @"port": @(port),
+    }];
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err {
     NSLog(@"SocketManager: 已断开连接: %@", err);
+        
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameSocketDidDisConnected object:nil userInfo:@{
+        @"error": err ?: [NSError errorWithDomain:@"断开连接" code:-1 userInfo:nil],
+    }];
+    
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {

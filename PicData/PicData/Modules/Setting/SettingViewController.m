@@ -44,6 +44,13 @@
 
 @implementation SettingViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketDidConnected:) name:NotificationNameSocketDidConnected object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketDidDisConnected:) name:NotificationNameSocketDidDisConnected object:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
@@ -104,7 +111,7 @@
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"切换最大同时下载数量" value:[NSString stringWithFormat:@"当前限制最多%ld个任务", [PDDownloadManager sharedPDDownloadManager].maxDownloadOperationCount] func:@"changeMaxDownloadOperationCount:"]];
 
-    [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-连接" value:@"127.0.0.1:12138" func:@"socket_connect:"]];
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-连接" value:[NSString stringWithFormat:@"127.0.0.1:12138%@", [SocketManager sharedSocketManager].isConnected ? @"(已连接)" : @"(未连接)"] func:@"socket_connect:"]];
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-文件扫描" value:@"" func:@"socket_scan:"]];
 
@@ -283,5 +290,23 @@ static NSString *identifier = @"identifier";
     }]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+#pragma mark - notification
+- (void)socketDidConnected:(NSNotification *)notification {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *host = notification.userInfo[@"host"];
+        int port = [notification.userInfo[@"port"] intValue];
+        [MBProgressHUD showInfoOnView:AppTool.getAppKeyWindow WithStatus:[NSString stringWithFormat:@"Socket已连接: \n%@, \nport: %d", host, port] afterDelay:1];
+        [self reloadData];
+    });
+}
+
+- (void)socketDidDisConnected:(NSNotification *)notification {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showInfoOnView:AppTool.getAppKeyWindow WithStatus:@"Socket已断开"];
+        [self reloadData];
+    });
+}
+
 
 @end

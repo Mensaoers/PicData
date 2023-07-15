@@ -11,11 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define NotificationNameSocketDidConnected @"NotificationNameSocketDidConnected"
+#define NotificationNameSocketDidDisConnected @"NotificationNameSocketDidDisConnected"
+
 @interface SocketManager : NSObject
 
 singleton_interface(SocketManager)
 
 - (void)connect;
+- (BOOL)isConnected;
 - (void)sendMessage:(NSString *)message;
 
 - (void)scan;

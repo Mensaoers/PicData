@@ -25,6 +25,10 @@
             "referer": "https://hitxhot.com",
             "urls": [
                 {
+                    "url": "https://www.hitxhot.org/?page=1",
+                    "title": "hitxhot首页"
+                },
+                {
                     "url": "https://hitxhot.com/hot?page=1",
                     "title": "hitxhot首页1"
                 },

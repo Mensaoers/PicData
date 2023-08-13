@@ -386,6 +386,9 @@
                 if (![src containsString:@"https://"]) {
                     continue;
                 }
+                if ([src hasPrefix:@"https://upload"]) {
+                    continue;
+                }
                 src = [src stringByReplacingOccurrencesOfString:@"_600x0" withString:@""];
             }
                 break;
@@ -567,10 +570,16 @@
             OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
             if (titleE) {
                 NSString *title1 = titleE.text();
-                // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
+                // title1 => " Hit-x-Hot: Vol. 1080 杨晨晨Yome | Page 1/9"
                 if ([title1 containsString:@" | Page"]) {
                     // 对str字符串进行匹配
-                    title = [title1 splitStringWithLeadingString:@" Hit-x-Hot: " trailingString:@" | Page" error:nil];
+//                    title = [title1 splitStringWithLeadingString:@"Hit-x-Hot: " trailingString:@" | Page" error:nil];
+                    
+                    
+                    title1 = [title1 stringByReplacingOccurrencesOfString:@"Hit-x-Hot: " withString:@"aabbccddeeffgg"];
+                    title1 = [title1 stringByReplacingOccurrencesOfString:@" | Page" withString:@"ggffeeddccbbaa"];
+
+                    title = [title1 splitStringWithLeadingString:@"aabbccddeeffgg" trailingString:@"ggffeeddccbbaa" error:nil];
                 } else {
                     title = [title1 stringByReplacingOccurrencesOfString:@" Hit-x-Hot: " withString:@""];
                 }

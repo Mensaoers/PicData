@@ -24,7 +24,7 @@ singleton_implementation(PDRequest)
     if (isPhone) {
         return [PDRequest getWithURL:URL userAgent:@"Mozilla/5.0 (iPhone; CPU iPhone OS 12_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1" completionHandler:completionHandler];
     } else {
-        return [PDRequest getWithURL:URL userAgent:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36" completionHandler:completionHandler];
+        return [PDRequest getWithURL:URL userAgent:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203" completionHandler:completionHandler];
     }
 }
 

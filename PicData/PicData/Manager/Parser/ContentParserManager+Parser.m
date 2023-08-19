@@ -18,6 +18,7 @@
             return [AppTool getStringWithGB_18030_2000Code:data];
             break;
         case 3:
+        case 4:
         case 8:
             return [AppTool getStringWithUTF8Code:data];
             break;
@@ -45,6 +46,11 @@
             break;
         case 3: {
             imgE = aE.QueryClass(@"xld").firstObject;
+        }
+            break;
+        case 4: {
+            OCGumboElement *tE = articleElement.QueryClass(@"meta-title").firstObject;
+            title = tE.text();
         }
             break;
         case 5: {
@@ -101,6 +107,11 @@
                 break;
             case 2: {
                 url = href;
+                subTitle = aE.text();
+            }
+                break;
+            case 4: {
+                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
                 subTitle = aE.text();
             }
                 break;
@@ -175,6 +186,10 @@
             tagsListEs = document.QueryClass(@"TagTop_Gs_r");
         }
             break;
+        case 4: {
+            tagsListEs = document.QueryClass(@"tag_cloud");
+        }
+            break;
         case 5: {
             tagsListEs = document.QueryClass(@"jigou");
         }
@@ -215,6 +230,11 @@
         case 3: {
             OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
             articleEs = listDiv.QueryClass(@"thcovering-video");
+        }
+            break;
+        case 4:{
+            OCGumboElement *listDiv = document.QueryClass(@"update_area_content").firstObject;
+            articleEs = listDiv.QueryClass(@"i_list");
         }
             break;
         case 5: {
@@ -272,6 +292,10 @@
             nextE = document.QueryClass(@"pag").firstObject;
         }
             break;
+        case 4: {
+            nextE = document.QueryClass(@"page").firstObject;
+        }
+            break;
         case 5: {
             nextE = document.QueryClass(@"page-list").firstObject;
         }
@@ -293,6 +317,9 @@
         switch (sourceModel.sourceType) {
             case 3:
                 nextPageTitle = @"Next »";
+                break;
+            case 4:
+                nextPageTitle = @"下页";
                 break;
             default:
                 break;
@@ -317,6 +344,10 @@
             }
                 break;
             case 3: {
+                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+            }
+                break;
+            case 4: {
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
             }
                 break;
@@ -363,6 +394,10 @@
             break;
         case 3: {
             contentE = document.QueryClass(@"contentme2").firstObject;
+        }
+            break;
+        case 4: {
+            contentE = document.QueryClass(@"content").firstObject;
         }
             break;
         case 5: {
@@ -416,6 +451,10 @@
             nextE = document.QueryClass(@"pag").firstObject;
         }
             break;
+        case 4: {
+            nextE = document.QueryClass(@"page").firstObject;
+        }
+            break;
         case 5: {
             nextE = document.QueryClass(@"page-list").firstObject;
         }
@@ -436,6 +475,9 @@
         switch (sourceModel.sourceType) {
             case 3:
                 nextPageTitle = @"Next >";
+                break;
+            case 4:
+                nextPageTitle = @"下页";
                 break;
             default:
                 break;
@@ -460,6 +502,10 @@
             }
                 break;
             case 3: {
+                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
+            }
+                break;
+            case 4: {
                 nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
             }
                 break;
@@ -521,6 +567,21 @@
             // 推荐
             OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
             OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                [contentModel insertTable];
+                [suggesM addObject:contentModel];
+            }
+        }
+            break;
+        case 4: {
+
+            // 推荐
+            OCGumboElement *listDiv = document.QueryClass(@"update_area_lists").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryClass(@"i_list");
 
             for (OCGumboElement *articleE in articleEs) {
 

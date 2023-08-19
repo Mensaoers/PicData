@@ -90,6 +90,28 @@
             "prepared": true,
         },
         {
+            "title" : "https://meirentu.cc",
+            "sourceType" : 4,
+            "HOST_URL": "https://meirentu.cc",
+            "referer": "https://meirentu.cc",
+            "urls": [
+                {
+                    "url": "https://meirentu.cc",
+                    "title": "meirentu首页"
+                },
+                {
+                    "url": "https://meirentu.cc/hots.html",
+                    "title": "美图精选"
+                }
+            ],
+            "tagsUrl": "https://meirentu.icu/tags.html",
+            "searchFormat": "https://meirentu.icu/s/%@.html",
+            "searchEncode": true,
+            "mark": "美人图",
+            "tips": "需开启代理",
+            "prepared": true,
+        },
+        {
             "title" : "https://www.hh1234.cc",
             "sourceType" : 5,
             "HOST_URL": "https://www.hh1234.cc",
@@ -105,7 +127,7 @@
             "searchEncode": false,
             "mark": "hh1234",
             "tips": "需关闭代理",
-            "prepared": true,
+            "prepared": false,
         },
         {
             "title" : "https://8se.me",

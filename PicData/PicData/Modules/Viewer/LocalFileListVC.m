@@ -179,10 +179,9 @@
     NSMutableArray *fileContents = [[fileManager contentsOfDirectoryAtPath:self.targetFilePath error:&subError] mutableCopy];
     // 文件夹排序
     [fileContents sortUsingSelector:@selector(localizedStandardCompare:)];
+    [self.fileNamesList removeAllObjects];
     if (nil == subError) {
         // NSLog(@"%@", fileContents);
-
-        [self.fileNamesList removeAllObjects];
         for (NSString *fileName in fileContents) {
 
             if ([fileName hasPrefix:@"."]) {
@@ -225,6 +224,7 @@
         [self.contentView reloadData];
     } else {
         NSLog(@"%@", subError);
+        [self.contentView reloadData];
     }
     [self.contentView.mj_header endRefreshing];
 
@@ -701,7 +701,11 @@
         }
         if (nil == rmError) {
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除成功" afterDelay:1];
-            [weakSelf.navigationController popViewControllerAnimated:YES];
+            if (weakSelf.navigationController.viewControllers.count == 1) {
+                [weakSelf.contentView.mj_header beginRefreshing];
+            } else {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
         } else {
             // [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除失败" afterDelay:1];
             [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];

@@ -100,6 +100,10 @@ singleton_implementation(ContentParserManager)
 
 /// 查询接下来要开始的任务(强制添加)
 + (void)prepareToDoNextTask:(BOOL)force {
+    
+    if (![PDDownloadManager.sharedPDDownloadManager checksystemDownloadFullPathExistNeedNotice:YES]) {
+        return;
+    }
 
     if (!force) {
         // 为了防止剩余任务无限执行(解析网页比下载图片快得多, 时间一长会有大量任务堆积)

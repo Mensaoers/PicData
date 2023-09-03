@@ -17,14 +17,14 @@ RSYNC_PROTECT_TMP_FILES=(--filter "P .*.??????")
 variant_for_slice()
 {
   case "$1" in
-  "PPCatalystTool.xcframework/ios-arm64_x86_64-simulator")
-    echo "simulator"
+  "PPCatalystTool.xcframework/ios-arm64")
+    echo ""
     ;;
   "PPCatalystTool.xcframework/ios-arm64_x86_64-maccatalyst")
     echo "maccatalyst"
     ;;
-  "PPCatalystTool.xcframework/ios-arm64")
-    echo ""
+  "PPCatalystTool.xcframework/ios-arm64_x86_64-simulator")
+    echo "simulator"
     ;;
   esac
 }
@@ -32,14 +32,14 @@ variant_for_slice()
 archs_for_slice()
 {
   case "$1" in
-  "PPCatalystTool.xcframework/ios-arm64_x86_64-simulator")
-    echo "arm64 x86_64"
+  "PPCatalystTool.xcframework/ios-arm64")
+    echo "arm64"
     ;;
   "PPCatalystTool.xcframework/ios-arm64_x86_64-maccatalyst")
     echo "arm64 x86_64"
     ;;
-  "PPCatalystTool.xcframework/ios-arm64")
-    echo "arm64"
+  "PPCatalystTool.xcframework/ios-arm64_x86_64-simulator")
+    echo "arm64 x86_64"
     ;;
   esac
 }
@@ -123,5 +123,5 @@ install_xcframework() {
   echo "Copied $source to $destination"
 }
 
-install_xcframework "${PODS_ROOT}/PPCatalystTool/PPCatalystTool/Products/PPCatalystTool.xcframework" "PPCatalystTool" "framework" "ios-arm64_x86_64-simulator" "ios-arm64_x86_64-maccatalyst" "ios-arm64"
+install_xcframework "${PODS_ROOT}/PPCatalystTool/PPCatalystTool/Products/PPCatalystTool.xcframework" "PPCatalystTool" "framework" "ios-arm64" "ios-arm64_x86_64-maccatalyst" "ios-arm64_x86_64-simulator"
 

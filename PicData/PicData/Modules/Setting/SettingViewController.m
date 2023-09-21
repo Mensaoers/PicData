@@ -110,6 +110,7 @@
     [operationModels addObject:self.monitorModel];
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"切换最大同时下载数量" value:[NSString stringWithFormat:@"当前限制最多%ld个任务", [PDDownloadManager sharedPDDownloadManager].maxDownloadOperationCount] func:@"changeMaxDownloadOperationCount:"]];
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"一键停止下载" value:@"" func:@"onekeyStopDownload:"]];
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-连接" value:[NSString stringWithFormat:@"127.0.0.1:12138%@", [SocketManager sharedSocketManager].isConnected ? @"(已连接)" : @"(未连接)"] func:@"socket_connect:"]];
 
@@ -203,6 +204,36 @@ static NSString *identifier = @"identifier";
             NSLog(@"分享失败!");
         }
     }];
+}
+
+- (void)onekeyStopDownload:(UIView *)sender {
+    [self showAlertWithTitle:@"提示" message:@"是否确定停止所有下载任务?" actions:@[
+        [UIAlertAction actionWithTitle:@"仅停止下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [ContentParserManager cancelAll];
+    }],
+        [UIAlertAction actionWithTitle:@"停止并删除未完成任务" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [ContentParserManager cancelAll];
+        // TODO: 删除未完成任务
+        NSMutableArray *array = [NSMutableArray arrayWithArray:[PicContentTaskModel queryTasksForStatus:0]];
+        [array addObjectsFromArray:[PicContentTaskModel queryTasksForStatus:1]];
+        [array addObjectsFromArray:[PicContentTaskModel queryTasksForStatus:2]];
+        for (PicContentTaskModel *taskModel in array) {
+            
+            PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+            if (nil == sourceModel) {
+                continue;
+            }
+            // 更新contentModel就好了
+            [PicContentTaskModel deleteFromTableWithHref:taskModel.href];
+            NSString *path = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];//可以删除该路径下所有文件包括该文件夹本身
+            [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": @[taskModel.href ?: @""]}];
+        }
+    }],
+    ]];
+    [self showAlertWithTitle:@"提示" message:@"是否确定停止所有下载任务?" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        
+    } cancelTitle:@"取消" cancelHandler:nil];
 }
 
 - (void)resetCache:(UIView *)sender {

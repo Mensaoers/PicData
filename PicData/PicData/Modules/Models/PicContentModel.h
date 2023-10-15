@@ -68,8 +68,10 @@ typedef NS_ENUM(NSInteger, ContentTaskStatus) {
 - (BOOL)updateTableWithStartTime;
 - (BOOL)updateTableWithEndTime;
 
-/// 初始化所有任务
+/// 初始化所有进程中任务
 + (BOOL)resetHalfWorkingTasks;
+/// 初始化所有任务
++ (BOOL)resetToZeroAllTasks;
 
 /// 删除已添加任务, 根据父级title
 + (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle;

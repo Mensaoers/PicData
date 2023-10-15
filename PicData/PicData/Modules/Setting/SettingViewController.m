@@ -111,6 +111,7 @@
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"切换最大同时下载数量" value:[NSString stringWithFormat:@"当前限制最多%ld个任务", [PDDownloadManager sharedPDDownloadManager].maxDownloadOperationCount] func:@"changeMaxDownloadOperationCount:"]];
     [operationModels addObject:[SettingOperationModel ModelWithName:@"一键停止下载" value:@"" func:@"onekeyStopDownload:"]];
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"重新下载已完成任务" value:@"" func:@"restartAllDownloads:"]];
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-连接" value:[NSString stringWithFormat:@"127.0.0.1:12138%@", [SocketManager sharedSocketManager].isConnected ? @"(已连接)" : @"(未连接)"] func:@"socket_connect:"]];
 
@@ -231,7 +232,13 @@ static NSString *identifier = @"identifier";
         }
     }],
     ]];
-    [self showAlertWithTitle:@"提示" message:@"是否确定停止所有下载任务?" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
+}
+
+- (void)restartAllDownloads:(UIView *)sender {
+    [self showAlertWithTitle:@"提示" message:@"是否确定重新下载所有任务?" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        
+        [PicContentTaskModel resetToZeroAllTasks];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameRefreshDownloadTaskStatus object:nil];
         
     } cancelTitle:@"取消" cancelHandler:nil];
 }

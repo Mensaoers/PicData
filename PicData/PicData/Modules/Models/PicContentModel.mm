@@ -148,11 +148,17 @@ WCDB_INDEX(PicContentTaskModel, "_index", href)
     return [[DatabaseManager getDatabase] updateRowsInTable:[self.class tableName] onProperties:self.class.endTime withObject:self where:self.class.href == self.href];
 }
 
-/// 初始化所有任务
+/// 初始化所有进程中任务
 + (BOOL)resetHalfWorkingTasks {
     [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperty:self.status withValue:@3 where:self.downloadedCount > 0 && self.downloadedCount == self.totalCount];
     // 更新多列数据
     return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperties:{self.status, self.downloadedCount} withRow:@[@0, @0] where:self.downloadedCount >= 0 && self.status != 3];
+}
+
+/// 初始化所有任务
++ (BOOL)resetToZeroAllTasks {
+    // 更新多列数据
+    return [[DatabaseManager getDatabase] updateRowsInTable:[self tableName] onProperties:{self.status, self.downloadedCount} withRow:@[@0, @0] where:self.downloadedCount >= 0 && self.status == 3];
 }
 
 + (BOOL)deleteFromTableWithSourceTitle:(NSString *)sourceTitle {

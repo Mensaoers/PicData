@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 某个套图新增任务(新增一页)
 #define NotificationNameCompleteScaneTaskNewPage @"NotificationNameCompleteScaneTaskNewPage"
 
+/// 刷新套图记录
+#define NotificationNameRefreshDownloadTaskStatus @"NotificationNameRefreshDownloadTaskStatus"
+
 /// 新增某个套图
 #define NotificationNameAddNewTask @"NotificationNameAddNewTask"
 /// 某个套图开始扫描

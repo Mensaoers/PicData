@@ -24,6 +24,8 @@ singleton_implementation(ContentParserManager)
 + (void)cancelAll {
     [ContentParserManager.sharedContentParserManager.queue cancelAllOperations];
     [PDDownloadManager.sharedPDDownloadManager cancelAllDownloads];
+    [PicContentTaskModel resetHalfWorkingTasks];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameRefreshDownloadTaskStatus object:nil];
 }
 
 - (void)cancelDownloadsByIdentifiers:(NSArray <NSString *>*)identifiers {

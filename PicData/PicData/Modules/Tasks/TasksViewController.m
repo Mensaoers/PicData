@@ -72,6 +72,8 @@ static NSString *headerdentifier = @"headerdentifier";
 
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeCompleteDownPicture:) name:NotificationNameCompleteDownPicture object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeFailedDownPicture:) name:NotificationNameFailedDownPicture object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(receiveNoticeRefreshDownloadTaskStatus:) name:NotificationNameRefreshDownloadTaskStatus object:nil];
 }
 
 - (void)loadNavigationItem {
@@ -217,6 +219,10 @@ static NSString *headerdentifier = @"headerdentifier";
 
 - (void)receiveNoticeFailedDownPicture:(NSNotification *)notification {
 
+}
+
+- (void)receiveNoticeRefreshDownloadTaskStatus:(NSNotification *)notification {
+    [self reCallLoadDataList:1];
 }
 
 #pragma mark - delegate

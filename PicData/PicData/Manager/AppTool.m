@@ -255,12 +255,22 @@ singleton_implementation(AppTool)
 }
 
 + (SDWebImageManager *)sdWebImageManager:(NSString *)referer sourceType:(int)sourceType {
+    
+    NSDictionary *headerFields = @{
+        @"referer": referer,
+        @"User-Agent" : @"Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36",
+    };
+    
+    return [self sdWebImageManagerWithHeaderFields:headerFields sourceType:sourceType];
+}
++ (SDWebImageManager *)sdWebImageManagerWithHeaderFields:(NSDictionary *)headerFields sourceType:(int)sourceType {
 
-    if (nil == referer || referer.length == 0 || ![AppTool.sharedAppTool.referTypes containsObject:@(sourceType)]) {
+    if (nil == headerFields || headerFields.count == 0 || ![AppTool.sharedAppTool.referTypes containsObject:@(sourceType)]) {
         return [SDWebImageManager sharedManager];
     }
 
-    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[referer];
+    NSString *sourceTypeKey = [NSString stringWithFormat:@"%d", sourceType];
+    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[sourceTypeKey];
 
     if (nil == manager) {
         // 默认的cache
@@ -271,11 +281,14 @@ singleton_implementation(AppTool)
 
         // 自定义的loader
         SDWebImageDownloader *loader = [[SDWebImageDownloader alloc] initWithConfig:SDWebImageDownloaderConfig.defaultDownloaderConfig];
-        [loader setValue:referer forHTTPHeaderField:@"referer"];
+        for (NSString *key in headerFields.allKeys) {
+//            [loader setValue:referer forHTTPHeaderField:@"Referer"];
+            [loader setValue:headerFields[key] forHTTPHeaderField:key];
+        }
 
         manager = [[PPSDWebImageManager alloc] initWithCache:cache loader:loader];
 
-        AppTool.sharedAppTool.managers[referer] = manager;
+        AppTool.sharedAppTool.managers[sourceTypeKey] = manager;
     }
 
     return manager;

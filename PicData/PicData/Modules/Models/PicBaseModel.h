@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 主服务 */
 @property (nonatomic, strong) NSString *HOST_URL;
 
+@property (nonatomic, strong) NSString *referer;
+
 + (NSString *)tableName;
 
 - (BOOL)insertTable;

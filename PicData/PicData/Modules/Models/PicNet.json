@@ -133,7 +133,7 @@
             "title" : "https://8se.me",
             "sourceType" : 8,
             "HOST_URL": "https://8se.me",
-            "referer": "https://8se.me",
+            "referer": "https://8se.me/photos/album-3.html",
             "urls": [
                 {
                     "url": "https://8se.me/photos/kind-2.html",

@@ -211,6 +211,7 @@
         for (PicNetUrlModel *urlModel in hostModel.urls) {
             PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
             sourceModel.sourceType = hostModel.sourceType;
+            sourceModel.referer = hostModel.referer;
             sourceModel.url = urlModel.url;
 
             if (urlModel.title.length > 0) {

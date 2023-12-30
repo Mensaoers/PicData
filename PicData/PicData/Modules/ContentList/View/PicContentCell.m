@@ -95,7 +95,12 @@
     self.titleLabel.text = contentModel.title;
     [self.titleLabel sizeToFit];
 
-    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:contentModel.HOST_URL sourceType:contentModel.sourceType]};
+    NSString *referer = contentModel.HOST_URL;
+    if (contentModel.referer.length > 0) {
+        referer = contentModel.referer;
+    }
+    
+    SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:referer sourceType:contentModel.sourceType]};
 
     [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:contentModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context:context progress:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (error) {

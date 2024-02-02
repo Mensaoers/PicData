@@ -24,6 +24,7 @@ target 'PicData' do
   pod 'CocoaAsyncSocket'
   pod 'PicDataSDK'
   pod 'PPCatalystTool'
+  pod 'PPToolKit'
   # Pods for PicData
 
 end

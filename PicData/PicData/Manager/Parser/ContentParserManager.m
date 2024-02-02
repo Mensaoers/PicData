@@ -43,7 +43,7 @@ singleton_implementation(ContentParserManager)
 }
 
 - (int)maxConcurrentTasksLimit {
-    return 2;
+    return 4;
 }
 - (NSOperationQueue *)queue {
     if (nil == _queue) {
@@ -110,7 +110,7 @@ singleton_implementation(ContentParserManager)
     if (!force) {
         // 为了防止剩余任务无限执行(解析网页比下载图片快得多, 时间一长会有大量任务堆积)
         NSInteger ingCount = [PicContentTaskModel queryCountForTaskInStatus12];
-        if (ingCount > 2) {
+        if (ingCount > 4) {
             return;
         }
     }

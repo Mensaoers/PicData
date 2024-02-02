@@ -29,6 +29,8 @@
     #import <PPCatalystTool/PPCatalystTool.h>
     #import "UIViewController+CWLateralSlide.h"
     #import <CocoaAsyncSocket/GCDAsyncSocket.h>
+    #import <PPToolKit/PPToolKit.h>
+    #import <PPToolKit/NSArray+ppEx.h>
 
     #import "Singleton.h"
     #import "NSObject+ChangeUnicode.h"

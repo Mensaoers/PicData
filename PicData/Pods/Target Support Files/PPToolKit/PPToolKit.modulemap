@@ -1,0 +1,6 @@
+framework module PPToolKit {
+  umbrella header "PPToolKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

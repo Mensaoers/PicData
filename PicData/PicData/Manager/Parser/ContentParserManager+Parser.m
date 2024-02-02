@@ -31,9 +31,14 @@
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
     OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
+    if (sourceModel.sourceType == 3) {
+        OCGumboElement *e = articleElement.QueryClass(@"entry-content").firstObject;
+        aE = e.QueryElement(@"div").firstObject;
+    }
     if (nil == aE) { return nil; }
     NSString *title = aE.attr(@"title");
     OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
+    __block NSString *href = aE.attr(@"href");
 
     switch (sourceModel.sourceType) {
         case 1: {
@@ -45,7 +50,16 @@
         }
             break;
         case 3: {
-            imgE = aE.QueryClass(@"xld").firstObject;
+            imgE = aE.QueryElement(@"img").firstObject;
+            OCGumboElement *pE = aE.QueryElement(@"p").firstObject;
+            title = pE.text();
+
+            OCGumboElement *footerE = articleElement.QueryElement(@"footer").firstObject;
+            [footerE.QueryElement(@"a") pp_enumeration:^(OCGumboElement *  _Nonnull element, NSInteger index, NSInteger totalCount) {
+                if ([element.attr(@"rel") isEqualToString:@"bookmark"]) {
+                    href = element.attr(@"href");
+                }
+            }];
         }
             break;
         case 4: {
@@ -68,7 +82,6 @@
         default:
             break;
     }
-    NSString *href = aE.attr(@"href");
 
     title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
 
@@ -229,8 +242,8 @@
         }
             break;
         case 3: {
-            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
-            articleEs = listDiv.QueryClass(@"thcovering-video");
+            OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
+            articleEs = listDiv.QueryElement(@"article");
         }
             break;
         case 4:{
@@ -290,7 +303,7 @@
         }
             break;
         case 3: {
-            nextE = document.QueryClass(@"pag").firstObject;
+            nextE = document.QueryClass(@"nav-next").firstObject;
         }
             break;
         case 4: {
@@ -314,22 +327,26 @@
     if (nextE) {
         OCQueryObject *aEs = nextE.QueryElement(@"a");
 
-        NSString *nextPageTitle = @"下一页";
-        switch (sourceModel.sourceType) {
-            case 3:
-                nextPageTitle = @"Next »";
-                break;
-            case 4:
-                nextPageTitle = @"下页";
-                break;
-            default:
-                break;
-        }
-
-        for (OCGumboElement *aE in aEs) {
-            if ([aE.text() isEqualToString:nextPageTitle]) {
-                nextPage = aE.attr(@"href");
-                break;
+        if (sourceModel.sourceType == 3) {
+            OCGumboElement *aE = aEs.firstObject;
+            nextPage = aE.attr(@"href");
+        } else {
+            NSString *nextPageTitle = @"下一页";
+            switch (sourceModel.sourceType) {
+                case 3:
+                    nextPageTitle = @"Next »";
+                    break;
+                case 4:
+                    nextPageTitle = @"下页";
+                    break;
+                default:
+                    break;
+            }
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() isEqualToString:nextPageTitle]) {
+                    nextPage = aE.attr(@"href");
+                    break;
+                }
             }
         }
     }
@@ -394,7 +411,7 @@
         }
             break;
         case 3: {
-            contentE = document.QueryClass(@"contentme2").firstObject;
+            contentE = document.QueryClass(@"entry-content").firstObject;
         }
             break;
         case 4: {
@@ -449,7 +466,7 @@
         }
             break;
         case 3: {
-            nextE = document.QueryClass(@"pag").firstObject;
+            nextE = document.QueryClass(@"page-numbers").firstObject;
         }
             break;
         case 4: {
@@ -566,16 +583,16 @@
         case 3: {
 
             // 推荐
-            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                [contentModel insertTable];
-                [suggesM addObject:contentModel];
-            }
+//            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
+//            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
+//
+//            for (OCGumboElement *articleE in articleEs) {
+//
+//                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+//
+//                [contentModel insertTable];
+//                [suggesM addObject:contentModel];
+//            }
         }
             break;
         case 4: {

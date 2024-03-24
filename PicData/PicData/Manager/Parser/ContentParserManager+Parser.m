@@ -443,6 +443,9 @@
                     continue;
                 }
                 src = [src stringByReplacingOccurrencesOfString:@"_600x0" withString:@""];
+                if (![src.pathExtension.lowercaseString isEqualToString:@"jpg"]) {
+                    src = [src.stringByDeletingPathExtension stringByAppendingPathExtension:@"jpg"];
+                }
             }
                 break;
             default:

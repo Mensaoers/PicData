@@ -86,6 +86,29 @@
     [self.tableView.mj_header beginRefreshing];
 }
 
+- (void)refreshRightNavigationItems {
+    NSMutableArray *items = [NSMutableArray array];
+
+    UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"list.bullet"] style:UIBarButtonItemStyleDone target:self action:@selector(doMoreItemClickedAction:)];
+    [items addObject:moreItem];
+
+    NSArray *results = [PicContentTaskModel queryTableWithHref:self.contentModel.href];
+
+    if (results.count == 0) {
+        // 没有查到, 说明没有添加过
+        UIBarButtonItem *downItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.down"] style:UIBarButtonItemStyleDone target:self action:@selector(doDownloadThisContent)];
+        [items addObject:downItem];
+    }
+
+    if (self.detailModel.nextUrl.length > 0) {
+        // 有下一页
+        UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.right.square"] style:UIBarButtonItemStyleDone target:self action:@selector(loadNextDetailData)];
+        [items addObject:nextItem];
+    }
+
+    self.navigationItem.rightBarButtonItems = items.copy;
+}
+
 - (void)loadNavigationItem {
     NSMutableArray *leftBarButtonItems = [NSMutableArray array];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backAction:)];
@@ -104,15 +127,7 @@
 
     self.navigationItem.leftBarButtonItems = leftBarButtonItems;
 
-    NSMutableArray *items = [NSMutableArray array];
-
-    UIBarButtonItem *downItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.down"] style:UIBarButtonItemStyleDone target:self action:@selector(downloadThisContent:)];
-    [items addObject:downItem];
-
-    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.up"] style:UIBarButtonItemStyleDone target:self action:@selector(shareThisContent:)];
-    [items addObject:shareItem];
-
-    self.navigationItem.rightBarButtonItems = items.copy;
+    [self refreshRightNavigationItems];
 }
 
 - (void)loadMainView {
@@ -166,7 +181,7 @@
 - (void)refreshMainView {
 
     [self updateContentTitle:self.detailModel.detailTitle];
-
+    [self refreshRightNavigationItems];
     [self.tableView reloadData];
     if (self.detailModel.contentImgsUrl.count > 0 && self.historyInfos.count > 0) {
         self.headerExpanded = NO;
@@ -232,6 +247,8 @@
 }
 
 - (void)loadNextDetailData {
+    [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
+
     if (self.detailModel.nextUrl.length == 0) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"到底了"];
         return;
@@ -303,11 +320,34 @@
     [self.tableView.mj_header beginRefreshing];
 }
 
+- (void)doMoreItemClickedAction:(UIBarButtonItem *)sender {
+
+    __weak typeof(self) weakSelf = self;
+    NSMutableArray *actions = [NSMutableArray array];
+    [actions addObject:[UIAlertAction actionWithTitle:@"复制套图地址" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf shareThisContent_copy:weakSelf.view];
+    }]];
+
+    PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithHref:self.contentModel.href] firstObject];
+    if (taskModel) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"查看文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf shareThisContent_folder:taskModel];
+        }]];
+    }
+
+    [actions addObject:[UIAlertAction actionWithTitle:@"下载该套图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf doDownloadThisContent];
+    }]];
+
+    [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+    [self showAlertWithTitle:@"操作" message:@"请选择你的操作" actions:actions];
+}
+
 - (void)backAction:(UIBarButtonItem *)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)downloadThisContent:(UIBarButtonItem *)sender {
+- (void)doDownloadThisContent {
     [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:self.contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
     }];
@@ -345,26 +385,6 @@
     LocalFileListVC *fileListVC = [[LocalFileListVC alloc] init];
     fileListVC.targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
     [self.navigationController pushViewController:fileListVC animated:YES];
-}
-
-- (void)shareThisContent:(UIButton *)sender {
-    PDBlockSelf
-    NSMutableArray *actions = [NSMutableArray array];
-    [actions addObject:[UIAlertAction actionWithTitle:@"复制地址" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakSelf shareThisContent_copy:sender];
-    }]];
-
-    PicContentTaskModel *taskModel = [[PicContentTaskModel queryTableWithHref:self.contentModel.href] firstObject];
-    if (taskModel) {
-        [actions addObject:[UIAlertAction actionWithTitle:@"查看文件夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [weakSelf shareThisContent_folder:taskModel];
-        }]];
-    }
-
-    [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-
-    [self showAlertWithTitle:nil message:@"分享" actions:actions];
-
 }
 
 #pragma mark - delegate
@@ -466,7 +486,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
-        [self.historyInfos addObject:@{@"url" : self.detailModel.currentUrl, @"title" : self.detailModel.detailTitle}];
         [self loadNextDetailData];
     }
 }

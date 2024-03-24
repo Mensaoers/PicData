@@ -73,6 +73,17 @@
 
 - (void)sharePicToOtherAction:(UIButton *)sender {
     YBIBImageData *data = (YBIBImageData *)self.yb_currentData();
+
+    if (data.imageURL.absoluteString.length > 0) {
+        // 网络图片
+        UIPasteboard.generalPasteboard.string = data.imageURL.absoluteString;
+        [MBProgressHUD showInfoOnView:self.yb_containerView WithStatus:@"地址已复制" afterDelay:1];
+        return;
+    } else if (data.image) {
+        // 直接传的data对象, 可以忽略操作
+        return;
+    }
+
     if (![[NSFileManager defaultManager] fileExistsAtPath:data.imagePath]) {
         [MBProgressHUD showInfoOnView:self.yb_containerView WithStatus:@"获取文件地址异常" afterDelay:1];
         return;

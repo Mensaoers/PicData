@@ -387,6 +387,31 @@
     [self.navigationController pushViewController:fileListVC animated:YES];
 }
 
+/// 查看单图, 由于图片都是自定义下载设置, 无法兼容预览库, 只能在下载完成一张之后, 再进行大图预览, 具体见AppTool的 + (SDWebImageManager *)sdWebImageManagerWithHeaderFields:(NSDictionary *)headerFields sourceType:(int)sourceType 方法
+- (void)doViewBigPictureAtIndexPath:(nonnull NSIndexPath *)indexPath {
+
+    DetailViewContentCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+
+    if (nil == cell.conImgView.image) {
+        return;
+    }
+
+    YBIBImageData *data = [YBIBImageData new];
+    data.image = ^UIImage * _Nullable{
+        return cell.conImgView.image;
+    };
+    data.projectiveView = cell.conImgView;
+
+    YBImageBrowser *browser = [YBImageBrowser new];
+    browser.dataSourceArray = @[data];
+    browser.currentPage = 0;
+    browser.supportedOrientations = UIInterfaceOrientationMaskPortrait;
+    // 只有一个保存操作的时候，可以直接右上角显示保存按钮
+    PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
+    browser.toolViewHandlers = @[handler];
+    [browser show];
+}
+
 #pragma mark - delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -485,9 +510,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 1) {
-        [self loadNextDetailData];
-    }
+
+    [self doViewBigPictureAtIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -592,20 +616,7 @@
         /// 3. 保存到相册
         UIAction *viewBigPic = [UIAction actionWithTitle:@"查看大图" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
 
-            YBIBImageData *data = [YBIBImageData new];
-            data.image = ^UIImage * _Nullable{
-                return cell.conImgView.image;
-            };
-            data.projectiveView = cell.conImgView;
-
-            YBImageBrowser *browser = [YBImageBrowser new];
-            browser.dataSourceArray = @[data];
-            browser.currentPage = 0;
-            browser.supportedOrientations = UIInterfaceOrientationMaskPortrait;
-            // 只有一个保存操作的时候，可以直接右上角显示保存按钮
-            PicBrowserToolViewHandler *handler = PicBrowserToolViewHandler.new;
-            browser.toolViewHandlers = @[handler];
-            [browser show];
+            [weakSelf doViewBigPictureAtIndexPath:indexPath];
         }];
         [actions addObject:viewBigPic];
 

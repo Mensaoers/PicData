@@ -126,7 +126,14 @@ singleton_implementation(AppTool)
 
         NSString *filePath = urls.firstObject.path;
 
-        [[PPCatalystHandle sharedPPCatalystHandle] openFileOrDirWithPath:filePath];
+        @try {
+            [[PPCatalystHandle sharedPPCatalystHandle] openFileOrDirWithPath:filePath];
+        } @catch (NSException *exception) {
+
+        } @finally {
+            
+        }
+
         return;
 #endif
     }

@@ -158,9 +158,15 @@
 
 - (void)selectButtonClickAction:(UIButton *)sender {
     [self.view endEditing:YES];
-    NSURL *selectedFolder = [PPCatalystHandle.sharedPPCatalystHandle selectFolderWithPath:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
-    if (selectedFolder) {
-        self.textView.text = selectedFolder.path;
+    @try {
+        NSURL *selectedFolder = [PPCatalystHandle.sharedPPCatalystHandle selectFolderWithPath:[[PDDownloadManager sharedPDDownloadManager] systemDownloadFullPath]];
+        if (selectedFolder) {
+            self.textView.text = selectedFolder.path;
+        }
+    } @catch (NSException *exception) {
+
+    } @finally {
+
     }
 }
 

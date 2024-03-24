@@ -29,6 +29,11 @@
 
 // TODO: 不能根据导航层数判断按钮显示, 后期需要在其他地方弹出本地文件界面
 
+- (void)dealloc {
+    [AppTool releaseSDWebImageManager:nil];
+    [self willDealloc];
+}
+
 - (PicContentTaskModel *)contentModel {
     if (nil == _contentModel) {
         NSArray *result = [PicContentTaskModel queryTableWithTitle:[self.targetFilePath lastPathComponent]];

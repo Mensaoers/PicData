@@ -300,7 +300,10 @@ singleton_implementation(AppTool)
         [manager cancelAll];
         [manager.imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
     }
-    AppTool.sharedAppTool.managers[referer] = nil;
+    if (referer && referer.length > 0) {
+        AppTool.sharedAppTool.managers[referer] = nil;
+    }
+
     NSLog(@"AppTool.sharedAppTool.managers: %@", AppTool.sharedAppTool.managers.allKeys);
 }
 

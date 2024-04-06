@@ -54,6 +54,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - CocoaAsyncSocket
+    - YBImageBrowser
   https://github.com/Garenge/pengpengSpecs.git:
     - PicDataSDK
     - PPCatalystTool
@@ -70,7 +71,6 @@ SPEC REPOS:
     - SSZipArchive
     - WCDB
     - WCDBOptimizedSQLCipher
-    - YBImageBrowser
     - YYCategories
 
 EXTERNAL SOURCES:
@@ -104,4 +104,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b1fbf8f9b117d02829eec8f7f15e2984f29cfdff
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

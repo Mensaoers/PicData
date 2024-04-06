@@ -17,7 +17,7 @@
     if (self) {
         _verticalFillType = YBIBImageFillTypeCompletely;
         _horizontalFillType = YBIBImageFillTypeFullWidth;
-        _zoomScaleSurplus = 1.5;
+        _zoomScaleSurplus = 2.5;
     }
     return self;
 }

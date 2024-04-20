@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -54,7 +54,6 @@
 		33E6404E2810108900E763B6 /* PicNetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E6404D2810108900E763B6 /* PicNetModel.m */; };
 		33E640542810138800E763B6 /* PicNet.json in Resources */ = {isa = PBXBuildFile; fileRef = 33E640532810122700E763B6 /* PicNet.json */; };
 		33E64058281042A700E763B6 /* PPDownloadTaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */; };
-		33EB6C9428A00A4200D41268 /* CustomAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EB6C9228A00A4200D41268 /* CustomAsyncOperation.m */; };
 		33F1460C25932BC50042CF31 /* NSObject+ChangeUnicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */; };
 		9D0A4A4225FE54F700E505AC /* PicContentViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A4A4125FE54F700E505AC /* PicContentViewFlowLayout.m */; };
 		9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3593E0244D3D38005ADF05 /* ContentParserManager.m */; };
@@ -200,8 +199,6 @@
 		33E640532810122700E763B6 /* PicNet.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PicNet.json; sourceTree = "<group>"; };
 		33E64056281042A700E763B6 /* PPDownloadTaskOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPDownloadTaskOperation.h; sourceTree = "<group>"; };
 		33E64057281042A700E763B6 /* PPDownloadTaskOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPDownloadTaskOperation.m; sourceTree = "<group>"; };
-		33EB6C9228A00A4200D41268 /* CustomAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAsyncOperation.m; sourceTree = "<group>"; };
-		33EB6C9328A00A4200D41268 /* CustomAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAsyncOperation.h; sourceTree = "<group>"; };
 		33F1460A25932BC50042CF31 /* NSObject+ChangeUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ChangeUnicode.h"; sourceTree = "<group>"; };
 		33F1460B25932BC50042CF31 /* NSObject+ChangeUnicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ChangeUnicode.m"; sourceTree = "<group>"; };
 		5702B2BB621B784D30524735 /* Pods-PicData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.release.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.release.xcconfig"; sourceTree = "<group>"; };
@@ -529,15 +526,6 @@
 			path = DownloadOperation;
 			sourceTree = "<group>";
 		};
-		33EB6C9128A00A3000D41268 /* Operation */ = {
-			isa = PBXGroup;
-			children = (
-				33EB6C9328A00A4200D41268 /* CustomAsyncOperation.h */,
-				33EB6C9228A00A4200D41268 /* CustomAsyncOperation.m */,
-			);
-			path = Operation;
-			sourceTree = "<group>";
-		};
 		8EAEFB2266B35620CEA3AC34 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,7 +789,6 @@
 			isa = PBXGroup;
 			children = (
 				9DB107FB2A24AEB700131F45 /* Socket */,
-				33EB6C9128A00A3000D41268 /* Operation */,
 				33DC2D4F281AD36200C7A513 /* Parser */,
 				33DC2D4E281AD35600C7A513 /* Database */,
 				33DC2D4D281AC8A900C7A513 /* Download */,
@@ -1031,7 +1018,6 @@
 				9DE95CC7244C3FDD00E31735 /* utf8.c in Sources */,
 				9DE95CCC244C3FDD00E31735 /* tokenizer.c in Sources */,
 				9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */,
-				33EB6C9428A00A4200D41268 /* CustomAsyncOperation.m in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
 				9D96DC9E25A376080045D123 /* AppTool.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,

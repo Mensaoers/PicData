@@ -17,7 +17,7 @@
 /// 用不到 作废
 @property (nonatomic, strong) dispatch_queue_t didDownFinishQueue API_DEPRECATED("因为下载之后临时文件超时自动删除, 所以下载完成必须立马拷贝, 不能放到异步里面再拷贝, 故而作废", ios(2.0, 3.0));
 
-@property (nonatomic, strong) NSOperationQueue *downloadQueue;
+@property (nonatomic, strong) PPCustomOperationQueue *downloadQueue;
 
 @end
 
@@ -69,9 +69,9 @@
     return _maxDownloadOperationCount;
 }
 
-- (NSOperationQueue *)downloadQueue {
+- (PPCustomOperationQueue *)downloadQueue {
     if (nil == _downloadQueue) {
-        _downloadQueue = [[NSOperationQueue alloc] init];
+        _downloadQueue = [[PPCustomOperationQueue alloc] init];
         _downloadQueue.maxConcurrentOperationCount = self.maxDownloadOperationCount;
     }
     return _downloadQueue;

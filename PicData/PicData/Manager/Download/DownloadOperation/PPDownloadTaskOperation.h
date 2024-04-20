@@ -12,10 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^DownloadFinishedBlock)(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error);
 
-@interface PPDownloadTaskOperation : NSOperation
+@interface PPDownloadTaskOperation : PPCustomAsyncOperation
 
 @property (nonatomic, strong) NSString *url;
-@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, copy) DownloadFinishedBlock downloadFinishedBlock;
 
 - (instancetype)initWithUrl:(NSString *)url identifier:(NSString *)identifier headers:(NSDictionary *)headers downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;

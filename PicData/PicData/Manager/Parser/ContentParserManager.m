@@ -13,7 +13,7 @@
 @interface ContentParserManager()
 
 @property (nonatomic, assign) int maxConcurrentTasksLimit; // 默认为5
-@property (nonatomic, strong) NSOperationQueue *queue;
+@property (nonatomic, strong) PPCustomOperationQueue *queue;
 
 @end
 
@@ -45,9 +45,9 @@ singleton_implementation(ContentParserManager)
 - (int)maxConcurrentTasksLimit {
     return 4;
 }
-- (NSOperationQueue *)queue {
+- (PPCustomOperationQueue *)queue {
     if (nil == _queue) {
-        _queue = [[NSOperationQueue alloc] init];
+        _queue = [[PPCustomOperationQueue alloc] init];
         _queue.maxConcurrentOperationCount = self.maxConcurrentTasksLimit; // 串行队列
     }
     return _queue;

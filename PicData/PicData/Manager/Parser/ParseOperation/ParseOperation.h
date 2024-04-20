@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ParseOperation : NSBlockOperation
-
-@property (nonatomic, strong) NSString *identifier;
+@interface ParseOperation : PPCustomAsyncOperation
 
 @property (nonatomic, strong) PicSourceModel *sourceModel;
 @property (nonatomic, strong) PicContentTaskModel *contentTaskModel;

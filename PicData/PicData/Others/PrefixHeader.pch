@@ -31,6 +31,7 @@
     #import <CocoaAsyncSocket/GCDAsyncSocket.h>
     #import <PPToolKit/PPToolKit.h>
     #import <PPToolKit/NSArray+ppEx.h>
+    #import <PPCustomAsyncOperation/PPCustomOperationQueue.h>
 
     #import "Singleton.h"
     #import "NSObject+ChangeUnicode.h"

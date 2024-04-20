@@ -1,0 +1,6 @@
+framework module PPCustomAsyncOperation {
+  umbrella header "PPCustomAsyncOperation-umbrella.h"
+
+  export *
+  module * { export * }
+}

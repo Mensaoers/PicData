@@ -25,6 +25,7 @@ target 'PicData' do
   pod 'PicDataSDK'
   pod 'PPCatalystTool'
   pod 'PPToolKit'
+  pod 'PPCustomAsyncOperation'
   # Pods for PicData
 
 end

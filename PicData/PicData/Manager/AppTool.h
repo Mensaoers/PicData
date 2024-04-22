@@ -62,7 +62,7 @@ singleton_interface(AppTool)
 /// 根据referer获取或创建一个新的manager
 + (SDWebImageManager *)sdWebImageManager:(NSString *)referer sourceType:(int)sourceType;
 /// 根据referer释放指定manager
-+ (void)releaseSDWebImageManager:(nullable NSString *)referer;
++ (void)releaseSDWebImageManager:(int)sourceType;
 + (void)clearSDWebImageCache;
 
 @end

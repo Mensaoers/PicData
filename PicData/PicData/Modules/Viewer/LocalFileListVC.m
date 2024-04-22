@@ -30,7 +30,7 @@
 // TODO: 不能根据导航层数判断按钮显示, 后期需要在其他地方弹出本地文件界面
 
 - (void)dealloc {
-    [AppTool releaseSDWebImageManager:nil];
+    [AppTool releaseSDWebImageManager:0];
     [self willDealloc];
 }
 

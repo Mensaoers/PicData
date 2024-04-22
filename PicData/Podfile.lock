@@ -9,7 +9,7 @@ PODS:
   - PicDataSDK (1.0.2):
     - Masonry
     - SDWebImage (~> 5.0)
-  - PPCatalystTool (1.0.2)
+  - PPCatalystTool (1.0.3)
   - PPCustomAsyncOperation (0.1.1)
   - PPToolKit (0.1.1)
   - SDWebImage (5.12.5):
@@ -94,7 +94,7 @@ SPEC CHECKSUMS:
   MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
   MJRefresh: ee5b68f639775462faba4db0fd243baf4d42c2cf
   PicDataSDK: e7d0751b3791243048292cae96c6204998eb65f1
-  PPCatalystTool: 74580bf1ab038d2fa26d8569295d6fcbec67b1b8
+  PPCatalystTool: ee4866bd0ae242ea5810957bc00572e80cf09a4d
   PPCustomAsyncOperation: a9901452d6d5724d2c075535f7a16198a23eb8ee
   PPToolKit: 87eeffbd7846bb11811d429c352a23d575d632f6
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e

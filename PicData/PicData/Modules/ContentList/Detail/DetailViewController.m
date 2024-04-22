@@ -63,7 +63,7 @@
 }
 
 - (void)dealloc {
-    [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
+    [AppTool releaseSDWebImageManager:self.sourceModel.sourceType];
     [self willDealloc];
 }
 
@@ -231,7 +231,7 @@
 - (void)loadLastPageDetailData {
     NSDictionary *lastInfo = self.historyInfos.lastObject;
     if (nil != lastInfo) {
-        [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
+        [AppTool releaseSDWebImageManager:self.sourceModel.sourceType];
         self.detailModel.nextUrl = self.detailModel.currentUrl;
         self.detailModel.currentUrl = lastInfo[@"url"];
         self.detailModel.detailTitle = lastInfo[@"title"];
@@ -253,7 +253,7 @@
         [MBProgressHUD showInfoOnView:self.view WithStatus:@"到底了"];
         return;
     }
-    [AppTool releaseSDWebImageManager:self.detailModel.currentUrl];
+    [AppTool releaseSDWebImageManager:self.sourceModel.sourceType];
     self.detailModel.currentUrl = self.detailModel.nextUrl;
     [self loadDetailData];
     [self loadNavigationItem];

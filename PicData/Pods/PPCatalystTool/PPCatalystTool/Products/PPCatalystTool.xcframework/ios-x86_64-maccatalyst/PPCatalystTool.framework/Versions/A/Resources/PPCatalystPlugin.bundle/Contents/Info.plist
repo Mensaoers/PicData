@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>21D62</string>
+	<string>23E214</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>PPCatalystTool</string>
+	<string>PPCatalystPlugin</string>
 	<key>CFBundleIdentifier</key>
-	<string>per.garenge.PPCatalystTool</string>
+	<string>per.garenge.PPCatalystPlugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PPCatalystTool</string>
+	<string>PPCatalystPlugin</string>
 	<key>CFBundlePackageType</key>
-	<string>FMWK</string>
+	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -27,26 +27,20 @@
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>13F100</string>
+	<string></string>
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>12.3</string>
+	<string>14.5</string>
 	<key>DTSDKBuild</key>
-	<string>21E226</string>
+	<string>23F5059d</string>
 	<key>DTSDKName</key>
-	<string>macosx12.3</string>
+	<string>macosx14.5</string>
 	<key>DTXcode</key>
-	<string>1341</string>
+	<string>1540</string>
 	<key>DTXcodeBuild</key>
-	<string>13F100</string>
+	<string>15F5021i</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.15</string>
-	<key>NSHumanReadableCopyright</key>
-	<string></string>
-	<key>UIDeviceFamily</key>
-	<array>
-		<integer>2</integer>
-	</array>
+	<string>11.0</string>
 </dict>
 </plist>

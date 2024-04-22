@@ -20,11 +20,11 @@ variant_for_slice()
   "PPCatalystTool.xcframework/ios-arm64")
     echo ""
     ;;
-  "PPCatalystTool.xcframework/ios-arm64_x86_64-maccatalyst")
-    echo "maccatalyst"
-    ;;
   "PPCatalystTool.xcframework/ios-arm64_x86_64-simulator")
     echo "simulator"
+    ;;
+  "PPCatalystTool.xcframework/ios-x86_64-maccatalyst")
+    echo "maccatalyst"
     ;;
   esac
 }
@@ -35,11 +35,11 @@ archs_for_slice()
   "PPCatalystTool.xcframework/ios-arm64")
     echo "arm64"
     ;;
-  "PPCatalystTool.xcframework/ios-arm64_x86_64-maccatalyst")
-    echo "arm64 x86_64"
-    ;;
   "PPCatalystTool.xcframework/ios-arm64_x86_64-simulator")
     echo "arm64 x86_64"
+    ;;
+  "PPCatalystTool.xcframework/ios-x86_64-maccatalyst")
+    echo "x86_64"
     ;;
   esac
 }
@@ -123,5 +123,5 @@ install_xcframework() {
   echo "Copied $source to $destination"
 }
 
-install_xcframework "${PODS_ROOT}/PPCatalystTool/PPCatalystTool/Products/PPCatalystTool.xcframework" "PPCatalystTool" "framework" "ios-arm64" "ios-arm64_x86_64-maccatalyst" "ios-arm64_x86_64-simulator"
+install_xcframework "${PODS_ROOT}/PPCatalystTool/PPCatalystTool/Products/PPCatalystTool.xcframework" "PPCatalystTool" "framework" "ios-arm64" "ios-arm64_x86_64-simulator" "ios-x86_64-maccatalyst"
 

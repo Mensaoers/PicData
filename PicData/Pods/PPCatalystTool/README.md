@@ -20,6 +20,15 @@
 # 项目拆分
 目前代码较少, 统一存放在一个仓库中, 后期如果功能丰富, 考虑将`bundle`和`framework`分开两个项目
 
+# 发布
+1. 开发完成, 修改`PPCatalystTool.podspec`里面的版本号
+2. 提交代码, 打上对应的tag, 同步到服务器
+3. 去`pengpengSpecs`项目, 仿照前面的文件夹创建对应的文件.
+4. 要使用的pod, 
+	1. 记得添加`source 'https://github.com/Garenge/pengpengSpecs.git'`
+	2. 然后更新`pod repo update`
+	3. `pod update PPCatalystTool --no-repo-update`
+
 # 使用(主要就是bundle文件和封装的类)
 1. 推荐使用pods
     `pod 'PPCatalystTool'`

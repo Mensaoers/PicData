@@ -301,14 +301,16 @@ singleton_implementation(AppTool)
     return manager;
 }
 
-+ (void)releaseSDWebImageManager:(NSString *)referer {
-    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[referer];
++ (void)releaseSDWebImageManager:(int)sourceType {
+    NSString *sourceTypeKey = [NSString stringWithFormat:@"%d", sourceType];
+    PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[sourceTypeKey];
     if (manager) {
         [manager cancelAll];
         [manager.imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
-    }
-    if (referer && referer.length > 0) {
-        AppTool.sharedAppTool.managers[referer] = nil;
+        AppTool.sharedAppTool.managers[sourceTypeKey] = nil;
+    } else {
+        [[SDWebImageManager sharedManager] cancelAll];
+        [[SDWebImageManager sharedManager].imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
     }
 
     NSLog(@"AppTool.sharedAppTool.managers: %@", AppTool.sharedAppTool.managers.allKeys);

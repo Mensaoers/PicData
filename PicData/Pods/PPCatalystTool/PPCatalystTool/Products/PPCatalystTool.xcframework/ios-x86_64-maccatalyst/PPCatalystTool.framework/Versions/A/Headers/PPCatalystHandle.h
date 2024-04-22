@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (PPCatalystHandle *)sharedPPCatalystHandle;
 
-- (BOOL)openFileOrDirWithPath:(nonnull NSString *)path;
+- (NSNumber *)openFileOrDirWithPath:(nonnull NSString *)path;
 - (nullable NSURL *)selectSingleFileWithFolderPath:(nonnull NSString *)folderPath;
 - (nullable NSURL *)selectFolderWithPath:(nonnull NSString *)folderPath;
 

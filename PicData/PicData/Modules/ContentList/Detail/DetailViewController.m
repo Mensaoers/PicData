@@ -350,6 +350,7 @@
 - (void)doDownloadThisContent {
     [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:self.contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+        [self refreshRightNavigationItems];
     }];
 }
 
@@ -357,6 +358,7 @@
     for (PicContentModel *contentModel in self.detailModel.suggesArray) {
         [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
             [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+            [self refreshRightNavigationItems];
         }];
     }
 }
@@ -701,6 +703,7 @@
 - (void)contentCell:(PicContentCell *)contentCell downBtnClicked:(UIButton *)sender contentModel:(PicContentModel *)contentModel {
     [ContentParserManager tryToAddTaskWithSourceModel:self.sourceModel ContentModel:contentModel operationTips:^(BOOL isSuccess, NSString * _Nonnull tips) {
         [MBProgressHUD showInfoOnView:self.view WithStatus:tips afterDelay:0.5];
+        [self refreshRightNavigationItems];
     }];
 }
 

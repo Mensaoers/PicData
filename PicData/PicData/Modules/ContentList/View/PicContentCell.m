@@ -67,7 +67,8 @@
         downBtn.layer.cornerRadius = titleLabel.mj_h * 0.5;
         downBtn.backgroundColor = pdColor(222, 222, 222, 0.5);
         [bgView addSubview:downBtn];
-        
+        self.downBtn = downBtn;
+
         [downBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(0);
             make.top.bottom.equalTo(titleLabel);
@@ -94,6 +95,7 @@
     
     self.titleLabel.text = contentModel.title;
     [self.titleLabel sizeToFit];
+    self.downBtn.hidden = [PicContentTaskModel queryTableWithHref:contentModel.href].count > 0;
 
     NSString *referer = contentModel.HOST_URL;
     if (contentModel.referer.length > 0) {

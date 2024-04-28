@@ -8,6 +8,7 @@
 
 #import "SettingViewController.h"
 #import "SettingPathViewController.h"
+#import "SharedListViewController.h"
 
 @interface SettingOperationModel : NSObject
 
@@ -93,6 +94,9 @@
 #endif
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"导出数据库" value:@"" func:@"shareDatabase:"]];
+
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"查看本地分享" value:@"" func:@"showLocalSharedList:"]];
+
 
     // 如果是mac端  // #if !TARGET_OS_MACCATALYST // 如果不是mac端
     // 不用检查
@@ -205,6 +209,11 @@ static NSString *identifier = @"identifier";
             NSLog(@"分享失败!");
         }
     }];
+}
+
+- (void)showLocalSharedList:(UIView *)sender {
+    SharedListViewController *vc = [[SharedListViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)onekeyStopDownload:(UIView *)sender {

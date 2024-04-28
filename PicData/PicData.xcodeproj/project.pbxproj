@@ -99,6 +99,9 @@
 		9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CE7244C4E5700E31735 /* PicContentModel.mm */; };
 		9DE95CEE244C5FBC00E31735 /* UILabel+text.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CED244C5FBC00E31735 /* UILabel+text.m */; };
 		9DE95CFA244CA25900E31735 /* PDDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE95CF9244CA25900E31735 /* PDDownloadManager.m */; };
+		9DFA897C2BDE83D800268626 /* SharedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFA897B2BDE83D800268626 /* SharedListViewController.m */; };
+		9DFA897F2BDE891500268626 /* NSFileManager+Ex.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFA897E2BDE891500268626 /* NSFileManager+Ex.m */; };
+		9DFA89822BDE89F200268626 /* SharedListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFA89812BDE89F200268626 /* SharedListTableViewCell.m */; };
 		A5A82B4C8681983B19BDEC52 /* Pods_PicData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */; };
 /* End PBXBuildFile section */
 
@@ -298,6 +301,12 @@
 		9DE95CF8244CA25900E31735 /* PDDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDDownloadManager.h; sourceTree = "<group>"; };
 		9DE95CF9244CA25900E31735 /* PDDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDDownloadManager.m; sourceTree = "<group>"; };
 		9DE95CFB244CA26F00E31735 /* Singleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
+		9DFA897A2BDE83D800268626 /* SharedListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedListViewController.h; sourceTree = "<group>"; };
+		9DFA897B2BDE83D800268626 /* SharedListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedListViewController.m; sourceTree = "<group>"; };
+		9DFA897D2BDE891500268626 /* NSFileManager+Ex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Ex.h"; sourceTree = "<group>"; };
+		9DFA897E2BDE891500268626 /* NSFileManager+Ex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Ex.m"; sourceTree = "<group>"; };
+		9DFA89802BDE89F200268626 /* SharedListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedListTableViewCell.h; sourceTree = "<group>"; };
+		9DFA89812BDE89F200268626 /* SharedListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedListTableViewCell.m; sourceTree = "<group>"; };
 		AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PicData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D90F68A13B5C2B86263A6017 /* Pods-PicData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicData.debug.xcconfig"; path = "Target Support Files/Pods-PicData/Pods-PicData.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -463,6 +472,7 @@
 		33E1ABDF2822BA6900AA92CB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				9DFA89792BDE83BB00268626 /* ShareList */,
 				9DC94C9A2552ECBB008ACAF8 /* Base */,
 				9DE95CDD244C465C00E31735 /* ContentList */,
 				332C285424EBA5570083A5DC /* AddNetTask */,
@@ -730,6 +740,8 @@
 				9DE95CED244C5FBC00E31735 /* UILabel+text.m */,
 				331F4CD228B3905600A0EF5D /* NSString+Ex.h */,
 				331F4CD328B3905600A0EF5D /* NSString+Ex.m */,
+				9DFA897D2BDE891500268626 /* NSFileManager+Ex.h */,
+				9DFA897E2BDE891500268626 /* NSFileManager+Ex.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -798,6 +810,17 @@
 				9D96DC9D25A376080045D123 /* AppTool.m */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		9DFA89792BDE83BB00268626 /* ShareList */ = {
+			isa = PBXGroup;
+			children = (
+				9DFA897A2BDE83D800268626 /* SharedListViewController.h */,
+				9DFA897B2BDE83D800268626 /* SharedListViewController.m */,
+				9DFA89802BDE89F200268626 /* SharedListTableViewCell.h */,
+				9DFA89812BDE89F200268626 /* SharedListTableViewCell.m */,
+			);
+			path = ShareList;
 			sourceTree = "<group>";
 		};
 		E272491668D574E526B80971 /* Frameworks */ = {
@@ -967,6 +990,7 @@
 				33919AD1287A9AC500491DB2 /* NetListTCell.m in Sources */,
 				9DE95CCF244C3FDD00E31735 /* OCGumbo.m in Sources */,
 				9DE95CE4244C49C900E31735 /* PicContentCell.m in Sources */,
+				9DFA897C2BDE83D800268626 /* SharedListViewController.m in Sources */,
 				332C285724EBA5720083A5DC /* AddNetTaskVC.m in Sources */,
 				9DE95CCA244C3FDD00E31735 /* tag.c in Sources */,
 				332D014126FD845F00E3F387 /* TKGestureLockManager.m in Sources */,
@@ -989,6 +1013,7 @@
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
+				9DFA897F2BDE891500268626 /* NSFileManager+Ex.m in Sources */,
 				3346BE8C28240FF700527864 /* PicProgressModel.m in Sources */,
 				33B43FB72554436C00C33FD0 /* Foundation+Log.m in Sources */,
 				9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */,
@@ -1022,6 +1047,7 @@
 				9D96DC9E25A376080045D123 /* AppTool.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,
 				332CB1672760F9E6002B97BD /* PicBrowserToolViewHandler.m in Sources */,
+				9DFA89822BDE89F200268626 /* SharedListTableViewCell.m in Sources */,
 				3323205924ECB4A300FE5E33 /* PicBaseModel.mm in Sources */,
 				9DE95CE0244C468500E31735 /* ContentViewController.m in Sources */,
 				9D3593E1244D3D38005ADF05 /* ContentParserManager.m in Sources */,

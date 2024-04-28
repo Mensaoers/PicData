@@ -34,6 +34,7 @@
     #import <PPCustomAsyncOperation/PPCustomOperationQueue.h>
 
     #import "Singleton.h"
+    #import "NSFileManager+Ex.h"
     #import "NSObject+ChangeUnicode.h"
     #import "UILabel+text.h"
     #import "UINavigationController+push.h"

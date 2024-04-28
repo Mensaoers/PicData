@@ -207,6 +207,18 @@ static NSString *favoriteFolderName = @"我的收藏";
     return favoriteFolderName;
 }
 
+static NSString *shareFolderName = @"myShare";
+/// 获取当前系统分享文件夹路径
+- (nonnull NSString *)systemShareFolderPath {
+    NSString *folderPath = [[self systemDownloadFullPath] stringByAppendingPathComponent:shareFolderName];
+    [PPFileManager checkFolderPathExistOrCreate:folderPath];
+    return folderPath;
+}
+/// 获取当前系统分享文件夹名称
+- (nonnull NSString *)systemShareFolderName {
+    return shareFolderName;
+}
+
 - (BOOL)checksystemDownloadFullPathExistNeedNotice:(BOOL)need {
 
     BOOL isExist = [PPFileManager checkFolderPathExistOrCreate:[self systemDownloadFullPath]];

@@ -208,7 +208,7 @@
                     long long folderSize = 0;
                     while ((subFileName = [childFilesEnumerator nextObject]) != nil) {
                         NSString *fileAbsolutePath = [dirPath stringByAppendingPathComponent:subFileName];
-                        folderSize += [self getFileSize:fileAbsolutePath];
+                        folderSize += [NSFileManager.defaultManager getFileSize:fileAbsolutePath];
                     }
 
                     fileModel.fileSize = folderSize > 0 ? folderSize : 0;
@@ -234,20 +234,6 @@
     [self.contentView.mj_header endRefreshing];
 
     self.lastViewIndex = 0;
-}
-
-- (long long)getFileSize:(NSString *)path {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        NSDictionary *attributes = [fileManager attributesOfItemAtPath:path error:nil];
-        NSNumber *fileSize;
-        if ((fileSize = [attributes objectForKey:NSFileSize]))
-            return [fileSize longLongValue];
-        else
-            return -1;
-    } else {
-        return -1;
-    }
 }
 
 - (void)shareAllFiles:(UIButton *)sender {
@@ -343,7 +329,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
         // 临时文件
-        NSString *pdfPath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+        NSString *pdfPath = [[PDDownloadManager sharedPDDownloadManager].systemShareFolderPath stringByAppendingPathComponent:fileName];
 
         [LGPdf createPdfWithImageCount:weakSelf.fileNamesList.count width:A4_L sepmargin:0 pdfPath:pdfPath password:passsword minWidth:10 enmuHandler:^UIImage * _Nullable(NSInteger index) {
             ViewerFileModel *tempModel = weakSelf.fileNamesList[index];
@@ -437,7 +423,7 @@
             }
         }
 
-        NSString *zippedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:zippedFileName];
+        NSString *zippedPath = [[PDDownloadManager sharedPDDownloadManager].systemShareFolderPath stringByAppendingPathComponent:zippedFileName];
         BOOL zipResult = [SSZipArchive createZipFileAtPath:zippedPath withContentsOfDirectory:weakSelf.targetFilePath keepParentDirectory:YES withPassword:pwdNameTFText.length > 0 ? pwdNameTFText : nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (zipResult) {
@@ -454,11 +440,18 @@
                         NSLog(@"分享失败!");
                     }
                     // 不分享了, 那得删了临时数据
-                    NSError *rmError = nil;
-                    [[NSFileManager defaultManager] removeItemAtPath:zippedPath error:&rmError];
-                    if (rmError) {
-                        NSLog(@"删除文件失败: %@", rmError);
-                    }
+                    PDBlockSelf
+                    [weakSelf showAlertWithTitle:@"删除文件" message:@"是否需要删除该zip文件以节省空间" confirmTitle:@"删掉吧" confirmHandler:^(UIAlertAction * _Nonnull action) {
+                        // 不分享了, 那得删了临时数据
+                        NSError *rmError = nil;
+                        [[NSFileManager defaultManager] removeItemAtPath:zippedPath error:&rmError];
+                        if (rmError) {
+                            NSLog(@"删除文件失败: %@", rmError);
+                        } else {
+                            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除成功" afterDelay:1];
+                        }
+                    } cancelTitle:@"取消" cancelHandler:nil];
+
                 }];
             } else {
                 [MBProgressHUD hideHUDForView:[AppTool getAppKeyWindow] animated:YES];

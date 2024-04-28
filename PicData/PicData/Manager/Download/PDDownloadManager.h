@@ -39,6 +39,10 @@ singleton_interface(PDDownloadManager);
 - (nonnull NSString *)systemFavoriteFolderPath;
 /// 获取当前系统收藏文件夹名称
 - (nonnull NSString *)systemFavoriteFolderName;
+/// 获取当前系统分享文件夹路径
+- (nonnull NSString *)systemShareFolderPath;
+/// 获取当前系统分享文件夹名称
+- (nonnull NSString *)systemShareFolderName;
 /// 数据库文件名
 @property (nonatomic, strong) NSString *databaseFileName;
 /// 数据库文件路径

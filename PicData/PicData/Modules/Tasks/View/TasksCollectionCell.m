@@ -141,11 +141,15 @@ static CGFloat progressWidth = 46;
 }
 
 - (void)setTaskModel:(PicContentTaskModel *)taskModel {
+
+    PicContentTaskModel *preTaskModel = _taskModel;
     _taskModel = taskModel;
 
     SDWebImageContext *context = @{SDWebImageContextCustomManager: [AppTool sdWebImageManager:taskModel.HOST_URL sourceType:taskModel.sourceType]};
 
-    [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:taskModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context:context];
+    if (![preTaskModel.thumbnailUrl isEqualToString:taskModel.thumbnailUrl]) {
+        [self.thumbnailIV sd_setImageWithURL:[NSURL URLWithString:taskModel.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"blank"] options:SDWebImageAllowInvalidSSLCertificates context:context];
+    }
 
     self.titleLabel.text = [NSString stringWithFormat:@"%@-%@", taskModel.sourceTitle, taskModel.title];
 

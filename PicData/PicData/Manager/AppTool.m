@@ -306,11 +306,11 @@ singleton_implementation(AppTool)
     PPSDWebImageManager *manager = AppTool.sharedAppTool.managers[sourceTypeKey];
     if (manager) {
         [manager cancelAll];
-        [manager.imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
+        [manager.imageCache clearWithCacheType:SDImageCacheTypeMemory completion:nil];
         AppTool.sharedAppTool.managers[sourceTypeKey] = nil;
     } else {
         [[SDWebImageManager sharedManager] cancelAll];
-        [[SDWebImageManager sharedManager].imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
+        [[SDWebImageManager sharedManager].imageCache clearWithCacheType:SDImageCacheTypeMemory completion:nil];
     }
 
     NSLog(@"AppTool.sharedAppTool.managers: %@", AppTool.sharedAppTool.managers.allKeys);

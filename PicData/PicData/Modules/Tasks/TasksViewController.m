@@ -55,14 +55,6 @@ static NSString *headerdentifier = @"headerdentifier";
     [self reCallLoadDataList:1];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -114,8 +106,6 @@ static NSString *headerdentifier = @"headerdentifier";
  *  4(5). 某套图状态变更, 1->2(扫描完成), 2->3(下载完成)
  */
 - (void)loadDataList {
-
-// TODO: 下载过程中, 发出通知, 下载了多少页, 可以在本页面显示下载进度(downloaded / totalCount)
 
     MJWeakSelf
     dispatch_async(dispatch_get_main_queue(), ^{

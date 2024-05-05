@@ -15,7 +15,7 @@ target 'PicData' do
   pod 'SDWebImage', '~> 5.0'
   pod 'YYCategories'
   pod 'MJRefresh', '~> 3.1.12'
-  pod 'YYImage', :git => 'https://github.com/QiuYeHong90/YYImage.git'
+  pod 'YYImage/WebP', :git => 'https://github.com/QiuYeHong90/YYImage.git'
   pod 'YBImageBrowser'
   pod 'WCDB'
   pod 'SSZipArchive'

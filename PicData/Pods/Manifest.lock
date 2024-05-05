@@ -33,6 +33,8 @@ PODS:
   - YYImage (1.0.4):
     - YYImage/Core (= 1.0.4)
   - YYImage/Core (1.0.4)
+  - YYImage/WebP (1.0.4):
+    - YYImage/Core
 
 DEPENDENCIES:
   - CocoaAsyncSocket
@@ -51,7 +53,7 @@ DEPENDENCIES:
   - WCDB
   - YBImageBrowser
   - YYCategories
-  - YYImage (from `https://github.com/QiuYeHong90/YYImage.git`)
+  - YYImage/WebP (from `https://github.com/QiuYeHong90/YYImage.git`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -106,6 +108,6 @@ SPEC CHECKSUMS:
   YYCategories: 6bcd4314c6661a561410dce4a793379ebd306abd
   YYImage: 20ec986d18a8d0ad421619d166a9e628097e2433
 
-PODFILE CHECKSUM: 83e45a1b3407555dff44c502642ae86e30b41621
+PODFILE CHECKSUM: 046af9f708890900f09d3ed545bff7b9a275f360
 
 COCOAPODS: 1.15.2

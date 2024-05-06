@@ -295,7 +295,7 @@ static CGFloat headerHeight = 35;
         /// 右击
         /// 1. 取消/删除 下载
         /// 2. 查看套图
-        if (taskModel.status != ContentTaskStatusFinishDownload) {
+//        if (taskModel.status != ContentTaskStatusFinishDownload) {
             // 取消
             UIAction *cancelDownload = [UIAction actionWithTitle:@"重新下载" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
 
@@ -308,7 +308,7 @@ static CGFloat headerHeight = 35;
                 [ContentParserManager prepareToDoNextTask];
             }];
             [actions addObject:cancelDownload];
-        }
+//        }
 
         // 删除
         UIAction *deleteDownload = [UIAction actionWithTitle:@"删除任务" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {

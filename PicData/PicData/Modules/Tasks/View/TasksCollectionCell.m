@@ -155,7 +155,7 @@ static CGFloat progressWidth = 46;
 
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] init];
 
-    NSString *sourceTitleStr = [NSString stringWithFormat:@" [%@] ", taskModel.sourceTitle];
+    NSString *sourceTitleStr = taskModel.status == 3 ? [NSString stringWithFormat:@"%@ [%@] ", [NSString stringWithFormat:@" 总数: %d", taskModel.totalCount], taskModel.sourceTitle] : [NSString stringWithFormat:@" [%@] ", taskModel.sourceTitle];
     NSMutableAttributedString *attributedSourceString = [[NSMutableAttributedString alloc] initWithString:sourceTitleStr];
     [attributedSourceString addAttributes:@{NSForegroundColorAttributeName: [UIColor grayColor],
                                             NSFontAttributeName: [UIFont systemFontOfSize:11],

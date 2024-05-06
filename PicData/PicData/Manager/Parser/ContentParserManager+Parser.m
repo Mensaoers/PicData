@@ -430,6 +430,10 @@
             break;
     }
 
+    if (nil == contentE) {
+        PPIsBlockExecute(completeHandler, @[], @"", @[], @"");
+        return;
+    }
     OCQueryObject *es = contentE.Query(@"img");
     for (OCGumboElement *e in es) {
         NSString *src;

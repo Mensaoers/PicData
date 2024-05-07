@@ -28,9 +28,20 @@
 
 - (void)setupSubviews {
 
+    self.backgroundColor = UIColor.clearColor;
+
+    UIView *bgView = [UIView new];
+    bgView.backgroundColor = UIColor.whiteColor;
+    bgView.layer.cornerRadius = 8;
+    bgView.layer.masksToBounds = YES;
+    [self.contentView addSubview:bgView];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 8, 8, 8));
+    }];
+
     UIImageView *iconIMGV = [[UIImageView alloc] init];
     iconIMGV.contentMode = UIViewContentModeScaleAspectFit;
-    [self.contentView addSubview:iconIMGV];
+    [bgView addSubview:iconIMGV];
     self.iconIMGV = iconIMGV;
 
     [iconIMGV mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -43,7 +54,7 @@
     fileNameLabel.font = [UIFont systemFontOfSize:14];
     fileNameLabel.textColor = UIColor.blackColor;
     fileNameLabel.numberOfLines = 3;
-    [self.contentView addSubview:fileNameLabel];
+    [bgView addSubview:fileNameLabel];
     self.fileNameLabel = fileNameLabel;
 
     [fileNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,7 +66,7 @@
     UILabel *sizeLabel = [[UILabel alloc] init];
     sizeLabel.font = [UIFont systemFontOfSize:12];
     sizeLabel.textColor = UIColor.lightGrayColor;
-    [self.contentView addSubview:sizeLabel];
+    [bgView addSubview:sizeLabel];
     self.sizeLabel = sizeLabel;
     [sizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(fileNameLabel);

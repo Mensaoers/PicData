@@ -182,6 +182,10 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
             }];
         }],
+        [UIAlertAction actionWithTitle:@"查看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            [weakSelf doViewDocFileWithFilePath:filePath];
+        }],
         [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             NSError *rmError = nil;
             [[PPFileManager defaultManager] removeItemAtPath:filePath error:&rmError];

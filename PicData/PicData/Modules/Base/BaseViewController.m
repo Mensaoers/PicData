@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "FloatingWindowView.h"
+#import "ViewerViewController.h"
 
 @interface BaseViewController ()
 
@@ -79,6 +80,16 @@
         void (*func)(id, SEL, id) = (void *)imp;
         func(self, selector, object);
     }
+}
+
+@end
+
+@implementation BaseViewController (ppEx)
+
+- (void)doViewDocFileWithFilePath:(NSString *)filePath {
+    ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
+    viewerVC.filePath = filePath;
+    [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
 }
 
 @end

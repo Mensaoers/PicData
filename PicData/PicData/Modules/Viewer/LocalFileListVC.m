@@ -7,7 +7,6 @@
 //
 
 #import "LocalFileListVC.h"
-#import "ViewerViewController.h"
 #import "PicBrowserToolViewHandler.h"
 
 @interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
@@ -352,23 +351,18 @@
             }];
 
 #else
-            ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
-            viewerVC.filePath = pdfPath;
-            viewerVC.backBlock = ^(NSString * _Nonnull filePath) {
+            NSArray <UIAlertAction *> *actions = @[
+                [UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:pdfPath]] sourceView:sourceView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
 
-                PDBlockSelf
-                [weakSelf showAlertWithTitle:@"删除文件" message:@"是否需要删除该pdf文件以节省空间" confirmTitle:@"删掉吧" confirmHandler:^(UIAlertAction * _Nonnull action) {
-                    // 不分享了, 那得删了临时数据
-                    NSError *rmError = nil;
-                    [[NSFileManager defaultManager] removeItemAtPath:pdfPath error:&rmError];
-                    if (rmError) {
-                        NSLog(@"删除文件失败: %@", rmError);
-                    } else {
-                        [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除成功" afterDelay:1];
-                    }
-                } cancelTitle:@"取消" cancelHandler:nil];
-            };
-            [weakSelf.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
+                    }];
+                }],
+                [UIAlertAction actionWithTitle:@"查看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf doViewDocFileWithFilePath:pdfPath];
+                }],
+                [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]
+            ];
+            [self showAlertWithTitle:@"提示" message:@"PDF已创建完成, 是否继续?" actions:actions];
 #endif
         });
     });
@@ -888,9 +882,7 @@
         if ([PPFileManager isFileTypePicture:fileModel.fileName.pathExtension]) {
             [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
         } else if ([PPFileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
-            ViewerViewController *viewerVC = [[ViewerViewController alloc] init];
-            viewerVC.filePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-            [self.navigationController pushViewController:viewerVC animated:YES needHiddenTabBar:YES];
+            [self doViewDocFileWithFilePath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]];
         }
     }
 }

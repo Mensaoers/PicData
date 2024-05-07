@@ -28,4 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface BaseViewController (ppEx)
+
+/// 查看文件, 文档, doc, pdf
+- (void)doViewDocFileWithFilePath:(NSString *)filePath;
+
+@end
+
 NS_ASSUME_NONNULL_END

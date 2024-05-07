@@ -177,24 +177,24 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
     __weak typeof(self) weakSelf = self;
     NSArray<UIAlertAction *> *actions = @[
-    [UIAlertAction actionWithTitle:@"系统分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:filePath]] sourceView:cell.contentView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        [UIAlertAction actionWithTitle:@"系统分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:filePath]] sourceView:cell.contentView completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
 
-        }];
-    }],
-    [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        NSError *rmError = nil;
-        [[PPFileManager defaultManager] removeItemAtPath:filePath error:&rmError];
-        if (nil == rmError) {
-            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除成功" afterDelay:1];
-            [self refreshLoadData:YES];
-        } else {
-            [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除失败" afterDelay:1];
-        }
-    }],
-    [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            }];
+        }],
+        [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            NSError *rmError = nil;
+            [[PPFileManager defaultManager] removeItemAtPath:filePath error:&rmError];
+            if (nil == rmError) {
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除成功" afterDelay:1];
+                [self refreshLoadData:YES];
+            } else {
+                [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"移除失败" afterDelay:1];
+            }
+        }],
+        [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 
-    }],
+        }],
     ];
 
     [self showAlertWithTitle:@"提示" message:@"你想对该文件做什么操作?" actions:actions];

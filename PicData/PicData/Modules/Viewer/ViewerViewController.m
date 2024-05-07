@@ -24,13 +24,6 @@
 
 @implementation ViewerViewController
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-
-    PPIsBlockExecute(self.backBlock, self.filePath);
-    self.backBlock = nil;
-}
-
 - (NSString *)getNaviTitle:(NSString *)defaultTitle {
     if (self.filePath.length > 0) {
         return self.filePath.lastPathComponent;

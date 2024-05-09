@@ -8,13 +8,16 @@
 
 #import "SharedListViewController.h"
 #import "SharedListTableViewCell.h"
+#import "ViewerFileSModel.h"
 
 @interface SharedListViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
+@property (nonatomic, strong) NSMutableArray <ViewerFileSModel *>*fileNamesList;
 
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, assign) BOOL isEditing;
 
 @end
 
@@ -22,7 +25,32 @@
 
 static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
-- (NSMutableArray<ViewerFileModel *> *)fileNamesList {
+- (void)setIsEditing:(BOOL)isEditing {
+    _isEditing = isEditing;
+
+    if (isEditing) {
+        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(doFilterItemAction:)];
+        UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"square.and.arrow.up"] style:UIBarButtonItemStylePlain target:self action:@selector(doShareItemAction:)];
+        self.navigationItem.rightBarButtonItems = @[cancelItem, shareItem];
+
+        self.navigationItem.title = @"已选中0个文件";
+    } else {
+        UIBarButtonItem *filterItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"list.bullet"] style:UIBarButtonItemStylePlain target:self action:@selector(doFilterItemAction:)];
+        self.navigationItem.rightBarButtonItems = @[filterItem];
+        self.navigationItem.title = [NSString stringWithFormat:@"历史分享(%ld)", self.fileNamesList.count];
+    }
+    [self.fileNamesList pp_enumeration:^(ViewerFileSModel * _Nonnull element, NSInteger index, NSInteger totalCount) {
+        element.isSelected = NO;
+    }];
+
+    [self.fileNamesList pp_enumeration:^(ViewerFileSModel * _Nonnull element, NSInteger index, NSInteger totalCount) {
+        element.isSelected = NO;
+    }];
+
+    [self.tableView reloadData];
+}
+
+- (NSMutableArray<ViewerFileSModel *> *)fileNamesList {
     if (nil == _fileNamesList) {
         _fileNamesList = [NSMutableArray array];
     }
@@ -40,6 +68,9 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
 - (void)loadNavigationItem {
     self.navigationItem.title = @"历史分享";
+
+    UIBarButtonItem *filterItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"list.bullet"] style:UIBarButtonItemStylePlain target:self action:@selector(doFilterItemAction:)];
+    self.navigationItem.rightBarButtonItems = @[filterItem];
 }
 
 - (void)loadMainView {
@@ -85,6 +116,26 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
 }
 
+#pragma mark - action
+
+- (void)doFilterItemAction:(UIBarButtonItem *)sender {
+    self.isEditing = !self.isEditing;
+}
+
+- (void)doShareItemAction:(UIBarButtonItem *)sender {
+
+    NSArray <NSURL *>*urls = [[self.fileNamesList pp_filter:^BOOL(ViewerFileSModel * _Nonnull element) {
+        return element.isSelected;
+    }] pp_map:^id _Nonnull(ViewerFileSModel * _Nonnull element) {
+        NSString *filePath = [PDDownloadManager.sharedPDDownloadManager.systemShareFolderPath stringByAppendingPathComponent:element.fileName];
+        return [NSURL fileURLWithPath:filePath];
+    }];
+
+    [AppTool shareFileWithURLs:urls sourceView:self.view completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+
+    }];
+}
+
 #pragma mark - data
 
 - (void)refreshLoadData:(BOOL)needFileSize {
@@ -112,7 +163,7 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
             NSString *filePath = [targetFilePath stringByAppendingPathComponent:fileName];
             if ([PPFileManager isDirectory:filePath]) {
-                ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:YES];
+                ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:YES];
 
                 NSString *dirPath = filePath;
                 NSError *subError = nil;
@@ -137,13 +188,13 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
                     [self.fileNamesList addObject:fileModel];
                 }
             } else {
-                ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
+                ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:NO];
                 fileModel.fileSize = [NSFileManager.defaultManager getFileSize:filePath];
                 [self.fileNamesList addObject:fileModel];
             }
         }
 
-        self.navigationItem.title = [NSString stringWithFormat:@"%ld", self.fileNamesList.count];
+        self.navigationItem.title = [NSString stringWithFormat:@"历史分享(%ld)", self.fileNamesList.count];
         [self.tableView reloadData];
     } else {
         NSLog(@"%@", subError);
@@ -163,6 +214,8 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SharedListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SharedListTableViewCellID forIndexPath:indexPath];
+
+    cell.isEditing = self.isEditing;
     cell.model = self.fileNamesList[indexPath.row];
 
     return cell;
@@ -171,7 +224,19 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    ViewerFileModel *model = self.fileNamesList[indexPath.row];
+    if (self.isEditing) {
+        ViewerFileSModel *model = self.fileNamesList[indexPath.row];
+        model.isSelected = !model.isSelected;
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+        NSInteger count = [self.fileNamesList pp_filter:^BOOL(ViewerFileSModel * _Nonnull element) {
+            return element.isSelected;
+        }].count;
+        self.navigationItem.title = [NSString stringWithFormat:@"已选中个%ld文件", count];
+        return;
+    }
+
+    ViewerFileSModel *model = self.fileNamesList[indexPath.row];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     NSString *filePath = [PDDownloadManager.sharedPDDownloadManager.systemShareFolderPath stringByAppendingPathComponent:model.fileName];
 

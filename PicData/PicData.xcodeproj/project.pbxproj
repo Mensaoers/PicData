@@ -68,6 +68,7 @@
 		9D96DCC625A37CBB0045D123 /* PicClassifyTagsFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC225A37CBB0045D123 /* PicClassifyTagsFrame.m */; };
 		9DB107F72A24969900131F45 /* SocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB107F62A24969900131F45 /* SocketManager.m */; };
 		9DB107FE2A24AED400131F45 /* SocketMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB107FD2A24AED400131F45 /* SocketMessageModel.m */; };
+		9DC5A7382BEC7C5900E9B438 /* ViewerFileSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC5A7372BEC7C5900E9B438 /* ViewerFileSModel.m */; };
 		9DC94C982552ECB8008ACAF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C972552ECB8008ACAF8 /* BaseViewController.m */; };
 		9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94C9D2552ECE5008ACAF8 /* BaseNavigationController.m */; };
 		9DC94CA32552ECFE008ACAF8 /* AppTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC94CA22552ECFE008ACAF8 /* AppTabBarController.m */; };
@@ -231,6 +232,8 @@
 		9DB107F62A24969900131F45 /* SocketManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketManager.m; sourceTree = "<group>"; };
 		9DB107FC2A24AED400131F45 /* SocketMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketMessageModel.h; sourceTree = "<group>"; };
 		9DB107FD2A24AED400131F45 /* SocketMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketMessageModel.m; sourceTree = "<group>"; };
+		9DC5A7362BEC7C5900E9B438 /* ViewerFileSModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerFileSModel.h; sourceTree = "<group>"; };
+		9DC5A7372BEC7C5900E9B438 /* ViewerFileSModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerFileSModel.m; sourceTree = "<group>"; };
 		9DC94C962552ECB8008ACAF8 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		9DC94C972552ECB8008ACAF8 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		9DC94C9C2552ECE5008ACAF8 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
@@ -590,6 +593,15 @@
 			path = Socket;
 			sourceTree = "<group>";
 		};
+		9DC5A7352BEC7C4A00E9B438 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9DC5A7362BEC7C5900E9B438 /* ViewerFileSModel.h */,
+				9DC5A7372BEC7C5900E9B438 /* ViewerFileSModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		9DC94C9A2552ECBB008ACAF8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -815,6 +827,7 @@
 		9DFA89792BDE83BB00268626 /* ShareList */ = {
 			isa = PBXGroup;
 			children = (
+				9DC5A7352BEC7C4A00E9B438 /* Model */,
 				9DFA897A2BDE83D800268626 /* SharedListViewController.h */,
 				9DFA897B2BDE83D800268626 /* SharedListViewController.m */,
 				9DFA89802BDE89F200268626 /* SharedListTableViewCell.h */,
@@ -1011,6 +1024,7 @@
 				9DE95CE8244C4E5700E31735 /* PicContentModel.mm in Sources */,
 				335124E224D6E2C9004489CA /* PDRequest.m in Sources */,
 				33967B5226EDF44600B308B1 /* HomeViewController.m in Sources */,
+				9DC5A7382BEC7C5900E9B438 /* ViewerFileSModel.m in Sources */,
 				9D3593E5244D5FC7005ADF05 /* DetailViewController.m in Sources */,
 				9DC94C9E2552ECE5008ACAF8 /* BaseNavigationController.m in Sources */,
 				9DFA897F2BDE891500268626 /* NSFileManager+Ex.m in Sources */,

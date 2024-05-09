@@ -175,7 +175,7 @@ static NSString *identifier = @"identifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44;
+    return 54;
 }
 
 #pragma mark - func
@@ -213,7 +213,7 @@ static NSString *identifier = @"identifier";
 
 - (void)showLocalSharedList:(UIView *)sender {
     SharedListViewController *vc = [[SharedListViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:vc animated:YES needHiddenTabBar:YES];
 }
 
 - (void)onekeyStopDownload:(UIView *)sender {

@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewerFileSModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SharedListTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) ViewerFileModel *model;
+@property (nonatomic, strong) ViewerFileSModel *model;
+@property (nonatomic, assign) BOOL isEditing;
 
 @end
 

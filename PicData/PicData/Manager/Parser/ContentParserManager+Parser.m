@@ -10,13 +10,14 @@
 
 @implementation ContentParserManager (Parser)
 
+/// 网页内容编解码
 + (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType {
     switch (sourceType) {
-        case 1:
         case 2:
         case 5:
             return [AppTool getStringWithGB_18030_2000Code:data];
             break;
+        case 1:
         case 3:
         case 8:
             return [AppTool getStringWithUTF8Code:data];
@@ -27,6 +28,153 @@
     return @"";
 }
 
+/// 开始解析网页
++ (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray <PicContentModel *>* _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler {
+
+    if (htmlString.length == 0) {
+        PPIsBlockExecute(completeHandler, @[], nil);
+        return;
+    }
+    
+    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+
+    NSArray *results = [self parseContentListWithDocument:document sourceModel:sourceModel];
+
+    NSURL *nextPageURL = nil;
+
+    OCGumboElement *nextE;
+
+    switch (sourceModel.sourceType) {
+        case 1:{
+            nextE = document.QueryClass(@"pageart").firstObject;
+        }
+            break;
+        case 2: {
+            nextE = document.QueryClass(@"page-tag").firstObject;
+        }
+            break;
+        case 3: {
+            nextE = document.QueryClass(@"pag").firstObject;
+        }
+            break;
+        case 5: {
+            nextE = document.QueryClass(@"page-list").firstObject;
+        }
+            break;
+        case 8: {
+            nextE = document.QueryClass(@"pager").firstObject;
+        }
+            break;
+        default:
+            break;
+    }
+
+    NSString *nextPage = @"";
+
+    if (nextE) {
+        OCQueryObject *aEs = nextE.QueryElement(@"a");
+
+        NSString *nextPageTitle = @"下一页";
+        switch (sourceModel.sourceType) {
+            case 3:
+                nextPageTitle = @"Next »";
+                break;
+            default:
+                break;
+        }
+
+        for (OCGumboElement *aE in aEs) {
+            if ([aE.text() isEqualToString:nextPageTitle]) {
+                nextPage = aE.attr(@"href");
+                break;
+            }
+        }
+    }
+
+    if (nextPage.length > 0) {
+        switch (sourceModel.sourceType) {
+            case 1: {
+                nextPageURL = [NSURL URLWithString:[sourceModel.url stringByAppendingPathComponent:nextPage]];
+            }
+                break;
+            case 2: {
+                nextPageURL = [NSURL URLWithString:[sourceModel.url stringByReplacingOccurrencesOfString:sourceModel.url.lastPathComponent withString:nextPage]];
+            }
+                break;
+            case 3: {
+                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+            }
+                break;
+            case 5: {
+                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]];
+            }
+                break;
+            case 8: {
+                nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+            }
+                break;
+            default:
+                break;
+        }
+    } else {
+        nextPageURL = nil;
+    }
+
+    PPIsBlockExecute(completeHandler, results, nextPageURL)
+}
+
+/// 获取套图列表
++ (NSArray<PicContentModel *> *)parseContentListWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
+
+    NSMutableArray *articleContents = [NSMutableArray array];
+    OCQueryObject *articleEs;
+
+    switch (sourceModel.sourceType) {
+        case 1: {
+            OCGumboElement *listDiv = document.QueryClass(@"update_area_lists").firstObject;
+            if(nil == listDiv) {return @[];}
+            articleEs = listDiv.QueryClass(@"i_list");
+        }
+            break;
+        case 2: {
+            OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
+            articleEs = listDiv.QueryElement(@"li");
+        }
+            break;
+        case 3: {
+            OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
+            articleEs = listDiv.QueryElement(@"article");
+        }
+            break;
+        case 5: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            articleEs = listDiv.QueryClass(@"piece");
+        }
+            break;
+        case 8: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            articleEs = listDiv.QueryClass(@"item");
+        }
+            break;
+        default:
+            break;
+    }
+
+    for (OCGumboElement *articleE in articleEs) {
+
+        PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+        if (nil == contentModel) { continue; }
+        [contentModel insertTable];
+        [articleContents addObject:contentModel];
+    }
+
+    return [articleContents copy];
+}
+
+
+/// 获取每一个套图对象
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
     OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
@@ -35,7 +183,13 @@
     NSString *href = aE.attr(@"href");
     NSString *title = aE.attr(@"title");
     switch (sourceModel.sourceType) {
-        case 1:
+        case 1: {
+            imgE = aE.QueryElement(@"img").firstObject;
+            
+            OCGumboElement *divE = articleElement.QueryClass(@"meta-title").firstObject;
+            title = divE.text();
+        }
+            break;
         case 2:
         case 5:
         case 8:{
@@ -185,149 +339,6 @@
     return classModelsM;
 }
 
-+ (NSArray<PicContentModel *> *)parseContentListWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
-
-    NSMutableArray *articleContents = [NSMutableArray array];
-    OCQueryObject *articleEs;
-
-    switch (sourceModel.sourceType) {
-        case 1: {
-            OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"post");
-        }
-            break;
-        case 2: {
-            OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
-            articleEs = listDiv.QueryElement(@"li");
-        }
-            break;
-        case 3: {
-            OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
-            articleEs = listDiv.QueryElement(@"article");
-        }
-            break;
-        case 5: {
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"piece");
-        }
-            break;
-        case 8: {
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"item");
-        }
-            break;
-        default:
-            break;
-    }
-
-    for (OCGumboElement *articleE in articleEs) {
-
-        PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-        if (nil == contentModel) { continue; }
-        [contentModel insertTable];
-        [articleContents addObject:contentModel];
-    }
-
-    return [articleContents copy];
-}
-
-+ (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray <PicContentModel *>* _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler {
-
-    if (htmlString.length == 0) {
-        PPIsBlockExecute(completeHandler, @[], nil);
-        return;
-    }
-    
-    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-
-    NSArray *results = [self parseContentListWithDocument:document sourceModel:sourceModel];
-
-    NSURL *nextPageURL = nil;
-
-    OCGumboElement *nextE;
-
-    switch (sourceModel.sourceType) {
-        case 1:{
-            nextE = document.QueryClass(@"pageart").firstObject;
-        }
-            break;
-        case 2: {
-            nextE = document.QueryClass(@"page-tag").firstObject;
-        }
-            break;
-        case 3: {
-            nextE = document.QueryClass(@"pag").firstObject;
-        }
-            break;
-        case 5: {
-            nextE = document.QueryClass(@"page-list").firstObject;
-        }
-            break;
-        case 8: {
-            nextE = document.QueryClass(@"pager").firstObject;
-        }
-            break;
-        default:
-            break;
-    }
-
-    NSString *nextPage = @"";
-
-    if (nextE) {
-        OCQueryObject *aEs = nextE.QueryElement(@"a");
-
-        NSString *nextPageTitle = @"下一页";
-        switch (sourceModel.sourceType) {
-            case 3:
-                nextPageTitle = @"Next »";
-                break;
-            default:
-                break;
-        }
-
-        for (OCGumboElement *aE in aEs) {
-            if ([aE.text() isEqualToString:nextPageTitle]) {
-                nextPage = aE.attr(@"href");
-                break;
-            }
-        }
-    }
-
-    if (nextPage.length > 0) {
-        switch (sourceModel.sourceType) {
-            case 1: {
-                nextPageURL = [NSURL URLWithString:[sourceModel.url stringByAppendingPathComponent:nextPage]];
-            }
-                break;
-            case 2: {
-                nextPageURL = [NSURL URLWithString:[sourceModel.url stringByReplacingOccurrencesOfString:sourceModel.url.lastPathComponent withString:nextPage]];
-            }
-                break;
-            case 3: {
-                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
-            }
-                break;
-            case 5: {
-                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]];
-            }
-                break;
-            case 8: {
-                nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
-            }
-                break;
-            default:
-                break;
-        }
-    } else {
-        nextPageURL = nil;
-    }
-
-    PPIsBlockExecute(completeHandler, results, nextPageURL)
-}
-
 + (void)parseDetailWithHtmlString:(NSString *)htmlString href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void (^)(NSArray<NSString *> * _Nonnull, NSString * _Nonnull, NSArray<PicContentModel *> * _Nullable, NSString * _Nullable))completeHandler {
 
     if (htmlString.length == 0) {
@@ -344,7 +355,7 @@
 
     switch (sourceModel.sourceType) {
         case 1:{
-            contentE = document.QueryClass(@"contents").firstObject;
+            contentE = document.QueryClass(@"content_left").firstObject;
         }
             break;
         case 2: {
@@ -476,8 +487,8 @@
         case 1: {
 
             // 推荐
-            OCGumboElement *listDiv = document.QueryClass(@"w980").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryClass(@"post");
+            OCGumboElement *listDiv = document.QueryClass(@"update_area_lists").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryClass(@"i_list");
 
             for (OCGumboElement *articleE in articleEs) {
 
@@ -506,8 +517,8 @@
         case 3: {
 
             // 推荐
-            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
+            OCGumboElement *listDiv = document.QueryClass(@"widget-area").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryElement(@"li");
 
             for (OCGumboElement *articleE in articleEs) {
 

@@ -1,21 +1,21 @@
 {
     "hosts": [
         {
-            "title" : "https://www.yun222.cc",
+            "title" : "https://meirentu.cc",
             "sourceType" : 1,
-            "HOST_URL": "https://www.yun222.cc",
-            "referer": "https://www.yun222.cc",
+            "HOST_URL": "https://meirentu.cc",
+            "referer": "https://meirentu.cc",
             "urls": [
                 {
-                    "url": "https://www.yun222.cc/k",
-                    "title": "yun222首页"
+                    "url": "https://meirentu.cc/index/1.html",
+                    "title": "meirentu首页"
                 },
             ],
-            "tagsUrl": "https://www.yun222.cc/k/tag",
-            "searchFormat": "https://www.yun222.cc/plus/search.php?q=%@&pagesize=30",
-            "searchEncode": false,
-            "mark": "yun222",
-            "tips": "需关闭代理",
+            "tagsUrl": "https://meirentu.cc/tags.html",
+            "searchFormat": "https://meirentu.cc/s/%@.html",
+            "searchEncode": true,
+            "mark": "meirentu",
+            "tips": "需开启代理",
             "prepared": true,
         },
         {
@@ -87,7 +87,7 @@
             "searchEncode": false,
             "mark": "hh1234",
             "tips": "需关闭代理",
-            "prepared": true,
+            "prepared": false,
         },
         {
             "title" : "https://www.xiurenb.com",
@@ -145,7 +145,7 @@
             "searchEncode": true,
             "mark": "8色人体",
             "tips": "需开启代理",
-            "prepared": true,
+            "prepared": false,
         }
     ],
     "searchKeys": ["阿朱","艾尔莎","艾静香","艾莉","艾小青","安然","白兔","白幼幼","宝宝","波多","仓井优香","草莓兔兔","沈梦瑶","陈小喵","程程程","程慧娴","大美媚京","豆瓣酱","逗逗","恩率","方子萱","绯月樱","冯木木","古月","果冻","过期米线线喵","韩静安","嘉宝贝","贾诗晗","九月","久久","觉蒽酱","可乐","乐朵朵","李雅柔","利世","良人","林乐一","林文文","林星阑","龙泽美曦","噜噜妞儿","陆萱萱","璐璐","美七","美桃酱","萌白酱","萌萌","萌柰子","萌琪琪","梦心月","梦心玥","模特合集","娜比","奶瓶","奈沐子","南初","糯美子","欧阳","七月","柒","绮里嘉","绮梦","沁沁","人间荒糖","肉肉","佘贝拉","诗诗","苏雨彤","孙梦瑶","唐安琪","唐婉儿","桃桃","陶喜乐","甜妮","兔兔","王心怡","王馨瑶","王雨纯","王语纯","王梓童","薇薇","吴雪瑶","汐汐","西门小玉","夏西","夏小秋","夏雪爱","香儿","小不点","小海臀","小狐狸","小蛮腰","小宣","小姿","星小兔","熊川纪信","熊小诺","徐安安","徐莉芝","徐微微","许诺","玄子","薛琪琪","言沫","颜浅浅","杨晨晨","一颗甜蛋黄","以瑟","艺儿伢哟","艺轩","尹甜甜","桃桃子","林子遥","樱桃酱","优优","鱼子酱","玉兔","园园","媛媛酱","月音瞳","悦爷妖精","战姝羽","张思允","张小妮","张欣欣","张雨萌","赵万灵","郑颖姗","芝芝Booty","周井空","周慕汐","周于希","苏苏","谢小蒽","babe","BoBo","cake","Carry","fancy","Irene","Kiki","Lavinia","suki","UU","vicky","wendy","YUNDUOER"]

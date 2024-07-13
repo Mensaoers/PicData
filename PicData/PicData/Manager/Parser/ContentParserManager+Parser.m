@@ -31,38 +31,28 @@
 
     OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
     if (nil == aE) { return nil; }
+    OCGumboElement *imgE;
+    NSString *href = aE.attr(@"href");
     NSString *title = aE.attr(@"title");
-    OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
-
     switch (sourceModel.sourceType) {
-        case 1: {
-            title = imgE.attr(@"alt");
-        }
-            break;
-        case 2: {
+        case 1:
+        case 2:
+        case 5:
+        case 8:{
+            imgE = aE.QueryElement(@"img").firstObject;
             title = imgE.attr(@"alt");
         }
             break;
         case 3: {
-            imgE = aE.QueryClass(@"xld").firstObject;
-        }
-            break;
-        case 5: {
-            title = imgE.attr(@"alt");
-        }
-            break;
-        case 8: {
-//            OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
-//            aE = divE.QueryElement(@"a").firstObject;
-//            imgE = articleElement.QueryElement(@"img").firstObject;
-//            title = aE.text();
-            title = imgE.attr(@"alt");
+            imgE = articleElement.QueryElement(@"img").firstObject;
+            title = aE.text();
         }
             break;
         default:
             break;
     }
-    NSString *href = aE.attr(@"href");
+    if (imgE == nil) { return nil; }
+    
 
     title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
 
@@ -213,8 +203,8 @@
         }
             break;
         case 3: {
-            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
-            articleEs = listDiv.QueryClass(@"thcovering-video");
+            OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
+            articleEs = listDiv.QueryElement(@"article");
         }
             break;
         case 5: {
@@ -362,7 +352,7 @@
         }
             break;
         case 3: {
-            contentE = document.QueryClass(@"contentme2").firstObject;
+            contentE = document.QueryClass(@"entry-content").firstObject;
         }
             break;
         case 5: {
@@ -410,7 +400,7 @@
         }
             break;
         case 3: {
-            nextE = document.QueryClass(@"pag").firstObject;
+            nextE = document.QueryClass(@"page-numbers").firstObject;
         }
             break;
         case 5: {

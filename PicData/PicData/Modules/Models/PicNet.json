@@ -72,22 +72,30 @@
             "prepared": true,
         },
         {
-            "title" : "https://www.hh1234.cc",
+            "title" : "https://www.mntuce.com",
             "sourceType" : 5,
-            "HOST_URL": "https://www.hh1234.cc",
-            "referer": "https://www.hh1234.cc",
+            "HOST_URL": "https://www.mntuce.com",
+            "referer": "https://www.mntuce.com",
             "urls": [
                 {
-                    "url": "https://www.hh1234.cc/ku/xin/",
-                    "title": "hh1234首页"
+                    "url": "https://www.mntuce.com/",
+                    "title": "mntuce首页"
                 },
+                {
+                    "url": "https://www.mntuce.com/category/yituyu/",
+                    "title": "清纯唯美"
+                },
+                {
+                    "url": "https://www.mntuce.com/category/mzsock/",
+                    "title": "足控领域"
+                }
             ],
-            "tagsUrl": "https://www.hh1234.cc/ku/tag/",
-            "searchFormat": "https://www.hh1234.cc/plus/search.php?tbname=news&show=title&tempid=1&q=%@&pagesize=25",
-            "searchEncode": false,
-            "mark": "hh1234",
-            "tips": "需关闭代理",
-            "prepared": false,
+            "tagsUrl": "",
+            "searchFormat": "https://www.mntuce.com/?s=%@&type=post",
+            "searchEncode": true,
+            "mark": "mntuce",
+            "tips": "可以不开代理",
+            "prepared": true,
         },
         {
             "title" : "https://www.xiurenb.com",

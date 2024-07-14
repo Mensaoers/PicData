@@ -14,11 +14,11 @@
 + (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType {
     switch (sourceType) {
         case 2:
-        case 5:
             return [AppTool getStringWithGB_18030_2000Code:data];
             break;
         case 1:
         case 3:
+        case 5:
         case 8:
             return [AppTool getStringWithUTF8Code:data];
             break;
@@ -58,7 +58,7 @@
         }
             break;
         case 5: {
-            nextE = document.QueryClass(@"page-list").firstObject;
+            nextE = document.QueryClass(@"next").firstObject;
         }
             break;
         case 8: {
@@ -72,21 +72,25 @@
     NSString *nextPage = @"";
 
     if (nextE) {
-        OCQueryObject *aEs = nextE.QueryElement(@"a");
+        if (sourceModel.sourceType == 5) {
+            nextPage = nextE.attr(@"href");
+        } else {
+            OCQueryObject *aEs = nextE.QueryElement(@"a");
 
-        NSString *nextPageTitle = @"下一页";
-        switch (sourceModel.sourceType) {
-            case 3:
-                nextPageTitle = @"Next »";
-                break;
-            default:
-                break;
-        }
+            NSString *nextPageTitle = @"下一页";
+            switch (sourceModel.sourceType) {
+                case 3:
+                    nextPageTitle = @"Next »";
+                    break;
+                default:
+                    break;
+            }
 
-        for (OCGumboElement *aE in aEs) {
-            if ([aE.text() isEqualToString:nextPageTitle]) {
-                nextPage = aE.attr(@"href");
-                break;
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() isEqualToString:nextPageTitle]) {
+                    nextPage = aE.attr(@"href");
+                    break;
+                }
             }
         }
     }
@@ -147,9 +151,9 @@
         }
             break;
         case 5: {
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"piece");
+            OCQueryObject *listDiv = document.QueryClass(@"item-thumbnail");
+//            if(nil == listDiv) {return @[];}
+            articleEs = listDiv;// listDiv.QueryClass(@"piece");
         }
             break;
         case 8: {
@@ -211,6 +215,14 @@
     title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
 
     NSString *thumbnailUrl = imgE.attr(@"src");
+    switch (sourceModel.sourceType) {
+        case 5:
+            thumbnailUrl = imgE.attr(@"data-src");
+            break;
+            
+        default:
+            break;
+    }
 
     PicContentModel *contentModel = [[PicContentModel alloc] init];
     contentModel.href = href;
@@ -367,7 +379,7 @@
         }
             break;
         case 5: {
-            contentE = document.QueryClass(@"content").firstObject;
+            contentE = document.QueryClass(@"wp-block-gallery").firstObject;
         }
             break;
         case 8: {
@@ -415,7 +427,9 @@
         }
             break;
         case 5: {
-            nextE = document.QueryClass(@"page-list").firstObject;
+            OCGumboElement *divE = document.QueryClass(@"article-content").firstObject;
+            OCGumboElement *pE = divE.QueryElement(@"p").firstObject;
+            nextE = pE;
         }
             break;
         case 8: {
@@ -428,21 +442,33 @@
 
     NSString *nextPage = @"";
     if (nextE) {
-        OCQueryObject *aEs = nextE.QueryElement(@"a");
+        if (sourceModel.sourceType == 5) {
+            OCGumboElement *spanE = nextE.QueryElement(@"span").firstObject;
+            OCQueryObject *aEs = nextE.QueryElement(@"a");
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() integerValue] == [spanE.text() integerValue] + 1) {
+                    nextPage = aE.attr(@"href");
+                    break;
+                }
+            }
+            
+        } else {
+            OCQueryObject *aEs = nextE.QueryElement(@"a");
 
-        NSString *nextPageTitle = @"下一页";
-        switch (sourceModel.sourceType) {
-            case 3:
-                nextPageTitle = @"Next >";
-                break;
-            default:
-                break;
-        }
+            NSString *nextPageTitle = @"下一页";
+            switch (sourceModel.sourceType) {
+                case 3:
+                    nextPageTitle = @"Next >";
+                    break;
+                default:
+                    break;
+            }
 
-        for (OCGumboElement *aE in aEs) {
-            if ([aE.text() isEqualToString:nextPageTitle]) {
-                nextPage = aE.attr(@"href");
-                break;
+            for (OCGumboElement *aE in aEs) {
+                if ([aE.text() isEqualToString:nextPageTitle]) {
+                    nextPage = aE.attr(@"href");
+                    break;
+                }
             }
         }
     }
@@ -579,9 +605,7 @@
         }
             break;
         case 5: {
-            OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
-            OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
-            title = titleE.text();
+            break;
         }
             break;
         case 8: {

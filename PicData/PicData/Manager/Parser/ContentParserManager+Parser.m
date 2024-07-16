@@ -19,6 +19,7 @@
         case 1:
         case 3:
         case 5:
+        case 6:
         case 8:
             return [AppTool getStringWithUTF8Code:data];
             break;
@@ -156,6 +157,11 @@
             articleEs = listDiv;// listDiv.QueryClass(@"piece");
         }
             break;
+        case 6: {
+            OCGumboElement *ulE = document.QueryElement(@"ul").firstObject;
+            articleEs = ulE.QueryElement(@"li");
+        }
+            break;
         case 8: {
             OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
             if(nil == listDiv) {return @[];}
@@ -204,6 +210,13 @@
         case 3: {
             imgE = articleElement.QueryElement(@"img").firstObject;
             title = aE.text();
+        }
+            break;
+        case 6: {
+            imgE = aE.QueryElement(@"img").firstObject;
+            OCGumboElement *h2E = articleElement.QueryElement(@"h2").firstObject;
+            OCGumboElement *titleaE = h2E.QueryElement(@"a").firstObject;
+            title = titleaE.text();
         }
             break;
         default:

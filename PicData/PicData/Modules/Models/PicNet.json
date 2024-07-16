@@ -98,22 +98,33 @@
             "prepared": true,
         },
         {
-            "title" : "https://www.xiurenb.com",
+            "title" : "https://www.4khd.com",
             "sourceType" : 6,
-            "HOST_URL": "https://www.xiurenb.com",
-            "referer": "https://www.xiurenb.com",
+            "HOST_URL": "https://www.4khd.com",
+            "referer": "https://www.4khd.com",
             "urls": [
                 {
-                    "url": "https://www.xiurenb.com/new.html",
-                    "title": "xiurenb最新更新"
+                    "url": "https://www.4khd.com",
+                    "title": "首页"
                 },
                 {
-                    "url": "https://www.xiurenb.com/hot.html",
-                    "title": "xiurenb站长推荐"
+                    "url": "https://www.4khd.com/pages/popular",
+                    "title": "popular"
+                },
+                {
+                    "url": "https://www.4khd.com/pages/cosplay",
+                    "title": "cosplay"
+                },
+                {
+                    "url": "https://www.4khd.com/pages/album",
+                    "title": "album"
                 },
             ],
             "tagsUrl": "",
-            "mark": "秀人集",
+            "searchFormat": "https://www.4khd.com/search/%@",
+            "searchEncode": true,
+            "tips": "需要打开代理",
+            "mark": "4khd",
             "prepared": false,
         },
         {

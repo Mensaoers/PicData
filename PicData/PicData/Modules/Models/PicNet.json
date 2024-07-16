@@ -16,7 +16,7 @@
             "searchEncode": true,
             "mark": "meirentu",
             "tips": "需开启代理",
-            "prepared": true,
+            "prepared": false,
         },
         {
             "title" : "https://www.hitxhot.org",

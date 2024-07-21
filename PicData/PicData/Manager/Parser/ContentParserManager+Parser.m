@@ -31,61 +31,40 @@
 + (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
 
     OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
-    if (sourceModel.sourceType == 3) {
-        OCGumboElement *e = articleElement.QueryClass(@"entry-content").firstObject;
-        aE = e.QueryElement(@"div").firstObject;
-    }
     if (nil == aE) { return nil; }
+    OCGumboElement *imgE;
+    NSString *href = aE.attr(@"href");
     NSString *title = aE.attr(@"title");
-    OCGumboElement *imgE = aE.QueryElement(@"img").firstObject;
-    __block NSString *href = aE.attr(@"href");
-
     switch (sourceModel.sourceType) {
-        case 1: {
-            title = imgE.attr(@"alt");
-        }
-            break;
-        case 2: {
+        case 1:
+        case 2:
+        case 5:
+        case 8:{
+            imgE = aE.QueryElement(@"img").firstObject;
             title = imgE.attr(@"alt");
         }
             break;
         case 3: {
-            imgE = aE.QueryElement(@"img").firstObject;
-            OCGumboElement *pE = aE.QueryElement(@"p").firstObject;
-            title = pE.text();
-
-            OCGumboElement *footerE = articleElement.QueryElement(@"footer").firstObject;
-            [footerE.QueryElement(@"a") pp_enumeration:^(OCGumboElement *  _Nonnull element, NSInteger index, NSInteger totalCount) {
-                if ([element.attr(@"rel") isEqualToString:@"bookmark"]) {
-                    href = element.attr(@"href");
-                }
-            }];
+            imgE = articleElement.QueryElement(@"img").firstObject;
+            title = aE.text();
         }
             break;
         case 4: {
+            imgE = aE.QueryElement(@"img").firstObject;
             OCGumboElement *tE = articleElement.QueryClass(@"meta-title").firstObject;
             title = tE.text();
-        }
-            break;
-        case 5: {
-            title = imgE.attr(@"alt");
-        }
-            break;
-        case 8: {
-//            OCGumboElement *divE = [articleElement.QueryElement(@"div") objectOrNilAtIndex:3];
-//            aE = divE.QueryElement(@"a").firstObject;
-//            imgE = articleElement.QueryElement(@"img").firstObject;
-//            title = aE.text();
-            title = imgE.attr(@"alt");
         }
             break;
         default:
             break;
     }
+    if (imgE == nil) { return nil; }
+    
 
     title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
 
     NSString *thumbnailUrl = imgE.attr(@"src");
+    thumbnailUrl = [thumbnailUrl stringByReplacingOccurrencesOfString:@"i0.wp.com/" withString:@""];
 
     PicContentModel *contentModel = [[PicContentModel alloc] init];
     contentModel.href = href;
@@ -303,7 +282,7 @@
         }
             break;
         case 3: {
-            nextE = document.QueryClass(@"nav-next").firstObject;
+            nextE = document.QueryClass(@"pag").firstObject;
         }
             break;
         case 4: {
@@ -327,26 +306,22 @@
     if (nextE) {
         OCQueryObject *aEs = nextE.QueryElement(@"a");
 
-        if (sourceModel.sourceType == 3) {
-            OCGumboElement *aE = aEs.firstObject;
-            nextPage = aE.attr(@"href");
-        } else {
-            NSString *nextPageTitle = @"下一页";
-            switch (sourceModel.sourceType) {
-                case 3:
-                    nextPageTitle = @"Next »";
-                    break;
-                case 4:
-                    nextPageTitle = @"下页";
-                    break;
-                default:
-                    break;
-            }
-            for (OCGumboElement *aE in aEs) {
-                if ([aE.text() isEqualToString:nextPageTitle]) {
-                    nextPage = aE.attr(@"href");
-                    break;
-                }
+        NSString *nextPageTitle = @"下一页";
+        switch (sourceModel.sourceType) {
+            case 3:
+                nextPageTitle = @"Next »";
+                break;
+            case 4:
+                nextPageTitle = @"下页";
+                break;
+            default:
+                break;
+        }
+
+        for (OCGumboElement *aE in aEs) {
+            if ([aE.text() isEqualToString:nextPageTitle]) {
+                nextPage = aE.attr(@"href");
+                break;
             }
         }
     }
@@ -438,6 +413,11 @@
     for (OCGumboElement *e in es) {
         NSString *src;
         switch (sourceModel.sourceType) {
+            case 3: {
+                src = e.attr(@"src");
+                src = [src stringByReplacingOccurrencesOfString:@"i0.wp.com/" withString:@""];
+            }
+                break;
             case 8: {
                 src = e.attr(@"src");
                 if (![src containsString:@"https://"]) {
@@ -590,16 +570,16 @@
         case 3: {
 
             // 推荐
-//            OCGumboElement *listDiv = document.QueryClass(@"videos").firstObject;
-//            OCQueryObject *articleEs = listDiv.QueryClass(@"thcovering-video");
-//
-//            for (OCGumboElement *articleE in articleEs) {
-//
-//                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-//
-//                [contentModel insertTable];
-//                [suggesM addObject:contentModel];
-//            }
+            OCGumboElement *listDiv = document.QueryID(@"recent-posts-2").firstObject;
+            OCQueryObject *articleEs = listDiv.QueryID(@"li");
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+
+                [contentModel insertTable];
+                [suggesM addObject:contentModel];
+            }
         }
             break;
         case 4: {
@@ -656,16 +636,10 @@
             OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
             if (titleE) {
                 NSString *title1 = titleE.text();
-                // title1 => " Hit-x-Hot: Vol. 1080 杨晨晨Yome | Page 1/9"
+                // title1 => "Hit-x-Hot: Vol. 4832 可乐Vicky | Page 1/5"
                 if ([title1 containsString:@" | Page"]) {
                     // 对str字符串进行匹配
-//                    title = [title1 splitStringWithLeadingString:@"Hit-x-Hot: " trailingString:@" | Page" error:nil];
-                    
-                    
-                    title1 = [title1 stringByReplacingOccurrencesOfString:@"Hit-x-Hot: " withString:@"aabbccddeeffgg"];
-                    title1 = [title1 stringByReplacingOccurrencesOfString:@" | Page" withString:@"ggffeeddccbbaa"];
-
-                    title = [title1 splitStringWithLeadingString:@"aabbccddeeffgg" trailingString:@"ggffeeddccbbaa" error:nil];
+                    title = [title1 splitStringWithLeadingString:@" Hit-x-Hot: " trailingString:@" | Page" error:nil];
                 } else {
                     title = [title1 stringByReplacingOccurrencesOfString:@" Hit-x-Hot: " withString:@""];
                 }

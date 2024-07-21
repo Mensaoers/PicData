@@ -37,50 +37,50 @@
             "prepared": false,
         },
         {
-            "title" : "https://hitxhot.org",
+            "title" : "https://www.hitxhot.org",
             "sourceType" : 3,
-            "HOST_URL": "https://hitxhot.org",
-            "referer": "https://hitxhot.org",
+            "HOST_URL": "https://www.hitxhot.org",
+            "referer": "https://www.hitxhot.org",
             "urls": [
                 {
                     "url": "https://www.hitxhot.org/?page=1",
                     "title": "hitxhot首页"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=1",
+                    "url": "https://www.hitxhot.org/hot?page=1",
                     "title": "hitxhot首页1"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=11",
+                    "url": "https://www.hitxhot.org/hot?page=2",
                     "title": "hitxhot首页11"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=21",
+                    "url": "https://www.hitxhot.org/hot?page=21",
                     "title": "hitxhot首页21"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=31",
+                    "url": "https://www.hitxhot.org/hot?page=31",
                     "title": "hitxhot首页31"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=41",
+                    "url": "https://www.hitxhot.org/hot?page=41",
                     "title": "hitxhot首页41"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=51",
+                    "url": "https://www.hitxhot.org/hot?page=51",
                     "title": "hitxhot首页51"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=61",
+                    "url": "https://www.hitxhot.org/hot?page=61",
                     "title": "hitxhot首页61"
                 },
                 {
-                    "url": "https://hitxhot.org/hot?page=71",
+                    "url": "https://www.hitxhot.org/hot?page=71",
                     "title": "hitxhot首页71"
                 },
             ],
             "tagsUrl": "",
-            "searchFormat": "https://hitxhot.org/tag/%@",
+            "searchFormat": "https://www.hitxhot.org/tag/%@",
             "searchKeys": ["梦心玥", "梦心月", "闫盼盼", "萌兰酱", "萌白酱", "月音瞳",
                 "懂小姐", "峰不二子", "理万姬", "会有妻", "伊丽莎白", "李丽莎", "IVITAMINA", "风吟鸟唱"
             ],

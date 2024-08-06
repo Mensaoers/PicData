@@ -47,7 +47,7 @@
     }
     NSURLSessionDownloadTask *downloadTask = [[NSURLSession sharedSession] downloadTaskWithRequest:request completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
-        PPIsBlockExecute(self.downloadFinishedBlock, location, response, error);
+        PPIsBlockExecute(weakSelf.downloadFinishedBlock, location, response, error);
         [weakSelf finishOperation];
     }];
     self.downloadTask = downloadTask;

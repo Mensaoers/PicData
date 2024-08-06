@@ -343,25 +343,24 @@ static NSString *shareFolderName = @"myShare";
 
         PPDownloadTaskOperation *operation = [PPDownloadTaskOperation operationWithUrl:url identifier:contentTaskModel.href headers:headers downloadFinishedBlock:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
-            if (nil == error) {
-
-                if ([[NSFileManager defaultManager] fileExistsAtPath:targetPath]) {
-                    NSLog(@"文件:%@ 已存在, 下载完成", targetPath);
-                    downloadSuccessBlock();
-                    return;
-                } else {
-                    NSError *moveError = nil;
-                    [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:targetPath] error:&moveError];
-                    if (nil == moveError) {
-                        downloadSuccessBlock();
-                    } else {
-                        NSLog(@"task. move error:%@", moveError);
-                        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
-                    }
-                }
-            } else {
+            if (error) {
                 NSLog(@"task.error:%@", error);
                 [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                return;
+            }
+            if ([[NSFileManager defaultManager] fileExistsAtPath:targetPath]) {
+                NSLog(@"文件:%@ 已存在, 下载完成", targetPath);
+                downloadSuccessBlock();
+                return;
+            } else {
+                NSError *moveError = nil;
+                [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:targetPath] error:&moveError];
+                if (nil == moveError) {
+                    downloadSuccessBlock();
+                } else {
+                    NSLog(@"task. move error:%@", moveError);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationNameFailedDownPicture object:nil userInfo:@{@"contentModel": contentTaskModel}];
+                }
             }
         }];
         [self.downloadQueue addOperation:operation];

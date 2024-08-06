@@ -153,53 +153,53 @@ static NSString *SharedListTableViewCellID = @"SharedListTableViewCell";
     // 文件夹排序
     [fileContents sortUsingSelector:@selector(localizedStandardCompare:)];
     [self.fileNamesList removeAllObjects];
-    if (nil == subError) {
-        // NSLog(@"%@", fileContents);
-        for (NSString *fileName in fileContents) {
-
-            if ([fileName hasPrefix:@"."]) {
-                continue;
-            }
-
-            NSString *filePath = [targetFilePath stringByAppendingPathComponent:fileName];
-            if ([PPFileManager isDirectory:filePath]) {
-                ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:YES];
-
-                NSString *dirPath = filePath;
-                NSError *subError = nil;
-                NSArray *subFileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
-
-                // 获取大小的代码, 节约资源(有明显卡顿)
-                if (needFileSize) {
-                    NSEnumerator *childFilesEnumerator = [[fileManager subpathsAtPath:dirPath] objectEnumerator];
-                    NSString *subFileName = nil;
-                    long long folderSize = 0;
-                    while ((subFileName = [childFilesEnumerator nextObject]) != nil) {
-                        NSString *fileAbsolutePath = [dirPath stringByAppendingPathComponent:subFileName];
-                        folderSize += [NSFileManager.defaultManager getFileSize:fileAbsolutePath];
-                    }
-
-                    fileModel.fileSize = folderSize > 0 ? folderSize : 0;
-                }
-                fileModel.fileCount = subFileContents.count;
-                if (self.fileNamesList.count > 0 && fileModel.fileCount < 2) {
-                    [self.fileNamesList insertObject:fileModel atIndex:0];
-                } else {
-                    [self.fileNamesList addObject:fileModel];
-                }
-            } else {
-                ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:NO];
-                fileModel.fileSize = [NSFileManager.defaultManager getFileSize:filePath];
-                [self.fileNamesList addObject:fileModel];
-            }
-        }
-
-        self.navigationItem.title = [NSString stringWithFormat:@"历史分享(%ld)", self.fileNamesList.count];
-        [self.tableView reloadData];
-    } else {
+    if (subError) {
         NSLog(@"%@", subError);
         [self.tableView reloadData];
+        return;
     }
+    // NSLog(@"%@", fileContents);
+    for (NSString *fileName in fileContents) {
+
+        if ([fileName hasPrefix:@"."]) {
+            continue;
+        }
+
+        NSString *filePath = [targetFilePath stringByAppendingPathComponent:fileName];
+        if ([PPFileManager isDirectory:filePath]) {
+            ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:YES];
+
+            NSString *dirPath = filePath;
+            NSError *subError = nil;
+            NSArray *subFileContents = [fileManager contentsOfDirectoryAtPath:dirPath error:&subError];
+
+            // 获取大小的代码, 节约资源(有明显卡顿)
+            if (needFileSize) {
+                NSEnumerator *childFilesEnumerator = [[fileManager subpathsAtPath:dirPath] objectEnumerator];
+                NSString *subFileName = nil;
+                long long folderSize = 0;
+                while ((subFileName = [childFilesEnumerator nextObject]) != nil) {
+                    NSString *fileAbsolutePath = [dirPath stringByAppendingPathComponent:subFileName];
+                    folderSize += [NSFileManager.defaultManager getFileSize:fileAbsolutePath];
+                }
+
+                fileModel.fileSize = folderSize > 0 ? folderSize : 0;
+            }
+            fileModel.fileCount = subFileContents.count;
+            if (self.fileNamesList.count > 0 && fileModel.fileCount < 2) {
+                [self.fileNamesList insertObject:fileModel atIndex:0];
+            } else {
+                [self.fileNamesList addObject:fileModel];
+            }
+        } else {
+            ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:NO];
+            fileModel.fileSize = [NSFileManager.defaultManager getFileSize:filePath];
+            [self.fileNamesList addObject:fileModel];
+        }
+    }
+
+    self.navigationItem.title = [NSString stringWithFormat:@"历史分享(%ld)", self.fileNamesList.count];
+    [self.tableView reloadData];
 }
 
 #pragma mark - tableView delegate dataSource

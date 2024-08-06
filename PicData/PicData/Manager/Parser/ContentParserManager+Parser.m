@@ -28,235 +28,8 @@
     return @"";
 }
 
-+ (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
-
-    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
-    if (nil == aE) { return nil; }
-    OCGumboElement *imgE;
-    NSString *href = aE.attr(@"href");
-    NSString *title = aE.attr(@"title");
-    switch (sourceModel.sourceType) {
-        case 1:
-        case 2:
-        case 5:
-        case 8:{
-            imgE = aE.QueryElement(@"img").firstObject;
-            title = imgE.attr(@"alt");
-        }
-            break;
-        case 3: {
-            imgE = articleElement.QueryElement(@"img").firstObject;
-            title = aE.text();
-        }
-            break;
-        case 4: {
-            imgE = aE.QueryElement(@"img").firstObject;
-            OCGumboElement *tE = articleElement.QueryClass(@"meta-title").firstObject;
-            title = tE.text();
-        }
-            break;
-        default:
-            break;
-    }
-    if (imgE == nil) { return nil; }
-    
-
-    title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
-
-    NSString *thumbnailUrl = imgE.attr(@"src");
-    thumbnailUrl = [thumbnailUrl stringByReplacingOccurrencesOfString:@"i0.wp.com/" withString:@""];
-
-    PicContentModel *contentModel = [[PicContentModel alloc] init];
-    contentModel.href = href;
-    contentModel.sourceType = sourceModel.sourceType;
-    contentModel.sourceHref = sourceModel.url;
-    contentModel.referer = sourceModel.referer;
-    contentModel.sourceTitle = sourceModel.title;
-    contentModel.HOST_URL = sourceModel.HOST_URL;
-    contentModel.title = title;
-    contentModel.thumbnailUrl = thumbnailUrl;
-
-    return contentModel;
-}
-
-+ (PicClassModel *)getClassModelWithHostModel:(PicNetModel *)hostModel withTagsListElement:(OCGumboElement *)tagsListE {
-
-    OCQueryObject *aEs = tagsListE.QueryElement(@"a");
-
-    NSMutableArray *subTitles = [NSMutableArray array];
-    for (OCGumboElement *aE in aEs) {
-        NSString *href = aE.attr(@"href");
-
-        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
-        sourceModel.sourceType = hostModel.sourceType;
-
-        NSString *url;
-        NSString *subTitle;
-        switch (hostModel.sourceType) {
-            case 1: {
-                url = [hostModel.HOST_URL stringByAppendingPathComponent:href];
-                subTitle = aE.text();
-            }
-                break;
-            case 2: {
-                url = href;
-                subTitle = aE.text();
-            }
-                break;
-            case 4: {
-                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-                subTitle = aE.text();
-            }
-                break;
-            case 5: {
-                url = href;
-                subTitle = aE.text();
-            }
-                break;
-            case 8: {
-                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-
-                subTitle = aE.text();
-                if ([href containsString:@"series-"]) {
-                    // 对str字符串进行匹配
-                    NSString *result = [href splitStringWithLeadingString:@"series-" trailingString:@".html" error:nil];
-                    if (result.length > 0) {
-                        subTitle = result;
-                    }
-                } else if ([href containsString:@"model-"]) {
-                    NSString *result = [href splitStringWithLeadingString:@"model-" trailingString:@".html" error:nil];
-                    if (result.length > 0) {
-                        subTitle = result;
-                    }
-                } else if ([subTitle containsString:@"全部"]){
-                    subTitle = @"全部";
-                }
-
-                NSString *readUrl = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
-                // 准备一个默认的顺序
-                PicSourceModel *sourcePreModel = [sourceModel copy];
-                sourcePreModel.sourceType = sourcePreModel.sourceType;
-                sourcePreModel.url = readUrl;
-                sourcePreModel.title = [subTitle stringByAppendingString:@"-观看最多"];
-                sourcePreModel.systemTitle = subTitle;
-                sourcePreModel.HOST_URL = hostModel.HOST_URL;
-                [sourcePreModel insertTable];
-                [subTitles addObject:sourcePreModel];
-            }
-                break;
-            default:
-                break;
-        }
-        sourceModel.url = url;
-        sourceModel.title = subTitle;
-        sourceModel.HOST_URL = hostModel.HOST_URL;
-        [sourceModel insertTable];
-
-        [subTitles addObject:sourceModel];
-    }
-
-    PicClassModel *classModel = [PicClassModel modelWithHOST_URL:hostModel.HOST_URL Title:@"标签" sourceType:hostModel.sourceType subTitles:subTitles];
-
-    return classModel;
-
-}
-
-+ (NSArray <PicClassModel *>*)parseTagsWithHtmlString:(NSString *)htmlString HostModel:(PicNetModel *)hostModel {
-
-    NSMutableArray *classModelsM = [NSMutableArray array];
-
-    if (htmlString.length == 0) { return classModelsM; }
-
-    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-
-    OCQueryObject *tagsListEs;
-    switch (hostModel.sourceType) {
-        case 1: {
-            tagsListEs = document.QueryClass(@"jigou");
-        }
-            break;
-        case 2: {
-            tagsListEs = document.QueryClass(@"TagTop_Gs_r");
-        }
-            break;
-        case 4: {
-            tagsListEs = document.QueryClass(@"tag_cloud");
-        }
-            break;
-        case 5: {
-            tagsListEs = document.QueryClass(@"jigou");
-        }
-            break;
-        case 8: {
-            tagsListEs = document.QueryClass(@"_categories");
-        }
-        default:
-            break;
-    }
-
-    for (OCGumboElement *tagsListE in tagsListEs) {
-
-        PicClassModel *classModel = [self getClassModelWithHostModel:hostModel withTagsListElement:tagsListE];
-        [classModelsM addObject:classModel];
-    }
-
-    return classModelsM;
-}
-
-+ (NSArray<PicContentModel *> *)parseContentListWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
-
-    NSMutableArray *articleContents = [NSMutableArray array];
-    OCQueryObject *articleEs;
-
-    switch (sourceModel.sourceType) {
-        case 1: {
-            OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"post");
-        }
-            break;
-        case 2: {
-            OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
-            articleEs = listDiv.QueryElement(@"li");
-        }
-            break;
-        case 3: {
-            OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
-            articleEs = listDiv.QueryElement(@"article");
-        }
-            break;
-        case 4:{
-            OCGumboElement *listDiv = document.QueryClass(@"update_area_content").firstObject;
-            articleEs = listDiv.QueryClass(@"i_list");
-        }
-            break;
-        case 5: {
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"piece");
-        }
-            break;
-        case 8: {
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"item");
-        }
-            break;
-        default:
-            break;
-    }
-
-    for (OCGumboElement *articleE in articleEs) {
-
-        PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-        if (nil == contentModel) { continue; }
-        [contentModel insertTable];
-        [articleContents addObject:contentModel];
-    }
-
-    return [articleContents copy];
-}
-
+#pragma mark - 开始处理, 获取套图数组
+/// 开放接口, 获取套图数组, 以及下一页等
 + (void)parseContentListWithHtmlString:(NSString *)htmlString sourceModel:(nonnull PicSourceModel *)sourceModel completeHandler:(void(^)(NSArray <PicContentModel *>* _Nonnull contentList, NSURL * _Nullable nextPageURL))completeHandler {
 
     if (htmlString.length == 0) {
@@ -362,6 +135,116 @@
     PPIsBlockExecute(completeHandler, results, nextPageURL)
 }
 
+/// 获取套图列表
++ (NSArray<PicContentModel *> *)parseContentListWithDocument:(OCGumboDocument *)document sourceModel:(PicSourceModel *)sourceModel {
+
+    NSMutableArray *articleContents = [NSMutableArray array];
+    OCQueryObject *articleEs;
+
+    switch (sourceModel.sourceType) {
+        case 1: {
+            OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
+            if(nil == listDiv) {return @[];}
+            articleEs = listDiv.QueryClass(@"post");
+        }
+            break;
+        case 2: {
+            OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
+            articleEs = listDiv.QueryElement(@"li");
+        }
+            break;
+        case 3: {
+            OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
+            articleEs = listDiv.QueryElement(@"article");
+        }
+            break;
+        case 4:{
+            OCGumboElement *listDiv = document.QueryClass(@"update_area_content").firstObject;
+            articleEs = listDiv.QueryClass(@"i_list");
+        }
+            break;
+        case 5: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            articleEs = listDiv.QueryClass(@"piece");
+        }
+            break;
+        case 8: {
+            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
+            if(nil == listDiv) {return @[];}
+            articleEs = listDiv.QueryClass(@"item");
+        }
+            break;
+        default:
+            break;
+    }
+
+    for (OCGumboElement *articleE in articleEs) {
+
+        PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+        if (nil == contentModel) { continue; }
+        [contentModel insertTable];
+        [articleContents addObject:contentModel];
+    }
+
+    return [articleContents copy];
+}
+
+#pragma mark 获取单个套图的信息
+/// 获取单个套图的信息
++ (PicContentModel *)getContentModelWithSourceModel:(PicSourceModel *)sourceModel withArticleElement:(OCGumboElement *)articleElement {
+
+    OCGumboElement *aE = articleElement.QueryElement(@"a").firstObject;
+    if (nil == aE) { return nil; }
+    OCGumboElement *imgE;
+    NSString *href = aE.attr(@"href");
+    NSString *title = aE.attr(@"title");
+    switch (sourceModel.sourceType) {
+        case 1:
+        case 2:
+        case 5:
+        case 8:{
+            imgE = aE.QueryElement(@"img").firstObject;
+            title = imgE.attr(@"alt");
+        }
+            break;
+        case 3: {
+            imgE = articleElement.QueryElement(@"img").firstObject;
+            title = aE.text();
+        }
+            break;
+        case 4: {
+            imgE = aE.QueryElement(@"img").firstObject;
+            OCGumboElement *tE = articleElement.QueryClass(@"meta-title").firstObject;
+            title = tE.text();
+        }
+            break;
+        default:
+            break;
+    }
+    if (imgE == nil) { return nil; }
+    
+
+    title = [self updateCustomContentName:title contentHref:href sourceModel:sourceModel];
+
+    NSString *thumbnailUrl = imgE.attr(@"src");
+    thumbnailUrl = [thumbnailUrl stringByReplacingOccurrencesOfString:@"i0.wp.com/" withString:@""];
+
+    PicContentModel *contentModel = [[PicContentModel alloc] init];
+    contentModel.href = href;
+    contentModel.sourceType = sourceModel.sourceType;
+    contentModel.sourceHref = sourceModel.url;
+    contentModel.referer = sourceModel.referer;
+    contentModel.sourceTitle = sourceModel.title;
+    contentModel.HOST_URL = sourceModel.HOST_URL;
+    contentModel.title = title;
+    contentModel.thumbnailUrl = thumbnailUrl;
+
+    return contentModel;
+}
+
+#pragma mark 开始解析网页详情数据
+/// 开始解析网页详情数据
 + (void)parseDetailWithHtmlString:(NSString *)htmlString href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel preNextUrl:(NSString *)preNextUrl needSuggest:(BOOL)needSuggest completeHandler:(void (^)(NSArray<NSString *> * _Nonnull, NSString * _Nonnull, NSArray<PicContentModel *> * _Nullable, NSString * _Nullable))completeHandler {
 
     if (htmlString.length == 0) {
@@ -624,6 +507,135 @@
 
 }
 
+#pragma mark tag, 标签数据
+
+/// 解析tag标签页, 获取tag数组
++ (NSArray <PicClassModel *>*)parseTagsWithHtmlString:(NSString *)htmlString HostModel:(PicNetModel *)hostModel {
+
+    NSMutableArray *classModelsM = [NSMutableArray array];
+
+    if (htmlString.length == 0) { return classModelsM; }
+
+    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+
+    OCQueryObject *tagsListEs;
+    switch (hostModel.sourceType) {
+        case 1: {
+            tagsListEs = document.QueryClass(@"jigou");
+        }
+            break;
+        case 2: {
+            tagsListEs = document.QueryClass(@"TagTop_Gs_r");
+        }
+            break;
+        case 4: {
+            tagsListEs = document.QueryClass(@"tag_cloud");
+        }
+            break;
+        case 5: {
+            tagsListEs = document.QueryClass(@"jigou");
+        }
+            break;
+        case 8: {
+            tagsListEs = document.QueryClass(@"_categories");
+        }
+        default:
+            break;
+    }
+
+    for (OCGumboElement *tagsListE in tagsListEs) {
+
+        PicClassModel *classModel = [self getClassModelWithHostModel:hostModel withTagsListElement:tagsListE];
+        [classModelsM addObject:classModel];
+    }
+
+    return classModelsM;
+}
+
+/// 获取分类, tag页面模型数据
++ (PicClassModel *)getClassModelWithHostModel:(PicNetModel *)hostModel withTagsListElement:(OCGumboElement *)tagsListE {
+
+    OCQueryObject *aEs = tagsListE.QueryElement(@"a");
+
+    NSMutableArray *subTitles = [NSMutableArray array];
+    for (OCGumboElement *aE in aEs) {
+        NSString *href = aE.attr(@"href");
+
+        PicSourceModel *sourceModel = [[PicSourceModel alloc] init];
+        sourceModel.sourceType = hostModel.sourceType;
+
+        NSString *url;
+        NSString *subTitle;
+        switch (hostModel.sourceType) {
+            case 1: {
+                url = [hostModel.HOST_URL stringByAppendingPathComponent:href];
+                subTitle = aE.text();
+            }
+                break;
+            case 2: {
+                url = href;
+                subTitle = aE.text();
+            }
+                break;
+            case 4: {
+                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+                subTitle = aE.text();
+            }
+                break;
+            case 5: {
+                url = href;
+                subTitle = aE.text();
+            }
+                break;
+            case 8: {
+                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
+                subTitle = aE.text();
+                if ([href containsString:@"series-"]) {
+                    // 对str字符串进行匹配
+                    NSString *result = [href splitStringWithLeadingString:@"series-" trailingString:@".html" error:nil];
+                    if (result.length > 0) {
+                        subTitle = result;
+                    }
+                } else if ([href containsString:@"model-"]) {
+                    NSString *result = [href splitStringWithLeadingString:@"model-" trailingString:@".html" error:nil];
+                    if (result.length > 0) {
+                        subTitle = result;
+                    }
+                } else if ([subTitle containsString:@"全部"]){
+                    subTitle = @"全部";
+                }
+
+                NSString *readUrl = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
+                // 准备一个默认的顺序
+                PicSourceModel *sourcePreModel = [sourceModel copy];
+                sourcePreModel.sourceType = sourcePreModel.sourceType;
+                sourcePreModel.url = readUrl;
+                sourcePreModel.title = [subTitle stringByAppendingString:@"-观看最多"];
+                sourcePreModel.systemTitle = subTitle;
+                sourcePreModel.HOST_URL = hostModel.HOST_URL;
+                [sourcePreModel insertTable];
+                [subTitles addObject:sourcePreModel];
+            }
+                break;
+            default:
+                break;
+        }
+        sourceModel.url = url;
+        sourceModel.title = subTitle;
+        sourceModel.HOST_URL = hostModel.HOST_URL;
+        [sourceModel insertTable];
+
+        [subTitles addObject:sourceModel];
+    }
+
+    PicClassModel *classModel = [PicClassModel modelWithHOST_URL:hostModel.HOST_URL Title:@"标签" sourceType:hostModel.sourceType subTitles:subTitles];
+
+    return classModel;
+
+}
+
+/// 获取套图的title
 + (NSString *)parsePageForTitleWithDocument:(OCGumboDocument *)document href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel {
 
     NSString *title = @"";
@@ -724,6 +736,7 @@
     return title;
 }
 
+/// 解析网页获取网页title
 + (NSString *)parsePageForTitle:(NSString *)htmlString href:(NSString *)href sourceModel:(PicSourceModel *)sourceModel {
 
     NSString *title = @"";

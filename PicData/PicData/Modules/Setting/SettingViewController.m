@@ -9,6 +9,7 @@
 #import "SettingViewController.h"
 #import "SettingPathViewController.h"
 #import "SharedListViewController.h"
+#import <FirebaseStorage/FirebaseStorage-Swift.h>
 
 @interface SettingOperationModel : NSObject
 
@@ -40,6 +41,8 @@
 @property (nonatomic, strong) NSArray <SettingOperationModel *>* operationModels;
 
 @property (nonatomic, strong) SettingOperationModel *monitorModel;
+
+@property (nonatomic, strong) NSString *DataDemoDBDwonloadedPath;
 
 @end
 
@@ -120,6 +123,8 @@
     [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-连接" value:[NSString stringWithFormat:@"127.0.0.1:12138%@", [SocketManager sharedSocketManager].isConnected ? @"(已连接)" : @"(未连接)"] func:@"socket_connect:"]];
 
     [operationModels addObject:[SettingOperationModel ModelWithName:@"Socket-文件扫描" value:@"" func:@"socket_scan:"]];
+    
+    [operationModels addObject:[SettingOperationModel ModelWithName:@"下载DataDemo.db" value:self.DataDemoDBDwonloadedPath.length > 0 ? @"已下载" : @"未下载" func:@"downloadDataDemoDB:"]];
 
     return operationModels;
 }
@@ -143,7 +148,43 @@
     tableView.tableFooterView = [UIView new];
 }
 
-#pragma mark tableView delegate, datasource
+#pragma mark - firebase
+
+- (void)ht_downloadFile:(NSString *)filePath completeHandler:(nonnull void (^)(BOOL isSuccess, NSString * _Nullable fileDownloadPath, NSString * _Nullable showName))completeHandler {
+    if (nil == filePath) {
+        PPIsBlockExecute(completeHandler, NO, nil, nil);
+        return;
+    }
+    FIRStorage *var_storage = [FIRStorage storage];
+    FIRStorageReference *var_storageRef = [var_storage reference];
+
+    // Create a reference to "mountains.jpg"
+    FIRStorageReference *var_datasRef = [var_storageRef child:filePath];
+    
+    NSString *var_downloadFolder = NSTemporaryDirectory();
+    NSString *var_fildDownloadPath = [var_downloadFolder stringByAppendingPathComponent:[NSString ht_getRandomFileNameWithPathExtension:filePath.lastPathComponent.pathExtension]];
+    
+    NSString *var_showName = filePath.lastPathComponent;
+    NSLog(@"======== downloadFolder: %@", var_downloadFolder);
+    NSLog(@"======== downloadFilePath: %@", var_fildDownloadPath);
+    
+    // Download to the local filesystem
+    FIRStorageDownloadTask *var_downloadTask = [var_datasRef writeToFile:[NSURL fileURLWithPath:var_fildDownloadPath] completion:^(NSURL *URL, NSError *error){
+        
+        BOOL var_isExist = [[NSFileManager defaultManager] fileExistsAtPath:var_fildDownloadPath];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error) {
+                NSLog(@"======== download file: %@ - error: %@", filePath, error);
+                PPIsBlockExecute(completeHandler, NO, var_fildDownloadPath, var_showName);
+            } else {
+                PPIsBlockExecute(completeHandler, YES, var_fildDownloadPath, var_showName);
+            }
+        });
+      
+    }];
+}
+
+#pragma mark - tableView delegate, datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -336,6 +377,37 @@ static NSString *identifier = @"identifier";
         }
     }]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)downloadDataDemoDB:(UIView *)sender {
+    
+    if (self.DataDemoDBDwonloadedPath.length > 0) {
+        [self handleDownloadDataDemoDB:self.DataDemoDBDwonloadedPath];
+    } else {
+        __weak typeof(self) weakSelf = self;
+        [self ht_downloadFile:@"DataDemo.db" completeHandler:^(BOOL isSuccess, NSString * _Nullable fileDownloadPath, NSString * _Nullable showName) {
+            
+            NSLog(@"DataDemo.db download isSuccess: %d, fileDownloadPath: %@", isSuccess, fileDownloadPath);
+            
+            weakSelf.DataDemoDBDwonloadedPath = fileDownloadPath;
+            [weakSelf handleDownloadDataDemoDB:weakSelf.DataDemoDBDwonloadedPath];
+        }];
+    }
+}
+
+- (void)handleDownloadDataDemoDB:(NSString *)fileDownloadPath {
+    
+    if (nil == fileDownloadPath || ![NSFileManager.defaultManager fileExistsAtPath:fileDownloadPath]) {
+        
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"获取DataDemo.db失败"];
+        return;
+    }
+    
+    [self showAlertWithTitle:@"DataDemo.db已下载" message:@"是否解析DataDemo.db文件?" confirmTitle:@"开始解析" confirmHandler:^(UIAlertAction * _Nonnull action) {
+    } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
 }
 
 #pragma mark - notification

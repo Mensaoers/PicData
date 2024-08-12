@@ -19,6 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)getUUID;
 
+/// 生成随机文件名
+/// - Parameter pathExtension: 提供文件后缀名, 只要点后面的字符串
++ (NSString *)ht_getRandomFileNameWithPathExtension:(NSString *)pathExtension;
+
+/// 生成随机文件名 - 按格式
+/// - Parameters:
+///   - pathExtension: 提供文件后缀名, 只要点后面的字符串
+///   - timeformat: 时间格式, 比如 yyyyMMddHHmmssSSS
+///   - randomNumCount: 补充整数的位数, 比如自动补充四位整数
++ (NSString *)ht_getRandomFileNameWithPathExtension:(NSString *)pathExtension timeformat:(NSString *)timeformat randomNumCount:(NSInteger)randomNumCount;
+
 @end
 
 NS_ASSUME_NONNULL_END

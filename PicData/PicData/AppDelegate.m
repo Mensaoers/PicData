@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <FirebaseCore/FirebaseCore.h>
 
 @interface AppDelegate ()
 
@@ -72,6 +73,8 @@
 
     // 下载模块初始化
     [self setupDownloadManager];
+    
+    [FIRApp configure];
 
     // 检查更新
     dispatch_after(2, dispatch_get_main_queue(), ^{

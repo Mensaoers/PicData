@@ -16,6 +16,8 @@ target 'PicData' do
   pod 'YYCategories'
   pod 'MJRefresh', '~> 3.1.12'
   pod 'YYImage', :git => 'https://github.com/QiuYeHong90/YYImage.git'
+#  pod 'YYImage/WebP'
+  # :git => 'https://github.com/QiuYeHong90/YYImage.git'
   pod 'YBImageBrowser'
   pod 'WCDB'
   pod 'SSZipArchive'
@@ -27,5 +29,12 @@ target 'PicData' do
   pod 'PPToolKit'
   pod 'PPCustomAsyncOperation'
   # Pods for PicData
+
+
+  # filebase https://firebase.google.com/docs/ios/installation-methods?hl=zh&authuser=0#analytics-not-enabled03206
+  pod 'FirebaseAuth'
+  pod 'Firebase/Core'
+  pod 'Firebase/Storage'
+  pod 'FirebaseStorageUI'
 
 end

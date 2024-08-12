@@ -63,4 +63,29 @@
     return result;
 }
 
++ (NSString *)ht_UUID {
+    return NSUUID.UUID.UUIDString;
+}
+
+/// 生成随机文件名
+/// - Parameter pathExtension: 提供文件后缀名, 只要点后面的字符串
++ (NSString *)ht_getRandomFileNameWithPathExtension:(NSString *)pathExtension {
+    return [self ht_getRandomFileNameWithPathExtension:pathExtension timeformat:@"yyyyMMddHHmmssSSS" randomNumCount:4];
+}
+
+/// 生成随机文件名 - 按格式
+/// - Parameters:
+///   - pathExtension: 提供文件后缀名, 只要点后面的字符串
+///   - timeformat: 时间格式, 比如 yyyyMMddHHmmssSSS
+///   - randomNumCount: 补充整数的位数, 比如自动补充四位整数
++ (NSString *)ht_getRandomFileNameWithPathExtension:(NSString *)pathExtension timeformat:(NSString *)timeformat randomNumCount:(NSInteger)randomNumCount {
+    NSDateFormatter *var_dateFormatter = [[NSDateFormatter alloc] init];
+    var_dateFormatter.dateFormat = timeformat;
+    NSString *var_timeString = [var_dateFormatter stringFromDate:[NSDate date]];
+    NSString *var_inteFormat = [NSString stringWithFormat:@"%%%ldld", randomNumCount];
+    NSString *var_format = [NSString stringWithFormat:@"%%@%@.%@", var_inteFormat, pathExtension];
+    NSString *var_fileName = [NSString stringWithFormat:var_format, var_timeString, arc4random() % (long)pow(10, randomNumCount)];
+    return var_fileName;
+}
+
 @end

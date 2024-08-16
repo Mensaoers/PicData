@@ -64,6 +64,7 @@
 		9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */; };
 		9D8583BA2C68CAE0006CE6CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D8583B92C68CAE0006CE6CD /* GoogleService-Info.plist */; };
 		9D8AA4D22C6F8CF900232F84 /* PPCatalystPlugin.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9D8AA4D62C6F94E900232F84 /* DataDemoModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9D8AA4D52C6F94E900232F84 /* DataDemoModel.mm */; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
@@ -225,6 +226,9 @@
 		9D607E032622A9D000FE95B5 /* OCGumboElement+query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCGumboElement+query.h"; sourceTree = "<group>"; };
 		9D8583B92C68CAE0006CE6CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PPCatalystPlugin.bundle; path = Pods/PPCatalystTool/PPCatalystPlugin/Products/PPCatalystPlugin.bundle; sourceTree = "<group>"; };
+		9D8AA4D42C6F94E900232F84 /* DataDemoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataDemoModel.h; sourceTree = "<group>"; };
+		9D8AA4D52C6F94E900232F84 /* DataDemoModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DataDemoModel.mm; sourceTree = "<group>"; };
+		9D8AA4D72C6F94FA00232F84 /* DataDemoModel+WCTTableCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataDemoModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		9D96DC9C25A376080045D123 /* AppTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppTool.h; sourceTree = "<group>"; };
 		9D96DC9D25A376080045D123 /* AppTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppTool.m; sourceTree = "<group>"; };
 		9D96DCA125A379540045D123 /* PicClassifyTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassifyTableView.h; sourceTree = "<group>"; };
@@ -587,6 +591,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9D8AA4D32C6F947C00232F84 /* DataDemoModel */ = {
+			isa = PBXGroup;
+			children = (
+				9D8AA4D42C6F94E900232F84 /* DataDemoModel.h */,
+				9D8AA4D52C6F94E900232F84 /* DataDemoModel.mm */,
+				9D8AA4D72C6F94FA00232F84 /* DataDemoModel+WCTTableCoding.h */,
+			);
+			path = DataDemoModel;
+			sourceTree = "<group>";
+		};
 		9DB107FB2A24AEB700131F45 /* Socket */ = {
 			isa = PBXGroup;
 			children = (
@@ -767,6 +781,7 @@
 		9DE95CD4244C415F00E31735 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9D8AA4D32C6F947C00232F84 /* DataDemoModel */,
 				3349D25F27299D76006109F6 /* PicBaseModel+WCTTableCoding.h */,
 				3323205724ECB4A300FE5E33 /* PicBaseModel.h */,
 				3323205824ECB4A300FE5E33 /* PicBaseModel.mm */,
@@ -1076,6 +1091,7 @@
 				9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */,
 				3341DC1928EF3213001CB02A /* PPSDWebImageManager.m in Sources */,
 				9DE95CCE244C3FDD00E31735 /* OCGumbo+Query.m in Sources */,
+				9D8AA4D62C6F94E900232F84 /* DataDemoModel.mm in Sources */,
 				332D015026FD845F00E3F387 /* TKGestureLockWindow.m in Sources */,
 				3349D2632729A145006109F6 /* DatabaseManager.mm in Sources */,
 				9DE95CDC244C43A400E31735 /* PicClassModel.m in Sources */,

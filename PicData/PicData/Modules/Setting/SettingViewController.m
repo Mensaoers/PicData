@@ -390,6 +390,7 @@ static NSString *identifier = @"identifier";
             NSLog(@"DataDemo.db download isSuccess: %d, fileDownloadPath: %@", isSuccess, fileDownloadPath);
             
             weakSelf.DataDemoDBDwonloadedPath = fileDownloadPath;
+            [self reloadData];
             [weakSelf handleDownloadDataDemoDB:weakSelf.DataDemoDBDwonloadedPath];
         }];
     }
@@ -404,6 +405,12 @@ static NSString *identifier = @"identifier";
     }
     
     [self showAlertWithTitle:@"DataDemo.db已下载" message:@"是否解析DataDemo.db文件?" confirmTitle:@"开始解析" confirmHandler:^(UIAlertAction * _Nonnull action) {
+        
+        NSArray *allArray = [DataDemoModel queryAllModelsWithDBUrl:fileDownloadPath];
+        NSLog(@"======== 一共获取到 %ld个数据", allArray.count);
+        PDDownloadManager.sharedPDDownloadManager.dataDemoModels = allArray;
+        [MBProgressHUD showInfoOnView:self.view WithStatus:@"解析完成"];
+        
     } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
         
     }];

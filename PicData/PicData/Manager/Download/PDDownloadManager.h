@@ -10,6 +10,7 @@
 #import "PicSourceModel.h"
 #import "PicContentModel.h"
 #import "AppDelegate.h"
+#import "DataDemoModel.h"
 
 #define NOTICECHECKDOWNLOADPATHKEY @"NOTICECHECKDOWNLOADPATHKEY"
 #define NOTICEPICDOWNLOADSUCCESS @"NOTICEPICDOWNLOADSUCCESS"
@@ -19,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PDDownloadManager : NSObject
 
 singleton_interface(PDDownloadManager);
+
+@property (nonatomic, strong) NSArray <DataDemoModel *>* dataDemoModels;
 
 - (NSInteger)defaultMinDownloadOperationCount;
 - (NSInteger)defaultMaxDownloadOperationCount;

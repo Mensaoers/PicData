@@ -63,6 +63,7 @@
 		9D4B0E36262307CE0062AD82 /* SettingPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4B0E35262307CE0062AD82 /* SettingPathViewController.m */; };
 		9D607E042622A9D000FE95B5 /* OCGumboElement+query.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */; };
 		9D8583BA2C68CAE0006CE6CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D8583B92C68CAE0006CE6CD /* GoogleService-Info.plist */; };
+		9D8AA4D22C6F8CF900232F84 /* PPCatalystPlugin.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
 		9D96DCA325A379540045D123 /* PicClassifyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCA225A379540045D123 /* PicClassifyTableView.m */; };
 		9D96DCC525A37CBB0045D123 /* PicClassifyTagsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DCC125A37CBA0045D123 /* PicClassifyTagsViewCell.m */; };
@@ -114,6 +115,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				9D8AA4D22C6F8CF900232F84 /* PPCatalystPlugin.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,6 +224,7 @@
 		9D607E022622A9CF00FE95B5 /* OCGumboElement+query.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCGumboElement+query.m"; sourceTree = "<group>"; };
 		9D607E032622A9D000FE95B5 /* OCGumboElement+query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCGumboElement+query.h"; sourceTree = "<group>"; };
 		9D8583B92C68CAE0006CE6CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PPCatalystPlugin.bundle; path = Pods/PPCatalystTool/PPCatalystPlugin/Products/PPCatalystPlugin.bundle; sourceTree = "<group>"; };
 		9D96DC9C25A376080045D123 /* AppTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppTool.h; sourceTree = "<group>"; };
 		9D96DC9D25A376080045D123 /* AppTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppTool.m; sourceTree = "<group>"; };
 		9D96DCA125A379540045D123 /* PicClassifyTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PicClassifyTableView.h; sourceTree = "<group>"; };
@@ -843,6 +846,7 @@
 			isa = PBXGroup;
 			children = (
 				AE3AF7DEFDCABCA98704D38C /* Pods_PicData.framework */,
+				9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

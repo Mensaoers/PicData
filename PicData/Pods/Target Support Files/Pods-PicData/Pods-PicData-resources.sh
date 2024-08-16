@@ -97,11 +97,9 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "${PODS_ROOT}/PPCatalystTool/PPCatalystPlugin/Products/PPCatalystPlugin.bundle"
   install_resource "${PODS_ROOT}/PicDataSDK/PicDataSDKResource.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "${PODS_ROOT}/PPCatalystTool/PPCatalystPlugin/Products/PPCatalystPlugin.bundle"
   install_resource "${PODS_ROOT}/PicDataSDK/PicDataSDKResource.bundle"
 fi
 

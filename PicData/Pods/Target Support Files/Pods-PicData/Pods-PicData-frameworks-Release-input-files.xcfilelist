@@ -17,6 +17,7 @@ ${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework
 ${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework
 ${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework
 ${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework
+${BUILT_PRODUCTS_DIR}/PPCatalystTool/PPCatalystTool.framework
 ${BUILT_PRODUCTS_DIR}/PPCustomAsyncOperation/PPCustomAsyncOperation.framework
 ${BUILT_PRODUCTS_DIR}/PPToolKit/PPToolKit.framework
 ${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework

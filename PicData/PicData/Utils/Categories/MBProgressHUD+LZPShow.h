@@ -12,5 +12,5 @@
 + (void)showInfoOnView:(UIView *)view WithStatus:(NSString *)status;
 + (void)showInfoOnView:(UIView *)view WithStatus:(NSString *)status afterDelay:(NSTimeInterval)delay;
 + (void)showHUDAddedTo:(UIView *)view WithStatus:(NSString *)status;
-+ (void)showProgressOnView:(UIView *)view WithStatus:(NSString *)status progress:(CGFloat)progress;
++ (MBProgressHUD *)showProgressOnView:(UIView *)view WithStatus:(NSString *)status progress:(CGFloat)progress;
 @end

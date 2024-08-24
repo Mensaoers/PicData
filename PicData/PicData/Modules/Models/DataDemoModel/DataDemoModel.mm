@@ -22,4 +22,9 @@ WCDB_SYNTHESIZE(DataDemoModel, name)
     return [getDatabase getAllObjectsOfClass:self fromTable:[self tableName]];
 }
 
++ (DataDemoModel *)queryModelsWithDBUrl:(NSString *)dbUrl andTitle:(NSString *)title {
+    WCTDatabase *getDatabase = [[WCTDatabase alloc] initWithPath:dbUrl];
+    return [getDatabase getObjectsOfClass:self fromTable:[self tableName] where:self.name == title limit:1].firstObject;
+}
+
 @end

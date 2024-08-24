@@ -32,14 +32,15 @@
     hud.label.text = status;
 }
 
-+ (void)showProgressOnView:(UIView *)view WithStatus:(NSString *)status progress:(CGFloat)progress {
++ (MBProgressHUD *)showProgressOnView:(UIView *)view WithStatus:(NSString *)status progress:(CGFloat)progress {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.mode = MBProgressHUDModeAnnularDeterminate;
-    hud.label.text = @"status";
+    hud.label.text = status;
     hud.progress = progress;
     if (progress == 1) {
         [hud hideAnimated:YES];
     }
+    return hud;
 }
 
 @end

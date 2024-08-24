@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray *)queryAllModelsWithDBUrl:(NSString *)dbUrl;
 
++ (DataDemoModel *)queryModelsWithDBUrl:(NSString *)dbUrl andTitle:(NSString *)title;
+
 @end
 
 NS_ASSUME_NONNULL_END

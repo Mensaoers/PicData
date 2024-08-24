@@ -44,6 +44,8 @@
 
 @property (nonatomic, strong) NSString *DataDemoDBDwonloadedPath;
 
+@property (nonatomic, strong) MBProgressHUD *loading;
+
 @end
 
 @implementation SettingViewController
@@ -381,19 +383,15 @@ static NSString *identifier = @"identifier";
 
 - (void)downloadDataDemoDB:(UIView *)sender {
     
-    if (self.DataDemoDBDwonloadedPath.length > 0) {
-        [self handleDownloadDataDemoDB:self.DataDemoDBDwonloadedPath];
-    } else {
-        __weak typeof(self) weakSelf = self;
-        [self ht_downloadFile:@"DataDemo.db" completeHandler:^(BOOL isSuccess, NSString * _Nullable fileDownloadPath, NSString * _Nullable showName) {
-            
-            NSLog(@"DataDemo.db download isSuccess: %d, fileDownloadPath: %@", isSuccess, fileDownloadPath);
-            
-            weakSelf.DataDemoDBDwonloadedPath = fileDownloadPath;
-            [self reloadData];
-            [weakSelf handleDownloadDataDemoDB:weakSelf.DataDemoDBDwonloadedPath];
-        }];
-    }
+    __weak typeof(self) weakSelf = self;
+    [self ht_downloadFile:@"DataDemo.db" completeHandler:^(BOOL isSuccess, NSString * _Nullable fileDownloadPath, NSString * _Nullable showName) {
+        
+        NSLog(@"DataDemo.db download isSuccess: %d, fileDownloadPath: %@", isSuccess, fileDownloadPath);
+        
+        weakSelf.DataDemoDBDwonloadedPath = fileDownloadPath;
+        [self reloadData];
+        [weakSelf handleDownloadDataDemoDB:weakSelf.DataDemoDBDwonloadedPath];
+    }];
 }
 
 - (void)handleDownloadDataDemoDB:(NSString *)fileDownloadPath {
@@ -404,16 +402,66 @@ static NSString *identifier = @"identifier";
         return;
     }
     
-    [self showAlertWithTitle:@"DataDemo.db已下载" message:@"是否解析DataDemo.db文件?" confirmTitle:@"开始解析" confirmHandler:^(UIAlertAction * _Nonnull action) {
+    [self showAlertWithTitle:@"DataDemo.db已下载" message:@"是否解析DataDemo.db并删除重复文件?" confirmTitle:@"开始解析" confirmHandler:^(UIAlertAction * _Nonnull action) {
         
-        NSArray *allArray = [DataDemoModel queryAllModelsWithDBUrl:fileDownloadPath];
-        NSLog(@"======== 一共获取到 %ld个数据", allArray.count);
-        PDDownloadManager.sharedPDDownloadManager.dataDemoModels = allArray;
-        [MBProgressHUD showInfoOnView:self.view WithStatus:@"解析完成"];
+        [self deleteDownloadedDataDemoDB:fileDownloadPath];
         
     } cancelTitle:@"取消" cancelHandler:^(UIAlertAction * _Nonnull action) {
         
     }];
+    
+}
+
+- (void)deleteDownloadedDataDemoDB:(NSString *)dataDemoDbPath {
+    
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        NSArray *finishedTask = [PicContentTaskModel queryTasksForStatus:3];
+        
+        NSInteger finishedCount = finishedTask.count;
+        
+        CGFloat progress = 0;
+        NSInteger existCount = 0;
+        for (NSInteger index = 0; index < finishedCount; index ++) {
+            
+            PicContentTaskModel *taskModel = finishedTask[index];
+            
+            DataDemoModel *dataModel = [DataDemoModel queryModelsWithDBUrl:dataDemoDbPath andTitle:taskModel.title];
+            if (dataModel) {
+                PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+                if (nil == sourceModel) {
+                    continue;
+                }
+
+                NSString *targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+                existCount ++;
+                NSLog(@"======== 累计: %ld条, 本地任务已存在: %@", existCount, targetFilePath);
+                
+                NSError *removeError = nil;
+                [[NSFileManager defaultManager] removeItemAtPath:targetFilePath error:&removeError];
+                if (removeError) {
+                    NSLog(@"======== 删除文件: %@, error: %@", targetFilePath, removeError);
+                }
+                
+                progress = (CGFloat)(index + 1) / finishedCount;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (progress == 1) {
+                        [self.loading hideAnimated:YES];
+                        [MBProgressHUD showInfoOnView:self.view WithStatus:@"DataDemo.db解析完成"];
+                    } else {
+                        if (nil == self.loading) {
+                            self.loading = [MBProgressHUD showProgressOnView:self.view WithStatus:@"DataDemo.db解析中" progress:progress];
+                        }
+                        self.loading.progress = progress;
+                        
+                    }
+                });
+            }
+        }
+        
+    });
+    
     
 }
 

@@ -18,6 +18,20 @@
     return result;
 }
 
+- (NSArray <NSString *>*)splitStringsWithLeadingString:(NSString *)leadingString trailingString:(NSString *)trailingString error:(NSError **)error {
+    NSString *regex = [NSString stringWithFormat:@"(?<=(%@)).*?(?=(%@))", leadingString, trailingString];
+    NSRegularExpression *regular = [NSRegularExpression regularExpressionWithPattern:regex options:NSRegularExpressionCaseInsensitive error:error];
+    // 对str字符串进行匹配
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for (NSTextCheckingResult *match in [regular matchesInString:self options:0 range:NSMakeRange(0, self.length)]) {
+        NSString *result = [self substringWithRange:match.range];
+        
+        [array addObject:result];
+    }
+    return array;
+}
+
 + (NSString *)fileSizeFormat:(long long)value
 {
     if (value < 0) {

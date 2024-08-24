@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 提取指定字符串中间的字符串, 比如 "-abc-" -> "abc"
 - (NSString *)splitStringWithLeadingString:(NSString *)leadingString trailingString:(NSString *)trailingString error:(NSError **)error;
 
+- (NSArray <NSString *>*)splitStringsWithLeadingString:(NSString *)leadingString trailingString:(NSString *)trailingString error:(NSError **)error;
+
 + (NSString *)fileSizeFormat:(long long)value;
 
 + (NSString *)getUUID;

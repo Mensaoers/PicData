@@ -60,7 +60,7 @@
 - (void)requestHtmlStringWithUrl:(NSString *)url {
     // 错误-1, 网络部分错误
     // 错误-2, 写入部分错误
-    if (![url containsString:@".html"]) {
+    if (nil == url || url.length == 0) {
         [self finishOperation];
         return;
     }
@@ -94,7 +94,7 @@
             NSLog(@"第%d页, %@, 出现错误-1, %@", weakSelf.pageCount, [NSURL URLWithString:url relativeToURL:baseURL].absoluteString, error);
         }
 
-        if (![nextUrl containsString:@".html"]) {
+        if (nil == nextUrl || nextUrl.length == 0) {
 
             NSLog(@"%@ - %@ 完成", weakSelf.contentTaskModel.title, weakSelf.contentTaskModel.href);
             PPIsBlockExecute(weakSelf.taskCompleteHandler, weakSelf.picCount + count)

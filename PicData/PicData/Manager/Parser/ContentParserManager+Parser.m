@@ -20,6 +20,7 @@
         case 3:
         case 4:
         case 8:
+        case 10:
             return [AppTool getStringWithUTF8Code:data];
             break;
         default:
@@ -39,6 +40,7 @@
     
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
 
+    // 获取套图数组, 看这里
     NSArray *results = [self parseContentListWithDocument:document sourceModel:sourceModel];
 
     NSURL *nextPageURL = nil;
@@ -70,32 +72,48 @@
             nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
+        case 10: {
+            nextE = document.QueryClass(@"pagination-next").firstObject;
+        }
+            break;
         default:
             break;
     }
 
     NSString *nextPage = @"";
-
+    
     if (nextE) {
-        OCQueryObject *aEs = nextE.QueryElement(@"a");
-
-        NSString *nextPageTitle = @"下一页";
         switch (sourceModel.sourceType) {
-            case 3:
-                nextPageTitle = @"Next »";
-                break;
-            case 4:
-                nextPageTitle = @"下页";
-                break;
-            default:
-                break;
-        }
-
-        for (OCGumboElement *aE in aEs) {
-            if ([aE.text() isEqualToString:nextPageTitle]) {
-                nextPage = aE.attr(@"href");
-                break;
+            case 10: {
+                nextPage = nextE.attr(@"href");
             }
+                break;
+            default: {
+                OCQueryObject *aEs = nextE.QueryElement(@"a");
+                
+                NSString *nextPageTitle = @"下一页";
+                switch (sourceModel.sourceType) {
+                    case 3:
+                        nextPageTitle = @"Next »";
+                        break;
+                    case 4:
+                        nextPageTitle = @"下页";
+                        break;
+                    case 10:
+                        nextPageTitle = @"Next";
+                        break;
+                    default:
+                        break;
+                }
+                
+                for (OCGumboElement *aE in aEs) {
+                    if ([aE.text() isEqualToString:nextPageTitle]) {
+                        nextPage = aE.attr(@"href");
+                        break;
+                    }
+                }
+            }
+                break;
         }
     }
 
@@ -123,6 +141,10 @@
                 break;
             case 8: {
                 nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
+            }
+                break;
+            case 10: {
+                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
             }
                 break;
             default:
@@ -175,6 +197,14 @@
             articleEs = listDiv.QueryClass(@"item");
         }
             break;
+        case 10: {
+            NSMutableArray *array = [NSMutableArray array];
+            for (OCGumboElement *listDiv in document.QueryClass(@"blog")) {
+                [array addObjectsFromArray:listDiv.QueryClass(@"items-row")];
+            }
+            articleEs = (OCQueryObject *)array;
+        }
+            break;
         default:
             break;
     }
@@ -203,7 +233,8 @@
         case 1:
         case 2:
         case 5:
-        case 8:{
+        case 8:
+        case 10:{
             imgE = aE.QueryElement(@"img").firstObject;
             title = imgE.attr(@"alt");
         }
@@ -284,6 +315,10 @@
             contentE = document.QueryClass(@"photos").firstObject;
         }
             break;
+        case 10: {
+            contentE = document.QueryClass(@"article-fulltext").firstObject;
+        }
+            break;
         default:
             break;
     }
@@ -351,6 +386,9 @@
             nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
+        case 10: {
+            nextE = document.QueryClass(@"pagination-list").firstObject;
+        }
         default:
             break;
     }
@@ -359,23 +397,45 @@
     if (nextE) {
         OCQueryObject *aEs = nextE.QueryElement(@"a");
 
-        NSString *nextPageTitle = @"下一页";
         switch (sourceModel.sourceType) {
-            case 3:
-                nextPageTitle = @"Next >";
-                break;
-            case 4:
-                nextPageTitle = @"下页";
-                break;
-            default:
-                break;
-        }
-
-        for (OCGumboElement *aE in aEs) {
-            if ([aE.text() isEqualToString:nextPageTitle]) {
-                nextPage = aE.attr(@"href");
-                break;
+            case 10: {
+                NSInteger count = aEs.count;
+                NSInteger currentIndex = -1;
+                for (NSInteger index = 0; index < count; index ++) {
+                    OCGumboElement *aE = aEs[index];
+                    if ([aE.attr(@"class") containsString:@"is-current"]) {
+                        currentIndex = index;
+                        break;
+                    }
+                }
+                if (currentIndex >= 0 && currentIndex < count - 1) {
+                    OCGumboElement *aE = aEs[currentIndex + 1];
+                    nextPage = aE.attr(@"href");
+                }
             }
+                break;
+                
+            default: {
+                NSString *nextPageTitle = @"下一页";
+                switch (sourceModel.sourceType) {
+                    case 3:
+                        nextPageTitle = @"Next >";
+                        break;
+                    case 4:
+                        nextPageTitle = @"下页";
+                        break;
+                    default:
+                        break;
+                }
+
+                for (OCGumboElement *aE in aEs) {
+                    if ([aE.text() isEqualToString:nextPageTitle]) {
+                        nextPage = aE.attr(@"href");
+                        break;
+                    }
+                }
+            }
+                break;
         }
     }
 
@@ -496,6 +556,24 @@
                     [contentModel insertTable];
                     [suggesM addObject:contentModel];
                 }
+            }
+        }
+            break;
+        case 10: {
+
+            // 推荐
+            NSMutableArray *array = [NSMutableArray array];
+            for (OCGumboElement *listDiv in document.QueryClass(@"blog")) {
+                [array addObjectsFromArray:listDiv.QueryClass(@"items-row")];
+            }
+            OCQueryObject *articleEs = (OCQueryObject *)array;
+
+            for (OCGumboElement *articleE in articleEs) {
+
+                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
+                if (nil == contentModel) { continue; }
+                [contentModel insertTable];
+                [suggesM addObject:contentModel];
             }
         }
             break;
@@ -729,7 +807,19 @@
             }
         }
             break;
-
+        case 10: {
+            NSString *midString = [preContentTitle splitStringsWithLeadingString:@"\\(" trailingString:@"\\)" error:nil].lastObject;
+            title = [title stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"(%@)", midString] withString:@""];
+            
+            NSCharacterSet *whitespace = [NSCharacterSet whitespaceCharacterSet];
+            title = [title stringByTrimmingCharactersInSet:whitespace];
+//        https://cdn.buondua.com/wes.misskon.com/images/2024/08/24/JVID-Hana-MissKON.com-051cad39372b653975d.webp?1cfd9d65d58e14a1c23e80e9492ce6c3
+            NSString *identifier = [href splitStringWithLeadingString:@".com-" trailingString:@".webp?" error:nil];
+            if (identifier.length > 0) {
+                title = [NSString stringWithFormat:@"%@ %@", title, identifier];
+            }
+        }
+            break;
         default:
             break;
     }

@@ -160,10 +160,18 @@
                 {
                     "url": "https://buondua.com",
                     "title": "buondua首页"
+                },
+                {
+                    "url": "https://buondua.com/hot",
+                    "title": "buondua hot"
+                },
+                {
+                    "url": "https://buondua.com/collection",
+                    "title": "buondua collection"
                 }
             ],
             "tagsUrl": "",
-            "searchFormat": "",
+            "searchFormat": "https://buondua.com/?search=%@",
             "searchKeys": ["梦心玥", "梦心月", "闫盼盼", "萌兰酱", "萌白酱", "月音瞳",
                 "懂小姐", "峰不二子", "理万姬", "会有妻", "伊丽莎白", "李丽莎", "IVITAMINA", "风吟鸟唱"
             ],

@@ -441,7 +441,7 @@ static NSString *identifier = @"identifier";
 
             NSString *targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
             
-            if ([[NSFileManager defaultManager] fileExistsAtPath:targetFilePath]) {
+            if (![[NSFileManager defaultManager] fileExistsAtPath:targetFilePath]) {
                 continue;
             }
             existCount ++;

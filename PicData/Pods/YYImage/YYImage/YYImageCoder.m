@@ -1105,7 +1105,7 @@ YYImageType YYImageDetectType(CFDataRef data) {
         case YY_FOUR_CC('R', 'I', 'F', 'F'): { // WebP
             uint32_t tmp = *((uint32_t *)(bytes + 8));
             if (tmp == YY_FOUR_CC('W', 'E', 'B', 'P')) {
-                return YYImageTypeWebP;
+                return YYImageTypeJPEG;
             }
         } break;
         /*

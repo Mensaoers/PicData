@@ -12,14 +12,8 @@
 
 + (NSString *)getHtmlStringWithData:(NSData *)data sourceType:(int)sourceType {
     switch (sourceType) {
-        case 1:
-        case 2:
-        case 5:
-            return [AppTool getStringWithGB_18030_2000Code:data];
-            break;
         case 3:
         case 4:
-        case 8:
         case 10:
             return [AppTool getStringWithUTF8Code:data];
             break;
@@ -48,28 +42,12 @@
     OCGumboElement *nextE;
 
     switch (sourceModel.sourceType) {
-        case 1:{
-            nextE = document.QueryClass(@"pageart").firstObject;
-        }
-            break;
-        case 2: {
-            nextE = document.QueryClass(@"page-tag").firstObject;
-        }
-            break;
         case 3: {
             nextE = document.QueryClass(@"pag").firstObject;
         }
             break;
         case 4: {
             nextE = document.QueryClass(@"page").firstObject;
-        }
-            break;
-        case 5: {
-            nextE = document.QueryClass(@"page-list").firstObject;
-        }
-            break;
-        case 8: {
-            nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
         case 10: {
@@ -119,31 +97,11 @@
 
     if (nextPage.length > 0) {
         switch (sourceModel.sourceType) {
-            case 1: {
-                nextPageURL = [NSURL URLWithString:[sourceModel.url stringByAppendingPathComponent:nextPage]];
-            }
-                break;
-            case 2: {
-                nextPageURL = [NSURL URLWithString:[sourceModel.url stringByReplacingOccurrencesOfString:sourceModel.url.lastPathComponent withString:nextPage]];
-            }
-                break;
             case 3: {
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
             }
                 break;
             case 4: {
-                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
-            }
-                break;
-            case 5: {
-                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.url]];
-            }
-                break;
-            case 8: {
-                nextPageURL = [NSURL URLWithString:[nextPage stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]] relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
-            }
-                break;
-            case 10: {
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
             }
                 break;
@@ -164,17 +122,6 @@
     OCQueryObject *articleEs;
 
     switch (sourceModel.sourceType) {
-        case 1: {
-            OCGumboElement *listDiv = document.QueryClass(@"w1000").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"post");
-        }
-            break;
-        case 2: {
-            OCGumboElement *listDiv = document.QueryClass(@"listMeinuT").firstObject;
-            articleEs = listDiv.QueryElement(@"li");
-        }
-            break;
         case 3: {
             OCGumboElement *listDiv = document.QueryID(@"content").firstObject;
             articleEs = listDiv.QueryElement(@"article");
@@ -189,12 +136,6 @@
             OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
             if(nil == listDiv) {return @[];}
             articleEs = listDiv.QueryClass(@"piece");
-        }
-            break;
-        case 8: {
-            OCGumboElement *listDiv = document.QueryClass(@"list").firstObject;
-            if(nil == listDiv) {return @[];}
-            articleEs = listDiv.QueryClass(@"item");
         }
             break;
         case 10: {
@@ -230,10 +171,6 @@
     NSString *href = aE.attr(@"href");
     NSString *title = aE.attr(@"title");
     switch (sourceModel.sourceType) {
-        case 1:
-        case 2:
-        case 5:
-        case 8:
         case 10:{
             imgE = aE.QueryElement(@"img").firstObject;
             title = imgE.attr(@"alt");
@@ -291,28 +228,12 @@
     OCGumboElement *contentE;
 
     switch (sourceModel.sourceType) {
-        case 1:{
-            contentE = document.QueryClass(@"contents").firstObject;
-        }
-            break;
-        case 2: {
-            contentE = document.QueryClass(@"content").firstObject;
-        }
-            break;
         case 3: {
             contentE = document.QueryClass(@"entry-content").firstObject;
         }
             break;
         case 4: {
             contentE = document.QueryClass(@"content").firstObject;
-        }
-            break;
-        case 5: {
-            contentE = document.QueryClass(@"content").firstObject;
-        }
-            break;
-        case 8: {
-            contentE = document.QueryClass(@"photos").firstObject;
         }
             break;
         case 10: {
@@ -336,20 +257,6 @@
                 src = [src stringByReplacingOccurrencesOfString:@"i0.wp.com/" withString:@""];
             }
                 break;
-            case 8: {
-                src = e.attr(@"src");
-                if (![src containsString:@"https://"]) {
-                    continue;
-                }
-                if ([src hasPrefix:@"https://upload"]) {
-                    continue;
-                }
-                src = [src stringByReplacingOccurrencesOfString:@"_600x0" withString:@""];
-                if (![src.pathExtension.lowercaseString isEqualToString:@"jpg"]) {
-                    src = [src.stringByDeletingPathExtension stringByAppendingPathExtension:@"jpg"];
-                }
-            }
-                break;
             default:
                 src = e.attr(@"src");
                 break;
@@ -362,28 +269,12 @@
     OCGumboElement *nextE;
 
     switch (sourceModel.sourceType) {
-        case 1:{
-            nextE = document.QueryClass(@"pageart").firstObject;
-        }
-            break;
-        case 2: {
-            nextE = document.QueryClass(@"page-tag").firstObject;
-        }
-            break;
         case 3: {
             nextE = document.QueryClass(@"page-numbers").firstObject;
         }
             break;
         case 4: {
             nextE = document.QueryClass(@"page").firstObject;
-        }
-            break;
-        case 5: {
-            nextE = document.QueryClass(@"page-list").firstObject;
-        }
-            break;
-        case 8: {
-            nextE = document.QueryClass(@"pager").firstObject;
         }
             break;
         case 10: {
@@ -441,27 +332,11 @@
 
     if (nextPage.length > 0) {
         switch (sourceModel.sourceType) {
-            case 1: {
-                nextPage = [preNextUrl stringByReplacingOccurrencesOfString:preNextUrl.lastPathComponent withString:nextPage];
-            }
-                break;
-            case 2: {
-                nextPage = [preNextUrl stringByReplacingOccurrencesOfString:preNextUrl.lastPathComponent withString:nextPage];
-            }
-                break;
             case 3: {
                 nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
             }
                 break;
             case 4: {
-                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
-            }
-                break;
-            case 5: {
-                nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:preNextUrl]].absoluteString;
-            }
-                break;
-            case 8: {
                 nextPage = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]].absoluteString;
             }
                 break;
@@ -485,21 +360,6 @@
             // 推荐
             OCGumboElement *listDiv = document.QueryClass(@"w980").firstObject;
             OCQueryObject *articleEs = listDiv.QueryClass(@"post");
-
-            for (OCGumboElement *articleE in articleEs) {
-
-                PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                [contentModel insertTable];
-                [suggesM addObject:contentModel];
-            }
-        }
-            break;
-        case 2: {
-
-            // 推荐
-            OCGumboElement *listDiv = document.QueryClass(@"articleV4PicList").firstObject;
-            OCQueryObject *articleEs = listDiv.QueryElement(@"li");
 
             for (OCGumboElement *articleE in articleEs) {
 
@@ -537,25 +397,6 @@
 
                 [contentModel insertTable];
                 [suggesM addObject:contentModel];
-            }
-        }
-            break;
-        case 5: {
-
-            // 推荐
-            OCQueryObject *listDivs = document.QueryClass(@"list");
-
-            for (OCGumboElement *listDivE in listDivs) {
-
-                OCQueryObject *articleEs = listDivE.QueryClass(@"piece");
-
-                for (OCGumboElement *articleE in articleEs) {
-
-                    PicContentModel *contentModel = [self getContentModelWithSourceModel:sourceModel withArticleElement:articleE];
-
-                    [contentModel insertTable];
-                    [suggesM addObject:contentModel];
-                }
             }
         }
             break;
@@ -598,25 +439,10 @@
 
     OCQueryObject *tagsListEs;
     switch (hostModel.sourceType) {
-        case 1: {
-            tagsListEs = document.QueryClass(@"jigou");
-        }
-            break;
-        case 2: {
-            tagsListEs = document.QueryClass(@"TagTop_Gs_r");
-        }
-            break;
         case 4: {
             tagsListEs = document.QueryClass(@"tag_cloud");
         }
             break;
-        case 5: {
-            tagsListEs = document.QueryClass(@"jigou");
-        }
-            break;
-        case 8: {
-            tagsListEs = document.QueryClass(@"_categories");
-        }
         default:
             break;
     }
@@ -645,55 +471,9 @@
         NSString *url;
         NSString *subTitle;
         switch (hostModel.sourceType) {
-            case 1: {
-                url = [hostModel.HOST_URL stringByAppendingPathComponent:href];
-                subTitle = aE.text();
-            }
-                break;
-            case 2: {
-                url = href;
-                subTitle = aE.text();
-            }
-                break;
             case 4: {
                 url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
                 subTitle = aE.text();
-            }
-                break;
-            case 5: {
-                url = href;
-                subTitle = aE.text();
-            }
-                break;
-            case 8: {
-                url = [[hostModel.HOST_URL stringByAppendingPathComponent:href] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-
-                subTitle = aE.text();
-                if ([href containsString:@"series-"]) {
-                    // 对str字符串进行匹配
-                    NSString *result = [href splitStringWithLeadingString:@"series-" trailingString:@".html" error:nil];
-                    if (result.length > 0) {
-                        subTitle = result;
-                    }
-                } else if ([href containsString:@"model-"]) {
-                    NSString *result = [href splitStringWithLeadingString:@"model-" trailingString:@".html" error:nil];
-                    if (result.length > 0) {
-                        subTitle = result;
-                    }
-                } else if ([subTitle containsString:@"全部"]){
-                    subTitle = @"全部";
-                }
-
-                NSString *readUrl = [url stringByReplacingOccurrencesOfString:@".html" withString:@"/sort-read.html"];
-                // 准备一个默认的顺序
-                PicSourceModel *sourcePreModel = [sourceModel copy];
-                sourcePreModel.sourceType = sourcePreModel.sourceType;
-                sourcePreModel.url = readUrl;
-                sourcePreModel.title = [subTitle stringByAppendingString:@"-观看最多"];
-                sourcePreModel.systemTitle = subTitle;
-                sourcePreModel.HOST_URL = hostModel.HOST_URL;
-                [sourcePreModel insertTable];
-                [subTitles addObject:sourcePreModel];
             }
                 break;
             default:
@@ -719,8 +499,6 @@
     NSString *title = @"";
 
     switch (sourceModel.sourceType) {
-        case 1: break;
-        case 2: break;
         case 3: {
             OCGumboElement *headE = document.QueryElement(@"head").firstObject;
             OCGumboElement *titleE = headE.QueryElement(@"title").firstObject;
@@ -734,18 +512,6 @@
                     title = [title1 stringByReplacingOccurrencesOfString:@" Hit-x-Hot: " withString:@""];
                 }
             }
-        }
-            break;
-        case 5: {
-            OCGumboElement *containerE = document.QueryClass(@"container").firstObject;
-            OCGumboElement *titleE = containerE.QueryElement(@"h2").firstObject;
-            title = titleE.text();
-        }
-            break;
-        case 8: {
-            OCGumboElement *breadcrumbE = document.QueryClass(@"breadcrumb").firstObject;
-            OCGumboElement *aEs = breadcrumbE.QueryElement(@"a").lastObject;
-            title = aEs.text();
         }
             break;
         default:
@@ -766,19 +532,6 @@
     NSString *href = contentHref;
 
     switch (sourceModel.sourceType) {
-        case 1: {
-            // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
-            title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
-            title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
-            // 追加指定名称 提高唯一性
-            // 对str字符串进行匹配
-            NSString *identifier = [href splitStringWithLeadingString:@"/k/" trailingString:@".html" error:nil];
-            if (identifier.length > 0) {
-                title = [[NSString stringWithFormat:@"%@ %@", title, identifier] stringByReplacingOccurrencesOfString:@"/" withString:@""];
-            }
-        }
-            break;
-        case 2: break;
         case 3: {
             // 追加指定名称 提高唯一性
             NSString *identifier = [href.lastPathComponent stringByDeletingPathExtension];
@@ -786,27 +539,6 @@
         }
             break;
         case 4: break;
-        case 5: {
-            // 部分查找结果会返回高亮语句<font color='red'>keyword</font>, 想了好几种方法, 不如直接替换了最快
-            title = [title stringByReplacingOccurrencesOfString:@"<font color=\'red\'>" withString:@""];
-            title = [title stringByReplacingOccurrencesOfString:@"</font>" withString:@""];
-            // 追加指定名称 提高唯一性
-            // 对str字符串进行匹配
-            NSString *identifier = [href splitStringWithLeadingString:@"/ku/" trailingString:@".html" error:nil];
-            if (identifier.length > 0) {
-                title = [[NSString stringWithFormat:@"%@ %@", title, identifier] stringByReplacingOccurrencesOfString:@"/" withString:@""];
-            }
-        }
-            break;
-        case 8: {
-            // 追加指定名称 提高唯一性
-            // 对str字符串进行匹配
-            NSString *identifier = [href splitStringWithLeadingString:@"/id-" trailingString:@".html" error:nil];
-            if (identifier.length > 0) {
-                title = [NSString stringWithFormat:@"%@ %@", title, identifier];
-            }
-        }
-            break;
         case 10: {
             NSString *midString = [preContentTitle splitStringsWithLeadingString:@"\\(" trailingString:@"\\)" error:nil].lastObject;
             title = [title stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"(%@)", midString] withString:@""];

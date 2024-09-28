@@ -1,42 +1,6 @@
 {
     "hosts": [
         {
-            "title" : "https://www.yun222.cc",
-            "sourceType" : 1,
-            "HOST_URL": "https://www.yun222.cc",
-            "referer": "https://www.yun222.cc",
-            "urls": [
-                {
-                    "url": "https://www.yun222.cc/k",
-                    "title": "yun222首页"
-                },
-            ],
-            "tagsUrl": "https://www.yun222.cc/k/tag",
-            "searchFormat": "https://www.yun222.cc/plus/search.php?q=%@&pagesize=30",
-            "searchEncode": false,
-            "mark": "yun222",
-            "tips": "需关闭代理",
-            "prepared": false,
-        },
-        {
-            "title" : "http://www.mtsyt.coms",
-            "sourceType" : 2,
-            "HOST_URL": "http://www.mtsyt.com",
-            "referer": "http://www.mtsyt.com",
-            "urls": [
-                {
-                    "url": "https://www.yun222.cc/k",
-                    "title": "yun222首页"
-                },
-            ],
-            "tagsUrl": "http://www.mtsyt.com/photo/index.html",
-            "searchFormat": "",
-            "searchEncode": false,
-            "mark": "模特摄影图",
-            "tips": "需开启代理",
-            "prepared": false,
-        },
-        {
             "title" : "https://www.hitxhot.org",
             "sourceType" : 3,
             "HOST_URL": "https://www.hitxhot.org",
@@ -108,46 +72,6 @@
             "searchFormat": "https://meirentu.cc/s/%@.html",
             "searchEncode": true,
             "mark": "美人图",
-            "tips": "需开启代理",
-            "prepared": true,
-        },
-        {
-            "title" : "https://www.hh1234.cc",
-            "sourceType" : 5,
-            "HOST_URL": "https://www.hh1234.cc",
-            "referer": "https://www.hh1234.cc",
-            "urls": [
-                {
-                    "url": "https://www.hh1234.cc/ku/xin/",
-                    "title": "hh1234首页"
-                },
-            ],
-            "tagsUrl": "https://www.hh1234.cc/ku/tag/",
-            "searchFormat": "https://www.hh1234.cc/plus/search.php?tbname=news&show=title&tempid=1&q=%@&pagesize=25",
-            "searchEncode": false,
-            "mark": "hh1234",
-            "tips": "需关闭代理",
-            "prepared": false,
-        },
-        {
-            "title" : "https://8se.me",
-            "sourceType" : 8,
-            "HOST_URL": "https://8se.me",
-            "referer": "https://8se.me/photos/album-3.html",
-            "urls": [
-                {
-                    "url": "https://8se.me/photos/kind-2.html",
-                    "title": "8色人体"
-                },
-            ],
-            "tagsUrl": "https://8se.me",
-            "searchFormat": "https://8se.me/photos/keyword-%@.html",
-            "searchKeys": ["闫盼盼", "月音瞳", "懂小姐", "峰不二子", "理万姬",
-                "会有妻", "伊丽莎白", "李丽莎", "IVITAMINA", "杪夏",
-                "年年", "阿朱", "晕崽Zz", "喵小吉", "悦爷妖精", "柚木", "露娜",
-                "kimmy", "言诺", "龙馨", "米兰", "薇薇", "小艾", "张语昕", "豪歌", "白莉", "辰辰", "妍妍", "飘飘", "风吟鸟唱"],
-            "searchEncode": true,
-            "mark": "8色人体",
             "tips": "需开启代理",
             "prepared": true,
         },

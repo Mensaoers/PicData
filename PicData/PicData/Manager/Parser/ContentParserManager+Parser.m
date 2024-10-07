@@ -97,11 +97,9 @@
 
     if (nextPage.length > 0) {
         switch (sourceModel.sourceType) {
-            case 3: {
-                nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
-            }
-                break;
-            case 4: {
+            case 3:
+            case 4:
+            case 10: {
                 nextPageURL = [NSURL URLWithString:nextPage relativeToURL:[NSURL URLWithString:sourceModel.HOST_URL]];
             }
                 break;

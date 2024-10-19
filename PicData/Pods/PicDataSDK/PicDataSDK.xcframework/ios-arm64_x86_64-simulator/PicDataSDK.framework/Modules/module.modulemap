@@ -1,6 +1,6 @@
 framework module PicDataSDK {
   umbrella header "PicDataSDK.h"
-
   export *
+
   module * { export * }
 }

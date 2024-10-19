@@ -118,7 +118,7 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
-  - PicDataSDK (1.0.2):
+  - PicDataSDK (1.0.5):
     - Masonry
     - SDWebImage (~> 5.0)
   - PPCatalystTool (1.0.4)
@@ -243,7 +243,7 @@ SPEC CHECKSUMS:
   MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
   MJRefresh: ee5b68f639775462faba4db0fd243baf4d42c2cf
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  PicDataSDK: e7d0751b3791243048292cae96c6204998eb65f1
+  PicDataSDK: ce06b62ef529ea6a15d971f7a0b95aaa2d4fe88a
   PPCatalystTool: 8c08ff72f6f79de7b37f4f04b5c0f346c535a65e
   PPCustomAsyncOperation: a9901452d6d5724d2c075535f7a16198a23eb8ee
   PPToolKit: 87eeffbd7846bb11811d429c352a23d575d632f6

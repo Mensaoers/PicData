@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ViewerContentView : UICollectionView
 
++ (CGFloat)itemWidth:(CGFloat)wholeWidth sugWidth: (CGFloat)sugWidth;
 + (CGFloat)itemWidth:(CGFloat)wholeWidth;
 + (CGFloat)itemHeight:(CGFloat)wholeWidth;
 + (CGSize)itemSize:(CGFloat)wholeWidth;

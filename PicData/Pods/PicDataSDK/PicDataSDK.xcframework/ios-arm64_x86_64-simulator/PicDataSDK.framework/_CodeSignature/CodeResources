@@ -114,7 +114,7 @@
 		</data>
 		<key>Headers/ViewerContentView.h</key>
 		<data>
-		kxJJUuChuP3GvfNY4ffMrKTFPcI=
+		NJEmyCH9ck9ipW8BxcH5ZTP2oYw=
 		</data>
 		<key>Headers/ViewerFileModel.h</key>
 		<data>
@@ -122,19 +122,23 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		YK3SX9N8j+0Ts0TiGeIArV0uNGI=
+		pWKz37rso7dn4x/r1wUD6G07OuE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		jgAl3Uen5SetxG8phrg4iIfoSk0=
+		ICo+1XActr2vtzur+Ssj4h3fpxU=
 		</data>
 		<key>PicDataSDKResource.bundle/Info.plist</key>
 		<data>
-		+sOGuqmYEXLleE0uRzfNOGEY+Dg=
+		JiA8fBhNoyN9qrPUVbIyFxsBFu0=
 		</data>
 		<key>PicDataSDKResource.bundle/PicDataSDKResource</key>
 		<data>
-		7vi8qW6B9XdXGhviRX2ltaBylJk=
+		31qhHNzjTtTD7XCx4k9OR6fi3lg=
+		</data>
+		<key>PicDataSDKResource.bundle/_CodeSignature/CodeResources</key>
+		<data>
+		s2rNWildeTeIsuxw94r1kyWWCsU=
 		</data>
 		<key>PicDataSDKResource.bundle/file_type_v_folder.png</key>
 		<data>
@@ -512,11 +516,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kxJJUuChuP3GvfNY4ffMrKTFPcI=
+			NJEmyCH9ck9ipW8BxcH5ZTP2oYw=
 			</data>
 			<key>hash2</key>
 			<data>
-			dH/Uj0H6MNTJ22R9B3icBIQJzCqDGZSuqNGOQT1gw/w=
+			OTCfoffZ7nrPWG34hU17onno0KV/Gxw3ZisXk3iZPc0=
 			</data>
 		</dict>
 		<key>Headers/ViewerFileModel.h</key>
@@ -534,33 +538,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			jgAl3Uen5SetxG8phrg4iIfoSk0=
+			ICo+1XActr2vtzur+Ssj4h3fpxU=
 			</data>
 			<key>hash2</key>
 			<data>
-			O1jwSQouGKZNwP6gUA+Tqq4DoIDgK4Ziibf5nb17zfI=
+			v85Tid4CJMMZpH2sZNG53jrCD7HJjqTOAvmmm/I1TXY=
 			</data>
 		</dict>
 		<key>PicDataSDKResource.bundle/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+sOGuqmYEXLleE0uRzfNOGEY+Dg=
+			JiA8fBhNoyN9qrPUVbIyFxsBFu0=
 			</data>
 			<key>hash2</key>
 			<data>
-			iA23VqWXpI823HhgPpK4CwFiLdKb4oyCWwByFE50k2A=
+			LLU2Hp9q3Iwa6J9zvgru3U6UM87l+hHTZKaWHweHiTo=
 			</data>
 		</dict>
 		<key>PicDataSDKResource.bundle/PicDataSDKResource</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			7vi8qW6B9XdXGhviRX2ltaBylJk=
+			31qhHNzjTtTD7XCx4k9OR6fi3lg=
 			</data>
 			<key>hash2</key>
 			<data>
-			jcAqixudkAh3oruA26QCh7O9yriFItxR+9lzNAXkAhs=
+			fuyMfkKKgGPZFFtbJ2Wg8lcq20Pka/3YLvm/NFhTByU=
+			</data>
+		</dict>
+		<key>PicDataSDKResource.bundle/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			s2rNWildeTeIsuxw94r1kyWWCsU=
+			</data>
+			<key>hash2</key>
+			<data>
+			dpDTGFJVrUDqnLNHWHwNuEInaVBRmRchd1+ctQ8Hu1M=
 			</data>
 		</dict>
 		<key>PicDataSDKResource.bundle/file_type_v_folder.png</key>

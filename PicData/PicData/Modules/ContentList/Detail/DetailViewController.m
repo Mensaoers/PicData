@@ -12,6 +12,7 @@
 #import "PicContentCell.h"
 #import "LocalFileListVC.h"
 #import "PicBrowserToolViewHandler.h"
+#import "EEBackView.h"
 
 @interface DetailViewController ()<UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, PicContentCellDelegate>
 
@@ -27,6 +28,9 @@
 @property (nonatomic, assign) CGFloat lastWidth;
 
 @property (nonatomic, assign) BOOL headerExpanded;
+
+@property (nonatomic, strong) EEBackView *preGesView;
+@property (nonatomic, strong) EEBackView *nextGesView;
 
 @end
 
@@ -62,6 +66,32 @@
     self.detailModel.currentUrl = contentModel.href;
 }
 
+- (EEBackView *)preGesView {
+    if (nil == _preGesView) {
+        _preGesView = [[EEBackView alloc] init];
+        _preGesView.type = EEBackViewTypeLeft;
+        _preGesView.frame = CGRectMake(0, 300, 20, self.view.frame.size.height - 300);
+        __weak typeof(self) weakSelf = self;
+        _preGesView.goBackBlock = ^{
+            [weakSelf loadLastPageDetailData];
+        };
+    }
+    return _preGesView;
+}
+
+- (EEBackView *)nextGesView {
+    if (nil == _nextGesView) {
+        _nextGesView = [[EEBackView alloc] init];
+        _nextGesView.type = EEBackViewTypeRight;
+        _nextGesView.frame = CGRectMake(self.view.frame.size.width - 20, 300, 20, self.view.frame.size.height - 300);
+        __weak typeof(self) weakSelf = self;
+        _nextGesView.goNextBlock = ^{
+            [weakSelf loadNextDetailData];
+        };
+    }
+    return _nextGesView;
+}
+
 - (void)dealloc {
     [AppTool releaseSDWebImageManager:self.sourceModel.sourceType];
     [self willDealloc];
@@ -79,6 +109,25 @@
 }
 
 #pragma mark - view
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.preGesView removeFromSuperview];
+    [self.nextGesView removeFromSuperview];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+#if !TARGET_OS_MACCATALYST
+    
+    [UIApplication.sharedApplication.keyWindow addSubview:self.preGesView];
+    [UIApplication.sharedApplication.keyWindow bringSubviewToFront:self.preGesView];
+    [UIApplication.sharedApplication.keyWindow addSubview:self.nextGesView];
+    [UIApplication.sharedApplication.keyWindow bringSubviewToFront:self.nextGesView];
+#endif
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -242,6 +291,8 @@
         if (result.count > 0) {
             self.contentModel = result[0];
         }
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
     [self loadNavigationItem];
 }

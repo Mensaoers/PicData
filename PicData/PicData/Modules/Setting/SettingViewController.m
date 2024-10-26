@@ -383,15 +383,34 @@ static NSString *identifier = @"identifier";
 
 - (void)downloadDataDemoDB:(UIView *)sender {
     
-    __weak typeof(self) weakSelf = self;
-    [self ht_downloadFile:@"DataDemo.db" completeHandler:^(BOOL isSuccess, NSString * _Nullable fileDownloadPath, NSString * _Nullable showName) {
-        
-        NSLog(@"DataDemo.db download isSuccess: %d, fileDownloadPath: %@", isSuccess, fileDownloadPath);
-        
-        weakSelf.DataDemoDBDwonloadedPath = fileDownloadPath;
-        [self reloadData];
-        [weakSelf handleDownloadDataDemoDB:weakSelf.DataDemoDBDwonloadedPath];
+    NSMutableArray *actions = [NSMutableArray array];
+    NSString *message = @"是否下载DataDemo.db?";
+    
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        __weak typeof(self) weakSelf = self;
+        [self ht_downloadFile:@"DataDemo.db" completeHandler:^(BOOL isSuccess, NSString * _Nullable fileDownloadPath, NSString * _Nullable showName) {
+            
+            NSLog(@"DataDemo.db download isSuccess: %d, fileDownloadPath: %@", isSuccess, fileDownloadPath);
+            
+            weakSelf.DataDemoDBDwonloadedPath = fileDownloadPath;
+            [self reloadData];
+            [weakSelf handleDownloadDataDemoDB:weakSelf.DataDemoDBDwonloadedPath];
+        }];
     }];
+    [actions addObject:confirmAction];
+    
+    if (self.DataDemoDBDwonloadedPath.length > 0) {
+        
+        message = @"DataDemo.db已下载, 是否重新下载?";
+        UIAlertAction *paraseAction = [UIAlertAction actionWithTitle:@"解析DataDemo.db" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self handleDownloadDataDemoDB:self.DataDemoDBDwonloadedPath];
+        }];
+        [actions addObject:paraseAction];
+    }
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [actions addObject:cancelAction];
+    
+    [self showAlertWithTitle:@"" message:message actions:actions];
 }
 
 - (void)handleDownloadDataDemoDB:(NSString *)fileDownloadPath {
@@ -430,32 +449,27 @@ static NSString *identifier = @"identifier";
             NSLog(@"======== 即将处理: %@", taskModel.systemTitle);
             
             DataDemoModel *dataModel = [DataDemoModel queryModelsWithDBUrl:dataDemoDbPath andTitle:taskModel.systemTitle];
-            if (!dataModel) {
-                continue;
-            }
-            
-            PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
-            if (nil == sourceModel) {
-                continue;
-            }
-
-            NSString *targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
-            
-            if (![[NSFileManager defaultManager] fileExistsAtPath:targetFilePath]) {
-                continue;
-            }
-            existCount ++;
-            NSLog(@"======== 累计: %ld条, 本地任务已存在: %@", existCount, targetFilePath);
-            
-            NSError *removeError = nil;
-            [[NSFileManager defaultManager] removeItemAtPath:targetFilePath error:&removeError];
-            if (removeError) {
-                NSLog(@"======== 删除文件: %@, error: %@", targetFilePath, removeError);
+            if (dataModel) {
+                PicSourceModel *sourceModel = [PicSourceModel queryTableWithUrl:taskModel.sourceHref].firstObject;
+                
+                NSString *targetFilePath = [[PDDownloadManager sharedPDDownloadManager] getDirPathWithSource:sourceModel contentModel:taskModel];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:targetFilePath]) {
+                    existCount ++;
+                    NSLog(@"======== 累计: %ld条, 本地任务已存在: %@", existCount, targetFilePath);
+                    
+                    NSError *removeError = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:targetFilePath error:&removeError];
+                    if (removeError) {
+                        NSLog(@"======== 删除文件: %@, error: %@", targetFilePath, removeError);
+                    } else {
+                        NSLog(@"======== 删除文件: %@", targetFilePath);
+                    }
+                }
             }
             
             progress = (CGFloat)(index + 1) / finishedCount;
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (progress == 1) {
+                if (index == finishedCount - 1) {
                     [self.loading hideAnimated:YES];
                     [MBProgressHUD showInfoOnView:self.view WithStatus:@"DataDemo.db解析完成"];
                 } else {
@@ -463,14 +477,10 @@ static NSString *identifier = @"identifier";
                         self.loading = [MBProgressHUD showProgressOnView:self.view WithStatus:@"DataDemo.db解析中" progress:progress];
                     }
                     self.loading.progress = progress;
-                    
                 }
             });
         }
-        
     });
-    
-    
 }
 
 #pragma mark - notification

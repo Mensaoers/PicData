@@ -278,6 +278,7 @@
     }]];
 
     if (self.contentModel != nil) {
+        // 父文件夹不支持PDF分享
         [actions addObject:[UIAlertAction actionWithTitle:@"PDF长图分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self sharePDF:sender];
         }]];

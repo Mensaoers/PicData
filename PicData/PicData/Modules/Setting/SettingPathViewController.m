@@ -175,7 +175,14 @@
 }
 
 - (BOOL)checkPath {
-    NSString *fullPath = [PPFileManager getDocumentPathWithTarget:self.textView.text];
+    NSString *fullPath;
+        // @"/Volumes/T7/.12AC169F959B49C89E3EE409191E2EF1/Program Files (x86)/Program File";
+#if TARGET_OS_MACCATALYST
+    fullPath = self.textView.text;
+#else
+    fullPath = [PPFileManager getDocumentPathWithTarget:self.textView.text];
+#endif
+    
     BOOL isExist = [PPFileManager checkFolderPathExistOrCreate:fullPath];
     [MBProgressHUD showInfoOnView:self.view WithStatus: isExist ? @"路径正确" : @"路径不存在"];
     return isExist;

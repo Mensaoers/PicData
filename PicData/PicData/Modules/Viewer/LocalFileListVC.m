@@ -8,11 +8,13 @@
 
 #import "LocalFileListVC.h"
 #import "PicBrowserToolViewHandler.h"
+#import "ViewerFileSModel.h"
+#import "ViewerContentSelCell.h"
 
 @interface LocalFileListVC () <UICollectionViewDelegate, UICollectionViewDataSource, YBImageBrowserDelegate>
 
 @property (nonatomic, strong) ViewerContentView *contentView;
-@property (nonatomic, strong) NSMutableArray <ViewerFileModel *>*fileNamesList;
+@property (nonatomic, strong) NSMutableArray <ViewerFileSModel *>*fileNamesList;
 @property (nonatomic, strong) NSMutableArray *imgsList;
 
 @property (nonatomic, strong) UILabel *contentLabel;
@@ -21,6 +23,8 @@
 @property (nonatomic, weak) YBImageBrowser *browser;
 
 @property (nonatomic, assign) NSInteger lastViewIndex;
+
+@property (nonatomic, assign) BOOL isEditing;
 
 @end
 
@@ -43,7 +47,7 @@
     return _contentModel;
 }
 
-- (NSMutableArray<ViewerFileModel *> *)fileNamesList {
+- (NSMutableArray<ViewerFileSModel *> *)fileNamesList {
     if (nil == _fileNamesList) {
         _fileNamesList = [NSMutableArray array];
     }
@@ -55,6 +59,16 @@
         _imgsList = [NSMutableArray array];
     }
     return _imgsList;
+}
+
+- (void)setIsEditing:(BOOL)isEditing {
+    _isEditing = isEditing;
+    
+    [self loadNavigationItem];
+    [self.fileNamesList pp_enumeration:^(ViewerFileSModel * _Nonnull element, NSInteger index, NSInteger totalCount) {
+        element.isSelected = NO;
+    }];
+    [self.contentView reloadData];
 }
 
 - (NSString *)favoriteFolderName {
@@ -105,16 +119,21 @@
     UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStyleDone target:self action:@selector(clearAllFiles)];
     [items addObject:deleteItem];
 
-    if (self.navigationController.viewControllers.count >= 2) {
-        if ([self.targetFilePath containsString:[self favoriteFolderName]]) {
-            // 我已经是收藏文件夹了
-        } else {
-            UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
-            [items addObject:likeItem];
+    if (self.isEditing) {
+        UIBarButtonItem *cancelEditItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(cancelEditMode)];
+        [items addObject:cancelEditItem];
+    } else {
+        if (self.navigationController.viewControllers.count >= 2) {
+            if ([self.targetFilePath containsString:[self favoriteFolderName]]) {
+                    // 我已经是收藏文件夹了
+            } else {
+                UIBarButtonItem *likeItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"like"] style:UIBarButtonItemStyleDone target:self action:@selector(likeAllFiles)];
+                [items addObject:likeItem];
+            }
         }
     }
     
-    self.navigationItem.rightBarButtonItems = items;
+    [self.navigationItem setRightBarButtonItems:items animated:YES];//.rightBarButtonItems = items;
 }
 
 - (void)backAction:(UIBarButtonItem *)sender {
@@ -144,7 +163,7 @@
     contentView.delegate = self;
     contentView.dataSource = self;
     [self.view addSubview:contentView];
-
+    [contentView registerClass:[ViewerContentSelCell class] forCellWithReuseIdentifier:@"ViewerContentSelCell"];
     self.contentView = contentView;
 
     [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -194,7 +213,7 @@
 
             NSString *filePath = [self.targetFilePath stringByAppendingPathComponent:fileName];
             if ([PPFileManager isDirectory:filePath]) {
-                ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:YES];
+                ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:YES];
 
                 NSString *dirPath = filePath;
                 NSError *subError = nil;
@@ -219,7 +238,7 @@
                     [self.fileNamesList addObject:fileModel];
                 }
             } else {
-                ViewerFileModel *fileModel = [ViewerFileModel modelWithName:fileName isFolder:NO];
+                ViewerFileSModel *fileModel = [ViewerFileSModel modelWithName:fileName isFolder:NO];
                 [self.fileNamesList addObject:fileModel];
             }
         }
@@ -233,6 +252,7 @@
     [self.contentView.mj_header endRefreshing];
 
     self.lastViewIndex = 0;
+    self.isEditing = NO;
 }
 
 - (void)shareAllFiles:(UIButton *)sender {
@@ -265,17 +285,35 @@
         }]];
     }
 
-    [actions addObject:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        /// 压缩之后弹出分享框
-        [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:self.targetFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-
-            if (completed) {
-                NSLog(@"分享成功!");
+//    if (!self.isEditing) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"直接分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if (self.isEditing) {
+                NSArray *sharedFiles = [[self.fileNamesList pp_filter:^BOOL(ViewerFileSModel * _Nonnull element) {
+                    return element.isSelected;
+                }] pp_map:^id _Nonnull(ViewerFileSModel * _Nonnull element) {
+                    return [NSURL fileURLWithPath:[self.targetFilePath stringByAppendingPathComponent:element.fileName]];
+                }];
+                [AppTool shareFileWithURLs:sharedFiles sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+                    
+                    if (completed) {
+                        NSLog(@"分享成功!");
+                    } else {
+                        NSLog(@"分享失败!");
+                    }
+                }];
             } else {
-                NSLog(@"分享失败!");
+                    /// 压缩之后弹出分享框
+                [AppTool shareFileWithURLs:@[[NSURL fileURLWithPath:self.targetFilePath]] sourceView:sender completionWithItemsHandler:^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+                    
+                    if (completed) {
+                        NSLog(@"分享成功!");
+                    } else {
+                        NSLog(@"分享失败!");
+                    }
+                }];
             }
-        }];
-    }]];
+        }]];
+//    }
 
     if (self.contentModel != nil) {
         // 父文件夹不支持PDF分享
@@ -284,9 +322,11 @@
         }]];
     }
 
-    [actions addObject:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self shareZip:sender];
-    }]];
+    if (!self.isEditing) {
+        [actions addObject:[UIAlertAction actionWithTitle:@"压缩分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self shareZip:sender];
+        }]];
+    }
 
     [actions addObject:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self showAlertWithTitle:nil message:@"分享文件" actions:actions];
@@ -331,8 +371,16 @@
         // 临时文件
         NSString *pdfPath = [[PDDownloadManager sharedPDDownloadManager].systemShareFolderPath stringByAppendingPathComponent:fileName];
 
-        [LGPdf createPdfWithImageCount:weakSelf.fileNamesList.count width:A4_L sepmargin:0 pdfPath:pdfPath password:passsword minWidth:10 enmuHandler:^UIImage * _Nullable(NSInteger index) {
-            ViewerFileModel *tempModel = weakSelf.fileNamesList[index];
+        NSArray *sharedFileNameList;
+        if (self.isEditing) {
+            sharedFileNameList = [weakSelf.fileNamesList pp_filter:^BOOL(ViewerFileSModel * _Nonnull element) {
+                return element.isSelected;
+            }];
+        } else {
+            sharedFileNameList = weakSelf.fileNamesList;
+        }
+        [LGPdf createPdfWithImageCount:sharedFileNameList.count width:A4_L sepmargin:0 pdfPath:pdfPath password:passsword minWidth:10 enmuHandler:^UIImage * _Nullable(NSInteger index) {
+            ViewerFileSModel *tempModel = sharedFileNameList[index];
             if ([PPFileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
                 UIImage *image = [UIImage imageWithContentsOfFile:[weakSelf.targetFilePath stringByAppendingPathComponent:tempModel.fileName]];
                 return image;
@@ -622,7 +670,7 @@
         [MBProgressHUD showHUDAddedTo:[AppTool getAppKeyWindow] animated:YES];
 
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
+        for (ViewerFileSModel *fileModel in weakSelf.fileNamesList) {
             if (!fileModel.isFolder) {
                 continue;
             }
@@ -661,37 +709,50 @@
 
 - (void)clearAllFiles {
     PDBlockSelf
-    [self showAlertWithTitle:@"提醒" message:@"确定清空所有文件吗?(该目录也将一并清除), 该过程不可逆" confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
+    NSString *message = self.isEditing ? @"确定删除选中的文件吗? 该过程不可逆" : @"确定删除所有文件吗? 该过程不可逆";
+    [self showAlertWithTitle:@"提醒" message:message confirmTitle:@"确定" confirmHandler:^(UIAlertAction * _Nonnull action) {
         [MBProgressHUD showHUDAddedTo:weakSelf.view WithStatus:@"正在删除"];
         NSError *rmError = nil;
-        if (weakSelf.navigationController.viewControllers.count > 1) {
-
-            // 还要把数据库数据更新
-            if (nil == self.contentModel) {
-                // 进到列表中, 只需要更新这个类别下面所有的数据就好了
-                [PicContentTaskModel deleteFromTableWithSourceTitle:self.targetFilePath.lastPathComponent];
-                NSArray *tasks = [PicContentTaskModel queryTableWithSourceTitle:self.targetFilePath.lastPathComponent];
-                NSMutableArray *taskHrefs = [NSMutableArray array];
-                for (PicContentTaskModel *taskModel in tasks) {
-                    [taskHrefs addObject:taskModel.href];
+        
+        if (self.isEditing) {
+            // 编辑的时候, 删除选中
+            for (ViewerFileSModel *fileModel in weakSelf.fileNamesList) {
+                if (fileModel.isSelected) {
+                    NSString *filePath = [weakSelf.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+                    [[NSFileManager defaultManager] removeItemAtPath:filePath error:&rmError];
                 }
-                [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": taskHrefs}];
-
-            } else {
-                // 更新contentModel就好了
-                [PicContentTaskModel deleteFromTableWithHref:self.contentModel.href];
-                [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": @[self.contentModel.href ?: @""]}];
             }
-
-            // [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
-            [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
         } else {
-            // 根视图, 删除所有
-            [ContentParserManager cancelAll];
-            // 取消所有已添加
-            [PicContentTaskModel deleteFromTable_All];
-            [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件不包括该文件夹本身
+            if (weakSelf.navigationController.viewControllers.count > 1) {
+                
+                    // 还要把数据库数据更新
+                if (nil == self.contentModel) {
+                        // 进到列表中, 只需要更新这个类别下面所有的数据就好了
+                    [PicContentTaskModel deleteFromTableWithSourceTitle:self.targetFilePath.lastPathComponent];
+                    NSArray *tasks = [PicContentTaskModel queryTableWithSourceTitle:self.targetFilePath.lastPathComponent];
+                    NSMutableArray *taskHrefs = [NSMutableArray array];
+                    for (PicContentTaskModel *taskModel in tasks) {
+                        [taskHrefs addObject:taskModel.href];
+                    }
+                    [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": taskHrefs}];
+                    
+                } else {
+                        // 更新contentModel就好了
+                    [PicContentTaskModel deleteFromTableWithHref:self.contentModel.href];
+                    [NSNotificationCenter.defaultCenter postNotificationName:NotificationNameCancelDownTasks object:nil userInfo:@{@"identifiers": @[self.contentModel.href ?: @""]}];
+                }
+                
+                    // [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件包括文件夹
+                [[NSFileManager defaultManager] removeItemAtPath:weakSelf.targetFilePath error:&rmError];//可以删除该路径下所有文件包括该文件夹本身
+            } else {
+                    // 根视图, 删除所有
+                [ContentParserManager cancelAll];
+                    // 取消所有已添加
+                [PicContentTaskModel deleteFromTable_All];
+                [[NSFileManager defaultManager] removeItemAtPath:[weakSelf.targetFilePath stringByAppendingPathComponent:@"."] error:&rmError];//可以删除该路径下所有文件不包括该文件夹本身
+            }
         }
+        
         if (nil == rmError) {
             [MBProgressHUD showInfoOnView:weakSelf.view WithStatus:@"删除成功" afterDelay:1];
             if (weakSelf.navigationController.viewControllers.count == 1) {
@@ -728,7 +789,7 @@
         }
         if (nil == weakSelf.contentModel) {
             /// 多图集页面
-            for (ViewerFileModel *fileModel in weakSelf.fileNamesList) {
+            for (ViewerFileSModel *fileModel in weakSelf.fileNamesList) {
                 if (!fileModel.isFolder) {
                     continue;
                 }
@@ -820,6 +881,10 @@
     } cancelTitle:@"取消" cancelHandler:nil];
 }
 
+- (void)cancelEditMode {
+    self.isEditing = NO;
+}
+
 /// 专门处理一套图对的收藏逻辑
 - (void)likeOneFolderWithName:(NSString *)folderName folderPath:(NSString *)folderPath withLikePath:(NSString *)likePath completeHandler:(void(^)(BOOL result_l, NSError *copyError_l))completeHandler {
     BOOL result = YES;
@@ -860,9 +925,10 @@
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ViewerContentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ViewerContentCell" forIndexPath:indexPath];
+    ViewerContentSelCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ViewerContentSelCell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
     cell.targetPath = self.targetFilePath;
+    cell.isEditing = self.isEditing;
     cell.fileModel = self.fileNamesList[indexPath.item];
     return cell;
 }
@@ -872,27 +938,63 @@
 
     self.lastViewIndex = indexPath.row;
 
-    ViewerFileModel *fileModel = self.fileNamesList[indexPath.row];
+    ViewerFileSModel *fileModel = self.fileNamesList[indexPath.row];
 
-    if (fileModel.isFolder) {
-        LocalFileListVC *localListVC = [[LocalFileListVC alloc] init];
-        localListVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
-        [self.navigationController pushViewController:localListVC animated:YES];
+    if (self.isEditing) {
+        if (fileModel.isFolder) {
+        } else {
+            
+            fileModel.isSelected = !fileModel.isSelected;
+            ViewerContentSelCell *cell = (ViewerContentSelCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            cell.fileModel = fileModel;
+        }
     } else {
-
-        if ([PPFileManager isFileTypePicture:fileModel.fileName.pathExtension]) {
-            [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
-        } else if ([PPFileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
-            [self doViewDocFileWithFilePath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]];
+        if (fileModel.isFolder) {
+            LocalFileListVC *localListVC = [[LocalFileListVC alloc] init];
+            localListVC.targetFilePath = [self.targetFilePath stringByAppendingPathComponent:fileModel.fileName];
+            [self.navigationController pushViewController:localListVC animated:YES];
+        } else {
+            
+            if ([PPFileManager isFileTypePicture:fileModel.fileName.pathExtension]) {
+                [self viewPicFile:fileModel indexPath:indexPath contentView:collectionView];
+            } else if ([PPFileManager isFileTypeDocument:fileModel.fileName.pathExtension]) {
+                [self doViewDocFileWithFilePath:[self.targetFilePath stringByAppendingPathComponent:fileModel.fileName]];
+            }
         }
     }
+}
+
+- (nullable UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, tvos) {
+    
+    if (self.isEditing) {
+        return nil;
+    }
+    
+    if (nil == self.contentModel) {
+        // 没有下载模型, 不让编辑
+        return nil;
+    }
+    
+    UIContextMenuConfiguration *configration = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        
+        NSMutableArray *actions = [NSMutableArray array];
+        // 右击
+        // 1. 编辑 / 取消编辑
+        UIAction *editOrAction = [UIAction actionWithTitle:self.isEditing ? @"取消编辑" : @"编辑" image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            
+            self.isEditing = !self.isEditing;
+        }];
+        [actions addObject:editOrAction];
+        return [UIMenu menuWithTitle:@"下载记录操作" children:actions];
+    }];
+    return configration;
 }
 
 - (void)viewPicFile:(ViewerFileModel *)fileModel indexPath:(NSIndexPath * _Nonnull)indexPath contentView:(UICollectionView * _Nonnull)contentView {
     [self.imgsList removeAllObjects];
     NSInteger currentIndex = 0;
     for (NSInteger index = 0; index < self.fileNamesList.count; index ++) {
-        ViewerFileModel *tempModel = self.fileNamesList[index];
+        ViewerFileSModel *tempModel = self.fileNamesList[index];
         if ([PPFileManager isFileTypePicture:tempModel.fileName.pathExtension]) {
 
             if ([tempModel.fileName isEqualToString:fileModel.fileName]) {
@@ -901,7 +1003,7 @@
 
             YBIBImageData *data = [YBIBImageData new];
             data.imagePath = [self.targetFilePath stringByAppendingPathComponent:tempModel.fileName];
-            ViewerContentCell *contentCell = (ViewerContentCell *)[contentView cellForItemAtIndexPath:indexPath];
+            ViewerContentSelCell *contentCell = (ViewerContentSelCell *)[contentView cellForItemAtIndexPath:indexPath];
             data.projectiveView = contentCell.imageView;
             [self.imgsList addObject:data];
         }
@@ -981,7 +1083,7 @@
                 didHandleEvent = YES;
                 if (self.contentModel != nil) {
                     if (self.browser.superview == nil && self.fileNamesList.count > 0 && self.fileNamesList.count > self.lastViewIndex) {
-                        ViewerFileModel *fileModel = self.fileNamesList[self.lastViewIndex];
+                        ViewerFileSModel *fileModel = self.fileNamesList[self.lastViewIndex];
                         [self viewPicFile:fileModel indexPath:[NSIndexPath indexPathForItem:self.lastViewIndex inSection:0] contentView:self.contentView];
                     }
                 }
@@ -1022,7 +1124,7 @@
     self.lastViewIndex = page;
     [self.contentView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     YBIBImageData *data_ = (YBIBImageData *)data;// (YBIBImageData <YBIBDataProtocol>*)data;
-    ViewerContentCell *contentCell = (ViewerContentCell *)[self.contentView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
+    ViewerContentSelCell *contentCell = (ViewerContentSelCell *)[self.contentView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
     data_.projectiveView = contentCell.imageView;
 }
 

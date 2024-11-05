@@ -46,6 +46,12 @@
 
 - (void)prepare {
 
+    if (@available(macCatalyst 18.0, *)) {
+        self.mode = UITabBarControllerModeTabBar;
+    } else {
+            // Fallback on earlier versions
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeOfDownloadPath:) name:NOTICECHECKDOWNLOADPATHKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationThatInitHostModelsFailed:) name:NotificationNameInitHostModelsFailed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationThatClearedAllFiles:) name:NotificationNameClearedAllFiles object:nil];

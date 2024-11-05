@@ -66,6 +66,7 @@
 		9D6330112CCD17A900EF8A18 /* ee_web_gonext@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D63300C2CCD17A900EF8A18 /* ee_web_gonext@2x.png */; };
 		9D6330122CCD17A900EF8A18 /* ee_web_goback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D63300B2CCD17A900EF8A18 /* ee_web_goback@2x.png */; };
 		9D8583BA2C68CAE0006CE6CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D8583B92C68CAE0006CE6CD /* GoogleService-Info.plist */; };
+		9D860CEE2CD72232004EAF56 /* ViewerContentSelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D860CED2CD72232004EAF56 /* ViewerContentSelCell.m */; };
 		9D8AA4D22C6F8CF900232F84 /* PPCatalystPlugin.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D8AA4D62C6F94E900232F84 /* DataDemoModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9D8AA4D52C6F94E900232F84 /* DataDemoModel.mm */; };
 		9D96DC9E25A376080045D123 /* AppTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D96DC9D25A376080045D123 /* AppTool.m */; };
@@ -232,6 +233,8 @@
 		9D63300D2CCD17A900EF8A18 /* EEBackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EEBackView.h; sourceTree = "<group>"; };
 		9D63300E2CCD17A900EF8A18 /* EEBackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EEBackView.m; sourceTree = "<group>"; };
 		9D8583B92C68CAE0006CE6CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9D860CEC2CD72232004EAF56 /* ViewerContentSelCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerContentSelCell.h; sourceTree = "<group>"; };
+		9D860CED2CD72232004EAF56 /* ViewerContentSelCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewerContentSelCell.m; sourceTree = "<group>"; };
 		9D8AA4D12C6F8CF900232F84 /* PPCatalystPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PPCatalystPlugin.bundle; path = Pods/PPCatalystTool/PPCatalystPlugin/Products/PPCatalystPlugin.bundle; sourceTree = "<group>"; };
 		9D8AA4D42C6F94E900232F84 /* DataDemoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataDemoModel.h; sourceTree = "<group>"; };
 		9D8AA4D52C6F94E900232F84 /* DataDemoModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DataDemoModel.mm; sourceTree = "<group>"; };
@@ -610,6 +613,15 @@
 			path = EEBackView;
 			sourceTree = "<group>";
 		};
+		9D860CEB2CD7220D004EAF56 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9D860CEC2CD72232004EAF56 /* ViewerContentSelCell.h */,
+				9D860CED2CD72232004EAF56 /* ViewerContentSelCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		9D8AA4D32C6F947C00232F84 /* DataDemoModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -658,6 +670,7 @@
 		9DC94CA82552F7C2008ACAF8 /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
+				9D860CEB2CD7220D004EAF56 /* View */,
 				9DC94CA92552F7E0008ACAF8 /* LocalFileListVC.h */,
 				9DC94CAA2552F7E0008ACAF8 /* LocalFileListVC.m */,
 				33178B92256A184700CB47F2 /* ViewerViewController.h */,
@@ -1104,6 +1117,7 @@
 				9DE95CD7244C417900E31735 /* PicSourceModel.mm in Sources */,
 				9DE95C85244C3E1100E31735 /* main.m in Sources */,
 				9D96DC9E25A376080045D123 /* AppTool.m in Sources */,
+				9D860CEE2CD72232004EAF56 /* ViewerContentSelCell.m in Sources */,
 				9DE95CCB244C3FDD00E31735 /* parser.c in Sources */,
 				332CB1672760F9E6002B97BD /* PicBrowserToolViewHandler.m in Sources */,
 				9DFA89822BDE89F200268626 /* SharedListTableViewCell.m in Sources */,

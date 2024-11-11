@@ -57,6 +57,11 @@
     self.interactivePopGestureRecognizer.delegate = wkself;
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    [self adjustSizeClass];
+}
+
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     UIViewController *viewController = [super popViewControllerAnimated:animated];
     __weak typeof(self) wkself = self;

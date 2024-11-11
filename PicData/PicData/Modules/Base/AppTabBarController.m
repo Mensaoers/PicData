@@ -31,6 +31,11 @@
     } else {
         [tabBar setBarTintColor:UIColor.whiteColor];
     }
+//    if (@available(macCatalyst 17.0, *)) {
+//        tabBar.traitOverrides.horizontalSizeClass = UIUserInterfaceSizeClassCompact;
+//    } else {
+//            // Fallback on earlier versions
+//    }
     [tabBar setTintColor:ThemeColor];
     [tabBar setUnselectedItemTintColor:ThemeDisabledColor];
 
@@ -47,7 +52,13 @@
 - (void)prepare {
 
     if (@available(macCatalyst 18.0, *)) {
-        self.mode = UITabBarControllerModeTabBar;
+        self.mode = UITabBarControllerModeTabSidebar;
+    } else {
+            // Fallback on earlier versions
+    }
+    
+    if (@available(macCatalyst 17.0, *)) {
+        self.traitOverrides.horizontalSizeClass = UIUserInterfaceSizeClassCompact;
     } else {
             // Fallback on earlier versions
     }

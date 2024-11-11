@@ -10,6 +10,30 @@
 #import "FloatingWindowView.h"
 #import "ViewerViewController.h"
 
+@implementation UIViewController (pp)
+
+- (UIUserInterfaceSizeClass)rootViewControllerHorizontalSizeClass {
+//
+//    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//    let keyWindow = windowScene.windows.first(where: { $0.isKeyWindow }),
+//    let rootViewController = keyWindow.rootViewController else {
+//        return .regular
+//    }
+//    
+//    return rootViewController.traitCollection.horizontalSizeClass
+    return UIApplication.sharedApplication.keyWindow.rootViewController.traitCollection.horizontalSizeClass;
+}
+
+- (void)adjustSizeClass {
+    if (@available(macCatalyst 17.0, *)) {
+        self.traitOverrides.horizontalSizeClass = self.rootViewControllerHorizontalSizeClass;
+    } else {
+            // Fallback on earlier versions
+    }
+}
+
+@end
+
 @interface BaseViewController ()
 
 @end
@@ -32,6 +56,11 @@
     
     [self loadNavigationItem];
     [self loadMainView];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    [self adjustSizeClass];
 }
 
 - (void)viewDidLayoutSubviews {

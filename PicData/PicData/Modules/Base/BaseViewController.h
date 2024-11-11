@@ -10,6 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface UIViewController (pp)
+
+- (void)adjustSizeClass;
+@property (nonatomic, assign) UIUserInterfaceSizeClass rootViewControllerHorizontalSizeClass;
+
+@end
+
 @interface BaseViewController : UIViewController
 
 /// 导航操作按钮, 重写不需要执行父类方法
